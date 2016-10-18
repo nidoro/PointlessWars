@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Pointless Wars" />
+		<Option pch_mode="2" />
+		<Option compiler="mingw-620" />
+		<Build>
+			<Target title="Debug">
+				<Option output="pw-debug" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../win-obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="mingw-620" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="opengl32" />
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-system-d" />
+					<Add library="sfml-audio-d" />
+					<Add library="sfml-network-d" />
+					<Add library="boost_system-mgw62-d-1_60" />
+					<Add library="boost_filesystem-mgw62-d-1_60" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="pw-release" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../win-obj/Release/" />
+				<Option type="1" />
+				<Option compiler="mingw-620" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="opengl32" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-system" />
+					<Add library="sfml-audio" />
+					<Add library="sfml-network" />
+					<Add library="boost_system-mgw62-1_60" />
+					<Add library="boost_filesystem-mgw62-1_60" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++0x" />
+			<Add option="-D_USE_MATH_DEFINES" />
+			<Add option="-DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS" />
+			<Add directory="C:/Libs/SFML-2.4.0/include" />
+			<Add directory="C:/Libs/boost_1_60_0" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add directory="C:/Libs/SFML-2.4.0/lib" />
+			<Add directory="./" />
+		</Linker>
+		<Unit filename="include/AISystem.h" />
+		<Unit filename="include/ActionOutcome.h" />
+		<Unit filename="include/ActionSystem.h" />
+		<Unit filename="include/AnchorSystem.h" />
+		<Unit filename="include/AnimationSystem.h" />
+		<Unit filename="include/AnnouncerSystem.h" />
+		<Unit filename="include/ArmyHUDSystem.h" />
+		<Unit filename="include/ArmySystem.h" />
+		<Unit filename="include/Assets.h" />
+		<Unit filename="include/AutoPilotSystem.h" />
+		<Unit filename="include/BarDisplayerSystem.h" />
+		<Unit filename="include/ButtonSystem.h" />
+		<Unit filename="include/CMDLineSystem.h" />
+		<Unit filename="include/CameraSystem.h" />
+		<Unit filename="include/CommandListener.h" />
+		<Unit filename="include/Component.h" />
+		<Unit filename="include/Config.h" />
+		<Unit filename="include/CursorSystem.h" />
+		<Unit filename="include/CustomMatchSystem.h" />
+		<Unit filename="include/DisplayerSystem.h" />
+		<Unit filename="include/DragDropSystem.h" />
+		<Unit filename="include/DropListSystem.h" />
+		<Unit filename="include/EditorSystem.h" />
+		<Unit filename="include/ElipsoidalMovementSystem.h" />
+		<Unit filename="include/EntitiesManager.h" />
+		<Unit filename="include/Entity.h" />
+		<Unit filename="include/FadeSystem.h" />
+		<Unit filename="include/FormationEditor.h" />
+		<Unit filename="include/Game.h" />
+		<Unit filename="include/InGameMenu.h" />
+		<Unit filename="include/InputTextBoxSystem.h" />
+		<Unit filename="include/MainMenuSystem.h" />
+		<Unit filename="include/MatchConfig.h" />
+		<Unit filename="include/Messages.h" />
+		<Unit filename="include/NetworkSystem.h" />
+		<Unit filename="include/OptionBoxSystem.h" />
+		<Unit filename="include/PanelSystem.h" />
+		<Unit filename="include/ParticleSystem.h" />
+		<Unit filename="include/PathSystem.h" />
+		<Unit filename="include/RemotePlayer.h" />
+		<Unit filename="include/RenderSystem.h" />
+		<Unit filename="include/ResourcePacking.h" />
+		<Unit filename="include/ScenarioSystem.h" />
+		<Unit filename="include/ScreenSystem.h" />
+		<Unit filename="include/ScriptedAnimation.h" />
+		<Unit filename="include/ScrollListSystem.h" />
+		<Unit filename="include/SideUISystem.h" />
+		<Unit filename="include/SliderSystem.h" />
+		<Unit filename="include/SoundSystem.h" />
+		<Unit filename="include/SpinButtonSystem.h" />
+		<Unit filename="include/Standard.h" />
+		<Unit filename="include/System.h" />
+		<Unit filename="include/TextboxSystem.h" />
+		<Unit filename="include/TimerSystem.h" />
+		<Unit filename="include/TooltipSystem.h" />
+		<Unit filename="include/UnitSystem.h" />
+		<Unit filename="include/War.h" />
+		<Unit filename="include/WarSystem.h" />
+		<Unit filename="include/imconfig.h" />
+		<Unit filename="include/imgui.h" />
+		<Unit filename="include/imgui_SFML.h" />
+		<Unit filename="include/imgui_internal.h" />
+		<Unit filename="include/tinyxml2.h" />
+		<Unit filename="rsc.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src/AISystem.cpp" />
+		<Unit filename="src/ActionOutcome.cpp" />
+		<Unit filename="src/ActionSystem.cpp" />
+		<Unit filename="src/AnchorSystem.cpp" />
+		<Unit filename="src/AnimationSystem.cpp" />
+		<Unit filename="src/AnnouncerSystem.cpp" />
+		<Unit filename="src/ArmyHUDSystem.cpp" />
+		<Unit filename="src/ArmySystem.cpp" />
+		<Unit filename="src/Assets.cpp" />
+		<Unit filename="src/AutoPilotSystem.cpp" />
+		<Unit filename="src/BarDisplayerSystem.cpp" />
+		<Unit filename="src/ButtonSystem.cpp" />
+		<Unit filename="src/CMDLineSystem.cpp" />
+		<Unit filename="src/CameraSystem.cpp" />
+		<Unit filename="src/CommandListener.cpp" />
+		<Unit filename="src/Component.cpp" />
+		<Unit filename="src/Config.cpp" />
+		<Unit filename="src/CursorSystem.cpp" />
+		<Unit filename="src/CustomMatchSystem.cpp" />
+		<Unit filename="src/DisplayerSystem.cpp" />
+		<Unit filename="src/DragDropSystem.cpp" />
+		<Unit filename="src/DropListSystem.cpp" />
+		<Unit filename="src/EditorSystem.cpp" />
+		<Unit filename="src/ElipsoidalMovementSystem.cpp" />
+		<Unit filename="src/EntitiesManager.cpp" />
+		<Unit filename="src/Entity.cpp" />
+		<Unit filename="src/FadeSystem.cpp" />
+		<Unit filename="src/FormationEditor.cpp" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/InGameMenu.cpp" />
+		<Unit filename="src/InputTextBoxSystem.cpp" />
+		<Unit filename="src/MainMenuSystem.cpp" />
+		<Unit filename="src/MatchConfig.cpp" />
+		<Unit filename="src/NetworkSystem.cpp" />
+		<Unit filename="src/OptionBoxSystem.cpp" />
+		<Unit filename="src/PanelSystem.cpp" />
+		<Unit filename="src/ParticleSystem.cpp" />
+		<Unit filename="src/PathSystem.cpp" />
+		<Unit filename="src/RemotePlayer.cpp" />
+		<Unit filename="src/RenderSystem.cpp" />
+		<Unit filename="src/ResourcePacking.cpp" />
+		<Unit filename="src/ScenarioSystem.cpp" />
+		<Unit filename="src/ScreenSystem.cpp" />
+		<Unit filename="src/ScriptedAnimation.cpp" />
+		<Unit filename="src/ScrollListSystem.cpp" />
+		<Unit filename="src/SideUISystem.cpp" />
+		<Unit filename="src/SliderSystem.cpp" />
+		<Unit filename="src/SoundSystem.cpp" />
+		<Unit filename="src/SpinButtonSystem.cpp" />
+		<Unit filename="src/Standard.cpp" />
+		<Unit filename="src/System.cpp" />
+		<Unit filename="src/TextboxSystem.cpp" />
+		<Unit filename="src/TimerSystem.cpp" />
+		<Unit filename="src/TooltipSystem.cpp" />
+		<Unit filename="src/UnitSystem.cpp" />
+		<Unit filename="src/War.cpp" />
+		<Unit filename="src/WarSystem.cpp" />
+		<Unit filename="src/imgui.cpp" />
+		<Unit filename="src/imgui_SFML.cpp" />
+		<Unit filename="src/imgui_draw.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/tinyxml2.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

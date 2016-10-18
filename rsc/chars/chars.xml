@@ -1,0 +1,14 @@
+
+<Char01>
+	<Animations>
+		<Idle File = "char-01-idle.png" FrameWidth = "58" FrameHeight = "58" NumFrames = "5" FPS = "10" />
+		<Walk File = "char-01-walk.png" FrameWidth = "58" FrameHeight = "58" NumFrames = "2" FPS = "5" />
+	</Animations>
+</Char01>
+
+<Char02>
+	<Animations>
+		<Idle File = "char-02-idle.png" FrameWidth = "58" FrameHeight = "58" NumFrames = "5" FPS = "10" />
+		<Walk File = "char-02-walk.png" FrameWidth = "58" FrameHeight = "58" NumFrames = "2" FPS = "5" />
+	</Animations>
+</Char02>

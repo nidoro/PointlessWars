@@ -1,0 +1,43 @@
+%ID				DEFAULT_ANIMATION				CLICK_ANIMATION							CLICK_SOUND
+chicken			chicken-idle.png				chicken-singing.png						cocorico.wav
+agua            agua.png                        agua.png                                empty.wav
+coisas          coisas.png                      coisas.png                              empty.wav
+vaca            vaca.png                        vaca-mugindo.png                        moo.wav
+flag-blue       flag-blue.png                   flag-blue.png                           empty.wav
+flag-red        flag-red.png                    flag-red.png                            empty.wav
+casa-d          casa-default.png                casa_a.png                              empty.wav
+casa-d2         casa-default-2.png              casa_v.png                              empty.wav
+pescador        pescador.png                    pescador.png                            empty.wav                   
+
+%country
+crow            obj-crow.png                    obj-crow.png                            empty.wav
+pig             obj-pig-walk.png                obj-pig-grunt.png                       sfx-pig.wav
+flagb           obj-flag-blue.png               obj-flag-blue.png                       empty.wav
+flagr           obj-flag-red.png                obj-flag-red.png                        empty.wav
+house           obj-door.png                    obj-door-walk.png                       sfx-door-slam.wav
+
+%desert
+house-02        obj-door-02.png                    obj-hello.png                           sfx-door-bell.wav
+merchant        obj-merchant.png                obj-merchant.png                        empty.wav
+charmer         obj-sleep.png                   obj-enchant.png                         sfx-enchant.wav
+river1          obj-water-l.png                 obj-water-l.png                         empty.wav
+river2          obj-water-r.png                 obj-water-r.png                         empty.wav
+bridge          obj-bridge.png                  obj-bridge.png                          empty.wav
+house2          obj-door2.png                   obj-hello2.png                          sfx-door-bell.wav
+
+% NEW ONES
+% Woods
+water-01    						water-01.png            		water-01.png                	empty.wav
+woods-static-objects-01      		woods-static-objects-01.png     woods-static-objects-01.png 	empty.wav
+cow        							cow-idle.png           			cow-mooing.png            		moo.wav
+flag-blue-01   						flag-blue-01.png          		flag-blue-01.png               	empty.wav
+flag-red-01    						flag-red-01.png           		flag-red-01.png                	empty.wav
+flag-waving-blue      				flag-waving-default.png       	flag-waving-blue.png            empty.wav
+flag-waving-red     				flag-waving-default.png     	flag-waving-red.png             empty.wav
+fisherman    						fisherman.png           		fisherman.png                	empty.wav                   
+
+
+sea             obj-sea.png                     obj-sea.png                             empty.wav
+house-01           obj-hut.png                     obj-party-house.png                     dub.wav
+merchant        obj-merchant.png                obj-merchant.png                        empty.wav
+deck            obj-deck.png                    obj-deck.png                            empty.wav
