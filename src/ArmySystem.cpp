@@ -352,17 +352,19 @@ void ArmySystem::onSystemAction(Entity* e){
             int score = eArmy->get<CArmy>()->score;
             CPlayer::ID id = eArmy->get<CPlayer>()->id;
             if (war.getBattleClosure() == war.ARMY_VS_ARMY
-            ||  war.getBattleClosure() == war.ALL_KILLED
-            ||  war.getBattleClosure() == war.MAN_VS_MAN){
+            ||  war.getBattleClosure() == war.ALL_KILLED){
                 eArmy->get<CArmy>()->score = id == war.getBattleWinner() ? score+1 : 0;
 
-            }else if (war.getBattleClosure() == war.CONFINE){
-                eArmy->get<CArmy>()->score = id == war.getBattleWinner() ? score : 0;
+            }else if (war.getBattleClosure() == war.CONFINE
+                  ||  war.getBattleClosure() == war.MAN_VS_MAN){
+                //eArmy->get<CArmy>()->score = id == war.getBattleWinner() ? score : 0;
 
-            }else if (war.getBattleClosure() == war.DRAW){
+            }else if (war.getBattleClosure() == war.MERCY){
                 eArmy->get<CArmy>()->score = 0;
 
             }
+
+            eArmy->get<CArmy>()->hasCoin = id == war.getFirstMover() ? true : false;
             notify(SCORE_UPDATED, eArmy);
         }
     }

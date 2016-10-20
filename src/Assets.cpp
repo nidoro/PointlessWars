@@ -220,6 +220,70 @@ void Assets::createActions(){
     actions.insert(make_pair(K+43, CAction(K+43)));                                     ///TRUE FORM 3
     actions.insert(make_pair(K+44, CAction(K+44)));                                     ///RETURN
 
+    actions[202].btDefTexture = "intimidate-1.png";
+    actions[202].btHovTexture = "intimidate-2.png";
+    actions[202].btActTexture = "intimidate-2.png";
+
+    actions[203].btDefTexture = "ressurection-1.png";
+    actions[203].btHovTexture = "ressurection-2.png";
+    actions[203].btActTexture = "ressurection-2.png";
+
+    actions[207].btDefTexture = "fire-decrease-1.png";
+    actions[207].btHovTexture = "fire-decrease-2.png";
+    actions[207].btActTexture = "fire-decrease-2.png";
+
+    actions[208].btDefTexture = "water-decrease-1.png";
+    actions[208].btHovTexture = "water-decrease-2.png";
+    actions[208].btActTexture = "water-decrease-2.png";
+
+    actions[209].btDefTexture = "earth-decrease-1.png";
+    actions[209].btHovTexture = "earth-decrease-2.png";
+    actions[209].btActTexture = "earth-decrease-2.png";
+
+    actions[212].btDefTexture = "change-formation-1.png";
+    actions[212].btHovTexture = "change-formation-2.png";
+    actions[212].btActTexture = "change-formation-2.png";
+
+    actions[216].btDefTexture = "purification-1.png";
+    actions[216].btHovTexture = "purification-2.png";
+    actions[216].btActTexture = "purification-2.png";
+
+    actions[219].btDefTexture = "true-form-1.png";
+    actions[219].btHovTexture = "true-form-2.png";
+    actions[219].btActTexture = "true-form-2.png";
+
+    actions[222].btDefTexture = "doom-1.png";
+    actions[222].btHovTexture = "doom-2.png";
+    actions[222].btActTexture = "doom-2.png";
+
+    actions[223].btDefTexture = "hex-1.png";
+    actions[223].btHovTexture = "hex-2.png";
+    actions[223].btActTexture = "hex-2.png";
+
+    actions[227].btDefTexture = "tarot-1.png";
+    actions[227].btHovTexture = "tarot-2.png";
+    actions[227].btActTexture = "tarot-2.png";
+
+    actions[233].btDefTexture = "air-decrease-1.png";
+    actions[233].btHovTexture = "air-decrease-2.png";
+    actions[233].btActTexture = "air-decrease-2.png";
+
+    actions[239].btDefTexture = "call-slaves-1.png";
+    actions[239].btHovTexture = "call-slaves-2.png";
+    actions[239].btActTexture = "call-slaves-2.png";
+
+    actions[240].btDefTexture = "croak-1.png";
+    actions[240].btHovTexture = "croak-2.png";
+    actions[240].btActTexture = "croak-2.png";
+
+    actions[241].btDefTexture = "stampede-1.png";
+    actions[241].btHovTexture = "stampede-2.png";
+    actions[241].btActTexture = "stampede-2.png";
+
+    actions[242].btDefTexture = "become-human-1.png";
+    actions[242].btHovTexture = "become-human-2.png";
+    actions[242].btActTexture = "become-human-2.png";
+
     map<CAction::ID, CAction>::iterator it;
     for(it = actions.begin(); it != actions.end(); it++){
         CAction::ID i = it->first;
@@ -245,12 +309,14 @@ void Assets::createActions(){
     actions.insert(make_pair(0+K, CAction(0+K)));   //MELEE BATTLE
     actions.insert(make_pair(1+K, CAction(1+K)));
     actions.insert(make_pair(2+K, CAction(2+K)));
-    for(int i = 400; i < 403; i++){
+    actions.insert(make_pair(3+K, CAction(3+K)));
+    for(int i = 400; i < 404; i++){
 
     }
-    actions[400].name = "Army vs Army";
-    actions[401].name = "Man vs Man";
-    actions[402].name = "Enslave";
+    actions[400].name = "Grand Battle";
+    actions[401].name = "Duel";
+    actions[402].name = "Confine";
+    actions[403].name = "Mercy";
 
     ///OTHERS
     K = 500;
@@ -273,6 +339,10 @@ void Assets::createCaptains(){
         captains[i].aWalk = "hero-" + int2str(i, 2) + "-walk.png";
         captains[i].strName = "NAME-HERO-" + int2str(i, 2);
         captains[i].portrait = "hero-" + int2str(i, 2) + "-portrait.png";
+
+        captains[i].btDefTexture = "hero-" + int2str(i, 2) + "-portrait.png";
+        captains[i].btHovTexture = "hero-" + int2str(i, 2) + "-portrait.png";
+        captains[i].btActTexture = "hero-" + int2str(i, 2) + "-portrait.png";
     }
     //HERO-00	Chimalmat
     captains[0].actions.push_back(205);
@@ -382,6 +452,10 @@ void Assets::createUnits(){
         unit.aAction02 = "unit-" + int2str(i, 2) + "-action-02.png";
         unit.aAction03 = "unit-" + int2str(i, 2) + "-action-03.png";
         unit.aAction04 = "unit-" + int2str(i, 2) + "-action-04.png";
+
+        unit.btActionDef = "bt-unit-" + int2str(i, 2) + "-attack-def.png";
+        unit.btActionHov = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
+        unit.btActionAct = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
 
         units.insert(make_pair(unit.id, unit));
     }

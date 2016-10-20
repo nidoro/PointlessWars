@@ -104,6 +104,7 @@ class ActionSystem : public System{
         void preprocessArmyVsArmy(ActionOutcome& outcome, Entity* e);
         void preprocessManVsMan(ActionOutcome& outcome, Entity* e);
         void preprocessEnslave(ActionOutcome& outcome, Entity* e);
+        void preprocessMercy(ActionOutcome& outcome, Entity* e);
 
         void throwCoin();
         void orderTargets(EntityList& targets, map<CAction::ID, CAction>& effects, CUnit::DamageType dmg);

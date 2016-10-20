@@ -62,18 +62,19 @@ void AISystem::selectBattleClosure(Entity* e){
     vector<CAction::ID> actions;
     Entity* eCap = e->get<CArmy>()->captain;
 
-    for(int i = 400; i <= 402; i++){
+    for(int i = 400; i <= 403; i++){
         actions.push_back(i);
     }
 
     //war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
-    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 402;
+    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 401;
     e->get<CAInt>()->actionSelected = true;
 }
 
 void AISystem::selectHero(Entity* e){
     vector<CAction::ID> actions;
     for(map<CCaptain::ID, Entity*>::iterator i = e->get<CArmy>()->captains.begin(); i != e->get<CArmy>()->captains.end(); i++){
+        if (i->second->get<CCaptain>()->isConfined) continue;
         actions.push_back(i->first+100);
     }
 
@@ -87,6 +88,7 @@ void AISystem::selectFormation(Entity* e){
     Entity* eCap = e->get<CArmy>()->captain;
 
     for(int i = 300; i <= 302; i++){
+        if (e->get<CArmy>()->prohibitedFormation == i-300) continue;
         actions.push_back(i);
     }
 

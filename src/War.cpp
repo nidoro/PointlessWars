@@ -228,3 +228,10 @@ void War::setBattleClosure(BattleClosure closure){
 War::BattleClosure War::getBattleClosure(){
     return battleClosure;
 }
+
+CPlayer::ID War::getFirstMover(){
+    return idFirstMover;
+}
+void War::setFirstMover(CPlayer::ID id){
+    idFirstMover = id;
+}

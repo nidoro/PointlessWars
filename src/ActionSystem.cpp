@@ -121,6 +121,7 @@ void ActionSystem::preprocessAction(CPlayer::ID id){
         case 400: preprocessArmyVsArmy(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         case 401: preprocessManVsMan(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         case 402: preprocessEnslave(war.getNextActionOutcome(id), war.getPlayer(id)); break;
+        case 403: preprocessMercy(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         ///SYSTEM ACTIONS
         case 500: playPresentArmy(e); break;
         case 502: playAdvanceArmy(e); break;
@@ -151,16 +152,19 @@ void ActionSystem::executeAction(CPlayer::ID id){
     if (isWithinClosedRange(war.getNextActionOutcome(id).action, 0, 99)){
         notify(PLAY_ACTION, war.getPlayer(id));
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 100, 199)){
-        war.getPlayer(id)->get<CArmy>()->captain = war.getPlayer(id)->get<CArmy>()->captains[war.getNextActionOutcome(id).hero];
+        //war.getPlayer(id)->get<CArmy>()->captain = war.getPlayer(id)->get<CArmy>()->captains[war.getNextActionOutcome(id).hero];
+        war.getPlayer(id)->get<CArmy>()->idCaptain = war.getNextActionOutcome(id).hero;
+
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 200, 299)){
         notify(PLAY_ACTION, war.getPlayer(id));
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 300, 399)){
         notify(PLAY_ACTION, war.getPlayer(id));
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 400, 499)){
         switch(war.getNextActionOutcome(id).action){
-            case 400: war.setBattleClosure(war.ARMY_VS_ARMY); break;
-            case 401: war.setBattleClosure(war.MAN_VS_MAN); break;
-            case 402: war.setBattleClosure(war.CONFINE); break;
+            case 400: war.setBattleClosure(war.ARMY_VS_ARMY); war.setFirstMover(war.getNextActionOutcome(id).idLoser); break;
+            case 401: war.setBattleClosure(war.MAN_VS_MAN); war.setFirstMover(war.getNextActionOutcome(id).idWinner); break;
+            case 402: war.setBattleClosure(war.CONFINE); war.setFirstMover(war.getNextActionOutcome(id).idWinner); break;
+            case 403: war.setBattleClosure(war.MERCY); war.setFirstMover(war.getNextActionOutcome(id).idWinner); break;
             default: break;
         }
         war.setBattleWinner(war.getNextActionOutcome(id).idWinner);
@@ -1782,10 +1786,16 @@ void ActionSystem::preprocessManVsMan(ActionOutcome& outcome, Entity* e){
         outcome.idLoser = 1;
     }
 }
-void ActionSystem::preprocessEnslave(ActionOutcome& outcome, Entity* e){
-    Entity* P1 = war.getPlayer(1);
-    Entity* P2 = war.getPlayer(2);
 
+void ActionSystem::preprocessEnslave(ActionOutcome& outcome, Entity* e){
+    Entity* eWin = e;
+    Entity* eLos = e->get<CPlayer>()->enemy;
+
+    outcome.idWinner = eWin->get<CPlayer>()->id;
+    outcome.idLoser = eLos->get<CPlayer>()->id;
+}
+
+void ActionSystem::preprocessMercy(ActionOutcome& outcome, Entity* e){
     Entity* eWin = e;
     Entity* eLos = e->get<CPlayer>()->enemy;
 

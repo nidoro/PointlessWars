@@ -47,6 +47,7 @@ class ScriptedAnimation : public System{
         void scriptUnitAttack(Entity* e);
         void scriptManVsMan(Entity* e);
         void scriptManVsMan(ActionOutcome& outcome, Entity* eActor);
+        void scriptMercy(ActionOutcome& outcome, Entity* eActor);
         void scriptIntimidate(Entity* e);
         void scriptIntimidate(ActionOutcome& outcome, Entity* eActor);
         void scriptFocusFire(Entity* e);

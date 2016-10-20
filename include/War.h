@@ -20,7 +20,7 @@ class War{
                         ANNOUNCE_VICTORY,
                     FIELD_CLEANUP, BETWEEN_TURNS, ENDING, BEGINING, UPDATE_SCORE};
 
-        enum BattleClosure{NO_CLOSURE_YET, ALL_KILLED, DRAW, ARMY_VS_ARMY, MAN_VS_MAN, CONFINE};
+        enum BattleClosure{NO_CLOSURE_YET, ALL_KILLED, DRAW, ARMY_VS_ARMY, MAN_VS_MAN, CONFINE, MERCY};
 
         War();
         ~War();
@@ -35,6 +35,8 @@ class War{
         Entity* getPlayer(CPlayer::ID id);
         void setBattleWinner(Entity* e);
         Entity* getBattleWinner(Entity* e);
+        CPlayer::ID getFirstMover();
+        void setFirstMover(CPlayer::ID id);
         SystemAction getSystemAction();
         bool getPaused();
         void setPaused(bool p);
@@ -90,6 +92,8 @@ class War{
         BattleClosure battleClosure;
         CPlayer::ID idWinner;
         CPlayer::ID idLoser;
+
+        CPlayer::ID idFirstMover;
 
         Message waitingFor;
 

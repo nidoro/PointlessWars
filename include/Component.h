@@ -835,6 +835,9 @@ struct CArmy : public Component{
         nAlive = 0;
         nextUnitID = 0;
         hasCoin = false;
+        prohibitedDamageType = CUnit::N_DAMAGE_TYPES;
+        prohibitedFormation = CArmy::Formation::N_FORMATIONS;
+        idCaptain = 0;
     }
 
     vector<int> resistance;
@@ -853,6 +856,11 @@ struct CArmy : public Component{
     list<Entity*> allUnits;
 
     map<CUnit::ID, int> lastArmy;
+
+    CUnit::DamageType prohibitedDamageType;
+    CArmy::Formation prohibitedFormation;
+
+    CCaptain::ID idCaptain;
 
     bool hasCoin;
     int nAlive;

@@ -200,8 +200,10 @@ void WarSystem::initializeState(){
         CPlayer::ID idFirst = war.getActorID();
         CPlayer::ID idSecond = war.getPlayer(idFirst)->get<CPlayer>()->enemy->get<CPlayer>()->id;
 
-        addSystemAction(war.ASK_ARMY_ASSEMBLE, idFirst);
-        addSystemAction(war.ASK_ARMY_ASSEMBLE, idSecond);
+        notify(ASSIGN_RANDOM_ARMY, war.getPlayer(1));
+        notify(ASSIGN_RANDOM_ARMY, war.getPlayer(2));
+        //addSystemAction(war.ASK_ARMY_ASSEMBLE, idFirst);
+        //addSystemAction(war.ASK_ARMY_ASSEMBLE, idSecond);
 
         addSystemAction(war.BEGINING);
         addSystemAction(war.PRESENT_ARMIES);
@@ -212,15 +214,15 @@ void WarSystem::initializeState(){
         addSystemAction(war.ASK_FORMATION, idFirst);
         addSystemAction(war.ASK_FORMATION, idSecond);
         addSystemAction(war.ADVANCE_ARMIES);
+        addSystemAction(war.COIN, -1);
 /*
         addSystemAction(war.COIN, -1);
         addSystemAction(war.COIN, -1);
         addSystemAction(war.COIN, -1);
         addSystemAction(war.COIN, -1);
         addSystemAction(war.COIN, -1);
-        addSystemAction(war.COIN, -1);
-*/
         addSystemAction(war.PLAY_INITIAL_INTIMIDATION, idFirst);
+*/
 
         addSystemAction(war.UPDATE_BATTLE_QUEUE, -1);
     }else if (war.getSystemAction() == war.UPDATE_BATTLE_QUEUE){
@@ -282,12 +284,14 @@ void WarSystem::initializeState(){
         war.setActionCompleted(war.getActorID(), false);
 
     }else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION){
+        /*
         war.setNextAction(0, -1);
         war.setNextAction(1, -1);
         war.setNextAction(2, -1);
         war.setActionCompleted(0, true);
         war.setActionCompleted(1, true);
         war.setActionCompleted(2, true);
+        */
         war.setActionCompleted(war.getActorID(), false);
 
     }else if (war.getSystemAction() == war.ASK_FORMATION){
@@ -378,15 +382,15 @@ void WarSystem::initializeState(){
 void WarSystem::startBattleActionQueue(){
     sysActionQueue.clear();
 
-    CPlayer::ID idFirst = war.getBattleLoser();
-    CPlayer::ID idSecond = war.getBattleWinner();
+    CPlayer::ID idFirst = war.getFirstMover();
+    CPlayer::ID idSecond = war.getFirstMover() == 1 ? 2 : 1;
 
     addSystemAction(war.UPDATE_SCORE);
     addSystemAction(war.CLEAR_BATTLE_FIELD);
     addSystemAction(war.ENDING);
 
-    addSystemAction(war.ASK_ARMY_ASSEMBLE, idFirst);
-    addSystemAction(war.ASK_ARMY_ASSEMBLE, idSecond);
+    addSystemAction(war.RECOMPOSE_ARMY, war.getBattleWinner());
+    addSystemAction(war.ASK_ARMY_ASSEMBLE, war.getBattleLoser());
 
     addSystemAction(war.BEGINING);
     addSystemAction(war.PRESENT_ARMIES);
@@ -422,10 +426,12 @@ void WarSystem::checkBattleClosure(){
             war.setBattleClosure(war.DRAW);
         }else if (war.getPlayer(1)->get<CArmy>()->nAlive == 0){
             war.setBattleClosure(war.ALL_KILLED);
+            war.setFirstMover(1);
             war.setBattleWinner(2);
             war.setBattleLoser(1);
         }else if (war.getPlayer(2)->get<CArmy>()->nAlive == 0){
             war.setBattleClosure(war.ALL_KILLED);
+            war.setFirstMover(2);
             war.setBattleWinner(1);
             war.setBattleLoser(2);
         }

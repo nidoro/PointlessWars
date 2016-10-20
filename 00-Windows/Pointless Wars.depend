@@ -6675,7 +6675,7 @@
 	"Component.h"
 	<SFML/Network.hpp>
 
-1476805204 c:\users\davi doro\pw local\git\pointlesswars\include\component.h
+1476999828 c:\users\davi doro\pw local\git\pointlesswars\include\component.h
 	<cstring>
 	<cmath>
 	<list>
@@ -6704,10 +6704,10 @@
 	<random>
 	<ctime>
 
-1476805868 source:c:\users\davi doro\pw local\git\pointlesswars\src\actionsystem.cpp
+1477000165 source:c:\users\davi doro\pw local\git\pointlesswars\src\actionsystem.cpp
 	"ActionSystem.h"
 
-1461360099 c:\users\davi doro\pw local\git\pointlesswars\include\actionsystem.h
+1476994141 c:\users\davi doro\pw local\git\pointlesswars\include\actionsystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
@@ -6728,7 +6728,7 @@
 	"Entity.h"
 	"Component.h"
 
-1461440096 c:\users\davi doro\pw local\git\pointlesswars\include\war.h
+1476995905 c:\users\davi doro\pw local\git\pointlesswars\include\war.h
 	"Standard.h"
 	"Entity.h"
 	"MatchConfig.h"
@@ -6777,7 +6777,7 @@
 	"tinyxml2.h"
 	"Standard.h"
 
-1476736364 source:c:\users\davi doro\pw local\git\pointlesswars\src\aisystem.cpp
+1477006922 source:c:\users\davi doro\pw local\git\pointlesswars\src\aisystem.cpp
 	"AISystem.h"
 
 1462677377 c:\users\davi doro\pw local\git\pointlesswars\include\aisystem.h
@@ -6810,7 +6810,7 @@
 	"System.h"
 	"Assets.h"
 
-1473969376 source:c:\users\davi doro\pw local\git\pointlesswars\src\armysystem.cpp
+1477008042 source:c:\users\davi doro\pw local\git\pointlesswars\src\armysystem.cpp
 	"ArmySystem.h"
 
 1460578665 c:\users\davi doro\pw local\git\pointlesswars\include\armysystem.h
@@ -6850,7 +6850,7 @@
 	"System.h"
 	<thread>
 
-1474649890 source:c:\users\davi doro\pw local\git\pointlesswars\src\commandlistener.cpp
+1477007538 source:c:\users\davi doro\pw local\git\pointlesswars\src\commandlistener.cpp
 	"CommandListener.h"
 
 1461966179 c:\users\davi doro\pw local\git\pointlesswars\include\commandlistener.h
@@ -7046,7 +7046,7 @@
 	"System.h"
 	"Standard.h"
 
-1476732843 c:\users\davi doro\pw local\git\pointlesswars\include\scriptedanimation.h
+1476994771 c:\users\davi doro\pw local\git\pointlesswars\include\scriptedanimation.h
 	"System.h"
 	"Assets.h"
 
@@ -7203,7 +7203,7 @@
 1474235613 source:c:\users\davi doro\pw local\git\pointlesswars\src\screensystem.cpp
 	"ScreenSystem.h"
 
-1476806103 source:c:\users\davi doro\pw local\git\pointlesswars\src\scriptedanimation.cpp
+1477004401 source:c:\users\davi doro\pw local\git\pointlesswars\src\scriptedanimation.cpp
 	"ScriptedAnimation.h"
 
 1450647236 source:c:\users\davi doro\pw local\git\pointlesswars\src\scrolllistsystem.cpp
@@ -7247,13 +7247,13 @@
 1460565667 source:c:\users\davi doro\pw local\git\pointlesswars\src\unitsystem.cpp
 	"UnitSystem.h"
 
-1461436005 source:c:\users\davi doro\pw local\git\pointlesswars\src\war.cpp
+1476995637 source:c:\users\davi doro\pw local\git\pointlesswars\src\war.cpp
 	"War.h"
 
-1476731543 source:c:\users\davi doro\pw local\git\pointlesswars\src\warsystem.cpp
+1477000435 source:c:\users\davi doro\pw local\git\pointlesswars\src\warsystem.cpp
 	"WarSystem.h"
 
-1476823237 source:c:\users\davi doro\pw local\git\pointlesswars\src\assets.cpp
+1477000726 source:c:\users\davi doro\pw local\git\pointlesswars\src\assets.cpp
 	"Assets.h"
 
 1445977158 source:c:\users\davi doro\pw local\git\pointlesswars\src\battleclosure.cpp

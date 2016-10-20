@@ -76,45 +76,47 @@ void CommandListener::update(){
     Entity* eActor = war.getActor();
     if (!eActor) return;
 
-    if (!listening){
-        if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-            //clearArmy(war.getPlayer1());
-            //cout << war.getActorID() << endl;
-            showUnitOptions(eActor);
-            listening = true;
-            /*
-            clearArmy(war.getPlayer2());
-            notify(RECOMPOSE_ARMY, war.getPlayer2());
-            */
-        }else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION && !eActor->has(Component::AI) && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-            showCaptainOptions(eActor);
-            listening = true;
-        }else if (war.getSystemAction() == War::ASK_FORMATION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-            showFormationOptions(eActor);
-            listening = true;
-        }else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-            showCaptainActionOptions(eActor);
-            listening = true;
-        }else if (war.getSystemAction() == War::ASK_ARMY_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-            showArmyActionOptions(eActor);
-            listening = true;
-        }else if (war.getSystemAction() == War::ASK_BATTLE_CLOSURE && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-            showBattleClosureOptions(eActor);
-            listening = true;
+    //for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+        if (!listening){
+            if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
+                //clearArmy(war.getPlayer1());
+                //cout << war.getActorID() << endl;
+                showUnitOptions(eActor);
+                listening = true;
+                /*
+                clearArmy(war.getPlayer2());
+                notify(RECOMPOSE_ARMY, war.getPlayer2());
+                */
+            }else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION && !eActor->has(Component::AI) && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
+                showCaptainOptions(eActor);
+                listening = true;
+            }else if (war.getSystemAction() == War::ASK_FORMATION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
+                showFormationOptions(eActor);
+                listening = true;
+            }else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
+                showCaptainActionOptions(eActor);
+                listening = true;
+            }else if (war.getSystemAction() == War::ASK_ARMY_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
+                showArmyActionOptions(eActor);
+                listening = true;
+            }else if (war.getSystemAction() == War::ASK_BATTLE_CLOSURE && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
+                showBattleClosureOptions(eActor);
+                listening = true;
+            }
+            /*else if (war.getSystemAction() == War::PRESENT_ARMY){
+                presentArmy(eActor);
+            }else if (war.getSystemAction() == War::ADVANCE_ARMY){
+                advanceArmy(eActor);
+            }else if (war.getSystemAction() == War::FIELD_CLEANUP){
+                cleanupField(eActor);
+            }else if (war.getSystemAction() == War::SHOW_HERO_POOL){
+                //showHeroPool();
+            }
+            */else if (war.getSystemAction() == War::ASK_HERO_PICK){
+                askHeroPick(eActor);
+            }
         }
-        /*else if (war.getSystemAction() == War::PRESENT_ARMY){
-            presentArmy(eActor);
-        }else if (war.getSystemAction() == War::ADVANCE_ARMY){
-            advanceArmy(eActor);
-        }else if (war.getSystemAction() == War::FIELD_CLEANUP){
-            cleanupField(eActor);
-        }else if (war.getSystemAction() == War::SHOW_HERO_POOL){
-            //showHeroPool();
-        }
-        */else if (war.getSystemAction() == War::ASK_HERO_PICK){
-            askHeroPick(eActor);
-        }
-    }
+    //}
 }
 
 void CommandListener::onStartBattleState(Entity* e){
@@ -236,16 +238,18 @@ void CommandListener::showCaptainOptions(Entity* e){
     Entity* eOptions = eManager->createEntity();
 
     for(auto& i : e->get<CArmy>()->captains){
+        if (i.second->get<CCaptain>()->isConfined) continue;
         CCaptain::ID idCap = i.first;
         CAction::ID idAct = K+idCap;
+
         Entity* eBut = eManager->createEntity();
         eBut->add(new CButtonState());
         eBut->add(new CPosition(x, y));
         eBut->add(new CButtonTrigger(SELECT_ACTION));
-        eBut->add(new CTexture(CAction::Map[idAct].btDefTexture));
-        eBut->add(new CDefaultTexture(CAction::Map[idAct].btDefTexture));
-        eBut->add(new CHoverTexture(CAction::Map[idAct].btHovTexture));
-        eBut->add(new CActiveTexture(CAction::Map[idAct].btActTexture));
+        eBut->add(new CTexture(CCaptain::Map[idCap].btDefTexture));
+        eBut->add(new CDefaultTexture(CCaptain::Map[idCap].btDefTexture));
+        eBut->add(new CHoverTexture(CCaptain::Map[idCap].btHovTexture));
+        eBut->add(new CActiveTexture(CCaptain::Map[idCap].btActTexture));
         eBut->add(new CDimensions(w, h));
         eBut->add(new CButtonHitbox(w, h));
         eBut->add(new CDraw(CDraw::GUI));
@@ -276,17 +280,20 @@ void CommandListener::showFormationOptions(Entity* e){
     int K = 300;
     int options = 3;
     if (contains(eCap->get<CCaptain>()->actions, 226)) options = 4;
+    int nAvailableOptions = options;
+    if (e->get<CArmy>()->prohibitedFormation != CArmy::N_FORMATIONS) nAvailableOptions--;
 
     double w = 50;
     double h = 50;
     double cellSpacing = 60;
     double x = cxWindow;
-    double y = cyWindow - (options-1)*cellSpacing/2;
+    double y = cyWindow - (nAvailableOptions-1)*cellSpacing/2;
     double tStart = 0.0;
     double tBetween = 0.2;
     int count = 0;
 
     for(int i = 0; i < options; i++){
+        if (i == e->get<CArmy>()->prohibitedFormation) continue;
         CAction::ID idAct = K+i;
         Entity* eBut = eManager->createEntity();
         eBut->add(new CButtonState());
@@ -324,9 +331,9 @@ void CommandListener::showCaptainActionOptions(Entity* e){
     int options = e->get<CArmy>()->captain->get<CCaptain>()->actions.size();
     if (contains(e->get<CArmy>()->captain->get<CCaptain>()->actions, 226)) options--;
 
-    double w = 50;
-    double h = 50;
-    double cellSpacing = 60;
+    double w = 40;
+    double h = 40;
+    double cellSpacing = 50;
     double x = cxWindow;
     double y = cyWindow - (options-1)*cellSpacing/2;
     double tStart = 0.0;
@@ -371,9 +378,11 @@ void CommandListener::showArmyActionOptions(Entity* e){
     int K = 100;
     int options = e->get<CArmy>()->unitCount.size();
 
-    double w = 50;
-    double h = 50;
-    double cellSpacing = 60;
+    //double w = Assets::getTexture(CUnit::Map.begin()->second.btActionDef)->getSize().x*1.5;
+    //double h = Assets::getTexture(CUnit::Map.begin()->second.btActionDef)->getSize().y*1.5;
+    double w = 40;
+    double h = 40;
+    double cellSpacing = 50;
     double x = cxWindow;
     double y = cyWindow - (options-1)*cellSpacing/2;
     double tStart = 0.0;
@@ -381,20 +390,22 @@ void CommandListener::showArmyActionOptions(Entity* e){
     int count = 0;
 
     for(auto& i : e->get<CArmy>()->unitCount){
+        if (i.second <= 0) continue;
+        CUnit::ID idUnit = i.first;
         CAction::ID actID = CUnit::Map[i.first].action;
         if (actID == -1) continue;
         Entity* eBut = eManager->createEntity();
         eBut->add(new CButtonState());
         eBut->add(new CPosition(x, y));
         eBut->add(new CButtonTrigger(SELECT_ACTION));
-        eBut->add(new CTexture(CAction::Map[actID].btDefTexture));
-        eBut->add(new CDefaultTexture(CAction::Map[actID].btDefTexture));
-        eBut->add(new CHoverTexture(CAction::Map[actID].btHovTexture));
-        eBut->add(new CActiveTexture(CAction::Map[actID].btActTexture));
+        eBut->add(new CTexture(CUnit::Map[idUnit].btActionDef));
+        eBut->add(new CDefaultTexture(CUnit::Map[idUnit].btActionDef));
+        eBut->add(new CHoverTexture(CUnit::Map[idUnit].btActionHov));
+        eBut->add(new CActiveTexture(CUnit::Map[idUnit].btActionAct));
         eBut->add(new CDimensions(w, h));
         eBut->add(new CButtonHitbox(w, h));
         eBut->add(new CDraw(CDraw::GUI));
-        eBut->add(new CTooltip(CTooltip::ACTION));
+        //eBut->add(new CTooltip(CTooltip::ACTION));
         eBut->add(new CAction(actID));
         eBut->add(new CUnit(CUnit::Map[i.first]));
         eBut->add(new CHighlightTrigger(CUnitHighlight2::ATTACK, i.first));
@@ -423,7 +434,7 @@ void CommandListener::showBattleClosureOptions(Entity* e){
     Entity* eOptions = eManager->createEntity();
 
     int K = 400;
-    int options = 3;
+    int options = 4;
 
     double w = 50;
     double h = 50;
@@ -473,6 +484,7 @@ void CommandListener::playMeleeBattle(Entity* e){
 void CommandListener::selectRandomUnits(list<CUnit::ID>& output, list<CUnit::ID>& input, int n){
     output.clear();
     list<CUnit::ID> deck = input;
+    n = min(n, (int) deck.size());
     for(int i = 0; i < n; i++){
         output.push_back(popRandom(deck));
     }
@@ -486,11 +498,22 @@ void CommandListener::showUnitOptions(Entity* e){
     if (!war.getMatchConfig().randomArmy){
         list<CUnit::ID> options;
         Entity* eOptions = eManager->createEntity();
-        selectRandomUnits(options, e->get<CPlayer>()->unitDeck, war.getMatchConfig().nUnitOpt);
+        list<CUnit::ID> unitDeck;
+        printf("prohib unit %d\n", e->get<CArmy>()->prohibitedDamageType);
+        for (list<CUnit::ID>::iterator it = e->get<CPlayer>()->unitDeck.begin(); it != e->get<CPlayer>()->unitDeck.end(); it++){
+            if (CUnit::Map[*it].damage != e->get<CArmy>()->prohibitedDamageType){
+                printf("unt %d %d\n", *it, CUnit::Map[*it].damage);
+                //unitDeck.remove(*it);
+                unitDeck.push_back(*it);
+            }else{
+                //it++;
+            }
+        }
+        selectRandomUnits(options, unitDeck, war.getMatchConfig().nUnitOpt);
 
         for (list<CUnit::ID>::iterator i = options.begin(); i != options.end(); i++){
             CUnit::ID id = *i;
-
+            printf("%d\n", id);
             Entity* eOption = eManager->createEntity();
             eOption->add(new CSpinButton(0, war.getMatchConfig().recruitGroup, 0, e->get<CPlayer>()->maxPicks));
             eOption->add(new CPosition());
