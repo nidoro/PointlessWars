@@ -13,7 +13,6 @@ class AISystem : public System{
     private:
         void onSystemAction(Entity* e);
 
-
         void selectArmyAction(Entity* e);
         void selectHeroAction(Entity* e);
         void selectFormation(Entity* e);

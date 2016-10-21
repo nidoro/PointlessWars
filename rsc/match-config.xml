@@ -3,7 +3,7 @@
 	<Name>Prototype</Name>
 	<HeroesPerPlayer>3</HeroesPerPlayer>
 	<MaxBattles>NONE</MaxBattles>
-	<Turns>1</Turns>
+	<Turns>3</Turns>
 	<ArmySize>50</ArmySize>
 	<UnitaryBlockChance>0.25</UnitaryBlockChance>
 	<OptionsOnRebuild>16</OptionsOnRebuild>

@@ -120,7 +120,9 @@ void InGameMenu::create(){
 
     /// RESOLUTION DROP LIST
     list<string> resStrings;
+    unsigned int bbp = sf::VideoMode::getFullscreenModes()[0].bitsPerPixel;
     for (int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
+        if (sf::VideoMode::getFullscreenModes()[i].bitsPerPixel != bbp) continue;
         resStrings.push_back(int2str(sf::VideoMode::getFullscreenModes()[i].width) + " x " + int2str(sf::VideoMode::getFullscreenModes()[i].height));
     }
     string initValue = int2str(config.getResolution().x) + " x " + int2str(config.getResolution().y);

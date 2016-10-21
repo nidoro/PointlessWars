@@ -649,6 +649,7 @@ void ArmyHUDSystem::updateCoin(Entity* e){
 
     }else if (!e->get<CArmy>()->hasCoin && e->get<CArmyHUD>()->eCoin != nullptr){
         eManager->removeEntity(e->get<CArmyHUD>()->eCoin);
+        e->get<CArmyHUD>()->eCoin = nullptr;
     }
 }
 

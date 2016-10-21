@@ -1874,7 +1874,8 @@ double ScriptedAnimation::getAngleToHit(double ox, double oy, double tx, double 
     double x = (tx - ox);
     double y = -(ty - oy);
     double g = gravity;
-    double vMin = getMinimumSpeedToHit(ox, oy, tx, ty, g);
+    // you don't want the exact vMin because when calculating the angle if the velocity is not enough by an infinitesimal amount it returns nan
+    double vMin = 1.05*getMinimumSpeedToHit(ox, oy, tx, ty, g);
     v = max(vMin, v);
     double angle = std::atan2(double(v*v - sqrt(pow(v,4) - g*(g*x*x + 2*y*v*v))), double(g*x));
     return angle*M_DEG;
@@ -5990,7 +5991,6 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
         double tTravel;
 
         double ang = getAngleToHit(eGem->get<CPosition>()->x, eGem->get<CPosition>()->y, cxWindow, cyWindow, speed, gravity);
-
         eGem->get<CActor>()->addNode(new AVariable(tStart, AVariable::AUTO_P, true));
         eGem->get<CActor>()->addNode(new AVariable(0.0, AVariable::HIDDEN, false));
 

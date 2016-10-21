@@ -499,10 +499,8 @@ void CommandListener::showUnitOptions(Entity* e){
         list<CUnit::ID> options;
         Entity* eOptions = eManager->createEntity();
         list<CUnit::ID> unitDeck;
-        printf("prohib unit %d\n", e->get<CArmy>()->prohibitedDamageType);
         for (list<CUnit::ID>::iterator it = e->get<CPlayer>()->unitDeck.begin(); it != e->get<CPlayer>()->unitDeck.end(); it++){
             if (CUnit::Map[*it].damage != e->get<CArmy>()->prohibitedDamageType){
-                printf("unt %d %d\n", *it, CUnit::Map[*it].damage);
                 //unitDeck.remove(*it);
                 unitDeck.push_back(*it);
             }else{
@@ -513,7 +511,6 @@ void CommandListener::showUnitOptions(Entity* e){
 
         for (list<CUnit::ID>::iterator i = options.begin(); i != options.end(); i++){
             CUnit::ID id = *i;
-            printf("%d\n", id);
             Entity* eOption = eManager->createEntity();
             eOption->add(new CSpinButton(0, war.getMatchConfig().recruitGroup, 0, e->get<CPlayer>()->maxPicks));
             eOption->add(new CPosition());
