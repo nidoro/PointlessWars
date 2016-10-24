@@ -21,7 +21,6 @@ void ScreenSystem::update(){
     window->setTitle(windowName);
 }
 
-
 void ScreenSystem::onCreateScreen(Entity* e){
     switch(e->get<CScreen>()->id){
         case CScreen::SPLASH_1: eManager->clearSystem(); createSplash1(e); notify(NEW_SCREEN); break;
@@ -54,7 +53,7 @@ void ScreenSystem::createSplash2(Entity* e){
 
     double lineSpacing = 24;
     int fontSize = 20;
-
+    
     eObj = eManager->createEntity();
     eObj->add(new CPosition(cxWindow, cyWindow - lineSpacing/2));
     eObj->add(new CTextbox2("This game uses free graphic assets available online",
@@ -70,7 +69,7 @@ void ScreenSystem::createSplash2(Entity* e){
     eObj = eManager->createEntity();
     eObj->add(new CScreen(CScreen::MAIN_MENU, CScreen::FADE_BLACK));
     eObj->add(new CTimer(5, START_SCREEN_TRANSITION));
-
+    
     ///THANKS
     double walkSpeed = 90;
     double xStart = -100;
@@ -90,9 +89,7 @@ void ScreenSystem::createSplash2(Entity* e){
 }
 
 void ScreenSystem::createMatch(Entity* e){
-    printf("VEIO AQUI\n");
     notify(INITIALIZE_WAR, e);
-    printf("e AQUI\n");
 }
 
 void ScreenSystem::onStartScreenTransition(Entity* e){

@@ -44,7 +44,7 @@ class ActionOutcome{
         ///POOLS
         list<CCaptain::ID> heroes;
         list<CUnit::ID> units;
-
+        
         CCaptain::ID hero;
         CUnit::ID unit;
 
@@ -53,7 +53,6 @@ class ActionOutcome{
 
         ///FORMATION
         CArmy::Formation formation;
-
         ///DAMAGE
         CUnit::DamageType dmgType;
 

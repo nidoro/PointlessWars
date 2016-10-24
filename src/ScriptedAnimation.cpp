@@ -10,7 +10,7 @@ ScriptedAnimation::ScriptedAnimation(){
     //addSubscription(THROW_COIN);
     addSubscription(PLAY_ACTION);
     addSubscription(ADD_ACTOR);
-
+     
     addRequirement(Component::ACTOR);
 
     playingScene = false;
@@ -69,7 +69,8 @@ void ScriptedAnimation::update(){
             break;
         }
         if (eManager->isDead(e)){
-            actors.remove(e);        }else{
+            actors.remove(e);
+        }else{
             i++;
         }
     }
@@ -222,7 +223,7 @@ void ScriptedAnimation::onInitializeWar(Entity* e){
     uyFormation = 13;
     xOffCaptain = 50;
     x0Formation = wFormation*uxFormation;
-    midSpace = 110;
+    midSpace = 130;
     totalWalk = cxWindow - midSpace/2 - x0Formation - xOffCaptain;
     wWalkStep = totalWalk/war.getMatchConfig().nTurns;
 
@@ -750,7 +751,7 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
     eEtelka->get<CActor>()->addNode(new ASpriteAnimation(0.0, "etelka-hex.png"));
     eEtelka->get<CActor>()->addNode(new ASpriteAnimation(durEtelkaAnimation, eEtelka->get<CCaptain>()->aIdle));
 
-    if (outcome.bValue) eEtelka->get<CActor>()->addNode(new ASpeak(tHit + 1.0, Assets::getString("SPEECH-ETELKA-HEX-FAIL"), 2.5));
+    if (!outcome.bValue) eEtelka->get<CActor>()->addNode(new ASpeak(tHit + 0.5, Assets::getString("SPEECH-ETELKA-HEX-FAIL"), 2.5));
     ///ANIMATE ARROW
     eObj = eManager->createEntity();
     eObj->add(new CPosition(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y));
@@ -808,6 +809,8 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
 
         addActor(eCapOld);
         addActor(eCapNew);
+    }else{
+
     }
 
     ///PUFF
@@ -2142,18 +2145,19 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
 void ScriptedAnimation::scriptPresentArmy(Entity* e){
     Entity* eArmy = e;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
-    double dx = 400;
+    double dx = 550;
     double xTarget = cxWindow + sign*dx;
     for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
         Entity* eUnit = *i;
+        double unitSpeed = randomDouble(150, 200); 
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
-        eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, eUnit->get<CPosition>()->y, 200));
-        double t1 = getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, xTarget, eUnit->get<CPosition>()->y, 200);
+        eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, eUnit->get<CPosition>()->y, unitSpeed));
+        double t1 = getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, xTarget, eUnit->get<CPosition>()->y, unitSpeed);
         double x1 = randomDouble(xTarget, xTarget - sign*110);
         double y1 = randomDouble(cyWindow - 100, cyWindow + 100);
-        eUnit->get<CActor>()->timeline.push_back(new AMove(t1, x1, y1, 200));
+        eUnit->get<CActor>()->timeline.push_back(new AMove(t1, x1, y1, unitSpeed));
 
-        double t2 = getTravelTime(xTarget, eUnit->get<CPosition>()->y, x1, y1, 200);
+        double t2 = getTravelTime(xTarget, eUnit->get<CPosition>()->y, x1, y1, unitSpeed);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(t2, eUnit->get<CUnit>()->aIdle));
 
         addActor(eUnit);
@@ -2164,7 +2168,7 @@ void ScriptedAnimation::scriptPresentCaptain(Entity* e){
     Entity* eArmy = e;
     eArmy->get<CArmy>()->captain = eArmy->get<CArmy>()->captains[eArmy->get<CArmy>()->idCaptain];
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
-    double dx = 250;
+    double dx = 400;
     double xTarget = cxWindow + sign*dx;
 
     Entity* eCap = eArmy->get<CArmy>()->captain;
@@ -4742,7 +4746,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
         eObj = eManager->createEntity();
         eObj->add(new CPosition(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y));
         eObj->add(new CAnimation(false, eAtk->get<CUnit>()->aAction01));
-        eObj->add(new CDraw(CDraw::WORLD));
+        eObj->add(new CDraw(CDraw::WORLD_2));
         eObj->add(new CActor());
         eObj->add(new CAcceleration());
         eObj->add(new CVelocity());
@@ -4780,7 +4784,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
         eObj = eManager->createEntity();
         eObj->add(new CPosition(cxWindow, eDef->get<CPosition>()->y));
         eObj->add(new CAnimation(false, eAtk->get<CUnit>()->aAction01));
-        eObj->add(new CDraw(CDraw::WORLD));
+        eObj->add(new CDraw(CDraw::WORLD_1));
         eObj->add(new CVelocity());
         eObj->add(new CActor());
         eObj->get<CDraw>()->isHidden = true;

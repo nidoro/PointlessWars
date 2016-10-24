@@ -19,7 +19,6 @@ class AISystem : public System{
         void selectHero(Entity* e);
         void selectBattleClosure(Entity* e);
 
-
         EntityList getAliveUnits(Entity* e);
         EntityList getDeadUnits(Entity* e);
 };

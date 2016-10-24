@@ -11,7 +11,7 @@ class ScreenSystem : public System{
         ~ScreenSystem();
 
         void update();
-
+        
     private:
         void onCreateScreen(Entity* e);
         void onStartScreenTransition(Entity* e);

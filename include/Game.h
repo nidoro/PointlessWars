@@ -59,7 +59,6 @@ class Game{
         ~Game();
 
         void start();
-
     private:
         EntitiesManager eManager;
         sf::RenderWindow window;

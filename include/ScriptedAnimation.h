@@ -10,7 +10,6 @@ class ScriptedAnimation : public System{
         ~ScriptedAnimation();
 
         void update();
-
     private:
         void onStartAnimation(Entity* e);
         void onTriggerObjectAnimation(Entity* e);
@@ -21,7 +20,7 @@ class ScriptedAnimation : public System{
         void onThrowCoin(Entity* e);
         void onPlayAction(Entity* e);
         void onAddActor(Entity* e);
-
+                        
         void triggerNode(Entity* e, AnimationNode* node);
         void popFrontAnimationNode(Entity* e);
         void addActor(Entity* e);
@@ -34,7 +33,7 @@ class ScriptedAnimation : public System{
         double getMinimumSpeedToHit(double ox, double oy, double tx, double ty,  double gravity = 60);
 
         void createProjectile(Entity* e, double x0, double y0, double x1, double y1, AShoot::Object obj);
-
+        
         void scriptMeleeBattle(Entity* e);
         void scriptEnslave(Entity* e);
         void scriptEnslave(ActionOutcome& outcome, Entity* eActor);

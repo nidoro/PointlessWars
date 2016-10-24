@@ -29,6 +29,7 @@ void AISystem::onSystemAction(Entity* e){
         endHeroPool();
     }
     */
+
     Entity* eActor = war.getActor();
     if (!eActor) return;
     if (!eActor->has(Component::AI))return;
