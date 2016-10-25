@@ -36,8 +36,64 @@ flag-waving-blue      				flag-waving-default.png       	flag-waving-blue.png   
 flag-waving-red     				flag-waving-default.png     	flag-waving-red.png             empty.wav
 fisherman    						fisherman.png           		fisherman.png                	empty.wav                   
 
-
 sea             obj-sea.png                     obj-sea.png                             empty.wav
 house-01           obj-hut.png                     obj-party-house.png                     dub.wav
 merchant        obj-merchant.png                obj-merchant.png                        empty.wav
 deck            obj-deck.png                    obj-deck.png                            empty.wav
+
+%Town West
+ensign          ensign.png                      ensign.png                              empty.wav
+unit1           unit1.png                       unit1.png                               empty.wav
+unit2           unit2.png                       unit2.png                               empty.wav
+unit3           unit3.png                       unit3.png                               empty.wav
+unit4           unit4.png                       unit4.png                               empty.wav
+unit5           unit5.png                       unit5.png                               empty.wav
+coisas-2          coisas-2.png                      coisas-2.png                              empty.wav
+
+
+chicken		chicken-idle.png		chicken-singing.png			cocorico.wav
+boat1           boat1.png                       boat1.png                               empty.wav
+boat2           boat2.png                       boat2.png                               empty.wav
+castle          castle.png                      castle.png                              empty.wav
+cemitery        cemitery.png                    cemitery.png                            empty.wav
+child           child.png                       child.png                               empty.wav
+civita1         civita1.png                     civita1.png                             empty.wav
+civita2         civita2.png                     civita2.png                             empty.wav
+civita3         civita3.png                     civita3.png                             empty.wav
+civita4         civita4.png                     civita4.png                             empty.wav
+civita5         civita5.png                     civita5.png                             empty.wav
+civita6         civita6.png                     civita6.png                             empty.wav
+civita7         civita7.png                     civita7.png                             empty.wav
+civita8         civita8.png                     civita8.png                             empty.wav
+civita9         civita9.png                     civita9.png                             empty.wav
+civita10        civita10.png                    civita10.png                            empty.wav
+civita11        civita11.png                    civita11.png                            empty.wav
+civita12        civita12.png                    civita12.png                            empty.wav
+civita13        civita13.png                    civita13.png                            empty.wav
+civita14        civita14.png                    civita14.png                            empty.wav
+civita15        civita15.png                    civita15.png                            empty.wav
+civita16        civita16.png                    civita16.png                            empty.wav
+dock            dock.png                        dock.png                                empty.wav
+fence           fence.png                       fence.png                               empty.wav
+fountain        fountain.png                    fontain.png                             empty.wav
+guardian        guardian.png                    guardian.png                            empty.wav
+king            king.png                        king.png                                empty.wav
+market          market.png                      market.png                              empty.wav
+%merchant        merchant1.png                   merchant1.png                           empty.wav
+merchant2       merchant2.png                   merchant2.png                           empty.wav
+monastery       monastery.png                   monastery.png                           empty.wav
+%pig             obj-pig-walk.png                obj-pig-walk.png                        empty.wav
+sheep           obj-sheep-walk.png              obj-sheep-walk.png                      empty.wav
+plantation      plantation.png                  plantation.png                          empty.wav
+pottery1        pottery1.png                    pottery1.png                            empty.wav
+pottery2        pottery2.png                    pottery2.png                            empty.wav
+priest-idle     priest-idle.png                 priest-idle.png                         empty.wav
+rastelo1        rastelo1.png                    rastelo1.png                            empty.wav
+rastelo2        rastelo2.png                    rastelo2.png                            empty.wav
+sculpture       sculpture.png                   sculpture.png                           empty.wav
+sleep-soldier1  sleep-soldier1.png              sleep-soldier1.png                      empty.wav
+sleep-soldier2  sleep-soldier2.png              sleep-soldier2.png                      empty.wav
+smoke           smoke.png                       smoke.png                               empty.wav
+tree            tree.png                        tree.png                                empty.wav
+trees           trees.png                       trees.png                               empty.wav
+blacksmith      blacksmith.png                  blacksmith.png                          empty.wav

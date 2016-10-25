@@ -5,7 +5,7 @@
 BUTTON-PROTOTYPE							Prototype
 BUTTON-OPTIONS								Options
 BUTTON-QUIT									Quit
-BUTTON-READY								Ready
+BUTTON-READY						        Ready
 BUTTON-EDITOR								Editor
 BUTTON-EDITOR-LOAD							Load
 BUTTON-EDITOR-SAVE							Save

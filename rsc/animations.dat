@@ -15,7 +15,7 @@ flag-blue-01.png                  	47      24      6           6       1
 flag-red-01.png                  	47      24      6           6       1
 fisherman.png                		85      250     6           5       1
 
-% -- Beach
+% -- BEACH
 chicken-idle.png            26      21      2           4   
 chicken-singing.png         26      21      1           0.5
 obj-sea.png                 73      173     12          3
@@ -24,6 +24,63 @@ obj-party-house.png         74      78      4           1
 obj-merchant.png            32      32      10          3
 obj-deck.png                110     91      1           1
 
+% -- TOWN WEST
+coisas-2.png                  1280    174     1           1
+ensign.png                  80      100     9           4
+unit1.png                   46      46      2           2
+unit2.png                   46      46      2           2
+unit3.png                   32      32      5           2
+unit4.png                   46      46      2           2
+unit5.png                   46      46      2           2
+
+% -- TOWN EAST
+boat1.png                   100     100     6           2
+boat2.png                   100     100     6           2
+castle.png                  320     226     1           1
+cemitery.png                105     154     1           1
+child.png                   100     100     8           5
+civita1.png                 32      32      2           3
+civita2.png                 32      32      2           3
+civita3.png                 32      32      2           3
+civita4.png                 32      32      2           3
+civita5.png                 32      32      2           3
+civita6.png                 32      32      2           3
+civita7.png                 32      32      2           3
+civita8.png                 32      32      2           3
+civita9.png                 32      32      2           3
+civita10.png                32      32      2           3
+civita11.png                32      32      2           3
+civita12.png                32      32      2           3
+civita13.png                32      32      2           3
+civita14.png                32      32      2           3
+civita15.png                32      56      8           3
+civita16.png                32      32      2           3
+%cow.png                     32      28      9           3
+dock.png                    91      124     1           1
+fence.png                   10      22      1           1
+%flag-blue.png               47      24      6           4
+fountain.png                89      86      4           4
+guardian.png                32      32      2           2
+king.png                    96      180     10          3
+market.png                  395     190     1           1
+merchant1.png               32      32      2           3
+merchant2.png               32      32      2           3
+monastery.png               186     181     1           1
+obj-pig-walk.png            50      30      10          3
+obj-sheep-walk.png          80      30      12          3
+plantation.png              586     20      1           1
+pottery1.png                70      42      2           2
+pottery2.png                70      42      2           2
+priest-idle.png             32      32      4           2
+rastelo1.png                55      35      8           2
+rastelo2.png                55      35      8           2
+sculpture.png               94      123     1           1
+sleep-soldier1.png          75      75      8           2
+sleep-soldier2.png          75      75      8           2
+smoke.png                   100     100     9           3
+tree.png                    48      77      1           1
+trees.png                   165     128     1           1
+blacksmith.png              131     88      1           1
 %================
 % SCENARIO OBJECTS
 %================
