@@ -53,10 +53,10 @@ void ScreenSystem::createSplash2(Entity* e){
 
     double lineSpacing = 24;
     int fontSize = 20;
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(cxWindow, cyWindow - lineSpacing/2));
-    eObj->add(new CTextbox2("This game uses free graphic assets available online",
+    eObj->add(new CTextbox2("This game makes use of free graphic assets available online",
                             Assets::getFont(Assets::getPrimaryFont()), fontSize, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
     eObj->add(new CDraw(CDraw::GUI1));
 
@@ -69,7 +69,7 @@ void ScreenSystem::createSplash2(Entity* e){
     eObj = eManager->createEntity();
     eObj->add(new CScreen(CScreen::MAIN_MENU, CScreen::FADE_BLACK));
     eObj->add(new CTimer(5, START_SCREEN_TRANSITION));
-    
+
     ///THANKS
     double walkSpeed = 90;
     double xStart = -100;
@@ -118,13 +118,15 @@ void ScreenSystem::onBtNewGame(Entity* e){
 }
 
 void ScreenSystem::onGameStarted(Entity* e){
+    /*
     war.setMultiplayer(false);
     onBtNewGame(e);
 
-    /*
     Entity* eScreen = eManager->createEntity();
     eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
     notify(START_SCREEN_TRANSITION, eScreen);
+    */
+
     Entity* eScreen = eManager->createEntity();
     eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
     eScreen->add(new CTimer(0.0, START_SCREEN_TRANSITION));
@@ -134,7 +136,6 @@ void ScreenSystem::onGameStarted(Entity* e){
     eMusic->add(new CMusic("main-theme.ogg"));
     eMusic->add(new CSystem());
     notify(PLAY_MUSIC, eMusic);
-    */
 }
 
 void ScreenSystem::onOpenMenu(Entity* e){

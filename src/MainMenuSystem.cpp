@@ -268,10 +268,10 @@ void MainMenuSystem::createMenu(){
     */
 
     Entity* eScenario = eManager->createEntity();
-    eScenario->add(new CScenario("bosque.sce", -wWindow, 0));
+    eScenario->add(new CScenario("town-west.sce", -wWindow, 0));
     notify(LOAD_SCENARIO, eScenario);
 
-    eScenario->add(new CScenario("bosque.sce"));
+    eScenario->add(new CScenario("town-east.sce"));
     notify(LOAD_SCENARIO, eScenario);
 
     ///CAMERA MAN

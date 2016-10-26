@@ -10,7 +10,7 @@ ScriptedAnimation::ScriptedAnimation(){
     //addSubscription(THROW_COIN);
     addSubscription(PLAY_ACTION);
     addSubscription(ADD_ACTOR);
-     
+
     addRequirement(Component::ACTOR);
 
     playingScene = false;
@@ -2149,7 +2149,7 @@ void ScriptedAnimation::scriptPresentArmy(Entity* e){
     double xTarget = cxWindow + sign*dx;
     for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
         Entity* eUnit = *i;
-        double unitSpeed = randomDouble(150, 200); 
+        double unitSpeed = randomDouble(150, 200);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, eUnit->get<CPosition>()->y, unitSpeed));
         double t1 = getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, xTarget, eUnit->get<CPosition>()->y, unitSpeed);

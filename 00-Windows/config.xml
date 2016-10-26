@@ -1,5 +1,5 @@
 <!-- Config File -->
 <Resolution width="1280" height="720"/>
 <Fullscreen>false</Fullscreen>
-<Volume music="0.0000" sfx="70.0000"/>
+<Volume music="30.0000" sfx="70.0000"/>
 <DeadBodies>false</DeadBodies>
