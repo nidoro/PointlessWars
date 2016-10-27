@@ -3,6 +3,7 @@
 Entity::Entity(){
     components.resize(Component::NUM_COMPONENTS, nullptr);
     status = UNKNOWN;
+    nextObservedID = 0;
 }
 
 Entity::~Entity(){
@@ -113,6 +114,9 @@ EntityList Entity::getObservedEntities(){
 }
 void Entity::addObservedEntity(string id, Entity* e){
     observedEntities[id] = e;
+}
+void Entity::addObservedEntity(Entity* e){
+    observedEntities[int2str(nextObservedID++)] = e;
 }
 
 void Entity::removeObservedEntity(string id){

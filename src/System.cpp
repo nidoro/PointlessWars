@@ -190,6 +190,9 @@ void System::onNotify(Message m, Entity* e){
         case DO_TOGGLE_ACTION: onDoToggleAction(e); break;
         case HAS_BEEN_TOGGLED: onHasBeenToggled(e); break;
         case HAS_CHANGED_VALUE: onHasChangedValue(e); break;
+        case CREATE_GUI_GROUP: onCreateGUIGroup(e); break;
+        case CHANGE_WINDOW_PAGE: onChangeWindowPage(e); break;
+        case REMOVE_GUI_GROUP: onRemoveGUIGroup(e); break;
         default: break;
     }
 }

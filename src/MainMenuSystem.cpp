@@ -23,7 +23,8 @@ void MainMenuSystem::update(){
 
 void MainMenuSystem::onCreateScreen(Entity* e){
     switch(e->get<CScreen>()->id){
-        case CScreen::MAIN_MENU: eManager->clearSystem(); createMenu(); notify(NEW_SCREEN); break;
+        case CScreen::MAIN_MENU: eManager->clearSystem(); createMenu(true); notify(NEW_SCREEN); break;
+        case CScreen::MAIN_MENU_NO_ANIMATION: eManager->clearSystem(); createMenu(false); notify(NEW_SCREEN); break;
         default: break;
     }
 }
@@ -250,7 +251,7 @@ void MainMenuSystem::create(){
     showPage(CMainMenuPage::MAIN_SCREEN);
 }
 
-void MainMenuSystem::createMenu(){
+void MainMenuSystem::createMenu(bool animated){
     Entity* eObj;
 
     ///BACKGROUND 1
@@ -274,24 +275,62 @@ void MainMenuSystem::createMenu(){
     eScenario->add(new CScenario("town-east.sce"));
     notify(LOAD_SCENARIO, eScenario);
 
-    ///CAMERA MAN
-    eObj = eManager->createEntity();
-    eObj->add(new CPosition(-wWindow/4, cyWindow));
-    eObj->add(new CActor());
-    eObj->add(new CVelocity());
-    eObj->add(new CCameraMan());
-    eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow, cyWindow, 150));
-    eObj->get<CActor>()->addNode(new ADestroy(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)));
+    if (animated){
+        ///CAMERA MAN
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(-wWindow/4, cyWindow));
+        eObj->add(new CActor());
+        eObj->add(new CVelocity());
+        eObj->add(new CCameraMan());
+        eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow, cyWindow, 150));
+        eObj->get<CActor>()->addNode(new ADestroy(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)));
+        ///TITLE
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(cxWindow, 80));
+        eObj->add(new CDraw(CDraw::GUI1, 0.0));
+        eObj->add(new CTexture("pw-logo.png"));
+        eObj->add(new CElipsoidalMovement(cxWindow, 130, 0, 10, 180));
+        eObj->add(new CActor());
+        eObj->get<CActor>()->addNode(new AFade(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)-0.5, 255, 255));
+    }else{
+        ///TITLE
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(cxWindow, 80));
+        eObj->add(new CDraw(CDraw::GUI1));
+        eObj->add(new CTexture("pw-logo.png"));
+        eObj->add(new CElipsoidalMovement(cxWindow, 130, 0, 10, 180));
+        eObj->add(new CActor());
+    }
 
-    ///TITLE
+    /// BUTTONS
+    double x = 100;
+    double y = 100;
+    double wButton = 180;
+    double hButton = 50;
+    double xRel, yRel;
+    string buttonTexture;
+    /// SINGLE PLAYER BUTTON
+    xRel = 0.4933;
+    yRel = 0.5737;
+    buttonTexture = "fountain-contour.png";
+    wButton = Assets::getTexture(buttonTexture)->getSize().x;
+    hButton = Assets::getTexture(buttonTexture)->getSize().y;
     eObj = eManager->createEntity();
-    eObj->add(new CPosition(cxWindow, 80));
-    eObj->add(new CDraw(CDraw::GUI1, 0.0));
-    eObj->add(new CTexture("pw-logo.png"));
-    eObj->add(new CElipsoidalMovement(cxWindow, 130, 0, 10, 180));
-    eObj->add(new CActor());
-    eObj->get<CActor>()->addNode(new AFade(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)-0.5, 255, 255));
+    eObj->add(new CPosition(xRel*1280, yRel*720));
+    eObj->add(new CDraw(CDraw::GUI1));
+    eObj->add(new CTexture("fountain-contour.png"));
+    eObj->add(new CDimensions(wButton, hButton));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
+    eObj->add(new CButtonTrigger(CREATE_GUI_GROUP));
 
+    Entity* eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup("window", "single-player"));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+
+    eObj->addObservedEntity("create-gui-group", eGUI);
 }
 
 Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m){

@@ -24,7 +24,7 @@ class MainMenuSystem : public System{
 
         vector< list<Entity*> > pages;
         void create();
-        void createMenu();
+        void createMenu(bool animated);
         Entity* createButton(string label, double w, double h, double x, double y, Message m = EMPTY_MESSAGE);
         void addToPage(Entity* e, CMainMenuPage::ID);
         void showPage(CMainMenuPage::ID id);

@@ -176,6 +176,9 @@ class System{
         virtual void onDoToggleAction(Entity* e){}
         virtual void onHasBeenToggled(Entity* e){}
         virtual void onHasChangedValue(Entity* e){}
+        virtual void onCreateGUIGroup(Entity* e){}
+        virtual void onChangeWindowPage(Entity* e){}
+        virtual void onRemoveGUIGroup(Entity* e){}
 
 
         void subscribe(Message m){

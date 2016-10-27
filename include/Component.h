@@ -1091,17 +1091,13 @@ struct CDraw : public Component{
 struct CGUIGroup : public Component{
     static Type getType(){return GUI_GROUP;}
 
-    CGUIGroup(string groupType, string groupID, CUILayer::Layer uiLayer, CDraw::Tag drawTag){
+    CGUIGroup(string groupType, string groupID){
         this->groupType = groupType;
         this->groupID = groupID;
-        this->uiLayer = uiLayer;
-        this->drawTag = drawTag;
     }
 
     string groupType;
     string groupID;
-    CUILayer::Layer uiLayer;
-    CDraw::Tag drawTag;
 };
 
 struct CPath : public Component{
@@ -2098,7 +2094,7 @@ struct CAverageUnit : public Component{
 
 struct CScreen : public Component{
     static Type getType(){return SCREEN;}
-    enum ID{MAIN_MENU, SPLASH_1, SPLASH_2, SPLASH_3, MATCH, CUSTOM_MATCH, FORMATION_EDITOR};
+    enum ID{MAIN_MENU, MAIN_MENU_NO_ANIMATION, SPLASH_1, SPLASH_2, SPLASH_3, MATCH, CUSTOM_MATCH, FORMATION_EDITOR};
     enum Transition{FADE_BLACK};
 
     CScreen(ID id, Transition t){

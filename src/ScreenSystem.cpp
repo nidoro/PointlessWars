@@ -127,8 +127,10 @@ void ScreenSystem::onGameStarted(Entity* e){
     notify(START_SCREEN_TRANSITION, eScreen);
     */
 
+
     Entity* eScreen = eManager->createEntity();
-    eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
+    //eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
+    eScreen->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
     eScreen->add(new CTimer(0.0, START_SCREEN_TRANSITION));
 
     ///MUSIC
@@ -136,6 +138,7 @@ void ScreenSystem::onGameStarted(Entity* e){
     eMusic->add(new CMusic("main-theme.ogg"));
     eMusic->add(new CSystem());
     notify(PLAY_MUSIC, eMusic);
+
 }
 
 void ScreenSystem::onOpenMenu(Entity* e){

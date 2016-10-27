@@ -52,6 +52,7 @@
 #include "AnnouncerSystem.h"
 #include "ElipsoidalMovementSystem.h"
 #include "SideUISystem.h"
+#include "GUIGroupSystem.h"
 
 class Game{
     public:

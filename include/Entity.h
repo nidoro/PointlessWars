@@ -54,6 +54,7 @@ class Entity{
         Entity* getObservedEntity(string id);
         EntityList getObservedEntities();
         void addObservedEntity(string id, Entity* e);
+        void addObservedEntity(Entity* e);
         void removeObservedEntity(string id);
         void removeObservedEntity(Entity* e);
 
@@ -63,6 +64,7 @@ class Entity{
         list<Entity*> employers;
 
         map<string, Entity*> observedEntities;
+        int nextObservedID;
 };
 
 Entity* pickRandom(EntityList& L);

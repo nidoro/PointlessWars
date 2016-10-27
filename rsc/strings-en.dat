@@ -77,6 +77,12 @@ LABEL-READY									Ready?
 LABEL-FULLSCREEN							Fullscreen
 LABEL-ON									On
 LABEL-OFF									Off
+LABEL-SINGLE-PLAYER                         Single Player
+LABEL-TUTORIAL                              Tutorial
+LABEL-QUICK-MATCH                           Quick Match
+LABEL-CAMPAIGN                              Campaign
+LABEL-ARENA                                 Arena
+LABEL-CUSTOM-GAME                           Custom
 
 LABEL-UNITS									Units
 LABEL-HEROES								Heroes
