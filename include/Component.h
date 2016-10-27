@@ -145,6 +145,7 @@ struct Component{
             ELIPSOIDAL_MOVEMENT,
             CAMERA_MAN,
             STRING_TOGGLE_BUTTON,
+            GUI_GROUP,
             NUM_COMPONENTS
         };
 
@@ -198,6 +199,7 @@ struct CProfileEditor : public Component{
     Entity* eName;
     Entity* eChar;
 };
+
 
 struct CPosition : public Component{
     static Type getType(){return POSITION;};
@@ -422,7 +424,6 @@ struct CAnchor : public Component{
     double yOff;
 
 };
-
 struct CButtonTextures : public Component{
     static Type getType(){return BUTTON_TEXTURES;}
 
@@ -440,7 +441,6 @@ struct CButtonTextures : public Component{
     string hov;
     string act;
 };
-
 struct CButtonState : public Component{
     static Type getType(){return BUTTON_STATE;};
     enum State{
@@ -624,7 +624,6 @@ struct COwner : public Component{
     }
     Entity* e;
 };
-
 struct CUnit : public Component{
     static Type getType(){return UNIT;}
 
@@ -1087,6 +1086,22 @@ struct CDraw : public Component{
     Tag tag;
     bool isHidden;
     double alpha;
+};
+
+struct CGUIGroup : public Component{
+    static Type getType(){return GUI_GROUP;}
+
+    CGUIGroup(string groupType, string groupID, CUILayer::Layer uiLayer, CDraw::Tag drawTag){
+        this->groupType = groupType;
+        this->groupID = groupID;
+        this->uiLayer = uiLayer;
+        this->drawTag = drawTag;
+    }
+
+    string groupType;
+    string groupID;
+    CUILayer::Layer uiLayer;
+    CDraw::Tag drawTag;
 };
 
 struct CPath : public Component{
