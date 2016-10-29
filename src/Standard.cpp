@@ -94,6 +94,13 @@ bool opposite(bool value){
     return value == true? false:true;
 }
 
+bool contains(list<string> l, string v){
+    for(list<string>::iterator i = l.begin(); i != l.end(); i++){
+        if (*i == v) return true;
+    }
+    return false;
+}
+
 bool contains(list<int> l, int v){
     for(list<int>::iterator i = l.begin(); i != l.end(); i++){
         if (*i == v) return true;

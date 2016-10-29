@@ -5,6 +5,7 @@ Config::Config(){
     sfxMaxVolume = 70;
     deadBodies = false;
     fullscreen = false;
+    skipIntro = false;
     resolution.x = 0;
     resolution.y = 0;
 }
@@ -28,6 +29,9 @@ double Config::getSfxMaxVolume(){
 bool Config::getDeadBodies(){
     return deadBodies;
 }
+bool Config::getSkipIntro(){
+    return skipIntro;
+}
 
 void Config::setResolution(unsigned w, unsigned h){
     resolution = sf::Vector2u(w, h);
@@ -44,7 +48,9 @@ void Config::setSfxMaxVolume(double value){
 void Config::setDeadBodies(bool value){
     deadBodies = value;
 }
-
+void Config::setSkipIntro(bool value){
+    skipIntro = value;
+}
 bool Config::loadConfigFile(string file){
     Config();
     tinyxml2::XMLDocument doc;
@@ -65,6 +71,9 @@ bool Config::loadConfigFile(string file){
                 setSfxMaxVolume(el->DoubleAttribute("sfx"));
             }else if (element == "DeadBodies"){
                 el->QueryBoolText(&deadBodies);
+            }else if (element == "SkipIntro"){
+                el->QueryBoolText(&skipIntro);
+                secretOptions.push_back("SkipIntro");
             }
         }
     }
@@ -83,6 +92,9 @@ bool Config::saveConfigFile(string name){
     sprintf(str, "<Volume music=\"%.4f\" sfx=\"%.4f\"/>\n", musMaxVolume, sfxMaxVolume); file << str;
     sprintf(str, "<DeadBodies>%s</DeadBodies>\n", deadBodies ? "true" : "false"); file << str;
 
+    if (contains(secretOptions, "SkipIntro")){
+        sprintf(str, "<SkipIntro>%s</SkipIntro>\n", skipIntro ? "true" : "false"); file << str;
+    }
     file.close();
 }
 

@@ -131,8 +131,11 @@ void ScreenSystem::onGameStarted(Entity* e){
 
 
     Entity* eScreen = eManager->createEntity();
-    //eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
-    eScreen->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
+    if (!config.getSkipIntro()){
+        eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
+    }else{
+        eScreen->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
+    }
     eScreen->add(new CTimer(0.0, START_SCREEN_TRANSITION));
 
     ///MUSIC

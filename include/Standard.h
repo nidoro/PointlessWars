@@ -86,6 +86,8 @@ int popRandom(list<int>& L);
 
 bool opposite(bool value);
 
+bool contains(list<string> l, string v);
+
 bool contains(list<int> l, int v);
 
 bool contains(vector<int> l, int v);

@@ -15,12 +15,14 @@ class Config{
         double getMusMaxVolume();
         double getSfxMaxVolume();
         bool getDeadBodies();
+        bool getSkipIntro();
 
         void setResolution(unsigned w, unsigned h);
         void setFullscreen(bool value);
         void setMusMaxVolume(double value);
         void setSfxMaxVolume(double value);
         void setDeadBodies(bool value);
+        void setSkipIntro(bool value);
 
         bool loadConfigFile(std::string file);
         bool saveConfigFile(std::string file);
@@ -36,6 +38,9 @@ class Config{
         double sfxMaxVolume;
         bool deadBodies;
         sf::Image windowIcon;
+
+        bool skipIntro;
+        list<string> secretOptions;
 
 };
 

@@ -36,7 +36,8 @@ unit5.png                   46      46      2           2
 % -- TOWN EAST
 boat1.png                   100     100     6           2
 boat2.png                   100     100     6           2
-castle.png                  320     226     1           1
+%castle.png                  320     226     1           1
+castle.png                  382     228     1           1
 cemitery.png                105     154     1           1
 child.png                   100     100     8           5
 civita1.png                 32      32      2           3

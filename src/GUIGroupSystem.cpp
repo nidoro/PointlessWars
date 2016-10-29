@@ -19,7 +19,9 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e){
     Entity* eGUI = e->getObservedEntity("create-gui-group");
 
     if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "single-player"){
-        //createWindowSinglePlayer(eGUI);
+        createWindowSinglePlayer(eGUI);
+        notify(BRING_UI_LAYER_FORWARD, eGUI);
+    }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "options"){
         createWindowOptions(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
     }else if (eGUI->get<CGUIGroup>()->groupType == "window-page"){
@@ -68,7 +70,7 @@ void GUIGroupSystem::createWindowOptions(Entity* e){
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CDraw(CDraw::GUI_00));
     eGUI->add(new CUILayer(CUILayer::L1));
-    
+
     /// Title
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2(Assets::getString("LABEL-OPTIONS"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::White));
@@ -91,7 +93,7 @@ void GUIGroupSystem::createWindowOptions(Entity* e){
     eObj->add(new CTexture("small-orange-gem.png"));
     eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 2)));
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
-    
+
     double sliderSize = 125;
     double hText;
     /// MUSIC LABEL
@@ -159,7 +161,7 @@ void GUIGroupSystem::createWindowOptions(Entity* e){
     eObj->add(new CRectButton(sf::RectangleShape(), eObj->get<CRectShape>()->shape, eObj->get<CRectShape>()->shape));
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
-    
+
     /// style
     sf::RectangleShape defShape;
     defShape.setSize(sf::Vector2f(120, 20));
@@ -252,7 +254,7 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     double y = y0;
 
     sf::Color darkBlue(15, 30, 60);
-    
+
     /// Panel
     eGUI->add(new CTexture("9p-logo-frame.png"));
     eGUI->add(new CDimensions(wPanel, hPanel));

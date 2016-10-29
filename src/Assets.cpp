@@ -18,7 +18,7 @@ vector<sf::Color> Assets::colors;
 vector< vector<sf::Color> > Assets::scale;
 string Assets::primaryFont = "8bitOperatorPlusSC-Bold.ttf";
 string Assets::secondaryFont = "8bitOperatorPlusSC-Regular.ttf";
-string Assets::rscRoot = "./PointlessWars/rsc/";
+string Assets::rscRoot = "./rsc/";
 
 Assets::Assets(){
     //ctor
