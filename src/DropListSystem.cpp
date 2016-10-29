@@ -18,8 +18,10 @@ void DropListSystem::update(){
 }
 
 void DropListSystem::onExpandDropList(Entity* e){
-    notify(LOCK_ALL_BUTTONS);
+    //notify(LOCK_ALL_BUTTONS);
     //e->get<CButtonState>()->state = CButtonState::HOVERED;
+   
+    CUILayer::Layer uiLayer = (CUILayer::Layer) ((int)e->get<CUILayer>()->layer + 1);
 
     sf::RectangleShape shape = e->get<CRectShape>()->shape;
     sf::Font* fnt = (sf::Font*) e->get<CTextbox2>()->content.getFont();
@@ -54,7 +56,7 @@ void DropListSystem::onExpandDropList(Entity* e){
         Entity* eCell = eManager->createEntity();
         eCell->add(new CPosition(x, y));
         eCell->add(new CRectShape(e->get<CDropList>()->defRect));
-        eCell->add(new CTextbox2(value, *fnt, size, e->get<CTextbox2>()->content.getColor()));
+        eCell->add(new CTextbox2(value, *fnt, size, e->get<CTextbox2>()->content.getFillColor()));
         eCell->add(new CRectButton(e->get<CDropList>()->defRect, e->get<CDropList>()->hovRect, e->get<CDropList>()->actRect));
         eCell->add(new CDraw(e->get<CDraw>()->tag));
         eCell->add(new CButtonState());
@@ -62,9 +64,10 @@ void DropListSystem::onExpandDropList(Entity* e){
         eCell->add(new CButtonHitbox(w, h));
         eCell->addObservedEntity("DropListHead", e);
         eCell->attachEmployer(e);
-        if (e->has(Component::UI_LAYER)){
-            eCell->add(new CUILayer(*e->get<CUILayer>()));
-        }
+        eCell->add(new CUILayer(uiLayer));
+        //if (e->has(Component::UI_LAYER)){
+        //    eCell->add(new CUILayer(*e->get<CUILayer>()));
+        //}
         e->get<CDropList>()->cells.insert(make_pair(eCell, value));
 
         y += dy;
@@ -73,10 +76,12 @@ void DropListSystem::onExpandDropList(Entity* e){
     e->get<CButtonTrigger>()->message = COLLAPSE_DROP_LIST;
     eDropOn = e;
     active = true;
+
+    notify(BRING_UI_LAYER_FORWARD, e->get<CDropList>()->cells.begin()->first);
 }
 
 void DropListSystem::onCollapseDropList(Entity* e){
-    notify(UNLOCK_ALL_BUTTONS);
+    //notify(UNLOCK_ALL_BUTTONS);
     for(auto& p : e->get<CDropList>()->cells){
         eManager->removeEntity(p.first);
     }
@@ -84,13 +89,14 @@ void DropListSystem::onCollapseDropList(Entity* e){
     e->get<CButtonTrigger>()->message = EXPAND_DROP_LIST;
     eDropOn = nullptr;
     active = false;
+    notify(BRING_UI_LAYER_FORWARD);
 }
 
 void DropListSystem::onUpdateDropList(Entity* e){
     Entity* eHead = e->getObservedEntity("DropListHead");
     eHead->get<CDropList>()->value = eHead->get<CDropList>()->cells[e];
     eHead->get<CTextbox2>()->content.setString(eHead->get<CDropList>()->value);
-    notify(HAS_CHANGED_VALUE, eHead);
+    notify(eHead->get<CDropList>()->msgOnUpdate, eHead);
     notify(COLLAPSE_DROP_LIST, eHead);
 }
 

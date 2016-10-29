@@ -14,6 +14,7 @@ class GUIGroupSystem : public System{
         void onMouseButtonReleased(Entity* e);
 
         void createWindowSinglePlayer(Entity* e);
+        void createWindowOptions(Entity* e);
         Entity* createRectButton(string label, double fontSize, double h, double x, double y,
                                 sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer);
 

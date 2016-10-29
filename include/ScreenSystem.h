@@ -21,6 +21,8 @@ class ScreenSystem : public System{
         void onResumeGame(Entity* e);
         void onNewCommandLine(Entity* e);
         void onKeyPressed(Entity* e);
+        void onUpdateFullscreenWithToggleButton(Entity* e);
+        void onUpdateResolutionWithDropList(Entity* e);
 
         void createMainMenu(Entity* e);
         void createSplash1(Entity* e);

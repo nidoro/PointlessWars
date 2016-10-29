@@ -7,6 +7,8 @@ ScreenSystem::ScreenSystem(){
     addSubscription(BT_NEW_GAME);
     addSubscription(NEW_COMMAND_LINE);
     addSubscription(KEY_PRESSED);
+    addSubscription(UPDATE_RESOLUTION_WITH_DROP_LIST);
+    addSubscription(UPDATE_FULLSCREEN_WITH_TOGGLE_BUTTON);
     //addSubscription(OPEN_MENU);
     //addSubscription(RESUME_GAME);
 }
@@ -167,3 +169,23 @@ void ScreenSystem::onKeyPressed(Entity* e){
     }
 }
 
+void ScreenSystem::onUpdateFullscreenWithToggleButton(Entity* e){
+    config.setFullscreen(e->get<CStringToggleButton>()->valueIndex == 0 ? true:false);
+    window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
+                   "Pointless Wars",
+                    config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+
+    config.saveConfigFile("config.xml");
+}
+void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
+    stringstream ss(e->get<CDropList>()->value);
+    string strWRes, strAux, strHRes;
+    ss >> strWRes;
+    ss >> strAux;
+    ss >> strHRes;
+    config.setResolution(str2int(strWRes), str2int(strHRes));
+    window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
+                   "Pointless Wars",
+                    config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+    config.saveConfigFile("config.xml");
+}

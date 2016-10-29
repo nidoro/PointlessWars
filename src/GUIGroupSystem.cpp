@@ -19,13 +19,203 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e){
     Entity* eGUI = e->getObservedEntity("create-gui-group");
 
     if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "single-player"){
-        createWindowSinglePlayer(eGUI);
+        //createWindowSinglePlayer(eGUI);
+        createWindowOptions(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
     }else if (eGUI->get<CGUIGroup>()->groupType == "window-page"){
 
     }
 }
 
+void GUIGroupSystem::createWindowOptions(Entity* e){
+    /// e has CGUIGroup, CDraw and CUILayer
+    /// make a copy of e
+    Entity* eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup(*e->get<CGUIGroup>()));
+    eGUI->add(new CDraw(*e->get<CDraw>()));
+    eGUI->add(new CUILayer(*e->get<CUILayer>()));
+
+    eGUI->addObservedEntity("page-first", eManager->createEntity());
+
+    eGUI->attachEmployee(eGUI->getObservedEntity("page-first"));
+
+    eGUI->getObservedEntity("page-first")->addObservedEntity("window", eGUI);
+
+    Entity* eObj;
+
+    ///================
+    /// First page:
+    ///================
+    double wButton = 180;
+    double hButton = 40;
+    double spcButton = 50;
+    double wPanel = 290;
+    double hPanel = 350;
+    double xPanel = cxWindow;
+    double yPanel = cyWindow + 100;
+
+    double x0 = xPanel;
+    double y0 = yPanel - hPanel/2 + 30;
+    double x = x0;
+    double y = y0;
+
+    sf::Color darkBlue(15, 30, 60);
+
+    /// Panel
+    eGUI->add(new CTexture("9p-logo-frame.png"));
+    eGUI->add(new CDimensions(wPanel, hPanel));
+    eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CPosition(xPanel, yPanel));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    
+    /// Title
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-OPTIONS"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::White));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CPosition(x, y));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+    double wTitle = eObj->get<CTextbox2>()->content.getLocalBounds().width;
+
+    /// Underline
+    y += 24;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CRectShape(wTitle, 1));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// Gem
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CTexture("small-orange-gem.png"));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 2)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+    
+    double sliderSize = 125;
+    double hText;
+    /// MUSIC LABEL
+    y += spcButton;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-MUSIC"), Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::NORMAL));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x - 125, y - hText/2.f));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// MUSIC SLIDER
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x - sliderSize/2 + (config.getMusMaxVolume()/100)*sliderSize + sliderSize/2.f - 5, y));
+    eObj->add(new CTexture("slider-01.png"));
+    eObj->add(new CSlider(x + sliderSize/2.f - 5, y, sliderSize, (config.getMusMaxVolume()/100), CSlider::HORIZONTAL, "music-volume"));
+    eObj->add(new CDraw(CDraw::GUI_02));
+    eObj->add(new CDimensions(19, 30));
+    eObj->add(new CButtonHitbox(19, 30));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(START_SLIDING, CButtonTrigger::ON_PRESS));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// MUSIC SLIDER BAR
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + sliderSize/2.f - 5, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CDimensions(sliderSize, 2));
+    eObj->add(new CRectShape(sliderSize, 2, sf::Color::White));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// RESOLUTION LABEL
+    y += spcButton;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-RESOLUTION"), Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::NORMAL));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x - 125, y - hText/2.f));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// RESOLUTION DROP LIST
+    list<string> resStrings;
+    unsigned int bbp = sf::VideoMode::getFullscreenModes()[0].bitsPerPixel;
+    for (int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
+        if (sf::VideoMode::getFullscreenModes()[i].bitsPerPixel != bbp) continue;
+        resStrings.push_back(int2str(sf::VideoMode::getFullscreenModes()[i].width) + " x " + int2str(sf::VideoMode::getFullscreenModes()[i].height));
+    }
+    string initValue = int2str(config.getResolution().x) + " x " + int2str(config.getResolution().y);
+    eObj = eManager->createEntity();
+    eObj->add(new CDropList(resStrings, initValue, CDropList::DOWN, UPDATE_RESOLUTION_WITH_DROP_LIST));
+    eObj->add(new CPosition(x + sliderSize/2.f - 5, y));
+    eObj->add(new CDraw(CDraw::GUI_02));
+    eObj->add(new CButtonHitbox(120, 20));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(EXPAND_DROP_LIST));
+    eObj->add(new CTextbox2(initValue, Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
+    eObj->add(new CDimensions(120, 20));
+    eObj->add(new CRectShape(120, 20, sf::Color::Black, 1, sf::Color::White));
+    eObj->add(new CRectButton(sf::RectangleShape(), eObj->get<CRectShape>()->shape, eObj->get<CRectShape>()->shape));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+    
+    /// style
+    sf::RectangleShape defShape;
+    defShape.setSize(sf::Vector2f(120, 20));
+    defShape.setFillColor(sf::Color::Black);
+    defShape.setOutlineColor(sf::Color::White);
+    defShape.setOutlineThickness(1);
+    sf::RectangleShape hovShape = defShape;
+    hovShape.setOutlineColor(sf::Color::Red);
+    eObj->get<CDropList>()->setStyle(defShape, hovShape, hovShape);
+
+    /// FULLSCREEN
+    y += spcButton;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-FULLSCREEN"), Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::NORMAL));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x - 125, y - hText/2.f));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// FULLSCREEN TOGGLE BUTTON
+    /// style
+    defShape.setSize(sf::Vector2f(120, 20));
+    defShape.setFillColor(sf::Color::Black);
+    defShape.setOutlineColor(sf::Color::White);
+    defShape.setOutlineThickness(1);
+    hovShape.setOutlineColor(sf::Color::Red);
+    list<string> optionList;
+    optionList.push_back(Assets::getString("LABEL-ON"));
+    optionList.push_back(Assets::getString("LABEL-OFF"));
+    initValue = config.getFullscreen() ? Assets::getString("LABEL-ON") : Assets::getString("LABEL-OFF");
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + sliderSize/2.f - 5, y));
+    eObj->add(new CDraw(CDraw::GUI_02));
+    eObj->add(new CButtonHitbox(120, 20));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(DO_TOGGLE_ACTION));
+    eObj->add(new CTextbox2(initValue, Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
+    eObj->add(new CDimensions(120, 20));
+    eObj->add(new CRectShape(120, 20, sf::Color::Black, 1, sf::Color::White));
+    eObj->add(new CRectButton(sf::RectangleShape(), eObj->get<CRectShape>()->shape, hovShape));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CStringToggleButton(Assets::getString("LABEL-ON"), Assets::getString("LABEL-OFF"), config.getFullscreen() ? 0:1, UPDATE_FULLSCREEN_WITH_TOGGLE_BUTTON));
+    eObj->add(new CDisplayer(CDisplayer::STR_TOGGLE_BUTTON, eObj));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    /// Button Back (hidden)
+    y += spcButton;
+    eObj = createRectButton("", 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, REMOVE_GUI_GROUP, eGUI->get<CUILayer>()->layer);
+    eObj->add(new CButtonHitbox(0,0));
+    eObj->get<CButtonTrigger>()->hotkey = sf::Keyboard::Escape;
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+    eObj->addObservedEntity("remove-gui-group", eGUI);
+}
 void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
@@ -62,7 +252,7 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     double y = y0;
 
     sf::Color darkBlue(15, 30, 60);
-
+    
     /// Panel
     eGUI->add(new CTexture("9p-logo-frame.png"));
     eGUI->add(new CDimensions(wPanel, hPanel));
@@ -70,7 +260,6 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CDraw(CDraw::GUI_00));
     eGUI->add(new CUILayer(CUILayer::L1));
-
     /// Title
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2(Assets::getString("LABEL-SINGLE-PLAYER"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::White));

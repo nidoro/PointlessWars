@@ -179,6 +179,9 @@ class System{
         virtual void onCreateGUIGroup(Entity* e){}
         virtual void onChangeWindowPage(Entity* e){}
         virtual void onRemoveGUIGroup(Entity* e){}
+        virtual void onUpdateResolutionWithDropList(Entity* e){}
+        virtual void onUpdateFullscreenWithToggleButton(Entity* e){}
+        
 
 
         void subscribe(Message m){

@@ -193,6 +193,8 @@ void System::onNotify(Message m, Entity* e){
         case CREATE_GUI_GROUP: onCreateGUIGroup(e); break;
         case CHANGE_WINDOW_PAGE: onChangeWindowPage(e); break;
         case REMOVE_GUI_GROUP: onRemoveGUIGroup(e); break;
+        case UPDATE_RESOLUTION_WITH_DROP_LIST: onUpdateResolutionWithDropList(e); break;
+        case UPDATE_FULLSCREEN_WITH_TOGGLE_BUTTON: onUpdateFullscreenWithToggleButton(e); break;
         default: break;
     }
 }
@@ -238,7 +240,6 @@ void System::shutdownAll(){
     }
     observers.clear();
 }
-
 
 
 

@@ -2213,26 +2213,29 @@ struct CToggleButton : public Component{
 
 struct CStringToggleButton : public Component{
     static Type getType(){return STRING_TOGGLE_BUTTON;}
-    CStringToggleButton(string v1, string v2, int value = 0){
+    CStringToggleButton(string v1, string v2, int value = 0, Message msgOnToggle = HAS_BEEN_TOGGLED){
         valueIndex = value;
         values.push_back(v1);
         values.push_back(v2);
+        this->msgOnToggle = msgOnToggle;
     }
     void toggle(){
         valueIndex = (valueIndex + 1) % values.size();
     }
     int valueIndex;
     vector<string> values;
+    Message msgOnToggle;
 };
 
 struct CDropList : public Component{
     static Type getType(){return DROP_LIST;}
     enum Direction{UP, DOWN, LEFT, RIGHT};
 
-    CDropList(list<string> l, string init = "", Direction d = DOWN){
+    CDropList(list<string> l, string init = "", Direction d = DOWN, Message msgOnUpdate = HAS_CHANGED_VALUE){
         values = l;
         value = init;
         direction = d;
+        this->msgOnUpdate = msgOnUpdate;
     }
     void setStyle(sf::RectangleShape def, sf::RectangleShape hov, sf::RectangleShape act){
         defRect = def;
@@ -2244,6 +2247,7 @@ struct CDropList : public Component{
     string value;
     list<string> values;
     map<Entity*, string> cells;
+    Message msgOnUpdate;
 
     sf::RectangleShape defRect;
     sf::RectangleShape hovRect;

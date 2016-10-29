@@ -299,6 +299,7 @@ void ButtonSystem::onWindowGainedFocus(Entity* e){
 void ButtonSystem::onDoToggleAction(Entity* e){
     if (e->has(Component::STRING_TOGGLE_BUTTON)){
         e->get<CStringToggleButton>()->toggle();
-        notify(HAS_BEEN_TOGGLED, e);
+        
+        notify(e->get<CStringToggleButton>()->msgOnToggle, e);
     }
 }
