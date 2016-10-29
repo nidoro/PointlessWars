@@ -1,12 +1,13 @@
 Project name: Pointless Wars
 
 Project Dependencies:
-    std=c++0x
-    SFML-2.4.0
-        OpenGL
-        OpenAL
-    boost-filesystem
-        boost-system
+    sfml-graphics
+    sfml-window
+    sfml-audio
+    sfml-network
+    sfml-system
+    boost_filesystem
+    boost_system
 
 Credits:
     Programming:

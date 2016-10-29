@@ -1,4 +1,5 @@
 bin/
 project/
+local/
 *.exe
 config.xml
