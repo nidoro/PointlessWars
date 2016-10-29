@@ -3,6 +3,7 @@ vector< list<System*> > System::observers(N_MESSAGES);
 War System::war;
 Config System::config;
 CProfile System::profile;
+CUILayer::Layer System::topUILayer = CUILayer::NONE;
 
 System::System(){
     //ctor

@@ -36,8 +36,6 @@ class ButtonSystem : public System{
         vector<EntityList> buttonsLocked;
         void lockButton(Entity* e);
 
-        CUILayer::Layer topUILayer;
-
         bool windowFocused;
 };
 

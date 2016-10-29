@@ -4,7 +4,7 @@ GUIGroupSystem::GUIGroupSystem(){
     addSubscription(CREATE_GUI_GROUP);
     addSubscription(REMOVE_GUI_GROUP);
     addSubscription(CHANGE_WINDOW_PAGE);
-    addSubscription(MOUSE_BUTTON_RELEASED);
+    addSubscription(MOUSE_BUTTON_PRESSED);
 
     addRequirement(Component::GUI_GROUP);
     addRequirement(Component::DRAW);
@@ -155,7 +155,7 @@ void GUIGroupSystem::createWindowOptions(Entity* e){
     eObj->add(new CTextbox2(initValue, Assets::getFont(Assets::getPrimaryFont()),
                             14, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
     eObj->add(new CDimensions(120, 20));
-    eObj->add(new CRectShape(120, 20, sf::Color::Black, 1, sf::Color::White));
+    eObj->add(new CRectShape(120, 20, darkBlue, 1, sf::Color::White));
     eObj->add(new CRectButton(sf::RectangleShape(), eObj->get<CRectShape>()->shape, eObj->get<CRectShape>()->shape));
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
@@ -201,7 +201,7 @@ void GUIGroupSystem::createWindowOptions(Entity* e){
     eObj->add(new CTextbox2(initValue, Assets::getFont(Assets::getPrimaryFont()),
                             14, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
     eObj->add(new CDimensions(120, 20));
-    eObj->add(new CRectShape(120, 20, sf::Color::Black, 1, sf::Color::White));
+    eObj->add(new CRectShape(120, 20, darkBlue, 1, sf::Color::White));
     eObj->add(new CRectButton(sf::RectangleShape(), eObj->get<CRectShape>()->shape, hovShape));
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->add(new CStringToggleButton(Assets::getString("LABEL-ON"), Assets::getString("LABEL-OFF"), config.getFullscreen() ? 0:1, UPDATE_FULLSCREEN_WITH_TOGGLE_BUTTON));
@@ -351,9 +351,9 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     */
 }
 
-void GUIGroupSystem::onMouseButtonReleased(Entity* e){
+void GUIGroupSystem::onMouseButtonPressed(Entity* e){
     for (Entity* eGUI : entities){
-        if (eGUI->has(Component::BUTTON_HITBOX)){
+        if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->get<CUILayer>()->layer == topUILayer){
             sf::FloatRect hitbox;
             hitbox.left = eGUI->get<CPosition>()->x - eGUI->get<CButtonHitbox>()->width/2;
             hitbox.top = eGUI->get<CPosition>()->y - eGUI->get<CButtonHitbox>()->height/2;

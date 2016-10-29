@@ -39,7 +39,7 @@ class System{
         static CProfile profile;
         static War war;
         static Config config;
-
+        static CUILayer::Layer topUILayer;
     protected:
         virtual void onGameStarted(Entity* e){}
         virtual void onButtonGainedFocus(Entity* e){}

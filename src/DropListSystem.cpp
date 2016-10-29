@@ -19,7 +19,6 @@ void DropListSystem::update(){
 
 void DropListSystem::onExpandDropList(Entity* e){
     //notify(LOCK_ALL_BUTTONS);
-    //e->get<CButtonState>()->state = CButtonState::HOVERED;
    
     CUILayer::Layer uiLayer = (CUILayer::Layer) ((int)e->get<CUILayer>()->layer + 1);
 
@@ -89,7 +88,7 @@ void DropListSystem::onCollapseDropList(Entity* e){
     e->get<CButtonTrigger>()->message = EXPAND_DROP_LIST;
     eDropOn = nullptr;
     active = false;
-    notify(BRING_UI_LAYER_FORWARD);
+    notify(BRING_UI_LAYER_FORWARD, e);
 }
 
 void DropListSystem::onUpdateDropList(Entity* e){

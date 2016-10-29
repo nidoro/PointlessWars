@@ -11,7 +11,7 @@ class GUIGroupSystem : public System{
         void onCreateGUIGroup(Entity* e);
         void onChangeWindowPage(Entity* e);
         void onRemoveGUIGroup(Entity* e);
-        void onMouseButtonReleased(Entity* e);
+        void onMouseButtonPressed(Entity* e);
 
         void createWindowSinglePlayer(Entity* e);
         void createWindowOptions(Entity* e);
