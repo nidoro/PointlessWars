@@ -1,0 +1,272 @@
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_CXX_COMPILER g++)
+project(PointlessWars)
+#=========================
+# GLOBAL COMPILER OPTIONS
+#=========================
+add_compile_options(-Wall -std=c++0x -static-libstdc++ -static-libgcc)
+add_definitions(-D_USE_MATH_DEFINES -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS -DSFML_STATIC)
+link_directories(C:/Libs/SFML-2.4.0/lib)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/release/link-static)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/release/link-static)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug/link-static)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug/link-static)
+include_directories(${PROJECT_SOURCE_DIR}/../include)
+include_directories(C:/Libs/boost_1_60_0)
+include_directories(C:/Libs/SFML-2.4.0/include)
+#=========================
+# TARGET SPECIFIC OPTIONS
+#=========================
+add_executable (pw-release
+	../src/GUIGroupSystem.cpp
+    ../src/main.cpp
+	../src/AISystem.cpp 
+    ../src/ActionOutcome.cpp 
+    ../src/ActionSystem.cpp 
+    ../src/AnchorSystem.cpp 
+    ../src/AnimationSystem.cpp 
+    ../src/AnnouncerSystem.cpp 
+    ../src/ArmyHUDSystem.cpp 
+    ../src/ArmySystem.cpp 
+    ../src/Assets.cpp 
+    ../src/AutoPilotSystem.cpp 
+    ../src/ButtonSystem.cpp 
+    ../src/CMDLineSystem.cpp 
+    ../src/CameraSystem.cpp 
+    ../src/CommandListener.cpp 
+    ../src/Component.cpp
+    ../src/Config.cpp 
+    ../src/CursorSystem.cpp 
+    ../src/CustomMatchSystem.cpp 
+    ../src/DisplayerSystem.cpp 
+    ../src/DragDropSystem.cpp 
+    ../src/DropListSystem.cpp 
+    ../src/EditorSystem.cpp 
+    ../src/ElipsoidalMovementSystem.cpp 
+    ../src/EntitiesManager.cpp 
+    ../src/Entity.cpp 
+    ../src/FadeSystem.cpp 
+    ../src/FormationEditor.cpp 
+    ../src/Game.cpp 
+    ../src/InGameMenu.cpp 
+    ../src/InputTextBoxSystem.cpp 
+    ../src/MainMenuSystem.cpp 
+    ../src/MatchConfig.cpp 
+    ../src/NetworkSystem.cpp 
+    ../src/OptionBoxSystem.cpp 
+    ../src/PanelSystem.cpp 
+    ../src/ParticleSystem.cpp 
+    ../src/PathSystem.cpp 
+    ../src/RemotePlayer.cpp 
+    ../src/RenderSystem.cpp 
+    ../src/ScenarioSystem.cpp 
+    ../src/ScreenSystem.cpp 
+    ../src/ScriptedAnimation.cpp 
+    ../src/ScrollListSystem.cpp 
+    ../src/SideUISystem.cpp 
+    ../src/SliderSystem.cpp 
+    ../src/SoundSystem.cpp 
+    ../src/SpinButtonSystem.cpp 
+    ../src/Standard.cpp
+    ../src/System.cpp 
+    ../src/TextboxSystem.cpp 
+    ../src/TimerSystem.cpp 
+    ../src/TooltipSystem.cpp 
+    ../src/UnitSystem.cpp 
+    ../src/War.cpp 
+    ../src/WarSystem.cpp 
+    ../src/imgui.cpp 
+    ../src/imgui_SFML.cpp 
+    ../src/imgui_draw.cpp 
+    ../src/tinyxml2.cpp 
+)
+add_executable (pw-debug 
+	../src/GUIGroupSystem.cpp
+    ../src/main.cpp
+    ../src/AISystem.cpp 
+    ../src/ActionOutcome.cpp 
+    ../src/ActionSystem.cpp 
+    ../src/AnchorSystem.cpp 
+    ../src/AnimationSystem.cpp 
+    ../src/AnnouncerSystem.cpp 
+    ../src/ArmyHUDSystem.cpp 
+    ../src/ArmySystem.cpp 
+    ../src/Assets.cpp 
+    ../src/AutoPilotSystem.cpp 
+    ../src/ButtonSystem.cpp 
+    ../src/CMDLineSystem.cpp 
+    ../src/CameraSystem.cpp 
+    ../src/CommandListener.cpp 
+    ../src/Component.cpp
+    ../src/Config.cpp 
+    ../src/CursorSystem.cpp 
+    ../src/CustomMatchSystem.cpp 
+    ../src/DisplayerSystem.cpp 
+    ../src/DragDropSystem.cpp 
+    ../src/DropListSystem.cpp 
+    ../src/EditorSystem.cpp 
+    ../src/ElipsoidalMovementSystem.cpp 
+    ../src/EntitiesManager.cpp 
+    ../src/Entity.cpp 
+    ../src/FadeSystem.cpp 
+    ../src/FormationEditor.cpp 
+    ../src/Game.cpp 
+    ../src/InGameMenu.cpp 
+    ../src/InputTextBoxSystem.cpp 
+    ../src/MainMenuSystem.cpp 
+    ../src/MatchConfig.cpp 
+    ../src/NetworkSystem.cpp 
+    ../src/OptionBoxSystem.cpp 
+    ../src/PanelSystem.cpp 
+    ../src/ParticleSystem.cpp 
+    ../src/PathSystem.cpp 
+    ../src/RemotePlayer.cpp 
+    ../src/RenderSystem.cpp 
+    ../src/ScenarioSystem.cpp 
+    ../src/ScreenSystem.cpp 
+    ../src/ScriptedAnimation.cpp 
+    ../src/ScrollListSystem.cpp 
+    ../src/SideUISystem.cpp 
+    ../src/SliderSystem.cpp 
+    ../src/SoundSystem.cpp 
+    ../src/SpinButtonSystem.cpp 
+    ../src/Standard.cpp
+    ../src/System.cpp 
+    ../src/TextboxSystem.cpp 
+    ../src/TimerSystem.cpp 
+    ../src/TooltipSystem.cpp
+    ../src/UnitSystem.cpp 
+    ../src/War.cpp 
+    ../src/WarSystem.cpp 
+    ../src/imgui.cpp 
+    ../src/imgui_SFML.cpp 
+    ../src/imgui_draw.cpp 
+    ../src/tinyxml2.cpp 
+)
+target_link_libraries(pw-release
+	sfml-graphics-s
+	sfml-window-s
+	sfml-audio-s
+	sfml-network-s
+	sfml-system-s
+	boost_filesystem-mgw62-1_60
+	boost_system-mgw62-1_60
+	freetype
+	jpeg
+	winmm
+	gdi32
+	opengl32
+	openal32
+	flac
+	vorbisenc
+	vorbisfile
+	vorbis
+	ogg
+	ws2_32
+)
+target_link_libraries(pw-debug
+	sfml-graphics-s-d
+	sfml-window-s-d
+	sfml-audio-s-d
+	sfml-network-s-d
+	sfml-system-s-d
+	boost_filesystem-mgw62-d-1_60
+	boost_system-mgw62-d-1_60
+	freetype
+	jpeg
+	winmm
+	gdi32
+	opengl32
+	openal32
+	flac
+	vorbisenc
+	vorbisfile
+	vorbis
+	ogg
+	ws2_32
+)
+target_compile_options(pw-release PRIVATE -g)
+target_compile_options(pw-debug PRIVATE -O2)
+set_target_properties(pw-release pw-debug
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ..
+)
+set_target_properties(pw-release
+    PROPERTIES
+    OUTPUT_NAME "Pointless Wars.exe"
+)
+#=========================
+# CPACK
+#=========================
+install(DIRECTORY ../rsc/ DESTINATION rsc COMPONENT resources)
+get_target_property(ExecutableDir pw-release RUNTIME_OUTPUT_DIRECTORY)
+get_target_property(ExecutableName pw-release OUTPUT_NAME)
+install(PROGRAMS "${ExecutableDir}/${ExecutableName}" DESTINATION . COMPONENT bin)
+
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+include(InstallRequiredSystemLibraries) 
+#=========================
+# CPACK CONFIG
+#=========================
+set(CPACK_PACKAGE_NAME "PointlessWarsInstaller")
+set(CPACK_PACKAGE_VENDOR "Davi Doro")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Example showing CPack in action")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "Pointless Wars")
+
+#
+# Tell CPack about the components and group the data components together (CPACK_COMPONENT_${COMPONENT_NAME_ALL_CAPS}_GROUP).
+#
+set(CPACK_COMPONENTS_ALL bin resources)
+set(CPACK_COMPONENT_BIN_GROUP "Pointless Wars")
+set(CPACK_COMPONENT_RESOURCES_GROUP "Pointless Wars")
+
+#
+# More descriptive names for each of the components, and component groups
+#
+set(CPACK_COMPONENT_BIN_DISPLAY_NAME "Application")
+set(CPACK_COMPONENT_GROUP_POINTLESSWARS_DESCRIPTION "Game")
+
+#
+# Text from "license.txt" is displayed in the installer's license tab
+#
+#set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/license.txt")
+
+#
+# Set the icon used inside the installer wizard and the icons for the installer and un-installer
+#
+#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\hw.bmp")
+#set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/hw.ico")
+#set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/hw.ico")
+
+
+#
+# Set the programs displayed under the Start menu shortcut
+# We do not use CPACK_PACKAGE_EXECUTABLES because it expects the binaries to be in a
+# directory named "bin" (CMake bug tracker ID: 0007829).
+#
+#set(CPACK_NSIS_MENU_LINKS "programs\\hello" "Hello"
+#                          "programs\\world" "World"
+#                          ${CT_DATA_FILE_DIR} "CT Data"
+#                          "data\\example.pdf" "documentation")
+
+include(CPack)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
