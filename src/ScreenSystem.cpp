@@ -120,16 +120,13 @@ void ScreenSystem::onBtNewGame(Entity* e){
 }
 
 void ScreenSystem::onGameStarted(Entity* e){
-    /*
-    war.setMultiplayer(false);
-    onBtNewGame(e);
-
+    //war.setMultiplayer(false);
+    //onBtNewGame(e);
+/*
     Entity* eScreen = eManager->createEntity();
     eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
     notify(START_SCREEN_TRANSITION, eScreen);
-    */
-
-
+*/
     Entity* eScreen = eManager->createEntity();
     if (!config.getSkipIntro()){
         eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
@@ -143,6 +140,8 @@ void ScreenSystem::onGameStarted(Entity* e){
     eMusic->add(new CMusic("main-theme.ogg"));
     eMusic->add(new CSystem());
     notify(PLAY_MUSIC, eMusic);
+/*
+*/
 
 }
 

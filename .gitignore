@@ -1,5 +1,9 @@
 bin/
+bin-debug/
 project/
 local/
+
 *.exe
+*.dll
+
 config.xml
