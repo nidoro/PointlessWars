@@ -83,6 +83,11 @@ LABEL-QUICK-MATCH                           Quick Match
 LABEL-CAMPAIGN                              Campaign
 LABEL-ARENA                                 Arena
 LABEL-CUSTOM-GAME                           Custom
+LABEL-MULTIPLAYER                           Multiplayer
+LABEL-NICKNAME                              Nickname
+LABEL-CANCEL                                Cancel
+LABEL-OK                                    Ok
+LABEL-BACK                                  Back
 
 LABEL-UNITS									Units
 LABEL-HEROES								Heroes
@@ -99,7 +104,7 @@ LABEL-DIFFICULTY-EASY						Easy
 LABEL-DIFFICULTY-NORMAL						Normal
 LABEL-DIFFICULTY-HARD						Hard
 
-LABEL-MATCH-CONFIGURATION					Match Details
+LABEL-MATCH-CONFIGURATION					Match Config
 LABEL-RANDOM								Random
 LABEL-TURNS									Turns
 LABEL-UNITS									Units
@@ -110,6 +115,14 @@ LABEL-UNIT-OPTIONS							Unit Options
 LABEL-BATTLE-DURATION						Battle Duration
 LABEL-WAR-DURATION							War Duration
 LABEL-WIN-STREAK-TO-END						Win Streak to End
+%===============================================================================================
+% MESSAGES
+%===============================================================================================
+MESSAGE-CONNECTING                          Connecting to server...
+MESSAGE-CONNECTION-FAILED                   Failed to connect to server :(
+MESSAGE-CONNECTION-LOST                     Connection lost :(
+MESSAGE-QUICK-MATCH-SEARCHING               Looking for opponent...
+MESSAGE-QUICK-MATCH-STARTING                Opponent found!
 %===============================================================================================
 % NAME UNITS
 %===============================================================================================

@@ -5,6 +5,8 @@ GUIGroupSystem::GUIGroupSystem(){
     addSubscription(REMOVE_GUI_GROUP);
     addSubscription(CHANGE_WINDOW_PAGE);
     addSubscription(MOUSE_BUTTON_PRESSED);
+    addSubscription(DISCONNECT_FROM_SERVER);
+    addSubscription(CONNECTION_LOST);
 
     addRequirement(Component::GUI_GROUP);
     addRequirement(Component::DRAW);
@@ -24,6 +26,10 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e){
     }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "options"){
         createWindowOptions(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
+    }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "multiplayer"){
+        Entity* eWin = createWindowMultiplayer(eGUI);
+        showPage(eWin->getObservedEntity("page-connect"));
+        notify(BRING_UI_LAYER_FORWARD, eWin);
     }else if (eGUI->get<CGUIGroup>()->groupType == "window-page"){
 
     }
@@ -352,6 +358,179 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     addToPage(eObj, CInGameMenuPage::FIRST);
     */
 }
+Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
+    /// e has CGUIGroup, CDraw and CUILayer
+    /// make a copy of e
+    Entity* eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup(*e->get<CGUIGroup>()));
+    eGUI->add(new CDraw(*e->get<CDraw>()));
+    eGUI->add(new CUILayer(*e->get<CUILayer>()));
+
+    eGUI->addObservedEntity("page-connect", eManager->createEntity());
+    eGUI->addObservedEntity("page-quick-match", eManager->createEntity());
+
+    eGUI->attachEmployee(eGUI->getObservedEntity("page-connect"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("page-quick-match"));
+
+    eGUI->getObservedEntity("page-connect")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("page-quick-match")->addObservedEntity("window", eGUI);
+
+    Entity* eObj;
+
+    ///================
+    /// First page:
+    ///================
+    double wButton = 180;
+    double hButton = 40;
+    double spcButton = 50;
+    double wPanel = 290;
+    double hPanel = 350;
+    double xPanel = cxWindow;
+    double yPanel = cyWindow + 100;
+    double hText;
+
+    double x0 = xPanel;
+    double y0 = yPanel - hPanel/2 + 30;
+    double x = x0;
+    double y = y0;
+    double wTitle;
+
+    sf::Color darkBlue(15, 30, 60);
+
+    /// Panel
+    eGUI->add(new CTexture("9p-logo-frame.png"));
+    eGUI->add(new CDimensions(wPanel, hPanel));
+    eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CPosition(xPanel, yPanel));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+    eGUI->add(new CUILayer(CUILayer::L1));
+
+    /// Title
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-MULTIPLAYER"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::White));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CPosition(x, y));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+    wTitle = eObj->get<CTextbox2>()->content.getLocalBounds().width;
+
+    /// Underline
+    y += 24;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CRectShape(wTitle, 1));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+
+    /// Gem
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CTexture("small-orange-gem.png"));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 2)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+
+    /// Nickname Label
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-NICKNAME"), Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+
+    /// Input Textbox Nickname
+    y += spcButton;
+    double wInputTB = 200;
+    double hInputTB = 35;
+    sf::RectangleShape rectInputTB;
+    rectInputTB.setOutlineColor(sf::Color::White);
+    rectInputTB.setOutlineThickness(2);
+    rectInputTB.setPosition(x, y);
+    rectInputTB.setSize(sf::Vector2f(wInputTB, hInputTB));
+    rectInputTB.setFillColor(darkBlue);
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::White));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CInputTextBox(true, UPDATE_PLAYER_NICKNAME_WITH_INPUT_TEXTBOX, CInputTextBox::INACTIVE, 12, false));
+    eObj->add(new CButtonHitbox(wInputTB, hInputTB));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(ACTIVATE_INPUT_TEXT_BOX));
+    eObj->add(new CRectButton(rectInputTB, rectInputTB, rectInputTB));
+    eObj->add(new CRectShape(sf::RectangleShape()));
+    eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+    eObj->get<CInputTextBox>()->blinkColor = sf::Color::White;
+
+    /// Quick Match
+    y += spcButton;
+    eObj = createRectButton(Assets::getString("LABEL-QUICK-MATCH"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CHANGE_WINDOW_PAGE, eGUI->get<CUILayer>()->layer);
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-quick-match"));
+    eObj->get<CButtonTrigger>()->msgs.push_back(FIND_MATCH);
+
+    /// Button Back (hidden)
+    y += spcButton;
+    eObj = createRectButton("", 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, REMOVE_GUI_GROUP, eGUI->get<CUILayer>()->layer);
+    eObj->add(new CButtonHitbox(0,0));
+    eObj->get<CButtonTrigger>()->hotkey = sf::Keyboard::Escape;
+    eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
+    eObj->addObservedEntity("remove-gui-group", eGUI);
+
+    ///================
+    /// Quick Match page:
+    ///================
+    x0 = xPanel;
+    y0 = yPanel - hPanel/2 + 30;
+    x = x0;
+    y = y0;
+
+    /// Title
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-QUICK-MATCH"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::White));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CPosition(x, y));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-quick-match"));
+    wTitle = eObj->get<CTextbox2>()->content.getLocalBounds().width;
+
+    /// Underline
+    y += 24;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CRectShape(wTitle, 1));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-quick-match"));
+
+    /// Gem
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CTexture("small-orange-gem.png"));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 2)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-quick-match"));
+
+    /// Quick Match server Message
+    y += spcButton;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y - spcButton/2));
+    eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::White));
+    eObj->add(new CDraw(CDraw::GUI_05));
+    //eObj->add(new CTypingEffect(Assets::getString("MESSAGE-CONNECTION-LOST"), 40));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-quick-match"));
+    notify(SET_SERVER_MESSAGE_DISPLAYER_QUICK_MATCH, eObj);
+
+    /// Button Back
+    y += spcButton;
+    eObj = createRectButton(Assets::getString("LABEL-BACK"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CHANGE_WINDOW_PAGE, eGUI->get<CUILayer>()->layer);
+    //eObj->add(new CButtonHitbox(0,0));
+    eObj->get<CButtonTrigger>()->msgs.push_back(CANCEL_QUICK_MATCH_SEARCH);
+    eObj->get<CButtonTrigger>()->hotkey = sf::Keyboard::Escape;
+    eObj->attachEmployer(eGUI->getObservedEntity("page-quick-match"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-connect"));
+
+    return eGUI;
+}
 
 void GUIGroupSystem::onMouseButtonPressed(Entity* e){
     for (Entity* eGUI : entities){
@@ -377,12 +556,16 @@ void GUIGroupSystem::onRemoveGUIGroup(Entity* e){
     }else{
         eGUI = e->getObservedEntity("remove-gui-group");
     }
+    if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "multiplayer"){
+        notify(SET_SERVER_MESSAGE_DISPLAYER_QUICK_MATCH);
+        notify(CANCEL_QUICK_MATCH_SEARCH);
+    }
     eManager->removeEntity(eGUI);
     notify(BRING_UI_LAYER_FORWARD);
 }
 
 void GUIGroupSystem::onChangeWindowPage(Entity* e){
-    Entity* ePage = e->getObservedEntity("page");
+    Entity* ePage = e->getObservedEntity("change-page");
     showPage(ePage);
 }
 
@@ -444,6 +627,13 @@ Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h
     return e;
 }
 
+void GUIGroupSystem::onDisconnectFromServer(Entity* e){
+    for (auto& i : entities){
+        if (i->get<CGUIGroup>()->groupType == "window" && i->get<CGUIGroup>()->groupID == "multiplayer"){
+            eManager->removeEntity(i);
+        }
+    }
+}
 
 
 

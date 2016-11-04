@@ -196,6 +196,12 @@ void System::onNotify(Message m, Entity* e){
         case REMOVE_GUI_GROUP: onRemoveGUIGroup(e); break;
         case UPDATE_RESOLUTION_WITH_DROP_LIST: onUpdateResolutionWithDropList(e); break;
         case UPDATE_FULLSCREEN_WITH_TOGGLE_BUTTON: onUpdateFullscreenWithToggleButton(e); break;
+        case STOP_CONNECTION_TRY: onStopConnectionTry(e); break;
+        case CONNECTION_SUCCESSFUL: onConnectionSuccessful(e); break;
+        case CONNECTION_LOST: onConnectionLost(e); break;
+        case UPDATE_PLAYER_NICKNAME_WITH_INPUT_TEXTBOX: onUpdatePlayerNicknameWithInputTextbox(e); break;
+        case SET_SERVER_MESSAGE_DISPLAYER_QUICK_MATCH: onSetServerMessageDisplayerQuickMatch(e); break;
+        case CANCEL_QUICK_MATCH_SEARCH: onCancelQuickMatchSearch(e); break;
         default: break;
     }
 }

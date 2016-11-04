@@ -275,7 +275,7 @@ void EditorSystem::createLoadInputBox(){
     eLoadInput->add(new CButtonTrigger(ACTIVATE_INPUT_TEXT_BOX));
     eLoadInput->add(new CDefaultTexture("tooltip-01.png"));
     eLoadInput->add(new CDisplayer(CDisplayer::INPUT_TEXT, eLoadInput));
-    eLoadInput->add(new CInputTextBox(true, CInputTextBox::ACTIVE, 25));
+    //eLoadInput->add(new CInputTextBox(true, CInputTextBox::ACTIVE, 25));
 
     txt.setFont(Assets::getFont(Assets::getPrimaryFont()));
     txt.setCharacterSize(18);
@@ -473,7 +473,7 @@ void EditorSystem::createSaveInputBox(){
     eSaveInput->add(new CButtonTrigger(ACTIVATE_INPUT_TEXT_BOX));
     eSaveInput->add(new CDefaultTexture("tooltip-01.png"));
     eSaveInput->add(new CDisplayer(CDisplayer::INPUT_TEXT, eSaveInput));
-    eSaveInput->add(new CInputTextBox(true, CInputTextBox::ACTIVE, 25));
+    //eSaveInput->add(new CInputTextBox(true, CInputTextBox::ACTIVE, 25));
 
     txt.setFont(Assets::getFont(Assets::getPrimaryFont()));
     txt.setCharacterSize(18);

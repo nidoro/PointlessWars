@@ -62,7 +62,7 @@ void OptionBoxSystem::onExpandOptionBox(Entity* e){
         if (box->direction == COptionBox::UP) y -= box->distance;
     }
     box->state = COptionBox::CHOOSING;
-    e->get<CButtonTrigger>()->message = RETRACT_OPTION_BOX;
+    e->get<CButtonTrigger>()->setUniqueTrigger(RETRACT_OPTION_BOX);
 }
 
 void OptionBoxSystem::onRetractOptionBox(Entity* e){
@@ -76,7 +76,7 @@ void OptionBoxSystem::onRetractOptionBox(Entity* e){
     }
     box->cells.clear();
     box->state = COptionBox::CHOSEN;
-    e->get<CButtonTrigger>()->message = EXPAND_OPTION_BOX;
+    e->get<CButtonTrigger>()->setUniqueTrigger(EXPAND_OPTION_BOX);
 }
 
 void OptionBoxSystem::onSelectOptionBox(Entity* e){

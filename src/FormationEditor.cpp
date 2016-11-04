@@ -185,7 +185,7 @@ void FormationEditor::createSaveInputTextBox(){
     eSave->add(new CButtonTrigger(ACTIVATE_INPUT_TEXT_BOX));
     eSave->add(new CDefaultTexture("tooltip-01.png"));
     eSave->add(new CDisplayer(CDisplayer::INPUT_TEXT, eSave));
-    eSave->add(new CInputTextBox(true, CInputTextBox::ACTIVE, 10));
+    //eSave->add(new CInputTextBox(true, CInputTextBox::ACTIVE, 10));
     eSave->add(new CParentPanel(eSavePanel));
 
     txt.setFont(Assets::getFont(Assets::getPrimaryFont()));
@@ -447,7 +447,7 @@ void FormationEditor::createGrid(){
             eObj->add(new CDimensions(ux, uy));
             eObj->add(new CButtonState(CButtonState::LOCKED));
             eObj->add(new CButtonTrigger(ACTIVATE_INPUT_TEXT_BOX));
-            eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 2, true));
+            //eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 2, true));
             eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 9, sf::Color::Black));
             eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
             eObj->get<CButtonTrigger>()->mouseButton = sf::Mouse::Right;

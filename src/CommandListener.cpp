@@ -163,14 +163,16 @@ void CommandListener::onSystemAction(Entity* e){
 void CommandListener::askHeroPick(Entity* e){
     if (!eListener) return;
     EntityList eOptionList = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
+    //printf("options size = %d", eOptionList.size());
     if (!war.getRemotelyControled(e->get<CPlayer>()->id)){
         eListener->addObservedEntity("PlayerBeingListenedTo", e);
-        for(Entity* eOpt : eOptionList){
-            eOpt->get<CButtonTrigger>()->message = SELECT_ACTION;
+        for(auto& eOpt : eOptionList){
+            eOpt->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
         }
     }else{
-        for(Entity* eOpt : eOptionList){
-            eOpt->get<CButtonTrigger>()->message = EMPTY_MESSAGE;
+        //printf("Clearing triggers..\n");
+        for(auto& eOpt : eOptionList){
+            eOpt->get<CButtonTrigger>()->msgs.clear();
         }
     }
 }

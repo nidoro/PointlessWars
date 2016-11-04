@@ -193,7 +193,9 @@ void ButtonSystem::onButtonPressed(Entity* e){
     if (!windowFocused) return;
     if (e->get<CButtonState>()->state == CButtonState::LOCKED) return;
     if (e->has(Component::BUTTON_TRIGGER) && e->get<CButtonTrigger>()->action == CButtonTrigger::ON_PRESS){
-        notify(e->get<CButtonTrigger>()->message, e);
+        for (auto& m : e->get<CButtonTrigger>()->msgs){
+            notify(m, e);
+        }
     }
     if (!e->has(Component::BUTTON_SOUNDS)) return;
     Entity* eSound = eManager->createEntity();
@@ -205,7 +207,9 @@ void ButtonSystem::onButtonReleased(Entity* e){
     if (!windowFocused) return;
     if (e->get<CButtonState>()->state == CButtonState::LOCKED) return;
     if (e->has(Component::BUTTON_TRIGGER) && e->get<CButtonTrigger>()->action == CButtonTrigger::ON_RELEASE){
-        notify(e->get<CButtonTrigger>()->message, e);
+        for (auto& m : e->get<CButtonTrigger>()->msgs){
+            notify(m, e);
+        }
     }
 }
 
@@ -299,7 +303,7 @@ void ButtonSystem::onWindowGainedFocus(Entity* e){
 void ButtonSystem::onDoToggleAction(Entity* e){
     if (e->has(Component::STRING_TOGGLE_BUTTON)){
         e->get<CStringToggleButton>()->toggle();
-        
+
         notify(e->get<CStringToggleButton>()->msgOnToggle, e);
     }
 }

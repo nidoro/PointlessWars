@@ -19,7 +19,7 @@ void DropListSystem::update(){
 
 void DropListSystem::onExpandDropList(Entity* e){
     //notify(LOCK_ALL_BUTTONS);
-   
+
     CUILayer::Layer uiLayer = (CUILayer::Layer) ((int)e->get<CUILayer>()->layer + 1);
 
     sf::RectangleShape shape = e->get<CRectShape>()->shape;
@@ -72,7 +72,7 @@ void DropListSystem::onExpandDropList(Entity* e){
         y += dy;
         x += dx;
     }
-    e->get<CButtonTrigger>()->message = COLLAPSE_DROP_LIST;
+    e->get<CButtonTrigger>()->setUniqueTrigger(COLLAPSE_DROP_LIST);
     eDropOn = e;
     active = true;
 
@@ -85,7 +85,7 @@ void DropListSystem::onCollapseDropList(Entity* e){
         eManager->removeEntity(p.first);
     }
     e->get<CDropList>()->cells.clear();
-    e->get<CButtonTrigger>()->message = EXPAND_DROP_LIST;
+    e->get<CButtonTrigger>()->setUniqueTrigger(EXPAND_DROP_LIST);
     eDropOn = nullptr;
     active = false;
     notify(BRING_UI_LAYER_FORWARD, e);

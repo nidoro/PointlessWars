@@ -152,7 +152,7 @@ void CustomMatchSystem::createMenu(){
     eObj->add(new CDraw());
     eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 16));
     eObj->add(new CRectShape(w, h, sf::Color::White, 1));
-    eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 12));
+    //eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 12));
     eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
     eObj->add(new CButtonHitbox(w, h));
     eObj->add(new CButtonState());
@@ -185,7 +185,7 @@ void CustomMatchSystem::createMenu(){
     eObj->add(new CDraw());
     eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 16));
     eObj->add(new CRectShape(w, h, sf::Color::White, 1));
-    eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 12));
+    //eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 12));
     eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
     eObj->add(new CButtonHitbox(w, h));
     eObj->add(new CButtonState());

@@ -5,15 +5,15 @@ project(PointlessWars)
 # GLOBAL COMPILER OPTIONS
 #=========================
 add_compile_options(-Wall -std=c++0x -static-libstdc++ -static-libgcc)
-add_definitions(-D_USE_MATH_DEFINES -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS -DSFML_STATIC)
+add_definitions(-D_USE_MATH_DEFINES -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS)
 link_directories(C:/Libs/SFML-2.4.0/lib)
-link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/release/link-static)
-link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/release/link-static)
-link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug/link-static)
-link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug/link-static)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/release)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/release)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug)
+link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug)
 include_directories(${PROJECT_SOURCE_DIR}/../include)
-include_directories(C:/Libs/boost_1_60_0)
 include_directories(C:/Libs/SFML-2.4.0/include)
+include_directories(C:/Libs/boost_1_60_0)
 #=========================
 # TARGET SPECIFIC OPTIONS
 #=========================
@@ -144,56 +144,36 @@ add_executable (pw-debug
     ../src/tinyxml2.cpp 
 )
 target_link_libraries(pw-release
-	sfml-graphics-s
-	sfml-window-s
-	sfml-audio-s
-	sfml-network-s
-	sfml-system-s
+	sfml-graphics
+	sfml-window
+	sfml-audio
+	sfml-network
+	sfml-system
 	boost_filesystem-mgw62-1_60
 	boost_system-mgw62-1_60
-	freetype
-	jpeg
-	winmm
-	gdi32
-	opengl32
-	openal32
-	flac
-	vorbisenc
-	vorbisfile
-	vorbis
-	ogg
-	ws2_32
+    opengl32
 )
 target_link_libraries(pw-debug
-	sfml-graphics-s-d
-	sfml-window-s-d
-	sfml-audio-s-d
-	sfml-network-s-d
-	sfml-system-s-d
+	sfml-graphics-d
+	sfml-window-d
+	sfml-audio-d
+	sfml-network-d
+	sfml-system-d
 	boost_filesystem-mgw62-d-1_60
 	boost_system-mgw62-d-1_60
-	freetype
-	jpeg
-	winmm
-	gdi32
-	opengl32
-	openal32
-	flac
-	vorbisenc
-	vorbisfile
-	vorbis
-	ogg
-	ws2_32
+    opengl32
 )
 target_compile_options(pw-release PRIVATE -g)
 target_compile_options(pw-debug PRIVATE -O2)
-set_target_properties(pw-release pw-debug
+set_target_properties(pw-release
     PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ..
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../bin
+    OUTPUT_NAME "Pointless Wars.exe"
 )
 set_target_properties(pw-release
     PROPERTIES
-    OUTPUT_NAME "Pointless Wars.exe"
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../bin-debug
+    OUTPUT_NAME "pw-debug.exe"
 )
 #=========================
 # CPACK
@@ -201,14 +181,14 @@ set_target_properties(pw-release
 install(DIRECTORY ../rsc/ DESTINATION rsc COMPONENT resources)
 get_target_property(ExecutableDir pw-release RUNTIME_OUTPUT_DIRECTORY)
 get_target_property(ExecutableName pw-release OUTPUT_NAME)
-install(PROGRAMS "${ExecutableDir}/${ExecutableName}" DESTINATION . COMPONENT bin)
+install(PROGRAMS "${ExecutableDir}/${ExecutableName}" DESTINATION bin COMPONENT bin)
 
 set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
 include(InstallRequiredSystemLibraries) 
 #=========================
 # CPACK CONFIG
 #=========================
-set(CPACK_PACKAGE_NAME "PointlessWarsInstaller")
+set(CPACK_PACKAGE_NAME "PWSetup")
 set(CPACK_PACKAGE_VENDOR "Davi Doro")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Example showing CPack in action")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")

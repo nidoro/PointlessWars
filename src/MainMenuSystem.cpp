@@ -313,7 +313,7 @@ void MainMenuSystem::createMenu(bool animated){
     /// SINGLE PLAYER BUTTON
     xRel = 0.4933;
     yRel = 0.5737;
-    buttonTexture = "fountain-contour.png";
+    buttonTexture = "fountain-contour-2.png";
     wButton = Assets::getTexture(buttonTexture)->getSize().x;
     hButton = Assets::getTexture(buttonTexture)->getSize().y;
     eObj = eManager->createEntity();
@@ -335,9 +335,33 @@ void MainMenuSystem::createMenu(bool animated){
 
 
     /// OPTIONS BUTTON
-    //0.8895          0.1890
-    //xRel = 0.7363;
-    //yRel = 0.6323;
+    xRel = 0.7363;
+    yRel = 0.6323;
+    buttonTexture = "blacksmith-contour.png";
+    //xRel = 0.9135f;
+    //yRel = 0.1880f;
+    //buttonTexture = "castle-contour.png";
+    wButton = Assets::getTexture(buttonTexture)->getSize().x;
+    hButton = Assets::getTexture(buttonTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xRel*1280.f, yRel*720.f));
+    eObj->add(new CDraw(CDraw::WORLD));
+    eObj->add(new CTexture(buttonTexture));
+    eObj->add(new CDimensions(wButton, hButton));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
+    eObj->add(new CButtonTrigger(CREATE_GUI_GROUP));
+
+    eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup("window", "options"));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+
+    eObj->addObservedEntity("create-gui-group", eGUI);
+
+
+    /// MULTIPLAYER BUTTON
     xRel = 0.9135f;
     yRel = 0.1880f;
     buttonTexture = "castle-contour.png";
@@ -351,10 +375,10 @@ void MainMenuSystem::createMenu(bool animated){
     eObj->add(new CButtonHitbox(wButton, hButton));
     eObj->add(new CButtonState());
     eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
-    eObj->add(new CButtonTrigger(CREATE_GUI_GROUP));
+    eObj->add(new CButtonTrigger(TRY_AND_CONNECT));
 
     eGUI = eManager->createEntity();
-    eGUI->add(new CGUIGroup("window", "options"));
+    eGUI->add(new CGUIGroup("window", "multiplayer"));
     eGUI->add(new CUILayer(CUILayer::L1));
     eGUI->add(new CDraw(CDraw::GUI_00));
 
@@ -531,7 +555,7 @@ void MainMenuSystem::onCreatePlayerEditor(Entity* e){
     eObj = eManager->createEntity();
     eInput = eObj;
     eObj->add(new CPosition(cxWindow, cyWindow));
-    eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 10));
+    //eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 10));
     eObj->add(new CRectShape(100, 20, sf::Color::White, 1, sf::Color::Black));
     eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
     eObj->add(new CDraw(CDraw::GUI3));

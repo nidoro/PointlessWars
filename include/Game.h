@@ -53,6 +53,7 @@
 #include "ElipsoidalMovementSystem.h"
 #include "SideUISystem.h"
 #include "GUIGroupSystem.h"
+#include "MasterSystem.h"
 
 class Game{
     public:

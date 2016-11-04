@@ -181,8 +181,12 @@ class System{
         virtual void onRemoveGUIGroup(Entity* e){}
         virtual void onUpdateResolutionWithDropList(Entity* e){}
         virtual void onUpdateFullscreenWithToggleButton(Entity* e){}
-        
-
+        virtual void onStopConnectionTry(Entity* e){}
+        virtual void onConnectionSuccessful(Entity* e){}
+        virtual void onConnectionLost(Entity* e){}
+        virtual void onUpdatePlayerNicknameWithInputTextbox(Entity* e){}
+        virtual void onSetServerMessageDisplayerQuickMatch(Entity* e){}
+        virtual void onCancelQuickMatchSearch(Entity* e){}
 
         void subscribe(Message m){
             addObserver(this, m);

@@ -63,7 +63,7 @@ void Game::start(){
     initializeSystem(new ScrollListSystem());
     initializeSystem(new DragDropSystem());
     initializeSystem(new InputTextBoxSystem());
-    //initializeSystem(new NetworkSystem(), -1);
+    initializeSystem(new NetworkSystem(), -1);
     initializeSystem(new ParticleSystem());
     initializeSystem(new AutoPilotSystem());
     initializeSystem(new DropListSystem());
@@ -75,6 +75,7 @@ void Game::start(){
     initializeSystem(new ElipsoidalMovementSystem());
     initializeSystem(new SideUISystem());
     initializeSystem(new GUIGroupSystem());
+    initializeSystem(new MasterSystem());
 
     initializeSystem(new RenderSystem());
 

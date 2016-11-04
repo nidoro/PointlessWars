@@ -328,7 +328,7 @@ void RenderSystem::draw(Entity* e){
             double h = e->get<CTextbox2>()->content.getCharacterSize();
             double x = e->get<CTextbox2>()->content.findCharacterPos(indEnd).x + txtEnd.getLocalBounds().width;
             double y = e->get<CTextbox2>()->content.getPosition().y - h/2;
-            shape.setFillColor(sf::Color::Black);
+            shape.setFillColor(e->get<CInputTextBox>()->blinkColor);
             shape.setSize(sf::Vector2f(1, h));
             shape.setPosition(x, y);
             window->draw(shape);

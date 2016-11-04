@@ -52,7 +52,7 @@ class Entity{
         EntityList& getEmployers();
 
         Entity* getObservedEntity(string id);
-        EntityList getObservedEntities();
+        EntityList getObservedEntities(string prefix = string());
         void addObservedEntity(string id, Entity* e);
         void addObservedEntity(Entity* e);
         void removeObservedEntity(string id);

@@ -105,10 +105,11 @@ Entity* Entity::getObservedEntity(string id){
     map<string, Entity*>::iterator it = observedEntities.find(id);
     return it != observedEntities.end() ? it->second : nullptr;
 }
-EntityList Entity::getObservedEntities(){
+EntityList Entity::getObservedEntities(string prefix){
     EntityList l;
     for (auto& i : observedEntities){
-        l.push_back(i.second);
+        string id = i.first;
+        if (prefix.empty() || hasBegining(id, prefix)) l.push_back(i.second);
     }
     return l;
 }

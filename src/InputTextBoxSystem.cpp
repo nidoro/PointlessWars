@@ -28,6 +28,7 @@ void InputTextBoxSystem::update(){
 
 void InputTextBoxSystem::onTextEntered(Entity* e){
     if(eActive != nullptr){
+        string prvContent = eActive->get<CInputTextBox>()->content;
         char c = e->get<CTextInput>()->value;
         if (eActive->get<CInputTextBox>()->numbersOnly){
             if ((c >= 48 && c <= 57) || c == 8){
@@ -79,6 +80,9 @@ void InputTextBoxSystem::onTextEntered(Entity* e){
             }
         }
         eActive->get<CInputTextBox>()->blinkOn = true;
+        if (eActive->get<CInputTextBox>()->content != prvContent){
+            notify(eActive->get<CInputTextBox>()->msgOnUpdate, eActive);
+        }
     }
 }
 

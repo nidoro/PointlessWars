@@ -472,17 +472,32 @@ struct CButtonTrigger : public Component{
     enum Action{ON_PRESS, ON_RELEASE};
 
     CButtonTrigger():Component(BUTTON_TRIGGER){
-        message = EMPTY_MESSAGE;
+        //message = EMPTY_MESSAGE;
         action = ON_RELEASE;
     }
     CButtonTrigger(Message trigger, Action a = ON_RELEASE, sf::Keyboard::Key hk = sf::Keyboard::Unknown){
-        message = trigger;
+        //message = trigger;
         action = a;
         hotkey = hk;
         mouseButton = sf::Mouse::Left;
+        setUniqueTrigger(trigger);
     }
 
-    Message message;
+    CButtonTrigger(list<Message> triggers, Action a = ON_RELEASE, sf::Keyboard::Key hk = sf::Keyboard::Unknown){
+        //message = trigger;
+        action = a;
+        hotkey = hk;
+        mouseButton = sf::Mouse::Left;
+        msgs = triggers;
+    }
+
+    void setUniqueTrigger(Message msg){
+        msgs.clear();
+        msgs.push_back(msg);
+    }
+
+    list<Message> msgs;
+    //Message message;
     Action action;
     sf::Keyboard::Key hotkey;
     sf::Mouse::Button mouseButton;
@@ -1091,13 +1106,15 @@ struct CDraw : public Component{
 struct CGUIGroup : public Component{
     static Type getType(){return GUI_GROUP;}
 
-    CGUIGroup(string groupType, string groupID){
+    CGUIGroup(string groupType, string groupID, Message msgOnCreate = EMPTY_MESSAGE){
         this->groupType = groupType;
         this->groupID = groupID;
+        this->msgOnCreate = msgOnCreate;
     }
 
     string groupType;
     string groupID;
+    Message msgOnCreate;
 };
 
 struct CPath : public Component{
@@ -1974,9 +1991,11 @@ struct CInputTextBox : public Component{
 
     CInputTextBox(){
         state = INACTIVE;
+        msgOnUpdate = EMPTY_MESSAGE;
     }
-    CInputTextBox(bool ignore, State st = INACTIVE, int max = 500, bool numOnly = false){
-        ignoreEnter = ignore;
+    CInputTextBox(bool ignoreEnter, Message msgOnUpdate = EMPTY_MESSAGE, State st = INACTIVE, int max = 500, bool numOnly = false){
+        this->ignoreEnter = ignoreEnter;
+        this->msgOnUpdate = msgOnUpdate;
         state = st;
         charCount = 0;
         charMax = max;
@@ -1987,6 +2006,7 @@ struct CInputTextBox : public Component{
     }
 
     State state;
+    Message msgOnUpdate;
     string content;
     bool ignoreEnter;
     int charCount;
@@ -1998,6 +2018,7 @@ struct CInputTextBox : public Component{
     sf::Clock blinkTimer;
     double blinkRate;
     bool blinkOn;
+    sf::Color blinkColor;
 };
 
 struct CTextInput : public Component{

@@ -31,13 +31,8 @@ void TextboxSystem::update(){
                     eManager->addModified(e);
                 }
 
-                vector<string> notes;
-                notes.push_back("do4.wav");
-                notes.push_back("mi4.wav");
-                notes.push_back("sol4.wav");
                 Entity* eSound = eManager->createEntity();
                 eSound->add(new CSound("typing-sound.wav", CSound::REMOVE_ENTITY));
-                //eSound->add(new CSound(notes[randomInt(0, notes.size()-1)], true, true));
                 notify(PLAY_SOUND, eSound);
             }
         }
