@@ -154,7 +154,6 @@ void ActionSystem::executeAction(CPlayer::ID id){
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 100, 199)){
         //war.getPlayer(id)->get<CArmy>()->captain = war.getPlayer(id)->get<CArmy>()->captains[war.getNextActionOutcome(id).hero];
         war.getPlayer(id)->get<CArmy>()->idCaptain = war.getNextActionOutcome(id).hero;
-
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 200, 299)){
         notify(PLAY_ACTION, war.getPlayer(id));
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 300, 399)){
@@ -185,6 +184,11 @@ void ActionSystem::executeAction(CPlayer::ID id){
         //to do: remove hero from pool when clicked, not when executing action
         //to do: prevent hero from selecting multiple heroes
         war.getPlayer(id)->get<CPlayer>()->heroDeck.push_back(war.getNextActionOutcome(id).hero);
+        if (war.getRemotelyControled(id)){
+            Entity* eAct = eManager->createEntity();
+            eAct->add(new CAction(war.getNextActionOutcome(id).action));
+            notify(SELECT_ACTION, eAct);
+        }
         //notify(REMOVE_FROM_HERO_POOL, war.getPlayer(id));
     }
 }

@@ -170,6 +170,7 @@ void CommandListener::askHeroPick(Entity* e){
             eOpt->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
         }
     }else{
+        eListener->addObservedEntity("PlayerBeingListenedTo", e);
         //printf("Clearing triggers..\n");
         for(auto& eOpt : eOptionList){
             eOpt->get<CButtonTrigger>()->msgs.clear();
@@ -757,8 +758,10 @@ void CommandListener::onSelectAction(Entity* e){
 
     ///THEN REMOVE OPTIONS FROM SCREEN
     if (war.getSystemAction() == war.ASK_HERO_PICK){
-        eListener->getObservedEntity("HeroOptions")->removeObservedEntity(e);
-        animateButtonOutPuff(e);
+        CCaptain::ID heroID = (int)e->get<CAction>()->id - 600;
+        Entity* eButton = eListener->getObservedEntity("HeroOptions")->getObservedEntity(int2str((int) heroID));
+        eListener->getObservedEntity("HeroOptions")->removeObservedEntity(eButton);
+        animateButtonOutPuff(eButton);
 
     }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
         eArmy->get<CArmy>()->unitCount.clear();
