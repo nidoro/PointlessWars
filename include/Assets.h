@@ -267,8 +267,16 @@ class Assets{
 
     private:
         static void writeTextureMap(ofstream& file);
+
         static void writeTexturesAt(ofstream& file, fs::path p);
+        static void writeSoundsAt(ofstream& file, fs::path p);
+        static void writeMusicAt(ofstream& file, fs::path p);
+        static void writeFontsAt(ofstream& file, fs::path p);
+
         static void readTextureMap(ifstream& file);
+        static void readSoundsMap(ifstream& file);
+        static void readMusicMap(ifstream& file);
+        static void readFontsMap(ifstream& file);
 
         static map<string, NinePatch> ninePatches;
         static map<string, sf::Texture*> textures;

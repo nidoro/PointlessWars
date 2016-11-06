@@ -33,10 +33,11 @@ void Assets::load(){
     loadSoundsAt(rscRoot + "sounds");
     loadMusicsAt(rscRoot + "music");
     loadFontsAt(rscRoot + "fonts");
+
     loadScenariosAt(rscRoot + "sceneries");
     readAnimations();
     readObjects();
-    readFonts();
+    //readFonts();
     readStrings("en");
     readChars();
     //readScenarios();
@@ -50,6 +51,9 @@ void Assets::load(){
     createCaptains();
     createActions();
     createSprites();
+
+    packResources("resource-pack");
+    unpackResources("resource-pack");
 }
 
 void Assets::createNinePatches(){
@@ -1568,21 +1572,47 @@ void Assets::shutdown(){
 void Assets::packResources(string filename){
     ofstream file(filename, ios_base::binary);
 
-    file << "Textures";
-    file << textures.size();
+    char ID[255];
+    int nEntries;
+
+    strcpy(ID, "Textures");
+    nEntries = textures.size();
+    file.write(ID, 255);
+    file.write(reinterpret_cast<const char *>(&nEntries), sizeof(nEntries));
     writeTexturesAt(file, rscRoot + "images");
+    /*
+    file << string("Sounds\n");
+    file << sounds.size();
+    printf("Sounds: %d\n", sounds.size());
+    writeSoundsAt(file, rscRoot + "sounds");
+
+    file << string("Fonts\n");
+    file << fonts.size();
+    printf("Fonts: %d\n", fonts.size());
+    writeFontsAt(file, rscRoot + "fonts");
+
+    file << string("Music\n");
+    file << musics.size();
+    writeMusicAt(file, rscRoot + "music");
+    */
+    file.close();
 }
 
 void Assets::unpackResources(string filename){
     ifstream file(filename, ios_base::binary);
 
-    string ID;
-    int nEntries;
+    char ID[255];
 
-    while (file >> ID){
-        if (ID == "Textures"){
-            file >> nEntries;
+    while (!file.eof()){
+        file.read(ID, 255);
+        if (strcmp(ID, "Textures") == 0){
             readTextureMap(file);
+        }else if (strcmp(ID, "Sounds") == 0){
+            readSoundsMap(file);
+        }else if (strcmp(ID, "Music") == 0){
+            readMusicMap(file);
+        }else if (strcmp(ID, "Fonts") == 0){
+            readFontsMap(file);
         }
     }
 }
@@ -1602,8 +1632,10 @@ void Assets::writeTexturesAt(ofstream& file, fs::path path){
             if (hasEnding(name, ".png") || hasEnding(name, ".jpg") || hasEnding(name, ".bg")){
                 int length;
                 char* memBlock = mallocFile(p.string(), length);
-                file << name;
-                file << length;
+                char charName[255];
+                strcpy(charName, name.c_str());
+                file.write(charName, 255);
+                file.write(reinterpret_cast<const char *>(&length), sizeof(length));
                 file.write(memBlock, length);
                 delete memBlock;
             }
@@ -1625,11 +1657,138 @@ void Assets::writeTexturesAt(ofstream& file, fs::path path){
     }
 }
 
+void Assets::writeSoundsAt(ofstream& file, fs::path path){
+    fs::path p = path;
+    try{
+      if (fs::exists(p)){
+        if (fs::is_regular_file(p)){
+          //cout << p << " size is " << fs::file_size(p) << '\n';
+            //cout << "    " << x.path() << '\n';
+            string name = p.filename().string();
+            if (hasEnding(name, ".ogg") || hasEnding(name, ".wav")){
+                int length;
+                char* memBlock = mallocFile(p.string(), length);
+                file << name;
+                file << length;
+                file.write(memBlock, length);
+                delete memBlock;
+            }
+        }else if (fs::is_directory(p) && p.filename().string() != "obsolet" && p.filename().string() != "trash" && p.filename().string() != "ignore"){
+          //cout << p << " is a directory containing:\n";
+
+          for (fs::directory_entry& x : fs::directory_iterator(p)){
+            string subPath = x.path().string();
+            writeSoundsAt(file, subPath);
+          }
+        }else{
+          cout << p << " exists, but is not a regular file or directory\n";
+        }
+      }
+      else
+        cout << p << " does not exist\n";
+    }catch (const fs::filesystem_error& ex){
+      cout << ex.what() << '\n';
+    }
+}
+
+void Assets::writeMusicAt(ofstream& file, fs::path path){
+    fs::path p = path;
+    try{
+      if (fs::exists(p)){
+        if (fs::is_regular_file(p)){
+          //cout << p << " size is " << fs::file_size(p) << '\n';
+            //cout << "    " << x.path() << '\n';
+            string name = p.filename().string();
+            if (hasEnding(name, ".ogg") || hasEnding(name, ".wav")){
+                int length;
+                char* memBlock = mallocFile(p.string(), length);
+                file << name;
+                file << length;
+                file.write(memBlock, length);
+                delete memBlock;
+            }
+        }else if (fs::is_directory(p) && p.filename().string() != "obsolet" && p.filename().string() != "trash" && p.filename().string() != "ignore"){
+          //cout << p << " is a directory containing:\n";
+
+          for (fs::directory_entry& x : fs::directory_iterator(p)){
+            string subPath = x.path().string();
+            writeMusicAt(file, subPath);
+          }
+        }else{
+          cout << p << " exists, but is not a regular file or directory\n";
+        }
+      }
+      else
+        cout << p << " does not exist\n";
+    }catch (const fs::filesystem_error& ex){
+      cout << ex.what() << '\n';
+    }
+}
+
+void Assets::writeFontsAt(ofstream& file, fs::path path){
+    fs::path p = path;
+    try{
+      if (fs::exists(p)){
+        if (fs::is_regular_file(p)){
+          //cout << p << " size is " << fs::file_size(p) << '\n';
+            //cout << "    " << x.path() << '\n';
+            string name = p.filename().string();
+            if (hasEnding(name, ".ttf") || hasEnding(name, ".TTF")){
+                int length;
+                char* memBlock = mallocFile(p.string(), length);
+                file << name;
+                file << length;
+                file.write(memBlock, length);
+                delete memBlock;
+            }
+        }else if (fs::is_directory(p) && p.filename().string() != "obsolet" && p.filename().string() != "trash" && p.filename().string() != "ignore"){
+          //cout << p << " is a directory containing:\n";
+
+          for (fs::directory_entry& x : fs::directory_iterator(p)){
+            string subPath = x.path().string();
+            writeFontsAt(file, subPath);
+          }
+        }else{
+          cout << p << " exists, but is not a regular file or directory\n";
+        }
+      }
+      else
+        cout << p << " does not exist\n";
+    }catch (const fs::filesystem_error& ex){
+      cout << ex.what() << '\n';
+    }
+}
+
 void Assets::readTextureMap(ifstream& file){
+    int nEntries;
+    file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
+
+    textures.clear();
+    cout << nEntries << endl;
+    for (int i = 0; i < nEntries; i++){
+        char entryKey[255];
+        int entryLength;
+        char* memBlock;
+        file.read(entryKey, 255);
+        file.read(reinterpret_cast<char*> (&entryLength), sizeof(&entryLength));
+        memBlock = new char[entryLength];
+        file.read(memBlock, entryLength);
+        cout << entryKey << endl;
+        sf::Texture* texture = new sf::Texture();
+        if (!texture->loadFromMemory(memBlock, entryLength)){
+            printf("Texture not found: %s\n", entryKey);
+        }
+        textures.insert(make_pair(entryKey, texture));
+        delete memBlock;
+    }
+}
+
+void Assets::readSoundsMap(ifstream& file){
     unsigned int nEntries;
     file >> nEntries;
 
-    textures.clear();
+    sounds.clear();
+    printf("sounds entries %d\n", nEntries);
     for (int i = 0; i < nEntries; i++){
         string entryKey;
         int entryLength;
@@ -1639,11 +1798,60 @@ void Assets::readTextureMap(ifstream& file){
         memBlock = new char(entryLength);
         file.read(memBlock, entryLength);
 
-        sf::Texture* texture = new sf::Texture();
-        if (!texture->loadFromMemory(memBlock, entryLength)){
-            printf("Texture not found: %s\n", entryKey.c_str());
+        sf::SoundBuffer* soundBuffer = new sf::SoundBuffer();
+        if (!soundBuffer->loadFromMemory(memBlock, entryLength)){
+            printf("Sound not found: %s\n", entryKey.c_str());
         }
-        textures.insert(make_pair(entryKey, texture));
+        sounds.insert(make_pair(entryKey, soundBuffer));
+        delete memBlock;
+    }
+}
+
+void Assets::readMusicMap(ifstream& file){
+    unsigned int nEntries;
+    file >> nEntries;
+
+    musics.clear();
+    printf("music entries %d\n", nEntries);
+    for (int i = 0; i < nEntries; i++){
+        string entryKey;
+        int entryLength;
+        char* memBlock;
+        file >> entryKey;
+        file >> entryLength;
+        memBlock = new char(entryLength);
+        file.read(memBlock, entryLength);
+
+        sf::Music* music = new sf::Music();
+        if (!music->openFromMemory(memBlock, entryLength)){
+            printf("Music not found: %s\n", entryKey.c_str());
+        }
+        musics.insert(make_pair(entryKey, music));
+        delete memBlock;
+    }
+}
+
+void Assets::readFontsMap(ifstream& file){
+    unsigned int nEntries;
+    file >> nEntries;
+
+    fonts.clear();
+    printf("font entries %d\n", nEntries);
+    for (int i = 0; i < nEntries; i++){
+        string entryKey;
+        int entryLength;
+        char* memBlock;
+        file >> entryKey;
+        file >> entryLength;
+        memBlock = new char(entryLength);
+        file.read(memBlock, entryLength);
+
+        sf::Font font;
+        printf("Loading font: %s\n", entryKey.c_str());
+        if (!font.loadFromMemory(memBlock, entryLength)){
+            printf("Font not found: %s\n", entryKey.c_str());
+        }
+        fonts.insert(make_pair(entryKey, font));
         delete memBlock;
     }
 }
