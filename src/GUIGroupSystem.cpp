@@ -73,6 +73,8 @@ void GUIGroupSystem::createWindowOptions(Entity* e){
     eGUI->add(new CTexture("9p-logo-frame.png"));
     eGUI->add(new CDimensions(wPanel, hPanel));
     eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CButtonState());
+    eGUI->add(new CButtonTrigger(EMPTY_MESSAGE));
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CDraw(CDraw::GUI_00));
     eGUI->add(new CUILayer(CUILayer::L1));
@@ -265,6 +267,8 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     eGUI->add(new CTexture("9p-logo-frame.png"));
     eGUI->add(new CDimensions(wPanel, hPanel));
     eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CButtonState());
+    eGUI->add(new CButtonTrigger(EMPTY_MESSAGE));
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CDraw(CDraw::GUI_00));
     eGUI->add(new CUILayer(CUILayer::L1));
@@ -401,6 +405,8 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
     eGUI->add(new CTexture("9p-logo-frame.png"));
     eGUI->add(new CDimensions(wPanel, hPanel));
     eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CButtonState());
+    eGUI->add(new CButtonTrigger(EMPTY_MESSAGE));
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CDraw(CDraw::GUI_00));
     eGUI->add(new CUILayer(CUILayer::L1));
@@ -511,7 +517,7 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
     eObj->attachEmployer(eGUI->getObservedEntity("page-quick-match"));
 
     /// Quick Match server Message
-    y += spcButton;
+    y += 2*spcButton;
     eObj = eManager->createEntity();
     eObj->add(new CPosition(x, y - spcButton/2));
     eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::White));
@@ -534,15 +540,8 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
 
 void GUIGroupSystem::onMouseButtonPressed(Entity* e){
     for (Entity* eGUI : entities){
-        if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->get<CUILayer>()->layer == topUILayer){
-            sf::FloatRect hitbox;
-            hitbox.left = eGUI->get<CPosition>()->x - eGUI->get<CButtonHitbox>()->width/2;
-            hitbox.top = eGUI->get<CPosition>()->y - eGUI->get<CButtonHitbox>()->height/2;
-            hitbox.width = eGUI->get<CButtonHitbox>()->width;
-            hitbox.height = eGUI->get<CButtonHitbox>()->height;
-            sf::Vector2i mousePosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
-            sf::Vector2f mp = window->mapPixelToCoords(mousePosition);
-            if (!hitbox.contains(mp)){
+        if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->has(Component::BUTTON_STATE) && eGUI->get<CUILayer>()->layer == topUILayer){
+            if (eGUI->get<CButtonState>()->state == CButtonState::NON_ACTIVE && eGUI->get<CButtonState>()->state != CButtonState::LOCKED){
                 notify(REMOVE_GUI_GROUP, eGUI);
             }
         }
