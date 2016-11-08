@@ -14,6 +14,8 @@ map<string, string> Assets::stringMap;
 map<string, sf::SoundBuffer*> Assets::sounds;
 map<string, sf::Music*> Assets::musics;
 map<string, NinePatch> Assets::ninePatches;
+map<string, char*> Assets::musicBuffers;
+map<string, char*> Assets::fontBuffers;
 vector<sf::Color> Assets::colors;
 vector< vector<sf::Color> > Assets::scale;
 string Assets::primaryFont = "8bitOperatorPlusSC-Bold.ttf";
@@ -29,10 +31,13 @@ Assets::~Assets(){
 }
 
 void Assets::load(){
-    loadTexturesAt(rscRoot + "images");
-    loadSoundsAt(rscRoot + "sounds");
-    loadMusicsAt(rscRoot + "music");
-    loadFontsAt(rscRoot + "fonts");
+    //loadTexturesAt(rscRoot + "images");
+    //loadSoundsAt(rscRoot + "sounds");
+    //loadMusicsAt(rscRoot + "music");
+    //loadFontsAt(rscRoot + "fonts");
+
+    packResources(rscRoot + "resources");
+    unpackResources(rscRoot + "resources");
 
     loadScenariosAt(rscRoot + "sceneries");
     readAnimations();
@@ -51,9 +56,6 @@ void Assets::load(){
     createCaptains();
     createActions();
     createSprites();
-
-    packResources("resource-pack");
-    unpackResources("resource-pack");
 }
 
 void Assets::createNinePatches(){
@@ -1566,6 +1568,12 @@ void Assets::shutdown(){
     for(auto& i : scale){
         i.clear();
     }
+    for(auto& i : musicBuffers){
+        delete i.second;
+    }
+    for(auto& i : fontBuffers){
+        delete i.second;
+    }
     scale.clear();
 }
 
@@ -1576,25 +1584,32 @@ void Assets::packResources(string filename){
     int nEntries;
 
     strcpy(ID, "Textures");
-    nEntries = textures.size();
+    nEntries = getFilesCount(rscRoot + "images", {".png", ".jpg", ".bg"});
+    printf("Textures: %d\n", nEntries);
     file.write(ID, 255);
     file.write(reinterpret_cast<const char *>(&nEntries), sizeof(nEntries));
-    writeTexturesAt(file, rscRoot + "images");
-    /*
-    file << string("Sounds\n");
-    file << sounds.size();
-    printf("Sounds: %d\n", sounds.size());
-    writeSoundsAt(file, rscRoot + "sounds");
+    writeFilesAt(file, rscRoot + "images", {".png", ".jpg", ".bg"});
 
-    file << string("Fonts\n");
-    file << fonts.size();
-    printf("Fonts: %d\n", fonts.size());
-    writeFontsAt(file, rscRoot + "fonts");
+    strcpy(ID, "Sounds");
+    nEntries = getFilesCount(rscRoot + "sounds", {".ogg", ".wav"});
+    file.write(ID, 255);
+    file.write(reinterpret_cast<const char *>(&nEntries), sizeof(nEntries));
+    writeFilesAt(file, rscRoot + "sounds", {".ogg", ".wav"});
 
-    file << string("Music\n");
-    file << musics.size();
-    writeMusicAt(file, rscRoot + "music");
-    */
+    strcpy(ID, "Music");
+    nEntries = getFilesCount(rscRoot + "music", {".ogg", ".wav"});
+    printf("Musics: %d\n", nEntries);
+    file.write(ID, 255);
+    file.write(reinterpret_cast<const char *>(&nEntries), sizeof(nEntries));
+    writeFilesAt(file, rscRoot + "music", {".ogg", ".wav"});
+
+    strcpy(ID, "Fonts");
+    nEntries = getFilesCount(rscRoot + "fonts", {".ttf", ".TTF"});
+    printf("Fonts: %d\n", nEntries);
+    file.write(ID, 255);
+    file.write(reinterpret_cast<const char *>(&nEntries), sizeof(nEntries));
+    writeFilesAt(file, rscRoot + "fonts", {".ttf", ".TTF"});
+
     file.close();
 }
 
@@ -1604,6 +1619,7 @@ void Assets::unpackResources(string filename){
     char ID[255];
 
     while (!file.eof()){
+        strcpy(ID, "");
         file.read(ID, 255);
         if (strcmp(ID, "Textures") == 0){
             readTextureMap(file);
@@ -1617,8 +1633,67 @@ void Assets::unpackResources(string filename){
     }
 }
 
-void Assets::writeTextureMap(ofstream& file){
+int Assets::getFilesCount(fs::path path, list<string> extensions){
+    fs::path p = path;
+    int count = 0;
+    try{
+      if (fs::exists(p)){
+        if (fs::is_regular_file(p)){
+            string name = p.filename().string();
+            for(string& ext : extensions){
+                if (hasEnding(name, ext)){
+                    count++;
+                }
+            }
+        }else if (fs::is_directory(p) && p.filename().string() != "obsolet" && p.filename().string() != "trash" && p.filename().string() != "ignore"){
+          for (fs::directory_entry& x : fs::directory_iterator(p)){
+            string subPath = x.path().string();
+            count += getFilesCount(subPath, extensions);
+          }
+        }else{
+          cout << p << " exists, but is not a regular file or directory\n";
+        }
+      }
+      else
+        cout << p << " does not exist\n";
+    }catch (const fs::filesystem_error& ex){
+      cout << ex.what() << '\n';
+    }
+    return count;
+}
 
+void Assets::writeFilesAt(ofstream& file, fs::path path, list<string> extensions){
+    fs::path p = path;
+    try{
+      if (fs::exists(p)){
+        if (fs::is_regular_file(p)){
+            string name = p.filename().string();
+            for(string& ext : extensions){
+                if (hasEnding(name, ext)){
+                    int length;
+                    char* memBlock = mallocFile(p.string(), length);
+                    char charName[255];
+                    strcpy(charName, name.c_str());
+                    file.write(charName, 255);
+                    file.write(reinterpret_cast<const char *>(&length), sizeof(length));
+                    file.write(memBlock, length);
+                    delete memBlock;
+                }
+            }
+        }else if (fs::is_directory(p) && p.filename().string() != "obsolet" && p.filename().string() != "trash" && p.filename().string() != "ignore"){
+          for (fs::directory_entry& x : fs::directory_iterator(p)){
+            string subPath = x.path().string();
+            writeFilesAt(file, subPath, extensions);
+          }
+        }else{
+          cout << p << " exists, but is not a regular file or directory\n";
+        }
+      }
+      else
+        cout << p << " does not exist\n";
+    }catch (const fs::filesystem_error& ex){
+      cout << ex.what() << '\n';
+    }
 }
 
 void Assets::writeTexturesAt(ofstream& file, fs::path path){
@@ -1764,7 +1839,6 @@ void Assets::readTextureMap(ifstream& file){
     file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
 
     textures.clear();
-    cout << nEntries << endl;
     for (int i = 0; i < nEntries; i++){
         char entryKey[255];
         int entryLength;
@@ -1773,10 +1847,9 @@ void Assets::readTextureMap(ifstream& file){
         file.read(reinterpret_cast<char*> (&entryLength), sizeof(&entryLength));
         memBlock = new char[entryLength];
         file.read(memBlock, entryLength);
-        cout << entryKey << endl;
         sf::Texture* texture = new sf::Texture();
         if (!texture->loadFromMemory(memBlock, entryLength)){
-            printf("Texture not found: %s\n", entryKey);
+            printf("Failed to load texture from memory: %s\n", entryKey);
         }
         textures.insert(make_pair(entryKey, texture));
         delete memBlock;
@@ -1784,23 +1857,21 @@ void Assets::readTextureMap(ifstream& file){
 }
 
 void Assets::readSoundsMap(ifstream& file){
-    unsigned int nEntries;
-    file >> nEntries;
+    int nEntries;
+    file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
 
     sounds.clear();
-    printf("sounds entries %d\n", nEntries);
     for (int i = 0; i < nEntries; i++){
-        string entryKey;
+        char entryKey[255];
         int entryLength;
         char* memBlock;
-        file >> entryKey;
-        file >> entryLength;
-        memBlock = new char(entryLength);
+        file.read(entryKey, 255);
+        file.read(reinterpret_cast<char*> (&entryLength), sizeof(&entryLength));
+        memBlock = new char[entryLength];
         file.read(memBlock, entryLength);
-
         sf::SoundBuffer* soundBuffer = new sf::SoundBuffer();
         if (!soundBuffer->loadFromMemory(memBlock, entryLength)){
-            printf("Sound not found: %s\n", entryKey.c_str());
+            printf("Failed to load sound from memory: %s\n", entryKey);
         }
         sounds.insert(make_pair(entryKey, soundBuffer));
         delete memBlock;
@@ -1808,51 +1879,48 @@ void Assets::readSoundsMap(ifstream& file){
 }
 
 void Assets::readMusicMap(ifstream& file){
-    unsigned int nEntries;
-    file >> nEntries;
+    int nEntries;
+    file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
+    printf("Reading %d musics", nEntries);
 
     musics.clear();
-    printf("music entries %d\n", nEntries);
     for (int i = 0; i < nEntries; i++){
-        string entryKey;
+        char entryKey[255];
         int entryLength;
         char* memBlock;
-        file >> entryKey;
-        file >> entryLength;
-        memBlock = new char(entryLength);
+        file.read(entryKey, 255);
+        file.read(reinterpret_cast<char*> (&entryLength), sizeof(&entryLength));
+        memBlock = new char[entryLength];
         file.read(memBlock, entryLength);
-
         sf::Music* music = new sf::Music();
         if (!music->openFromMemory(memBlock, entryLength)){
-            printf("Music not found: %s\n", entryKey.c_str());
+            printf("Failed to load music from memory: %s\n", entryKey);
         }
         musics.insert(make_pair(entryKey, music));
-        delete memBlock;
+        musicBuffers.insert(make_pair(entryKey, memBlock));
     }
 }
 
 void Assets::readFontsMap(ifstream& file){
-    unsigned int nEntries;
-    file >> nEntries;
+    int nEntries;
+    file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
+    printf("Reading %d fonts", nEntries);
 
     fonts.clear();
-    printf("font entries %d\n", nEntries);
     for (int i = 0; i < nEntries; i++){
-        string entryKey;
+        char entryKey[255];
         int entryLength;
         char* memBlock;
-        file >> entryKey;
-        file >> entryLength;
-        memBlock = new char(entryLength);
+        file.read(entryKey, 255);
+        file.read(reinterpret_cast<char*> (&entryLength), sizeof(&entryLength));
+        memBlock = new char[entryLength];
         file.read(memBlock, entryLength);
-
         sf::Font font;
-        printf("Loading font: %s\n", entryKey.c_str());
         if (!font.loadFromMemory(memBlock, entryLength)){
-            printf("Font not found: %s\n", entryKey.c_str());
+            printf("Failed to load font from memory: %s (%d)\n", entryKey, i);
         }
         fonts.insert(make_pair(entryKey, font));
-        delete memBlock;
+        fontBuffers.insert(make_pair(entryKey, memBlock));
     }
 }
 

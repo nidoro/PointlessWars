@@ -266,8 +266,8 @@ class Assets{
         static string rscRoot;
 
     private:
-        static void writeTextureMap(ofstream& file);
-
+        static int getFilesCount(fs::path path, list<string> extensions);
+        static void writeFilesAt(ofstream& file, fs::path p, list<string> extensions);
         static void writeTexturesAt(ofstream& file, fs::path p);
         static void writeSoundsAt(ofstream& file, fs::path p);
         static void writeMusicAt(ofstream& file, fs::path p);
@@ -292,6 +292,9 @@ class Assets{
         static map<string, string> stringMap;
         static map<string, sf::Music*> musics;
         static map<string, sf::SoundBuffer*> sounds;
+
+        static map<string, char*> musicBuffers;
+        static map<string, char*> fontBuffers;
 
 };
 
