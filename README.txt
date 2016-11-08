@@ -1,26 +1,22 @@
 ==========================================
  Pointless Wars
- Version: 0.0.0.0-0-closed-alpha
 ==========================================
-Versioning guidelines:
-    Given a version number TARGET.FEATURE.STEP-ASSETS-LABEL:
-        The TARGET is incremented whenever the feature and assets goals of the current target are reached.
-        The FEATURE is incremented whenever a new feature required by target is added or a broken feature is fixed.
-        The STEP is incremented whenever a step is made towards the development or correction of a feature.
-        The ASSETS is incremented whenever there is a change on the assets being used.
-    
-    This versioning system is used exclusively for the TARGET's branches.
-    The developers are free to clone the project and work on features using whatever versioning system they want.
-    When pushing the changes to the TARGET's branch, this file should be modified to mention the major changes* made and increment the version.
-    Whenever the TARGET is incremented, a new branch is made for the new TARGET.
-
-    *Are considered major changes:
-        (1) Any STEP or FEATURE increment reason.
-        (2) Addition or removal of source/header files from project;
-        (3) Addition or removal of external dependencies from project;
-    In case of 2 and 3, a building example should always be given/updated and its location should be mentioned here.
--------------------------------------------
-Major changes:
-
-Known bugs:
+Repository guidelines:
+    This repository follows a gitflow workflow. There are two fixed branches:
+        master:     stores the official release history. The name of all commits in the 
+                    master branch must contain a version number tag. MUST be stable.
+        develop:    serves as an integration branch for features. SHOULD be stable.
+    Other types of branches are created and removed by developers throughout development:
+        feature:    basically any type of change, bug fixing, addition or removal of 
+                    features, etc. Can be broken.
+        rc:         a branch for release candidates.
+        hotfix:     branch to fix problems encountered in master that have a quick solution.
+    Branch name convention: feature-*feature-name-or-description*, rc-*version*,
+    hotfix-*issue-or-bug*.
+    Developers workflow: start a new feature branch from the tip of the develop branch.
+    After the work is done, push changes into develop. When the set of features required
+    by the next master iteration is complete, create release candidate branch. If release
+    candidate is approved, push it to master. If a small problem with a quick solution is
+    found in master, create a hotfix branch to create and test the fix. Then push fix to 
+    master, remembering to update master version.
 
