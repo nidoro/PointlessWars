@@ -8,7 +8,7 @@ Repository guidelines:
         develop:    serves as an integration branch for features. SHOULD be stable.
     Other types of branches are created and removed by developers throughout development:
         feature:    basically any type of change, bug fixing, addition or removal of 
-                    features, etc. Can be broken.
+                    features, etc. CAN be broken.
         rc:         a branch for release candidates.
         hotfix:     branch to fix problems encountered in master that have a quick solution.
     Branch name convention: feature-*feature-name-or-description*, rc-*version*,
