@@ -18,13 +18,13 @@
       rc-<version-number>
       hotfix-<issue-or-bug>
     Programmers workflow:
-      Changes on the project tree should not happen without the consent of the lead programmer.
       Start a new trackable feature branch from the tip of the develop branch. After the 
       work is done, create pull request to merge your changes into develop. When the set of features
       required by the next master iteration is complete, create release candidate branch.
       If release candidate is approved, push it to master. If a small problem with a quick
       solution is found in master, create a hotfix branch to create and test the fix. Then
       push fix to master, remembering to update master version.
+      Changes on the project tree should not happen without the consent of the lead programmer.
     Artists workflow (windows):
       (0) Setting up your workspace. Only done once.
           I    Download the GitHub windows client. Google it.
