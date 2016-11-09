@@ -4,24 +4,24 @@
   
 This repository follows a gitflow workflow. There are two fixed branches at the origin:
 
- * 'master': stores the official release history. The name of all commits in the 
-master branch must contain a version number tag. MUST be stable.
- * 'develop': serves as an integration branch for features and assets. SHOULD be stable.
+ * 'master':   stores the official release history. The name of all commits in the 
+               master branch must contain a version number tag. MUST be stable.
+ * 'develop':  serves as an integration branch for features and assets. SHOULD be stable.
   
 Other types of branches are created and removed by developers throughout development:
 
  * feature:    stores any type of change on code, bug fixing, addition or removal of 
-              features, etc. CAN be broken.
- * assets:     stores any type of change on assets.
+               features, etc. CAN be broken.
+ * asset:      stores any type of change on assets.
  * rc:         a branch for release candidates.
  * hotfix:     branch to fix problems encountered in master that have a quick solution.
-  
-###  Branch name convention (without <>): 
 
- * feature-<feature-name-or-description>
- * assets-<asset-type-or-description>
- * rc-<version-number>
- * hotfix-<issue-or-bug>
+A branch name should be prefixed with the branch type, followed by a dash.
+Example: asset-characters
+
+Make sure the branch you are working on has its type as name prefix. For instance, if you
+are working on a fix for the button feature, call it feature-fix-button, or if the problem
+you are working on has an open issue #53, call it feature-iss53. Anyway, be descriptive.
   
 ###  Programmers workflow:
 
