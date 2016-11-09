@@ -7,67 +7,45 @@
 		<Option compiler="mingw-620" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../pw-debug" prefix_auto="1" extension_auto="1" />
-				<Option working_dir=".." />
+				<Option output="../bin/windows-debug/pw-debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/windows-debug" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="mingw-620" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add library="sfml-graphics-s-d" />
-					<Add library="sfml-window-s-d" />
-					<Add library="sfml-audio-s-d" />
-					<Add library="sfml-network-s-d" />
-					<Add library="sfml-system-s-d" />
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-audio-d" />
+					<Add library="sfml-network-d" />
+					<Add library="sfml-system-d" />
 					<Add library="boost_filesystem-mgw62-d-1_60" />
 					<Add library="boost_system-mgw62-d-1_60" />
-					<Add library="freetype" />
-					<Add library="jpeg" />
-					<Add library="winmm" />
-					<Add library="gdi32" />
-					<Add library="openal32" />
-					<Add library="opengl32" />
-					<Add library="flac" />
-					<Add library="vorbisenc" />
-					<Add library="vorbisfile" />
-					<Add library="vorbis" />
-					<Add library="ogg" />
-					<Add library="ws2_32" />
 					<Add directory="C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug/link-static" />
 					<Add directory="C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug/link-static" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="../Pointless Wars" prefix_auto="1" extension_auto="1" />
-				<Option working_dir=".." />
+				<Option output="../bin/windows/Pointless Wars" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/windows" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="mingw-620" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add library="sfml-graphics-s" />
-					<Add library="sfml-window-s" />
-					<Add library="sfml-audio-s" />
-					<Add library="sfml-network-s" />
-					<Add library="sfml-system-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-audio" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
 					<Add library="boost_filesystem-mgw62-1_60" />
 					<Add library="boost_system-mgw62-1_60" />
-					<Add library="freetype" />
-					<Add library="jpeg" />
-					<Add library="winmm" />
-					<Add library="gdi32" />
-					<Add library="opengl32" />
-					<Add library="openal32" />
-					<Add library="flac" />
-					<Add library="vorbisenc" />
-					<Add library="vorbisfile" />
-					<Add library="vorbis" />
-					<Add library="ogg" />
-					<Add library="ws2_32" />
 					<Add directory="C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/release/link-static" />
 					<Add directory="C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/release/link-static" />
 				</Linker>
@@ -76,16 +54,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++0x" />
-			<Add option="-static-libstdc++" />
-			<Add option="-static-libgcc" />
 			<Add option="-D_USE_MATH_DEFINES" />
 			<Add option="-DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS" />
-			<Add option="-DSFML_STATIC" />
 			<Add directory="C:/Libs/SFML-2.4.0/include" />
 			<Add directory="C:/Libs/boost_1_60_0" />
 			<Add directory="../include" />
 		</Compiler>
 		<Linker>
+			<Add library="opengl32" />
 			<Add directory="C:/Libs/SFML-2.4.0/lib" />
 		</Linker>
 		<Unit filename="../include/AISystem.h" />
@@ -120,6 +96,7 @@
 		<Unit filename="../include/InGameMenu.h" />
 		<Unit filename="../include/InputTextBoxSystem.h" />
 		<Unit filename="../include/MainMenuSystem.h" />
+		<Unit filename="../include/MasterSystem.h" />
 		<Unit filename="../include/MatchConfig.h" />
 		<Unit filename="../include/Messages.h" />
 		<Unit filename="../include/NetworkSystem.h" />
@@ -150,9 +127,6 @@
 		<Unit filename="../include/imgui_SFML.h" />
 		<Unit filename="../include/imgui_internal.h" />
 		<Unit filename="../include/tinyxml2.h" />
-		<Unit filename="../os-windows/rsc.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
 		<Unit filename="../src/AISystem.cpp" />
 		<Unit filename="../src/ActionOutcome.cpp" />
 		<Unit filename="../src/ActionSystem.cpp" />
@@ -185,6 +159,7 @@
 		<Unit filename="../src/InGameMenu.cpp" />
 		<Unit filename="../src/InputTextBoxSystem.cpp" />
 		<Unit filename="../src/MainMenuSystem.cpp" />
+		<Unit filename="../src/MasterSystem.cpp" />
 		<Unit filename="../src/MatchConfig.cpp" />
 		<Unit filename="../src/NetworkSystem.cpp" />
 		<Unit filename="../src/OptionBoxSystem.cpp" />
@@ -214,6 +189,9 @@
 		<Unit filename="../src/imgui_draw.cpp" />
 		<Unit filename="../src/main.cpp" />
 		<Unit filename="../src/tinyxml2.cpp" />
+		<Unit filename="rsc.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
