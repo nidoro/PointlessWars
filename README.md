@@ -4,22 +4,26 @@
   
 This repository follows a gitflow workflow. There are two public branches:
 
- * master:     stores the official release history. The name of all commits in the 
-               master branch must contain a version number tag. MUST be stable.
- * develop:    serves as an integration branch for features and assets. SHOULD be stable.
-  
-Other types of branches are created and removed by developers throughout development
-and may or may not be public before developer(s) decides to submit to review:
+ * master:     stores the official release history. Release commits are
+               tagged with the version number.
+ * develop:    serves as an integration branch for private branches.
  
- * feature:    stores any type of change on code, bug fixing, addition or removal of 
-               features, etc. MAY be unstable.
- * asset:      stores any type of change on assets.
+The following are called private branches:
+
+ * code:       stores any type of change on code.
+ * resource:   stores any type of change on resources.
+ * external:   stores any type of change on external libraries or resources.
  * rc:         a branch for release candidates.
  * hotfix:     branch to fix issues encountered in master that have a quick solution.
 
+Although anyone can see and modify these branches, it is intended that a private
+branch is for private use only, meaning that before the branch owner request a pull
+from the develop branch, no other team member should make commits on that branch
+without the consent of the owner.
+
 A branch name MUST be prefixed with the branch type followed by a slash.
-Examples: asset/characters, feature/gui_animated_button
-  
+Examples: resource/animations, code/gui_system
+
 ###  Programmers workflow:
 
 Start a new trackable feature branch from the tip of the develop branch. After the 
@@ -37,9 +41,9 @@ Changes on the project tree should not happen without the consent of the lead pr
  1. Download the GitHub windows client. Google it.
  2. Clone the nidoro/PointlessWars repository.
  3. At the top left corner, select the 'develop' branch by clicking on the button
- whose tooltip says 'Switch to a different branch'.
+    whose tooltip says 'Switch to a different branch'.
  4. At the top left corner, click on the icon whose tooltip says 'Create
- new branch'. Give it a name following the name convention.
+    new branch'. Give it a name following the name convention.
  5. At the top right corner, click on 'Publish' to store your branch in the cloud.
  
 #### Step 1: Update your branch.
@@ -48,9 +52,9 @@ Changes on the project tree should not happen without the consent of the lead pr
  2. At the top left corner, select the develop branch.
  3. At the top right corner, click on Sync to download the changes made on develop.
  4. At the top left corner, click on Compare if that option exists, then select your
- branch on the list.
+    branch on the list.
  5. At the top left corner, click on update from develop. If you can't, it means
- your branch is already up to date with the develop branch.
+    your branch is already up to date with the develop branch.
 
 #### Step 2: Make local changes.
 
@@ -61,7 +65,7 @@ using the GitHub windows client (software):
  1. Open the client.
  2. At the top left corner, select your branch.
  3. At the top center, click on Changes to view the changes you've made since 
- your last commit.
+    your last commit.
  4. Fill the summary and description fields with information about your changes.
  5. Click on commit.
 
@@ -74,8 +78,8 @@ If you want to make more changes before submiting them to review, go to 1.
  1. Open the client.
  2. At the top left corner, select your branch.
  3. At the top right corner, click on Pull Request if that option exists
- and go to IV. If it doesn't, it means your last pull request is still
- under review. Click on it and update the pull request information.
+    and go to IV. If it doesn't, it means your last pull request is still
+    under review. Click on it and update the pull request information.
  4. Where it says: from <your-branch> into (...), select the 'develop' branch.
  5. Fill the title and description fields with information about your changes.
  6. Click on Send Pull Request.
