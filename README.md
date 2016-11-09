@@ -2,26 +2,23 @@
   
 ###  Repository guidelines:
   
-This repository follows a gitflow workflow. There are two fixed branches at the origin:
+This repository follows a gitflow workflow. There are two public branches:
 
- * 'master':   stores the official release history. The name of all commits in the 
+ * master:     stores the official release history. The name of all commits in the 
                master branch must contain a version number tag. MUST be stable.
- * 'develop':  serves as an integration branch for features and assets. SHOULD be stable.
+ * develop:    serves as an integration branch for features and assets. SHOULD be stable.
   
-Other types of branches are created and removed by developers throughout development:
-
+Other types of branches are created and removed by developers throughout development
+and may or may not be public before developer(s) decides to submit to review:
+ 
  * feature:    stores any type of change on code, bug fixing, addition or removal of 
-               features, etc. CAN be broken.
+               features, etc. MAY be unstable.
  * asset:      stores any type of change on assets.
  * rc:         a branch for release candidates.
- * hotfix:     branch to fix problems encountered in master that have a quick solution.
+ * hotfix:     branch to fix issues encountered in master that have a quick solution.
 
-A branch name should be prefixed with the branch type, followed by a dash.
-Example: asset-characters
-
-Make sure the branch you are working on has its type as name prefix. For instance, if you
-are working on a fix for the button feature, call it feature-fix-button, or if the problem
-you are working on has an open issue #53, call it feature-iss53. Anyway, be descriptive.
+A branch name MUST be prefixed with the branch type followed by a slash.
+Examples: asset/characters, feature/gui_animated_button
   
 ###  Programmers workflow:
 
