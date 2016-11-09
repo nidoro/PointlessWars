@@ -45,7 +45,7 @@ Changes on the project tree should not happen without the consent of the lead pr
  new branch'. Give it a name following the name convention.
  5. At the top right corner, click on 'Publish' to store your branch in the cloud.
  
-###  Step 1: Update your branch.
+#### Step 1: Update your branch.
 
  1. Open the client.
  2. At the top left corner, select the develop branch.
@@ -55,7 +55,7 @@ Changes on the project tree should not happen without the consent of the lead pr
  5. At the top left corner, click on update from develop. If you can't, it means
  your branch is already up to date with the develop branch.
 
-###  Step 2: Make local changes.
+#### Step 2: Make local changes.
 
 Do your thing normally. Modify, create or delete files, whatever. After you are done
 with your changes, you have to commit your changes on the git software. If you are
@@ -72,7 +72,7 @@ At the top right corner, click on Sync to store your changes in the cloud.
 If you are done with your changes and are ready to submit them for review, go to 3.
 If you want to make more changes before submiting them to review, go to 1.
 
-###  Step 3: Submit your changes to review.
+#### Step 3: Submit your changes to review.
 
  1. Open the client.
  2. At the top left corner, select your branch.
