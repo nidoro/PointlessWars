@@ -1,5 +1,7 @@
   Pointless Wars
+  
   Repository guidelines:
+  
   This repository follows a gitflow workflow. There are two fixed branches at the origin:
     master:     stores the official release history. The name of all commits in the 
                 master branch must contain a version number tag. MUST be stable.
