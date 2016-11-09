@@ -1,6 +1,6 @@
-  Pointless Wars
+  #Pointless Wars#
   
-  Repository guidelines:
+  ##Repository guidelines:##
   
   This repository follows a gitflow workflow. There are two fixed branches at the origin:
     master:     stores the official release history. The name of all commits in the 
