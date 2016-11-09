@@ -65,9 +65,7 @@
           V    Fill the title and description fields with information about your changes.
           VI   Click on Send Pull Request.
         Go to 1. Loop eternaly.
-        
-      Start a new assets branch from the tip of the develop branch. After the work is done,
-      commit the changes and create a pull request to merge the changes into the develop
-      branch. Keep your branch up to date with the develop branch.
-      WARNING: you should not update your branch from develop if your last pull request
-      is still under review. This will discard all of your changes since the last update.
+    Everyone:
+      master and develop branches should never be deleted.
+      If you can't Sync the develop branch through the GitHub desktop app, pull the remote
+      develop branch through the command line.
