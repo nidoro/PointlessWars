@@ -26,4 +26,5 @@
       master, remembering to update master version.
     Artists instructions:
       Start a new assets branch from the tip of the develop branch. After the work is done,
-      create a pull request to merge the changes into the develop branch.
+      commit the changes and create a pull request to merge the changes into the develop
+      branch. Keep your branch up to date with the develop branch.
