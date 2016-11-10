@@ -4,7 +4,7 @@ project(PointlessWars)
 #=========================
 # GLOBAL COMPILER OPTIONS
 #=========================
-add_compile_options(-Wall -std=c++0x -static-libstdc++ -static-libgcc)
+add_compile_options(-Wall -std=c++0x)
 add_definitions(-D_USE_MATH_DEFINES -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS)
 link_directories(C:/Libs/SFML-2.4.0/lib)
 link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/release)
