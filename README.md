@@ -26,15 +26,14 @@ Examples: resource/animations, code/gui_system
 
 ###  Programmers workflow:
 
-Start a new trackable feature branch from the tip of the develop branch. After the 
+Start a new trackable code branch from the tip of the develop branch. After the 
 work is done, create pull request to merge your changes into develop. When the set of features
-required by the next master iteration is complete, create release candidate branch.
-If release candidate is approved, push it to master. If a small problem with a quick
+required by the next master iteration is complete, create a release candidate branch.
+If the PR is approved, merge into master. If a small problem with a quick
 solution is found in master, create a hotfix branch to create and test the fix. Then
-push fix to master, remembering to update master version.
-Changes on the project tree should not happen without the consent of the lead programmer.
+create a PRto merge it into master, remembering to update master version.
 
-###  Artists workflow (windows):
+###  Artists workflow (using GitHub desktop app):
 
 #### Step 0: Set up your workspace. Only done once.
 

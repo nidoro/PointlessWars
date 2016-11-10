@@ -207,8 +207,12 @@ void WarSystem::initializeState(){
 
         addSystemAction(war.BEGINING);
         addSystemAction(war.PRESENT_ARMIES);
-        addSystemAction(war.ASK_CAPTAIN_SELECTION, idFirst);
-        addSystemAction(war.ASK_CAPTAIN_SELECTION, idSecond);
+
+        if (!war.getRemotelyControled(idFirst))
+            addSystemAction(war.ASK_CAPTAIN_SELECTION, idFirst);
+        else
+            addSystemAction(war.ASK_CAPTAIN_SELECTION, idSecond);
+
         addSystemAction(war.PRESENT_HEROES);
 
         addSystemAction(war.ASK_FORMATION, idFirst);
@@ -292,7 +296,8 @@ void WarSystem::initializeState(){
         war.setActionCompleted(1, true);
         war.setActionCompleted(2, true);
         */
-        war.setActionCompleted(war.getActorID(), false);
+        war.setActionCompleted(1, false);
+        war.setActionCompleted(2, false);
 
     }else if (war.getSystemAction() == war.ASK_FORMATION){
         war.setNextAction(0, -1);

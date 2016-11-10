@@ -164,7 +164,7 @@ void CommandListener::askHeroPick(Entity* e){
     if (!eListener) return;
     EntityList eOptionList = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
     //printf("options size = %d", eOptionList.size());
-    if (!war.getRemotelyControled(e->get<CPlayer>()->id)){
+    if (!war.getRemotelyControled(e->get<CPlayer>()->id) && !war.getNextActionOutcome(e->get<CPlayer>()->id).ready){
         eListener->addObservedEntity("PlayerBeingListenedTo", e);
         for(auto& eOpt : eOptionList){
             eOpt->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
@@ -740,7 +740,7 @@ void CommandListener::endHeroPool(){
 }
 
 void CommandListener::onEndHeroPool(Entity* e){
-    printf("OK\n");
+    //printf("OK\n");
     bool first = true;
     EntityList eList = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
     for(auto& i : eList){
