@@ -23,7 +23,7 @@ Exemplos: resource/animacao, code/gui_system
 
 Embora qualquer um possa visualizar e modificar branches privados, a intenção é que um branch
 privado seja para uso (pasme) privado, significando que antes que o criador do branch solicite
-integração em develop (pull request), nenhum outro membro desenvolvedor deve fazer alterações
+integração em develop (pull request), nenhum outro usuário deste repositório deve fazer alterações
 no branch sem o consentimento do criador. Após feito Pull Request, qualquer um pode alterar
 o branch e atualizar o Pull Request.
 
@@ -84,6 +84,7 @@ Para isso:
     das suas alterações. Quanto mais alterações, mais detalhista você deve ser.
  6. Clique em Send Pull Request. Vá para o Passo 1. Repita eternamente.
  
+================================================================================================
 ================================================================================================
 
 ###  Repository guidelines:
