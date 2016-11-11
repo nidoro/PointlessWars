@@ -4,26 +4,28 @@
 
 Este repositório possui uma estrutura gitflow. Existem dois branches públicos:
 
- * master:     para uso do público externo. Contém o histórico de lançamentos
-               oficiais. Os commits das versões oficiais de lançamento são rotulados
+ * master:     versões que forão/serão destinadas ao público externo. Contém o histórico
+               de lançamentos oficiais. Os commits das versões oficiais de lançamento são rotulados
                com o número da versão.
- * develop:    para uso do público interno. Branch para integração de branches privados.
+ * develop:    para uso do público interno. Branch para integração de alterações propostas por 
+               branches privados.
 
-Os seguintes são chamados branches privados:
- 
+Os seguintes são tipos branches privados:
+
  * code:       para qualquer alteração no código.
  * resource:   para alterações em qualquer recurso.
  * external:   para alterações em bibliotecas ou recursos externos.
  * rc:         para candidatos a lançamentos oficiais.
  * hotfix:     para consertos rápidos das versões lançadas oficialmente.
-
-Embora qualquer um possa ver e modificar branches privados, a intenção é que um branch
-privado seja para uso privado, significando que antes que o criador do branch solicite
-integração em develop (pull request), nenhum outro membro desenvolvedor deve fazer alterações
-no branch sem o consentimento do criador.
-
+ 
 O nome de um branch privado DEVE ser prefixado com o seu tipo.
 Exemplos: resource/animacao, code/gui_system
+
+Embora qualquer um possa visualizar e modificar branches privados, a intenção é que um branch
+privado seja para uso (pasme) privado, significando que antes que o criador do branch solicite
+integração em develop (pull request), nenhum outro membro desenvolvedor deve fazer alterações
+no branch sem o consentimento do criador. Após feito Pull Request, qualquer um pode alterar
+o branch e atualizar o Pull Request.
 
 ###  Fluxograma para artistas usando GitHub desktop app:
 
