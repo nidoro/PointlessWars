@@ -83,6 +83,8 @@ Para isso:
  5. Preencha os campos title e description (ambos obrigatórios) com informações a respeito
     das suas alterações. Quanto mais alterações, mais detalhista você deve ser.
  6. Clique em Send Pull Request. Vá para o Passo 1. Repita eternamente.
+ 
+================================================================================================
 
 ###  Repository guidelines:
   
