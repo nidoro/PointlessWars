@@ -1,5 +1,87 @@
 #    Pointless Wars
   
+###  Geral:
+
+Este repositório possui uma estrutura gitflow. Existem dois branches públicos:
+
+ * master:     para uso do público externo. Contém o histórico de lançamentos
+               oficiais. Os commits das versões oficiais de lançamento são rotulados
+               com o número da versão.
+ * develop:    para uso do público interno. Branch para integração de branches privados.
+
+Os seguintes são chamados branches privados:
+ 
+ * code:       para qualquer alteração no código.
+ * resource:   para alterações em qualquer recurso.
+ * external:   para alterações em bibliotecas ou recursos externos.
+ * rc:         para candidatos a lançamentos oficiais.
+ * hotfix:     para consertos rápidos das versões lançadas oficialmente.
+
+Embora qualquer um possa ver e modificar branches privados, a intenção é que um branch
+privado seja para uso privado, significando que antes que o criador do branch solicite
+integração em develop (pull request), nenhum outro membro desenvolvedor deve fazer alterações
+no branch sem o consentimento do criador.
+
+O nome de um branch privado DEVE ser prefixado com o seu tipo.
+Exemplos: resource/animacao, code/gui_system
+
+###  Fluxograma para artistas usando GitHub desktop app:
+
+#### Passo 0: Configurando seu espaço de trabalho. Feito apenas uma vez.
+
+ 1. Baixe e instale o GitHub desktop app. Google it.
+ 2. Abra e faça login na sua conta GitHub.
+ 3. No canto superior direito, clique no +, selecione 'Clone' e clone
+    o repositório nidoro/PointlessWars. Se ele não aparece na sua lista de repositórios,
+    contate o administrador.
+ 4. No canto superior esquerdo, clique no ícone cuja tooltip diz 'Create new branch'.
+    Dê um nome para o novo branch e selecione 'From branch develop'.
+    
+#### Passo 1: Atualize seu branch.
+
+ 1. Abra o GitHub desktop app.
+ 2. No canto superior esquerdo, selecione o branch 'develop' clicando no botão
+    cuja tooltip diz 'Switch to a different branch'.
+ 3. No canto superior direito, clique em Sync sincronizar seu repositório local com
+    o repositório pai.
+ 4. No canto superior esquerdo, clique em Compare se essa opção existe, e então
+    selecione seu branch na lista.
+ 5. No canto superior esquerdo, clique em 'Update from develop'. Se essa opção estiver
+    desabilitada, significa que seu branch já está atualizado.
+
+#### Passo 2: Faça suas modificações.
+
+Faça seu trabalho normalmente, crie, delete e modifique arquivos como queiser. Após
+terminar suas alterações, você precisa salvar (commit) suas alterações no repositório.
+Para isso:
+
+ 1. Abra o GitHub desktop app.
+ 2. No canto superior esquerdo, selecione seu branch clicando no botão
+    cuja tooltip diz 'Switch to a different branch'.
+ 3. No topo e no centro, clique em Changes para visualizar e salvar (commit) suas
+    alterações.
+ 4. Preencha os campos summary (obrigatório) e description (opcional) com informações
+    a respeito das suas alterações.
+ 5. Clique em commit.
+ 6. No canto superior direito, clique em Sync para enviar suas alterações para o
+    repositório pai. Se você já terminou suas alterações e está pronto para submetê-las
+    para revisão do público interno, vá para o Passo 3. Se você quer fazer mais alterações
+    antes de submeter à revisão, continue executando o Passo 2 até que esteja pronto.
+
+#### Passo 3: Submeta suas alterações para revisão.
+
+ 1. Abra o GitHub desktop app.
+ 2. No canto superior esquerdo, selecione seu branch clicando no botão
+    cuja tooltip diz 'Switch to a different branch'.
+ 3. No canto superior esquero, clique em Pull Request se essa opção existe
+    e vá para o Passo 3.4. Se essa opção não existe, significa que sua última submissão
+    ainda está sob revisão. Clique nela para atualizar as informações com suas
+    novas alterações.
+ 4. Selecione a opção "from 'your-branch' into develop".
+ 5. Preencha os campos title e description (ambos obrigatórios) com informações a respeito
+    das suas alterações. Quanto mais alterações, mais detalhista você deve ser.
+ 6. Clique em Send Pull Request. Vá para o Passo 1. Repita eternamente.
+
 ###  Repository guidelines:
   
 This repository follows a gitflow workflow. There are two public branches:
