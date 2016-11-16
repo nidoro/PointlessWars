@@ -135,8 +135,8 @@ stalagmite-in.png			75		130		5			10		1
 stalagmite-still.png		75		130		2			10		1
 stalagmite-out.png			75		130		5			10		1
 rolling-stone.png			50		50		4			8		1
-medal-blue-idle.png			41		54		1			1		1
-medal-red-idle.png			41		54		1			1		1
+medal-blue-idle.png			34		61		1			1		1
+medal-red-idle.png			34		61		1			1		1
 tornado.png					130		128		4			8		1
 puff-01.png					96		88		8			12		1
 poof-02.png					61		61		5			12		1
@@ -259,7 +259,7 @@ unit-01-idle.png   			32		32		4			8		1
 unit-02-idle.png   			32		32		2			4		1
 unit-03-idle.png   			32		32		5			10		1
 unit-04-idle.png   			32		32		4			8		1
-unit-05-idle.png   			32		32		4			8		1
+unit-05-idle.png   			32		32		2			4		1
 unit-06-idle.png   			32		32		5			10		1
 unit-07-idle.png   			32		32		5			5		1
 unit-08-idle.png   			32		32		4			8		1
@@ -269,7 +269,7 @@ unit-11-idle.png   			32		32		2			4		1
 unit-12-idle.png   			32		32		2			4		1
 unit-13-idle.png   			32		32		5			10		1
 unit-14-idle.png   			32		32		2			4		1
-unit-15-idle.png   			32		32		3			6		1
+unit-15-idle.png   			32		32		6			3		1
 unit-16-idle.png   			32		32		2			4		1
 unit-17-idle.png   			32		32		2			4		1
 unit-18-idle.png   			32		32		2			4		1
@@ -295,7 +295,7 @@ unit-11-walk.png   			32		32		2			4		1
 unit-12-walk.png   			32		32		2			4		1
 unit-13-walk.png   			32		32		2			4		1
 unit-14-walk.png   			32		32		2			4		1
-unit-15-walk.png   			32		32		2			4		1
+unit-15-walk.png   			32		32		6			4		1
 unit-16-walk.png   			32		32		2			4		1
 unit-17-walk.png   			32		32		2			4		1
 unit-18-walk.png   			32		32		2			4		1
@@ -321,7 +321,7 @@ unit-11-death.png   			32		32		3			6		1
 unit-12-death.png   			32		32		5			10		1
 unit-13-death.png   			32		32		3			6		1
 unit-14-death.png   			32		32		5			6		1
-unit-15-death.png   			32		32		4			8		1
+unit-15-death.png   			32		32		5			4		1
 %unit-16-death.png   			32		32		2			4		1
 %unit-17-death.png   			32		32		2			4		1
 %unit-18-death.png   			32		32		2			4		1
@@ -383,11 +383,11 @@ unit-07-action-01.png		32		32		3			8		1
 unit-08-action-01.png		32		32		4			6		1
 unit-09-action-01.png		32		32		2			4		1
 unit-10-action-01.png		32		32		10			20		1
-unit-11-action-01.png		32		32		2			4		1
+unit-11-action-01.png		32		32		10			3		1
 unit-12-action-01.png		32		32		5			10		1
 unit-13-action-01.png		32		32		2			4		1
 unit-14-action-01.png		32		32		2			4		1
-unit-15-action-01.png		32		32		3			4		1
+unit-15-action-01.png		32		32		7			3		1
 unit-16-action-01.png		32		32		2			4		1
 unit-17-action-01.png		32		32		2			4		1
 unit-18-action-01.png		32		32		2			4		1
