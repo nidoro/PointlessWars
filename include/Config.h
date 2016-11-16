@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "tinyxml2.h"
 #include "Standard.h"
+#include <SFML/Window.hpp>
 
 class Config{
     public:
@@ -16,6 +17,7 @@ class Config{
         double getSfxMaxVolume();
         bool getDeadBodies();
         bool getSkipIntro();
+        string getQuickStart();
 
         void setResolution(unsigned w, unsigned h);
         void setFullscreen(bool value);
@@ -23,6 +25,7 @@ class Config{
         void setSfxMaxVolume(double value);
         void setDeadBodies(bool value);
         void setSkipIntro(bool value);
+        void setQuickStart(string value);
 
         bool loadConfigFile(std::string file);
         bool saveConfigFile(std::string file);
@@ -39,6 +42,7 @@ class Config{
         bool deadBodies;
         sf::Image windowIcon;
 
+        string quickStart;
         bool skipIntro;
         list<string> secretOptions;
 

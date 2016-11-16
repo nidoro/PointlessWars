@@ -1,7 +1,7 @@
 #include "MatchConfig.h"
-#include <SFML/Network.hpp>
 
 MatchConfig::MatchConfig(){
+    name = "Prototype";
     scenario = "scenario-00";
     nTurns = 3;
     armySize = 50;
@@ -45,9 +45,16 @@ void MatchConfig::loadFromFile(string name){
         printf("Could not open match-config.xml!\n");
         return;
     }
-    tinyxml2::XMLElement* element = doc.FirstChildElement(name.c_str());
+    tinyxml2::XMLElement* element = doc.FirstChildElement("MatchConfig");
+    while (element){
+        string configName = element->FirstChildElement("Name")->GetText();
+        if (configName == name){
+            break;
+        }
+        element = element->NextSiblingElement("MatchConfig");
+    }
     if (!element){
-        printf("Could not fing match-config %s\n", name.c_str());
+        printf("Could not find match config %s\n", name.c_str());
         return;
     }
 /*
@@ -79,6 +86,7 @@ void MatchConfig::loadFromFile(string name){
     cout << str << endl;
 */
 
+    this->name = element->FirstChildElement("Name")->GetText();
     element->FirstChildElement("Turns")->QueryIntText(&nTurns);
     element->FirstChildElement("HeroesPerPlayer")->QueryIntText(&nPlayerHeroes);
     element->FirstChildElement("MaxBattles")->QueryIntText(&maxBattles);

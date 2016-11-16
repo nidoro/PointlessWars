@@ -1,13 +1,16 @@
 #include "Config.h"
 
 Config::Config(){
+    sf::VideoMode vMode = sf::VideoMode::getDesktopMode();
+
     musMaxVolume = 70;
     sfxMaxVolume = 70;
     deadBodies = false;
     fullscreen = false;
     skipIntro = false;
-    resolution.x = 0;
-    resolution.y = 0;
+    quickStart.clear();
+    resolution.x = vMode.width;
+    resolution.y = vMode.height;
 }
 
 Config::~Config(){
@@ -32,6 +35,9 @@ bool Config::getDeadBodies(){
 bool Config::getSkipIntro(){
     return skipIntro;
 }
+string Config::getQuickStart(){
+    return quickStart;
+}
 
 void Config::setResolution(unsigned w, unsigned h){
     resolution = sf::Vector2u(w, h);
@@ -50,6 +56,9 @@ void Config::setDeadBodies(bool value){
 }
 void Config::setSkipIntro(bool value){
     skipIntro = value;
+}
+void Config::setQuickStart(string value){
+    quickStart = value;
 }
 bool Config::loadConfigFile(string file){
     Config();
@@ -74,6 +83,9 @@ bool Config::loadConfigFile(string file){
             }else if (element == "SkipIntro"){
                 el->QueryBoolText(&skipIntro);
                 secretOptions.push_back("SkipIntro");
+            }else if (element == "QuickStart"){
+                quickStart = el->GetText();
+                secretOptions.push_back("QuickStart");
             }
         }
     }
@@ -94,6 +106,9 @@ bool Config::saveConfigFile(string name){
 
     if (contains(secretOptions, "SkipIntro")){
         sprintf(str, "<SkipIntro>%s</SkipIntro>\n", skipIntro ? "true" : "false"); file << str;
+    }
+    if (contains(secretOptions, "QuickStart")){
+        sprintf(str, "<QuickStart>%s</QuickStart>\n", quickStart.c_str()); file << str;
     }
     file.close();
 }
