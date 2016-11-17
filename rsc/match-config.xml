@@ -1,6 +1,7 @@
 <!-- Match Config -->
 <MatchConfig>
 	<Name>Prototype</Name>
+    <Scenery>desert.sce</Scenery>
 	<HeroesPerPlayer>3</HeroesPerPlayer>
 	<MaxBattles>NONE</MaxBattles>
 	<Turns>3</Turns>

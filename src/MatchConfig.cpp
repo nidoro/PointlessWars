@@ -87,6 +87,7 @@ void MatchConfig::loadFromFile(string name){
 */
 
     this->name = element->FirstChildElement("Name")->GetText();
+    this->scenario = element->FirstChildElement("Scenery")->GetText();
     element->FirstChildElement("Turns")->QueryIntText(&nTurns);
     element->FirstChildElement("HeroesPerPlayer")->QueryIntText(&nPlayerHeroes);
     element->FirstChildElement("MaxBattles")->QueryIntText(&maxBattles);

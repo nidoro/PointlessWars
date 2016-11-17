@@ -1,6 +1,9 @@
 %Background
 cenario_bosque.bg
 
+%Background Music
+forest-loop.ogg
+
 %         OBJECT-NAME      X-RELATIVE      Y-RELATIVE    X-SCALE    Y-SCALE     H-FLIP     V-FLIP
             water-01          0.0147          0.1039     1.0000     1.0000          0          0
             water-01          0.0394          0.1074     1.0000     1.0000          0          0
