@@ -27,8 +27,8 @@ obj-deck.png                110     91      1           1
 % -- SNOW
 obj-dog.png                 30      24      5           3
 obj-dog-woof.png            30      24      4           3
-obj-flag-blue.png           120     80      9           4
-obj-flag-red.png            120     80      9           4
+obj-flag-blue-s.png         120     80      9           4
+obj-flag-red-s.png          120     80      9           4
 obj-light-off.png           35      84      1           1
 obj-light-on.png            35      84      8           3
 obj-snowman-idle.png        50      50      6           3
