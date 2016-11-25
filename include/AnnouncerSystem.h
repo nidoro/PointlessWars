@@ -16,6 +16,8 @@ class AnnouncerSystem : public System{
         void startTextTransition();
 
         void onInitializeWar(Entity* e);
+        void onEndMatch(Entity* e);
+
         string getGameStateString();
         string currentString;
         string nextString;

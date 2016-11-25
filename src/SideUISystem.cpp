@@ -3,6 +3,8 @@
 SideUISystem::SideUISystem(){
     addSubscription(BUTTON_GAINED_FOCUS);
     addSubscription(BUTTON_LOST_FOCUS);
+    addSubscription(END_MATCH);
+    addSubscription(INITIALIZE_WAR);
     addRequirement(Component::PLAYER);
 
     eLeft = nullptr;
@@ -12,6 +14,7 @@ SideUISystem::SideUISystem(){
     buttonsSpacing = 5;
     xOffWhenHidden = 100;
     buttonsSpeed = 350;
+    active = false;
 }
 
 SideUISystem::~SideUISystem(){
@@ -19,20 +22,23 @@ SideUISystem::~SideUISystem(){
 }
 
 void SideUISystem::update(){
-    for (Entity* e : entities){
-        CPlayer::Side side = e->get<CPlayer>()->side;
-        if (side == CPlayer::LEFT && eLeft == nullptr) createUI(e);
-        if (side == CPlayer::RIGHT && eRight == nullptr) createUI(e);
+    if (active){
+        for (Entity* e : entities){
+            //printf("%d\n", entities.size());
+            CPlayer::Side side = e->get<CPlayer>()->side;
+            if (side == CPlayer::LEFT && eLeft == nullptr) createUI(e);
+            if (side == CPlayer::RIGHT && eRight == nullptr) createUI(e);
 
-        if (eLeft != nullptr) updateUI(eLeft);
-        if (eRight != nullptr) updateUI(eRight);
+            if (eLeft != nullptr) updateUI(eLeft);
+            if (eRight != nullptr) updateUI(eRight);
+        }
     }
 }
 
 void SideUISystem::createUI(Entity* ePlayer){
     int sign = ePlayer->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     Entity* eArea = eManager->createEntity();
-
+    //printf("Side UI created\n");
     double wArea = 100;
     double hArea = hWindow;
     double x = cxWindow + sign*wWindow/2 - sign*(wArea/2);
@@ -196,7 +202,16 @@ void SideUISystem::onButtonLostFocus(Entity* e){
     if (nullptr != eUI) hideUI(eUI);
 }
 
+void SideUISystem::onEndMatch(Entity* e){
+    //printf("Ended Match\n");
+    eLeft = nullptr;
+    eRight = nullptr;
+    active = false;
+}
 
+void SideUISystem::onInitializeWar(Entity* e){
+    active = true;
+}
 
 
 

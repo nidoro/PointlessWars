@@ -177,6 +177,7 @@ void ActionSystem::executeAction(CPlayer::ID id){
             case 512: notify(PLAY_ACTION, war.getPlayer(id)); break;
             case 513: notify(END_HERO_POOL); break;
             case 514: notify(PLAY_ACTION, war.getPlayer(id)); break;
+            case 515: notify(PLAY_ACTION, war.getPlayer(id)); break;
             default: break;
         }
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 600, 699)){

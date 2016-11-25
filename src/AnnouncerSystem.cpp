@@ -2,6 +2,7 @@
 
 AnnouncerSystem::AnnouncerSystem(){
     addSubscription(INITIALIZE_WAR);
+    addSubscription(END_MATCH);
 
     eText = nullptr;
     eBanner = nullptr;
@@ -72,6 +73,13 @@ void AnnouncerSystem::startTextTransition(){
 
 void AnnouncerSystem::onInitializeWar(Entity* e){
     active = true;
+}
+
+void AnnouncerSystem::onEndMatch(Entity* e){
+    eText = nullptr;
+    eBanner = nullptr;
+    active = false;
+    currentString = "";
 }
 
 string AnnouncerSystem::getGameStateString(){

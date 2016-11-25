@@ -5,6 +5,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <boost/filesystem.hpp>
 #include <cstdio>
 #include <fstream>
 #include <list>
@@ -14,7 +15,7 @@
 #include "Messages.h"
 #include "Component.h"
 #include "tinyxml2.h"
-#include <boost/filesystem.hpp>
+#include "json.hpp"
 
 using namespace tinyxml2;
 namespace fs = boost::filesystem;

@@ -54,6 +54,7 @@
 #include "SideUISystem.h"
 #include "GUIGroupSystem.h"
 #include "MasterSystem.h"
+#include "TiltSystem.h"
 
 class Game{
     public:

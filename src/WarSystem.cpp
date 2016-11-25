@@ -3,7 +3,10 @@
 WarSystem::WarSystem(){
     addSubscription(INITIALIZE_WAR);
     addSubscription(PACKET_RECEIVED);
+    addSubscription(END_MATCH);
+    addSubscription(SET_MATCH_CONFIG);
     inBattle = false;
+    hasMatchEnded = true;
 }
 
 WarSystem::~WarSystem(){
@@ -11,22 +14,24 @@ WarSystem::~WarSystem(){
 }
 
 void WarSystem::update(){
-    //if (!war.getRemotelyControled(0)){
-        if (war.getActionCompleted() && !war.getPlayingAnimation()){
-            callNextSystemAction();
-            initializeState();
-            notify(SYSTEM_ACTION);
-            //sendStateToPeer();
-        }
-    //}
+    if (!hasMatchEnded){
+        //if (!war.getRemotelyControled(0)){
+            if (war.getActionCompleted() && !war.getPlayingAnimation()){
+                callNextSystemAction();
+                initializeState();
+                notify(SYSTEM_ACTION);
+                //sendStateToPeer();
+            }
+        //}
 
-    for (int i = 0; i < 3; i++){
-        if (war.getMultiplayer() && !war.getRemotelyControled(i) && !war.getActionSent(i) && war.getNextActionOutcome(i).ready){
-            sendAction(i);
-            war.setActionSent(i, true);
-        }
-        if ((war.getMultiplayer() && war.getActionReceived(i) && !war.getActionCompleted(i)) || (!war.getMultiplayer() && !war.getActionCompleted(i))){
-            war.setPlayerReady(i, true);
+        for (int i = 0; i < 3; i++){
+            if (war.getMultiplayer() && !war.getRemotelyControled(i) && !war.getActionSent(i) && war.getNextActionOutcome(i).ready){
+                sendAction(i);
+                war.setActionSent(i, true);
+            }
+            if ((war.getMultiplayer() && war.getActionReceived(i) && !war.getActionCompleted(i)) || (!war.getMultiplayer() && !war.getActionCompleted(i))){
+                war.setPlayerReady(i, true);
+            }
         }
     }
 }
@@ -98,8 +103,8 @@ void WarSystem::onInitializeWar(Entity* e){
         P1->add(new CRemoteControler());
     }
 
-    P1->get<CPlayer>()->name = "Player 1";
-    P2->get<CPlayer>()->name = "Player 2";
+    P1->get<CPlayer>()->name = "Tukimitzu";
+    P2->get<CPlayer>()->name = "Geogab";
 
     P1->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
     P2->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
@@ -116,6 +121,8 @@ void WarSystem::onInitializeWar(Entity* e){
     callNextSystemAction();
     initializeState();
     notify(SYSTEM_ACTION);
+
+    hasMatchEnded = false;
 
     /*
     Entity* eDisplayer = eManager->createEntity();
@@ -378,6 +385,13 @@ void WarSystem::initializeState(){
 
     }else if (war.getSystemAction() == war.ANNOUNCE_VICTORY){
         inBattle = false;
+        war.setNextAction(0, 515);
+        war.setNextAction(1, -1);
+        war.setNextAction(2, -1);
+        war.setActionCompleted(0, false);
+        war.setActionCompleted(1, true);
+        war.setActionCompleted(2, true);
+        hasMatchEnded = true;
 
     }else if (war.getSystemAction() == war.ENDING){
         inBattle = false;
@@ -481,6 +495,14 @@ void WarSystem::onPacketReceived(Entity* e){
         packet >> idActor;
         war.setActionReceived(idActor, true);
     }
+}
+
+void WarSystem::onEndMatch(Entity* e){
+    war = War();
+}
+
+void WarSystem::onSetMatchConfig(Entity* e){
+    war.setMatchConfig(e->get<CStringMessage>()->value);
 }
 
 /*

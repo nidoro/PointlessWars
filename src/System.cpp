@@ -202,6 +202,8 @@ void System::onNotify(Message m, Entity* e){
         case UPDATE_PLAYER_NICKNAME_WITH_INPUT_TEXTBOX: onUpdatePlayerNicknameWithInputTextbox(e); break;
         case SET_SERVER_MESSAGE_DISPLAYER_QUICK_MATCH: onSetServerMessageDisplayerQuickMatch(e); break;
         case CANCEL_QUICK_MATCH_SEARCH: onCancelQuickMatchSearch(e); break;
+        case END_MATCH: onEndMatch(e); break;
+        case SET_MATCH_CONFIG: onSetMatchConfig(e); break;
         default: break;
     }
 }

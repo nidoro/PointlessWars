@@ -304,6 +304,10 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     y += spcButton;
     eObj = createRectButton(Assets::getString("LABEL-QUICK-MATCH"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer);
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+    eObj->addObservedEntity("remove-gui-group", eGUI);
+    eObj->add(new CStringMessage("Prototype"));
+    eObj->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
+    eObj->get<CButtonTrigger>()->msgs = {SET_MATCH_CONFIG, REMOVE_GUI_GROUP, START_SCREEN_TRANSITION};
 
     /// Campaign
     y += spcButton;
