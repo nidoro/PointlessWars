@@ -56,7 +56,7 @@ void ScenarioSystem::onLoadScenario(Entity* e){
 
 void ScenarioSystem::onInitializeWar(Entity* e){
     clear();
-    load("beach.sce");
+    load(war.getMatchConfig().scenario);
 }
 
 void ScenarioSystem::clear(){

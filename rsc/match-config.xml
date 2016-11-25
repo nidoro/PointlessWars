@@ -1,6 +1,7 @@
 <!-- Match Config -->
-<Prototype>
+<MatchConfig>
 	<Name>Prototype</Name>
+    <Scenery>desert.sce</Scenery>
 	<HeroesPerPlayer>3</HeroesPerPlayer>
 	<MaxBattles>NONE</MaxBattles>
 	<Turns>3</Turns>
@@ -12,4 +13,4 @@
 	<RandomArmy>false</RandomArmy>
 	<UnitPool>00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15</UnitPool>
 	<HeroPool>02 03 04 05 08 10</HeroPool>
-</Prototype>
+</MatchConfig>

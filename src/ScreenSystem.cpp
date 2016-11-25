@@ -128,7 +128,11 @@ void ScreenSystem::onGameStarted(Entity* e){
     notify(START_SCREEN_TRANSITION, eScreen);
 */
     Entity* eScreen = eManager->createEntity();
-    if (!config.getSkipIntro()){
+    string quickStart = config.getQuickStart();
+    if (!quickStart.empty()){
+        war.setMatchConfig(quickStart);
+        eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
+    }else if (!config.getSkipIntro()){
         eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
     }else{
         eScreen->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));

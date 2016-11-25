@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "Assets.h"
 #include <sstream>
+#include <SFML/Network.hpp>
 
 class MatchConfig{
     public:
