@@ -103,7 +103,9 @@ void SoundSystem::evenVolume(Entity* e){
 void SoundSystem::onPlayMusic(Entity* e){
     //if (mute) return;
     if (eNextMusic) eManager->removeEntity(eNextMusic);
+    if (toUpper(e->get<CMusic>()->name) == "NONE") return;
     eNextMusic = e;
+    eNextMusic->add(new CSystem());
 
     if (e->get<CMusic>()->name.empty() || !Assets::getMusic(e->get<CMusic>()->name)){
         printf("Music not found: %s\n", e->get<CMusic>()->name.c_str());

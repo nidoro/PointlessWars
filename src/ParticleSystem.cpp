@@ -24,7 +24,7 @@ void ParticleSystem::update(){
 void ParticleSystem::emmitParticle(Entity* e){
     Entity* eParticle = eManager->createEntity();
     eParticle->add(new CPosition(e->get<CPosition>()->x, e->get<CPosition>()->y));
-    eParticle->add(new CDraw(CDraw::PARTICLES));
+    eParticle->add(new CDraw(e->get<CParticleEmmiter>()->drawTag));
     eParticle->add(new CAutoPilot());
     eParticle->add(new CTimer(e->get<CParticleEmmiter>()->lifeSpan, REMOVE_ENTITY));
 
@@ -41,6 +41,10 @@ void ParticleSystem::emmitParticle(Entity* e){
         case CParticleEmmiter::CIRCLE: eParticle->add(new CCircleShape(e->get<CParticleEmmiter>()->circleShape)); break;
         case CParticleEmmiter::TEXTURE: eParticle->add(new CTexture(e->get<CParticleEmmiter>()->texture)); break;
         default: break;
+    }
+
+    if (e->get<CParticleEmmiter>()->hasElipsoidalMovement){
+        eParticle->add(new CElipsoidalMovement(e->get<CParticleEmmiter>()->elipsoidalMovement));
     }
 }
 

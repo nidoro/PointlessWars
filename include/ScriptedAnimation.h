@@ -20,7 +20,7 @@ class ScriptedAnimation : public System{
         void onThrowCoin(Entity* e);
         void onPlayAction(Entity* e);
         void onAddActor(Entity* e);
-                        
+
         void triggerNode(Entity* e, AnimationNode* node);
         void popFrontAnimationNode(Entity* e);
         void addActor(Entity* e);
@@ -33,7 +33,7 @@ class ScriptedAnimation : public System{
         double getMinimumSpeedToHit(double ox, double oy, double tx, double ty,  double gravity = 60);
 
         void createProjectile(Entity* e, double x0, double y0, double x1, double y1, AShoot::Object obj);
-        
+
         void scriptMeleeBattle(Entity* e);
         void scriptEnslave(Entity* e);
         void scriptEnslave(ActionOutcome& outcome, Entity* eActor);
@@ -125,6 +125,10 @@ class ScriptedAnimation : public System{
         void scriptGrantFormationBuff(ActionOutcome& outcome, Entity* e);
         void scriptArmyVsArmy(ActionOutcome& outcome, Entity* e);
         void scriptFightSmokeCloud(double duration);
+        void scriptVictoryAnimation(double delay);
+        void scriptConfettiRain(double delay);
+        void askEndOfMatchQuestions(double delay);
+        void scriptPoofAt(double x, double y, double when);
         void scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptGeiser(double x, double y, double timing, double duration);

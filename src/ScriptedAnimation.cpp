@@ -191,7 +191,8 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node){
             case AVariable::PARTICLE_EFFECT:
                 for(EntityListIt i = e->get<CParticleEffect>()->emmiters.begin(); i != e->get<CParticleEffect>()->emmiters.end(); i++){
                     Entity* eEmmiter = *i;
-                    eEmmiter->get<CParticleEmmiter>()-> on = nd->bValue;
+                    eEmmiter->get<CParticleEmmiter>()->on = nd->bValue;
+                    eEmmiter->get<CParticleEmmiter>()->clock.restart();
                 }
                 break;
             default: break;
@@ -228,6 +229,7 @@ void ScriptedAnimation::onInitializeWar(Entity* e){
     wWalkStep = totalWalk/war.getMatchConfig().nTurns;
 
     ///TEST
+    //scriptVictoryAnimation(1.0);
 }
 
 void ScriptedAnimation::onSceneStarted(Entity* e){
@@ -360,6 +362,7 @@ void ScriptedAnimation::onPlayAction(Entity* e){
         case 504: scriptRemoveDead(e); break;
         case 512: scriptThrowCoin(war.getNextActionOutcome(idPlayer), e); break;
         case 514: scriptBattleCleanup(); break;
+        case 515: scriptVictoryAnimation(0); break;
         default: break;
     }
     //war.getNextActionOutcome(idPlayer).animDuration = getActingDuration();
@@ -1911,7 +1914,7 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
 
     int sign = eWin->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     double wField = 0.70*wWindow;
-    double dx = 2*wField/((war.getMatchConfig().nTurns+1)*2);
+    double dx = 2*wField/((3+1)*2);
     double ux = uxFormation;
     double uy = uyFormation;
     double wBattle = 230;
@@ -6444,7 +6447,177 @@ bool ScriptedAnimation::mapContains(map<Entity*, double> m, Entity* e){
 
 void ScriptedAnimation::scriptGeiser(double x, double y, double timing, double duration){
 
+}
 
+void ScriptedAnimation::scriptVictoryAnimation(double delay){
+    Entity* eObj;
+    Entity* ePanel;
+    CDraw::Tag drawTag = CDraw::GUI3;
+
+    std::string playerName = war.getPlayer(war.getBattleWinner())->get<CPlayer>()->name;
+
+    double wPanel = 350;
+    double hPanel = 90;
+    double wMin = Assets::getTexture("9p-frame-02.png")->getSize().x;
+    double hMin = Assets::getTexture("9p-frame-01.png")->getSize().y;
+
+    /// Panel
+    ePanel = eManager->createEntity();
+    ePanel->add(new CPosition(cxWindow, cyWindow - 80));
+    ePanel->add(new CDimensions(wMin, hPanel));
+    ePanel->add(new CDraw(drawTag, true, 255));
+    ePanel->add(new CTexture("9p-frame-02.png"));
+    ePanel->add(new CActor());
+    ePanel->add(new CAutoPilot());
+    ePanel->add(new CElipsoidalMovement(cxWindow, cyWindow - 80, 0, 4, 180));
+
+    ePanel->get<CActor>()->addNode(new AVariable(delay, AVariable::HIDDEN, false));
+    ePanel->get<CActor>()->addNode(new AZoom(0.0, 700, 0, wPanel, hPanel));
+
+    sf::Vector2f center(ePanel->get<CPosition>()->x, ePanel->get<CPosition>()->y);
+    sf::Vector2f topLeft(ePanel->get<CPosition>()->x - wPanel/2,
+                         ePanel->get<CPosition>()->y - hPanel/2);
+    sf::Vector2f bottomRight(ePanel->get<CPosition>()->x + wPanel/2,
+                             ePanel->get<CPosition>()->y + hPanel/2);
+    //scriptPoofAt(center.x, center.y, 0.0);
+
+    /// Text
+    eObj = eManager->createEntity();
+    eObj->add(new CAnchor(0, 0));
+    eObj->add(new CPosition(-100, -100));
+    eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 18, sf::Color::White));
+    //eObj->add(new CTypingEffect("Bananinha Wins", 50));
+    eObj->add(new CDraw((CDraw::Tag)((int)drawTag+1)));
+    eObj->add(new CActor());
+    eObj->addObservedEntity("Anchor", ePanel);
+
+    eObj->get<CActor>()->addNode(new AAddComponent(delay, new CTypingEffect(playerName + " Wins", 50), Component::TYPING_EFFECT));
+
+    double tPanelReady = (wPanel - wMin) / 700 + delay;
+    double objectsDelay = 0.18;
+
+    /// Crown
+    eObj = eManager->createEntity();
+    eObj->add(new CAnchor(-wPanel/2 + 20, -hPanel/2 - 10));
+    eObj->add(new CPosition(-100, -100));
+    eObj->add(new CDraw((CDraw::Tag)((int)drawTag+1), true, 255));
+    eObj->add(new CTexture("crown.png"));
+    eObj->add(new CActor());
+    eObj->add(new CRotation(0.f));
+    //eObj->add(new CTilt(5, 15));
+    eObj->addObservedEntity("Anchor", ePanel);
+
+    eObj->get<CActor>()->addNode(new AVariable(tPanelReady + objectsDelay, AVariable::HIDDEN, false));
+    scriptPoofAt(topLeft.x + 20, topLeft.y - 10, tPanelReady + objectsDelay);
+
+    /// Drums
+    eObj = eManager->createEntity();
+    eObj->add(new CAnchor(+wPanel/2 - 45, +hPanel/2));
+    eObj->add(new CPosition(-100, -100));
+    eObj->add(new CDraw((CDraw::Tag)((int)drawTag+1), true, 255));
+    eObj->add(new CTexture("drums.png"));
+    eObj->add(new CActor());
+    eObj->add(new CRotation(0.f));
+    eObj->add(new CTilt(5, 60, 0, 30));
+    eObj->addObservedEntity("Anchor", ePanel);
+
+    eObj->get<CActor>()->addNode(new AVariable(tPanelReady + 2*objectsDelay, AVariable::HIDDEN, false));
+    scriptPoofAt(bottomRight.x - 45, bottomRight.y, tPanelReady + 2*objectsDelay);
+
+    /// Violin
+    eObj = eManager->createEntity();
+    eObj->add(new CAnchor(+wPanel/2 - 10, +hPanel/2 - 40));
+    eObj->add(new CPosition(-100, -100));
+    eObj->add(new CDraw((CDraw::Tag)((int)drawTag+2), true, 255));
+    eObj->add(new CTexture("violin.png"));
+    eObj->add(new CActor());
+    eObj->add(new CRotation(0.f));
+    eObj->add(new CTilt(5, 80, 0, 180));
+    eObj->addObservedEntity("Anchor", ePanel);
+
+    eObj->get<CActor>()->addNode(new AVariable(tPanelReady + 3*objectsDelay, AVariable::HIDDEN, false));
+    scriptPoofAt(bottomRight.x - 10, bottomRight.y - 40, tPanelReady + 3*objectsDelay);
+
+    /// Trumpet
+    eObj = eManager->createEntity();
+    eObj->add(new CAnchor(+wPanel/2, +hPanel/2 - 25));
+    eObj->add(new CPosition(-100, -100));
+    eObj->add(new CDraw((CDraw::Tag)((int)drawTag+3), true, 255));
+    eObj->add(new CTexture("trumpet.png"));
+    eObj->add(new CActor());
+    eObj->add(new CRotation(0.f));
+    eObj->add(new CTilt(5, 50, 0, 120));
+    eObj->addObservedEntity("Anchor", ePanel);
+
+    eObj->get<CActor>()->addNode(new AVariable(tPanelReady + 4*objectsDelay, AVariable::HIDDEN, false));
+    scriptPoofAt(bottomRight.x, bottomRight.y - 25, tPanelReady + 4*objectsDelay);
+
+    scriptConfettiRain(delay);
+
+    askEndOfMatchQuestions(delay);
+}
+
+void ScriptedAnimation::scriptConfettiRain(double delay){
+    std::vector<std::string> confettis = {"confetti-01.png",
+                                          "confetti-02.png",
+                                          "confetti-03.png",
+                                          "confetti-04.png",
+                                          "confetti-05.png",
+                                          "confetti-06.png",
+                                          "confetti-07.png",
+                                          "confetti-08.png"
+                                         };
+
+    Entity* eEffect = eManager->createEntity();
+    eEffect->add(new CParticleEffect());
+    eEffect->add(new CActor());
+    ///DROP EMMITERS
+    double nEmmiters = 20;
+    double space = wWindow/nEmmiters;
+    double xEmmiter = 0;
+    for(int i = 0; i <= nEmmiters; i++){
+        for (int j = 0; j < confettis.size(); j++){
+            Entity* eEmmiter = eManager->createEntity();
+            double xPosition = randomDouble(xEmmiter-12, xEmmiter+12);
+            eEmmiter->add(new CPosition(xPosition, -30));
+            eEmmiter->attachEmployer(eEffect);
+            eEmmiter->add(new CParticleEmmiter(randomDouble(1, 2), confettis[j], randomDouble(0.5, 2.4), 200, 300, 90, 0));
+            eEmmiter->get<CParticleEmmiter>()->addElipsoidalMovement(CElipsoidalMovement(xPosition, 0, 5, 0, 500, 0, true, false));
+            eEffect->get<CParticleEffect>()->emmiters.push_back(eEmmiter);
+            eEmmiter->get<CParticleEmmiter>()->on = false;
+            eEmmiter->get<CParticleEmmiter>()->drawTag = CDraw::SKY;
+        }
+        xEmmiter += space;
+    }
+
+    eEffect->get<CActor>()->addNode(new AVariable(delay, AVariable::PARTICLE_EFFECT, true));
+}
+
+void ScriptedAnimation::scriptPoofAt(double x, double y, double when){
+    Entity* eSmoke = eManager->createEntity();
+    string animation = "poof-03.png";
+    double w = Assets::getAnimation(animation).wSprite;
+    double h = Assets::getAnimation(animation).hSprite;
+    eSmoke->add(new CAnimation(false, animation));
+    eSmoke->add(new CPosition(x, y));
+    eSmoke->add(new CDraw(CDraw::GUI_05));
+    eSmoke->add(new CDimensions(w, h));
+    eSmoke->add(new CActor());
+
+    eSmoke->get<CDraw>()->isHidden = true;
+    eSmoke->get<CActor>()->timeline.push_back(new AVariable(when, AVariable::HIDDEN, false));
+    eSmoke->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, animation));
+    eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-01.wav"));
+    eSmoke->get<CActor>()->timeline.push_back(new ADestroy(Assets::getAnimation(animation).duration));
+}
+
+void ScriptedAnimation::askEndOfMatchQuestions(double delay){
+    Entity* eButton = eManager->createEntity();
+    eButton->add(new CPosition(cxWindow, cyWindow));
+    eButton->add(new CButtonHitbox(wWindow, hWindow));
+    eButton->add(new CButtonState());
+    eButton->add(new CButtonTrigger({END_MATCH, START_SCREEN_TRANSITION}));
+    eButton->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
 }
 
 sf::Vector2f ScriptedAnimation::getArmyMiddlePoint(Entity* e){

@@ -16,6 +16,8 @@ class ArmyHUDSystem : public System{
         void onHighlightUnits(Entity* e);
         void onHighlightUnitsOff(Entity* e);
         void onScoreUpdated(Entity* e);
+        void onEndMatch(Entity* e);
+        void onInitializeWar(Entity* e);
 
         void updateUnits(Entity* e);
         void updateEffects(Entity* e);
@@ -40,6 +42,7 @@ class ArmyHUDSystem : public System{
         void animateButtonOutPuff(Entity* e, double after, bool sound = false);
 
         EntityList eResists;
+        bool active;
 };
 
 #endif // ARMYHUDSYSTEM_H

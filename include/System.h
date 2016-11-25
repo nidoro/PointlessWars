@@ -16,6 +16,13 @@ class System{
                 (*sys)->onNotify(m, e);
             }
         }
+        static void notify(Message m, std::string strMessage){
+            Entity eTemp;
+            eTemp.add(new CStringMessage(strMessage));
+            for (list<System*>::iterator sys = observers[m].begin(); sys != observers[m].end(); sys++){
+                (*sys)->onNotify(m, &eTemp);
+            }
+        }
 
         virtual void start(EntitiesManager* eManager, sf::RenderWindow* window, double targetUPS);
         virtual void stop();
@@ -187,6 +194,8 @@ class System{
         virtual void onUpdatePlayerNicknameWithInputTextbox(Entity* e){}
         virtual void onSetServerMessageDisplayerQuickMatch(Entity* e){}
         virtual void onCancelQuickMatchSearch(Entity* e){}
+        virtual void onEndMatch(Entity* e){}
+        virtual void onSetMatchConfig(Entity* e){}
 
         void subscribe(Message m){
             addObserver(this, m);

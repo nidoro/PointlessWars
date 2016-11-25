@@ -130,7 +130,7 @@ void ScreenSystem::onGameStarted(Entity* e){
     Entity* eScreen = eManager->createEntity();
     string quickStart = config.getQuickStart();
     if (!quickStart.empty()){
-        war.setMatchConfig(quickStart);
+        notify(SET_MATCH_CONFIG, quickStart);
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
     }else if (!config.getSkipIntro()){
         eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));

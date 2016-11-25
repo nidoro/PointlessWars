@@ -6,6 +6,10 @@ ArmyHUDSystem::ArmyHUDSystem(){
     addSubscription(HIGHLIGHT_UNITS);
     addSubscription(HIGHLIGHT_UNITS_OFF);
     addSubscription(SCORE_UPDATED);
+    addSubscription(END_MATCH);
+    addSubscription(INITIALIZE_WAR);
+
+    active = false;
 }
 
 ArmyHUDSystem::~ArmyHUDSystem(){
@@ -13,19 +17,21 @@ ArmyHUDSystem::~ArmyHUDSystem(){
 }
 
 void ArmyHUDSystem::update(){
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
-        Entity* e = *i;
-        updateNAlive(e);
-        updateUnits(e);
-        updateEffects(e);
-        updateCaptain(e);
-        updateCoin(e);
-        //updateResistBars(e);
-        //updateScore(e);
-        //updateResistBars(e);
-    }
-    if (!entities.empty() && eResists.empty()){
-        createResistanceHighlighters(entities.front());
+    if (active){
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+            Entity* e = *i;
+            updateNAlive(e);
+            updateUnits(e);
+            updateEffects(e);
+            updateCaptain(e);
+            updateCoin(e);
+            //updateResistBars(e);
+            //updateScore(e);
+            //updateResistBars(e);
+        }
+        if (!entities.empty() && eResists.empty()){
+            createResistanceHighlighters(entities.front());
+        }
     }
 }
 
@@ -85,7 +91,7 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
     if (e->get<CArmyHUD>()->medals.size() < e->get<CArmy>()->score){
         Entity* eObj = eManager->createEntity();
         eObj->add(new CAnimation(false, "medal-" + color + "-idle.png"));
-        eObj->add(new CDimensions(30, 40));
+        //eObj->add(new CDimensions(30, 40));
         eObj->add(new CActor());
         eObj->add(new CDraw(CDraw::GUI1));
         eObj->add(new CVelocity());
@@ -940,3 +946,11 @@ void ArmyHUDSystem::animateButtonOutPuff(Entity* e, double after, bool sound){
     e->get<CActor>()->timeline.push_back(new ADestroy(after+Assets::getAnimation(animation).duration));
 }
 
+void ArmyHUDSystem::onEndMatch(Entity* e){
+    eResists.clear();
+    active = false;
+}
+
+void ArmyHUDSystem::onInitializeWar(Entity* e){
+    active = true;
+}

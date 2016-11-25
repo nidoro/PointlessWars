@@ -14,6 +14,8 @@ class SideUISystem : public System{
     private:
         void onButtonGainedFocus(Entity* e);
         void onButtonLostFocus(Entity* e);
+        void onEndMatch(Entity* e);
+        void onInitializeWar(Entity* e);
 
         void createUI(Entity* ePlayer);
         list<CCaptain::ID> getHeroesInUI(Entity* e);
@@ -35,6 +37,7 @@ class SideUISystem : public System{
         double buttonsSpacing;
         double xOffWhenHidden;
         double buttonsSpeed;
+        bool active;
 
 };
 

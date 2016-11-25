@@ -146,6 +146,8 @@ struct Component{
             CAMERA_MAN,
             STRING_TOGGLE_BUTTON,
             GUI_GROUP,
+            TILT,
+            STRING_MESSAGE,
             NUM_COMPONENTS
         };
 
@@ -950,6 +952,42 @@ struct CVelocity : public Component{
     double xMax, yMax;
     double speed;
 };
+
+struct CElipsoidalMovement : public Component{
+    static Type getType(){return ELIPSOIDAL_MOVEMENT;}
+    CElipsoidalMovement(){};
+    CElipsoidalMovement(double cx, double cy, double xAmp, double yAmp, double angularSpeed,
+                        double startingAngle = 0, bool setX = true, bool setY = true){
+        this->cx = cx;
+        this->cy = cy;
+        this->xAmp = xAmp;
+        this->yAmp = yAmp;
+        this->angularSpeed = angularSpeed;
+        this->angle = startingAngle;
+        this->setX = setX;
+        this->setY = setY;
+    }
+    double cx, cy;
+    double xAmp, yAmp;
+    double angularSpeed;
+    bool setX, setY;
+    double angle;
+};
+
+struct CTilt : Component{
+    static Type getType(){return TILT;}
+    CTilt(double amplitude, double tiltSpeed = 360, double centralAngle = 0, double initialAngle = 0){
+        this->amplitude = amplitude;
+        this->tiltSpeed = tiltSpeed;
+        this->centralAngle = centralAngle;
+        this->angle = initialAngle;
+    }
+    double angle;
+    double tiltSpeed;
+    double amplitude;
+    double centralAngle;
+};
+
 
 struct CAutoPilot : public Component{
     static Type getType(){return AUTO_PILOT;}
@@ -2143,7 +2181,10 @@ struct CParticleEmmiter : public Component{
 
     enum Drawable{TEXTURE, RECTANGLE, CIRCLE, ANIMATION};
 
-    CParticleEmmiter(){}
+    CParticleEmmiter(){
+        hasElipsoidalMovement = false;
+        drawTag = CDraw::PARTICLES;
+    }
     CParticleEmmiter(double rate, sf::RectangleShape shape, double lifeSpan, double minSpeed, double maxSpeed,
                      double angle, double angleGap, int nParticles = 1){
         this->rate = rate;
@@ -2158,6 +2199,8 @@ struct CParticleEmmiter : public Component{
         this->yAcc = 0;
         on = false;
         drawable = RECTANGLE;
+        hasElipsoidalMovement = false;
+        drawTag = CDraw::PARTICLES;
     }
     CParticleEmmiter(double rate, sf::CircleShape shape, double lifeSpan, double minSpeed, double maxSpeed,
                      double angle, double angleGap, int nParticles = 1){
@@ -2173,6 +2216,8 @@ struct CParticleEmmiter : public Component{
         this->yAcc = 0;
         on = false;
         drawable = CIRCLE;
+        hasElipsoidalMovement = false;
+        drawTag = CDraw::PARTICLES;
     }
     CParticleEmmiter(double rate, string texture, double lifeSpan, double minSpeed, double maxSpeed,
                      double angle, double angleGap, int nParticles = 1){
@@ -2188,6 +2233,13 @@ struct CParticleEmmiter : public Component{
         this->yAcc = 0;
         on = false;
         drawable = TEXTURE;
+        hasElipsoidalMovement = false;
+        drawTag = CDraw::PARTICLES;
+    }
+
+    void addElipsoidalMovement(CElipsoidalMovement c){
+        hasElipsoidalMovement = true;
+        elipsoidalMovement = c;
     }
 
     sf::RectangleShape rectShape;
@@ -2201,6 +2253,11 @@ struct CParticleEmmiter : public Component{
     double angle;
     double angleGap;
     int nParticles;
+
+    bool hasElipsoidalMovement;
+    CElipsoidalMovement elipsoidalMovement;
+
+    CDraw::Tag drawTag;
 
     Drawable drawable;
     sf::Clock clock;
@@ -2385,28 +2442,18 @@ struct CCommandLine : public Component{
     }
 };
 
-struct CElipsoidalMovement : public Component{
-    static Type getType(){return ELIPSOIDAL_MOVEMENT;}
-    CElipsoidalMovement(double cx, double cy, double xAmp, double yAmp, double angularSpeed,
-                        double startingAngle = 0, bool setX = true, bool setY = true){
-        this->cx = cx;
-        this->cy = cy;
-        this->xAmp = xAmp;
-        this->yAmp = yAmp;
-        this->angularSpeed = angularSpeed;
-        this->angle = startingAngle;
-        this->setX = setX;
-        this->setY = setY;
-    }
-    double cx, cy;
-    double xAmp, yAmp;
-    double angularSpeed;
-    bool setX, setY;
-    double angle;
-};
-
 struct CCameraMan : public Component{
     static Type getType(){return CAMERA_MAN;}
+};
+
+struct CStringMessage : public Component{
+    static Type getType(){return STRING_MESSAGE;}
+
+    CStringMessage(std::string value){
+        this->value = value;
+    }
+
+    std::string value;
 };
 
 #endif // COMPONENT_H

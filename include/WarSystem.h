@@ -24,6 +24,8 @@ class WarSystem : public System{
     private:
         void onInitializeWar(Entity* e);
         void onPacketReceived(Entity* e);
+        void onEndMatch(Entity* e);
+        void onSetMatchConfig(Entity* e);
 
         void initializeState();
         void sendStateToPeer();
@@ -40,6 +42,7 @@ class WarSystem : public System{
 
         GameObserver gameObserver;
         bool inBattle;
+        bool hasMatchEnded;
 };
 
 #endif // WARSYSTEM_H

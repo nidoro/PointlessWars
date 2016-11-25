@@ -27,10 +27,6 @@ Assets::Assets(){
     //ctor
 }
 
-Assets::~Assets(){
-    //dtor
-}
-
 void Assets::load(){
     //loadTexturesAt(rscRoot + "images");
     //loadSoundsAt(rscRoot + "sounds");
@@ -571,40 +567,25 @@ void Assets::createColors(){
     srand(time(nullptr));
 }
 void Assets::readStrings(string language){
-    string filename = rscRoot + "strings-" + language + ".dat";
-    ifstream file(filename.c_str());
+    std::string filename = rscRoot + "strings-" + language + ".json";
+    std::ifstream file(filename.c_str());
     if (!file.is_open()){
         printf("strings-%s.dat not found!\n", language.c_str());
         return;
     }
-	string line;
-	stringMap.clear();
-	while(!file.eof()){
-		if (line.size() != 0 && line[0] != '%'){
-            istringstream ss(line);
-            string id;
-            string value;
-            string word;
-            ss >> id;
-            while (ss >> word){
-                string temp = word;
-                string aux = temp;
-                for(unsigned int c = 0; c < temp.size(); c++){
-                    if (temp[c] == '/'){
-                        aux[c] = '\n';
-                    }else{
-                        aux[c] = temp[c];
-                    }
-                }
-                value += aux + " ";
+    std::istream& fileStream = file;
+    nlohmann::json j;
+    fileStream >> j;
+
+    for (nlohmann::json::iterator entry = j.begin(); entry != j.end(); entry++){
+        std::string value = entry.value();
+        for(int c = 0; c < value.size(); c++){
+            if (value[c] == '/'){
+                value[c] = '\n';
             }
-            value.resize(value.length()-1);
-            char text[255];
-            sprintf(text, value.c_str());
-            stringMap.insert(make_pair(id, text));
         }
-        getline(file, line);
-	}
+        stringMap.insert(make_pair(entry.key(), value));
+    }
 }
 
 void Assets::readTextures(){
@@ -923,51 +904,6 @@ void Assets::readMusics(){
 
 void Assets::readScenarios(){
     CScenario::Map.clear();
-    /*
-	FILE* pipe = popen("ls ../rsc-0.2/scenarios", "r");
-	char buf[1024];
-	while(fgets(buf, 1024, pipe)){
-		string name = buf;
-		if (name[name.size()-1] == '\n') name.resize(name.size()-1);
-
-		if (hasEnding(name, ".sce")){
-            CScenario scenario;
-            scenario.name = name;
-            ifstream file(string(string("../rsc-0.2/scenarios/") + name).c_str());
-            if (!file.is_open()){
-                printf("%s not found!\n", name.c_str());
-                return;
-            }
-            string line;
-            while(!file.eof()){
-                if (line.size() != 0 && line[0] != '%'){
-                    istringstream ss(line);
-                    if (scenario.background.empty()){
-                        ss >> scenario.background;
-                    }else{
-                        CScenarioObject object;
-                        int column = 0;
-                        while(++column <= 7){
-                            switch(column){
-                                case 1: ss >> object.id; break;
-                                case 2: ss >> object.xRelative; break;
-                                case 3: ss >> object.yRelative; break;
-                                case 4: ss >> object.xScale; break;
-                                case 5: ss >> object.yScale; break;
-                                case 6: ss >> object.hFlip; break;
-                                case 7: ss >> object.vFlip; break;
-                                default: break;
-                            }
-                        }
-                        scenario.objects.push_back(object);
-                    }
-                }
-                getline(file, line);
-            }
-            CScenario::Map.insert(make_pair(scenario.name, scenario));
-		}
-	}
-    */
     fs::path p(rscRoot + "sceneries");
 
     try{
