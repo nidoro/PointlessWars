@@ -121,7 +121,7 @@ obj-hello2.png              53      45      15          4
 alpha.png		   			32		32		1			8		1
 arbalest-proj.png			20		10		3			12		1
 arrow2.png					30		10		1			1		1
-comet.png					64		64		6			12		1
+comet.png					80		80		4			10		1
 bomb.png					26		26		3			6		1
 flying-scimitar.png			32		32		4			6		1
 eridu-blade.png 			180		180		1			6		1
@@ -144,7 +144,7 @@ poof-06.png					61		61		5			12		1
 poof-03.png					96		88		8			12		1
 poof-04.png					96		88		8			12		1
 poof-05.png					96		88		3			12		1
-explosion-01.png			15		15		9			12		1
+explosion-01.png			48		48		12			7		1
 geiser.png					36		36		4			8		1
 bubble-02.png				40		40		1			8		1
 ice-dragon-flying.png		85		50		6			8		1
