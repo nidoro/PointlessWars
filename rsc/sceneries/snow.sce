@@ -2,7 +2,7 @@
 cenario_neve.bg
 
 %Music
-ice-loop
+ice-loop.ogg
 
 %         OBJECT-NAME      X-RELATIVE      Y-RELATIVE    X-SCALE    Y-SCALE     H-FLIP     V-FLIP
                   dog          0.1291          0.2191     1.0000     1.0000          0          0
