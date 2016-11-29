@@ -1,6 +1,9 @@
 %Background
 cenario_neve.bg
 
+%Music
+ice-loop
+
 %         OBJECT-NAME      X-RELATIVE      Y-RELATIVE    X-SCALE    Y-SCALE     H-FLIP     V-FLIP
                   dog          0.1291          0.2191     1.0000     1.0000          0          0
         snowflag-blue          0.0550          0.7333     1.0000     1.0000          0          0
