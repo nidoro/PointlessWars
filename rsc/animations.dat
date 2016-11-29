@@ -82,6 +82,7 @@ smoke.png                   100     100     9           3
 tree.png                    48      77      1           1
 trees.png                   165     128     1           1
 blacksmith.png              131     88      1           1
+training-field.png          155     101     1           1
 %================
 % SCENARIO OBJECTS
 %================
@@ -121,7 +122,7 @@ obj-hello2.png              53      45      15          4
 alpha.png		   			32		32		1			8		1
 arbalest-proj.png			20		10		3			12		1
 arrow2.png					30		10		1			1		1
-comet.png					64		64		6			12		1
+comet.png					80		80		4			10		1
 bomb.png					26		26		3			6		1
 flying-scimitar.png			32		32		4			6		1
 eridu-blade.png 			180		180		1			6		1
@@ -144,7 +145,7 @@ poof-06.png					61		61		5			12		1
 poof-03.png					96		88		8			12		1
 poof-04.png					96		88		8			12		1
 poof-05.png					96		88		3			12		1
-explosion-01.png			15		15		9			12		1
+explosion-01.png			48		48		12			7		1
 geiser.png					36		36		4			8		1
 bubble-02.png				40		40		1			8		1
 ice-dragon-flying.png		85		50		6			8		1
@@ -415,4 +416,15 @@ unit-07-action-02.png		32		32		1			4		1
 unit-04-action-03.png		32		32		1			4		1
 
 %snow
-
+chicken-idle.png            26      21      2           4   
+chicken-singing.png         26      21      1           0.5 
+obj-dog.png                 30      24      5           3
+obj-dog-woof.png            30      24      4           3
+obj-snowflag-blue.png       120     80      9           4
+obj-snowflag-red.png        120     80      9           4
+obj-light-off.png           35      84      1           1
+obj-light-on.png            35      84      8           3
+obj-snowman-idle.png        50      50      6           3
+obj-snowman-nose.png        50      50      6           3
+obj-tree.png                80      120     1           1
+obj-snow-fall.png           80      120     10          11
