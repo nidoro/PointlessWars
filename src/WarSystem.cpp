@@ -22,6 +22,7 @@ void WarSystem::update(){
                 notify(SYSTEM_ACTION);
                 //sendStateToPeer();
             }
+    }
         //}
 
         for (int i = 0; i < 3; i++){
@@ -33,7 +34,6 @@ void WarSystem::update(){
                 war.setPlayerReady(i, true);
             }
         }
-    }
 }
 
 void WarSystem::sendAction(CPlayer::ID id){

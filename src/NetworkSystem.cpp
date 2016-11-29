@@ -105,7 +105,7 @@ void NetworkSystem::processPacket(sf::Packet& packet){
     }else if (id == "SET-STATE-CONTROLER"){
         war.setRemotelyControled(0, false);
     }else if (id == "INITIALIZE-WAR"){
-
+        war.getMatchConfig().loadFromFile("Prototype");
         Entity* eScreen = eManager->createEntity();
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
         eScreen->add(new CTimer(3, START_SCREEN_TRANSITION));

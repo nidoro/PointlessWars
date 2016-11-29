@@ -1,0 +1,208 @@
+---------------------
+ RESTRIÇÕES TÉCNICAS
+---------------------
+1. Deve estar sujeito à todas as limitações técnicas dos programadores 
+   envolvidos:
+    1.1 Deve ser em C++.
+    1.2 Deve ser 2D.
+    1.3 Deve ter câmera estática.
+    1.4 Se multiplayer for necessário, não deve ser jogo em tempo-real.
+    1.5 Deve trabalhar com animações por sprite.
+2. Deve estar sujeito à todas as limitações técnicas dos artistas envolvidos:
+    2.1 Deve ter arte pixel-art.
+
+---------------------
+ DECISÕES EXECUTIVAS
+---------------------
+1. Deve ser distribuível na loja Steam.
+    1.1 Deve ser para plataformas desktop.
+    1.2 Deve atender a todas as restrições de conteúdo da Steam.
+2. Deve ter opção multiplayer.
+3. Deve ser fácil de aprender e difícil de dominar.
+4. Deve atender ao público de 12 a 35 anos.
+5. Deve ser casual.
+
+------------------
+ VOCABULÁRIO:
+------------------
+Regras: direitos, deveres e objetivos de cada jogador.
+
+Gameplay: maneira como os jogadores excercem seus direitos e deveres na sua 
+perseguição pelos seus objetivos.
+
+Game mechanic: mecanismo que torna o gameplay possível.
+
+Game design: resultado esperado da soma das partes regras, gameplay, mechanics,
+ambiente, história e personagens de um jogo.
+
+Jogador: tomador de decisão.
+
+Decisão: Qualquer escolha feita por um jogador durante uma batalha.
+    Decisão sincronizada: Mesma escolha feita simultaneamente pelos jogadores.
+    Decisão alternada: Mesma escolha feita assincronicamente pelos jogadores.
+    Decisão exclusiva: Escolha feita por apenas um jogador em uma batalha.
+
+Turno: Período que compreende todas as tomadas de decisão de um jogador antes
+que o poder de tomada de decisão seja tranferido para o oponente (nos casos de
+decisão assincrônica ou exclusiva) ou até que ambos os jogadores tenham
+tomado sua decisão (no caso de decisão sincronizada).
+
+Unidade: personagem com resistências e poder de ataque.
+
+Herói: personagem com habilidades especiais.
+
+Exército: todas as unidades vivas e herói ativos de um jogador.
+
+Composição de um exército: conjunto de pares unidade-quantidade.
+
+Preparação: Período que compreende os turnos de recrutamento de unidades,
+decisão exclusiva do jogador que perdeu a batalha anterior, escolha de heróis e
+adoção de formações de batalha, estas duas últimas decisões sincronizadas.
+
+Batalha a distância: Período que compreende todos os turnos até que o número de 
+turnos por batalha seja atingido por ambos os jogadores. As opções de ação neste
+período se limitam às capacidades do exército.
+
+Resolução: Período que compreende o turno exclusivo do jogador detentor do
+maior exército após batalha a distância. Neste período, o jogador decide qual
+deve ser o encerramento da batalha.
+
+Batalha: Período que compreende a batalha a distância e a resolução.
+
+Jogador dominante: jogador que sai em vantagem após resolução.
+
+Jogador dominado: jogador que sai em desvantagem após resolução.
+
+Jogador vencedor: primeiro jogador a atingir o número de medalhas que satisfazem
+a condição de vitória.
+
+Jogador perdedor: oponente do jogador vencedor.
+
+Oponente iminente: exército que será enfrentado na próxima batalha.
+
+Conta-ataque natural: no esquema X > Y, unidades que atacam com Y possuem
+baixa resistência (0 ou 1) a X. Assim: Fogo > Ar > Terra > Água > Fogo.
+
+First-mover advantage: vantagem de ser o primeiro jogador a realizar determinada
+decisão alternada.
+
+----------------------
+ MOTIVAÇÕES DE DESIGN
+----------------------
+Escolha dos heróis:
+    Antes de começar a partida, os jogadores escolhem seus heróis dentre as
+    possibilidades disponíveis em um leque gerado aleatoriamente.
+    MOTIVAÇÃO: adicionar um recurso exclusivo desde o início da partida.
+    
+    O primeiro jogador a escolher escolhe 1 herói, e a partir daí os jogadores
+    alternam turnos escolhendo 2 heróis cada até que o limite seja atingido.
+    MOTIVAÇÃO: evitar first-mover advantage.
+    
+Preparação:
+    Recrutamento de unidades:
+        Decisão exclusiva do jogador dominado na última batalha.
+        MOTIVAÇÃO: contra-balancear as vantagens obtidas na Resolução da última 
+        batalha.
+        
+        A primeira batalha sempre se inicia com ambos os exércitos construídos
+        de maneira aleatória.
+        MOTIVAÇÃO 1: evitar first-mover advantage.
+        MOTIVAÇÃO 2: caso exista algum desbalanço no jogo onde há vantagem
+        sobre exércitos pouco heterogêneos, iniciar os exércitos 
+        heterogenericamente implica em contra-ataques não óbvios e estratégias
+        mais complexas.
+        
+    Seleção do herói:
+        Decisão sincronizada.
+        MOTIVAÇÃO: Exercitar a habilidade do jogador de identificar
+        oportunidades de sinergia entre seus heróis e seu exército e de prever
+        as ações do oponente.
+        
+    Adoção de formação:
+        Decisão sincronizada.
+        MOTIVAÇÃO: evitar first-mover advantage.
+
+        Formações tem por objetivo especializar ou não o exército ofensiva ou
+        defensivamente.
+        MOTIVAÇÃO: possibilitar estratégias que só são viáveis devido aos
+        efeitos da formação. Exemplo 1: formação ofensiva quando, apesar de não
+        ser o primeiro a atacar, possui um herói com habilidade defensiva capaz
+        de neutralizar a ofensa inimiga. Exemplo 2: formação ofensiva quando,
+        apesar de ser o primeiro a jogar, possui um herói com habilidade
+        ofensiva capaz de neutralizar a defesa inimiga.
+        
+Batalha a distância:
+    Habilidades heróicas:
+        Podem ser defensivas, ofensivas, determinísticas ou não. Fazem tudo o
+        que não pode ser feito através de unidades, formações e resoluções.
+        MOTIVAÇÃO: O objetivo do herói é capacitar o jogador com qualquer ação
+        de outro modo impossível.
+    Ataques a distância:
+        Toda unidade possui um tipo de ataque a distância.
+        MOTIVAÇÃO: O objetivo é obvio: enfraquecer o exército inimigo para ter o
+        poder de decidir como se dará a resolução da batalha.
+   
+Resolução:
+    O jogador detentor do maior exército decide como se dará o fim da batalha.
+    
+    São consequências das resoluções possíveis:
+    - Apostar na vitória em batalha corporal.
+    - Impedir o jogador de usar um de seus heróis.
+    - Impedir o jogador de usar uma das formações.
+    - Impedir o jogador de escolher certas unidades.
+    
+    MOTIVAÇÃO: os poderes conferidos neste turno exclusivo tem por objetivo
+    impactar as batalhas futuras. Assim os resultados de cada batalha não
+    são isolados e relevantes apenas a curto prazo. Antes, os efeitos das
+    resoluções perduram pelo resto da partida.
+    
+    Das resoluções possíveis, a única que garante pontuação do jogador vitorioso
+    é a primeira.
+    
+    MOTIVAÇÃO 1: o fato de ser uma aposta faz com que a vitória da partida 
+    nunca ocorra de maneira determinística, sempre permitindo uma revira-volta
+    do jogador em desvantagem, mesmo que às vezes improvável.
+    MOTIVAÇÃO 2: o fato de ser a única resolução capaz de pontuar faz o jogador
+    ter que decidir entre pontuar ou adquirir uma vantagem sobre o oponente em
+    batalhas futuras.
+
+----------------------
+ RESULTADOS ESPERADOS
+----------------------
+1) Dados dois oponentes fazendo decisões aleatórias, é esperado que cada lado
+seja vitorioso em 50% dos jogos, não importando quem foi o first-mover.
+
+2) Dados dois oponentes fazendo decisões ótimas, é esperado que se um dos
+lados adquirir todas as vantagens conferidas por resoluções e seu oponente não
+adquirir nenhuma, este jogador vença quasi-100% dos jogos.
+
+3) Dados dois oponentes fazendo decisões ótimas, é esperado que a vantagem
+obtida através do recrutamento exlusivo seja apenas o suficiente para ter uma
+chance de 40% de pontuar na batalha seguinte caso o jogador recrutando não seja
+o first-mover e uma chance de 60% de pontuar na batalha seguinte caso o jogador
+recrutando seja o first-mover.
+
+4) Dados dois oponentes fazendo decisões ótimas, é esperado que a vantagem
+obtida através do recrutamento exlusivo seja apenas o suficiente para obter o
+maior exército na batalha seguinte em 40% das ocorrências onde o jogador 
+recrutando não será o first-mover na próxima batalha.
+
+-----------------------
+ IDEIAS A EXPERIMENTAR
+-----------------------
+Aumentar eficácia da intimidação sempre que o herói vencer uma batalha.
+
+Alterar alvos da intimidação. Cada herói seria capaz de intimidar apenas
+unidades de determinado tipo.
+
+
+
+
+
+
+
+
+
+
+
+

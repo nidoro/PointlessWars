@@ -300,6 +300,12 @@ void MainMenuSystem::createMenu(bool animated){
         eObj->add(new CTexture("pw-logo.png"));
         eObj->add(new CElipsoidalMovement(cxWindow, 130, 0, 10, 180));
         eObj->add(new CActor());
+
+        ///MUSIC
+        Entity* eMusic = eManager->createEntity();
+        eMusic->add(new CMusic("main-theme.ogg"));
+        eMusic->add(new CSystem());
+        notify(PLAY_MUSIC, eMusic);
     }
 
     /// BUTTONS
@@ -371,7 +377,7 @@ void MainMenuSystem::createMenu(bool animated){
     eObj->add(new CPosition(xRel*1280.f, yRel*720.f));
     eObj->add(new CDraw(CDraw::WORLD_1));
     eObj->add(new CTexture(buttonTexture));
-    eObj->add(new CDimensions(wButton, hButton));
+    //eObj->add(new CDimensions(wButton, hButton));
     eObj->add(new CButtonHitbox(wButton, hButton));
     eObj->add(new CButtonState());
     eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
@@ -383,6 +389,7 @@ void MainMenuSystem::createMenu(bool animated){
     eGUI->add(new CDraw(CDraw::GUI_00));
 
     eObj->addObservedEntity("create-gui-group", eGUI);
+
 }
 
 Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m){

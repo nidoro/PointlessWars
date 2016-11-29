@@ -10,6 +10,8 @@ Game::~Game(){
 
 void Game::start(){
     srand(time(nullptr));
+    sf::ContextSettings ctx;
+    ctx.antialiasingLevel = 0;
 
     Assets::load();
     //Assets::packResources("resource-pack");
@@ -19,12 +21,13 @@ void Game::start(){
     System::config.setWindowIcon(Assets::getTexture("icon-v3.png"));
 
     window.create(sf::VideoMode(System::config.getResolution().x, System::config.getResolution().y),
-                  "Pointless Wars", System::config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+                  "Pointless Wars", System::config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default,
+                  ctx);
 
     window.setIcon(System::config.getWindowIcon().getSize().x, System::config.getWindowIcon().getSize().y, System::config.getWindowIcon().getPixelsPtr());
 
     window.setMouseCursorVisible(true);
-    window.setVerticalSyncEnabled(true);
+    //window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(240);
 
 	//ImGui::SFML::Init(window);
@@ -78,7 +81,7 @@ void Game::start(){
     initializeSystem(new MasterSystem());
     initializeSystem(new TiltSystem());
 
-    initializeSystem(new RenderSystem());
+    initializeSystem(new RenderSystem(), -1);
 
     //window.close();
     //window.create(sf::VideoMode(winSize.x, winSize.y), "Pointless Wars", sf::Style::Default);
