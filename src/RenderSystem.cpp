@@ -193,9 +193,9 @@ void RenderSystem::draw(Entity* e){
             }else{
                 sf::Sprite sprite(*Assets::getTexture(cTexture->file));
                 sf::FloatRect rect = sprite.getLocalBounds();
-                sprite.setOrigin(rect.width/2, rect.height/2);
+                sprite.setOrigin(std::floor(rect.width/2 + 0.5), std::floor(rect.height/2 + 0.5));
                 if (e->has(Component::CURSOR)) sprite.setOrigin(0,0);
-                sprite.setPosition(cPosition->x, cPosition->y);
+                sprite.setPosition(std::floor(cPosition->x + 0.5), std::floor(cPosition->y + 0.5));
                 if (e->has(Component::DIMENSIONS)){
                     CDimensions* cDim = e->get<CDimensions>();
                     sf::FloatRect rect = sprite.getLocalBounds();
@@ -225,8 +225,8 @@ void RenderSystem::draw(Entity* e){
     }else if (e->has(Component::ANIMATION)){
         sf::Sprite sprite = e->get<CAnimation>()->sprite;
         sf::FloatRect rect = sprite.getLocalBounds();
-        sprite.setOrigin(rect.width/2, rect.height/2);
-        sprite.setPosition(cPosition->x, cPosition->y);
+        sprite.setOrigin(std::floor(rect.width/2 + 0.5), std::floor(rect.height/2 + 0.5));
+        sprite.setPosition(std::floor(cPosition->x + 0.5), std::floor(cPosition->y + 0.5));
         if (e->has(Component::DIMENSIONS)){
             CDimensions* cDim = e->get<CDimensions>();
             sf::FloatRect rect = sprite.getLocalBounds();
@@ -234,8 +234,8 @@ void RenderSystem::draw(Entity* e){
             double hScale = cDim->height/rect.height;
             sprite.setScale(wScale, hScale);
         }
-        sprite.scale((e->get<CAnimation>()->hFlip ? -1:1), (e->get<CAnimation>()->vFlip ? -1:1));
         sprite.setColor(sf::Color(255,255,255,e->get<CDraw>()->alpha));
+        sprite.scale((e->get<CAnimation>()->hFlip ? -1:1), (e->get<CAnimation>()->vFlip ? -1:1));
         if (e->has(Component::UNIT)){
             sf::Color c = e->get<CUnit>()->color;
             c.a = e->get<CDraw>()->alpha;

@@ -39,7 +39,7 @@ struct Animation{
 
     typedef string ID;
     ID id;
-    double wSprite, hSprite;
+    int wSprite, hSprite;
     int nFrames;
     double rate;
     vector<sf::Sprite> frames;

@@ -433,6 +433,10 @@ void Assets::createUnits(){
         0,	0,	0,  0,	4       //20
     };
 
+    //1(0) 13(3) 6(2) 9(1)
+    //2(0) 13(3) 6(2) 9(1)
+    //8(1) 13(3) 6(2) 9(1)
+
     for(int i = 0; i < nUnits; i++){
         CUnit unit;
         unit.id = i;
@@ -1159,13 +1163,18 @@ void Assets::readAnimations(){
 void Assets::createSprites(){
 	for(map<Animation::ID, Animation>::iterator i = animations.begin(); i != animations.end(); i++){
         Animation& animation = i->second;
+        if (getTexture(animation.id) == nullptr) continue;
         sf::IntRect rect(0, 0, animation.wSprite, animation.hSprite);
         for (int i = 0; i < animation.nFrames; i++){
-            if (getTexture(animation.id) == nullptr) continue;
-            sf::Sprite s(*getTexture(animation.id), rect);
+            sf::Texture* sptTexture = new sf::Texture;
+            sf::Image image = getTexture(animation.id)->copyToImage();
+            //sptTexture->loadFromImage(image, rect);
+            sptTexture->loadFromImage(image, rect);
+            sf::Sprite s(*sptTexture);
             animation.frames.push_back(s);
             rect.left += animation.wSprite;
         }
+        //printf("%s %d %d\n", i->first.c_str(), animation.wSprite, animation.hSprite);
 	}
 }
 

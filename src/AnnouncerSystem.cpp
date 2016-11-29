@@ -45,19 +45,21 @@ void AnnouncerSystem::createAnnouncer(){
 
 void AnnouncerSystem::startTextTransition(){
     double tAux = 0;
-    eText->get<CActor>()->addNode(new AFade(0.0, -255, 0));
-    eText->get<CActor>()->addNode(new ADestroy(1.0));
+    //eText->get<CActor>()->addNode(new AFade(0.0, -255, 0));
+    eText->get<CActor>()->addNode(new ADestroy(0.0));
 
     eText = eManager->createEntity();
     eText->add(new CPosition(cxWindow, 15));
-    eText->add(new CTextbox2(nextString, Assets::getFont(Assets::getPrimaryFont()), 16));
-    eText->add(new CDraw(CDraw::GUI2, 0));
+    eText->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 16));
+    eText->add(new CDraw(CDraw::GUI2));
+    eText->add(new CTypingEffect(nextString, 40));
     eText->add(new CActor());
 
-    eText->get<CActor>()->addNode(new AFade(1.0, 255, 255));
+    //eText->get<CActor>()->addNode(new AFade(1.0, 255, 255));
+    CTextbox2 tb(nextString, Assets::getFont(Assets::getPrimaryFont()), 16);
 
-    double wTarget = eText->get<CTextbox2>()->content.getLocalBounds().width + 60;
-    double stretchSpeed = wTarget > eBanner->get<CDimensions>()->width ? 150 : -150;
+    double wTarget = tb.content.getLocalBounds().width + 60;
+    double stretchSpeed = wTarget > eBanner->get<CDimensions>()->width ? 350 : -350;
 
     for (list<AnimationNode*>::iterator it = eBanner->get<CActor>()->timeline.begin(); it != eBanner->get<CActor>()->timeline.end(); it++){
         delete *it;

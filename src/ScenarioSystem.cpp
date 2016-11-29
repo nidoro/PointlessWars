@@ -35,6 +35,7 @@ void ScenarioSystem::load(string name, double xOff, double yOff){
     for(list<CScenarioObject>::iterator i = scenario.objects.begin(); i != scenario.objects.end(); i++){
         Entity* eObj = eManager->createEntity();
         eObj->add(new CAnimation(false, CScenarioObject::Map[i->id].aDefault));
+        //eObj->add(new CTexture(CScenarioObject::Map[i->id].aDefault));
         eObj->add(new CDraw(CDraw::WORLD));
         eObj->add(new CPosition(i->xRelative*1280 + xOff, i->yRelative*720 + yOff));
         if (CScenarioObject::Map[i->id].aDefault != CScenarioObject::Map[i->id].aClick){

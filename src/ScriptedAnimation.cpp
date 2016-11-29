@@ -6458,8 +6458,9 @@ void ScriptedAnimation::scriptVictoryAnimation(double delay){
 
     double wPanel = 350;
     double hPanel = 90;
-    double wMin = Assets::getTexture("9p-frame-02.png")->getSize().x;
-    double hMin = Assets::getTexture("9p-frame-01.png")->getSize().y;
+    std::string texturePanel = war.getPlayer(war.getBattleWinner())->get<CPlayer>()->side == CPlayer::LEFT ? "9p-frame-01.png" : "9p-frame-02.png";
+    double wMin = Assets::getTexture(texturePanel)->getSize().x;
+    double hMin = Assets::getTexture(texturePanel)->getSize().y;
 
     /// Panel
     ePanel = eManager->createEntity();

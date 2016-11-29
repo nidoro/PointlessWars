@@ -56,14 +56,14 @@ void CameraSystem::update(){
         Entity* eCamMan = entities.front();
         if (!eManager->isDead(eCamMan)){
             if (eCamMan->has(Component::POSITION)){
-                sf::View v(sf::FloatRect(0, 0, wView, hView));
-                v.setCenter(eCamMan->get<CPosition>()->x, eCamMan->get<CPosition>()->y);
-                window->setView(v);
+                sf::View view = sf::View(sf::FloatRect(0, 0, std::floor(wView + 0.5), std::floor(hView + 0.5)));
+                view.setCenter(std::floor(eCamMan->get<CPosition>()->x + 0.5), std::floor(eCamMan->get<CPosition>()->y + 0.5));
+                window->setView(view);
             }
         }
     }else{
-        sf::View view = sf::View(sf::FloatRect(0, 0, wView, hView));
-        view.setCenter(cxWindow, cyWindow);
+        sf::View view = sf::View(sf::FloatRect(0, 0, std::floor(wView + 0.5), std::floor(hView + 0.5)));
+        view.setCenter(std::floor(cxWindow + 0.5), std::floor(cyWindow + 0.5));
         window->setView(view);
     }
 }
