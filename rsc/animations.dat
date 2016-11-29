@@ -82,6 +82,7 @@ smoke.png                   100     100     9           3
 tree.png                    48      77      1           1
 trees.png                   165     128     1           1
 blacksmith.png              131     88      1           1
+training-field.png          155     101     1           1
 %================
 % SCENARIO OBJECTS
 %================
@@ -415,4 +416,15 @@ unit-07-action-02.png		32		32		1			4		1
 unit-04-action-03.png		32		32		1			4		1
 
 %snow
-
+chicken-idle.png            26      21      2           4   
+chicken-singing.png         26      21      1           0.5 
+obj-dog.png                 30      24      5           3
+obj-dog-woof.png            30      24      4           3
+obj-snowflag-blue.png       120     80      9           4
+obj-snowflag-red.png        120     80      9           4
+obj-light-off.png           35      84      1           1
+obj-light-on.png            35      84      8           3
+obj-snowman-idle.png        50      50      6           3
+obj-snowman-nose.png        50      50      6           3
+obj-tree.png                80      120     1           1
+obj-snow-fall.png           80      120     10          11
