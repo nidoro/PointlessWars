@@ -333,6 +333,7 @@ void WarSystem::initializeState(){
             war.setActionCompleted(2, false);
             //war.setActionCompleted(2, false);
         }else{
+            war.setNextAction(war.getActorID(), 511);
             war.setActionCompleted(war.getActorID(), false);
         }
 
