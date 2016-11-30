@@ -25,6 +25,8 @@ War::War(){
     sysActionSent = true;
 
     playing = false;
+
+    pendingActions.resize(3);
 }
 
 War::~War(){
@@ -235,3 +237,18 @@ CPlayer::ID War::getFirstMover(){
 void War::setFirstMover(CPlayer::ID id){
     idFirstMover = id;
 }
+
+void War::addPendingAction(CPlayer::ID id, ActionOutcome action){
+    pendingActions[id].push_back(action);
+}
+
+ActionOutcome War::pullPendingAction(CPlayer::ID id){
+    ActionOutcome action = pendingActions[id].front();
+    pendingActions[id].pop_front();
+    return action;
+}
+
+bool War::hasPendingAction(CPlayer::ID id){
+    return !pendingActions[id].empty();
+}
+

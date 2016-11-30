@@ -30,6 +30,7 @@ class WarSystem : public System{
         void initializeState();
         void sendStateToPeer();
         void sendAction(CPlayer::ID id);
+        void processPackets();
 
         void callNextSystemAction();
         void startHeroPoolActionQueue(Entity* eFirst);
@@ -39,6 +40,7 @@ class WarSystem : public System{
 
         list< pair<War::SystemAction, CPlayer::ID> > sysActionQueue;
         void addSystemAction(War::SystemAction sysAct, CPlayer::ID p = 0);
+        std::list<sf::Packet> packetsQueue;
 
         GameObserver gameObserver;
         bool inBattle;

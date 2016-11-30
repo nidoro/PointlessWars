@@ -58,6 +58,11 @@ void NetworkSystem::update(){
     //updateGUI();
     updateConnection();
     converse();
+
+    if (!processQueue.empty()){
+        processPacket(processQueue.front());
+        processQueue.pop_front();
+    }
 }
 
 void NetworkSystem::converse(){
@@ -65,7 +70,7 @@ void NetworkSystem::converse(){
         sf::Packet pkt;
         sf::Socket::Status sts;
         while ((sts = serverSocket.receive(pkt)) == sf::Socket::Done){
-            processPacket(pkt);
+            processQueue.push_back(pkt);
         }
         if (sts == sf::Socket::Disconnected){
             notify(DISCONNECT_FROM_SERVER);

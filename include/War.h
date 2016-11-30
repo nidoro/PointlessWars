@@ -17,7 +17,7 @@ class War{
                         PRESENT_ARMIES, UPDATE_BATTLE_QUEUE, END_HERO_POOL,
                         PRESENT_HEROES, PLAY_ACTIONS, ADVANCE_ARMIES,
                         PLAY_INITIAL_INTIMIDATION, CLEAR_BATTLE_FIELD, START_NEW_BATTLE,
-                        ANNOUNCE_VICTORY,
+                        ANNOUNCE_VICTORY, ASSIGN_RANDOM_ARMY,
                     FIELD_CLEANUP, BETWEEN_TURNS, ENDING, BEGINING, UPDATE_SCORE};
 
         enum BattleClosure{NO_CLOSURE_YET, ALL_KILLED, DRAW, ARMY_VS_ARMY, MAN_VS_MAN, CONFINE, MERCY};
@@ -80,6 +80,9 @@ class War{
         CPlayer::ID getBattleLoser();
         void setBattleClosure(BattleClosure closure);
         BattleClosure getBattleClosure();
+        void addPendingAction(CPlayer::ID id, ActionOutcome action);
+        ActionOutcome pullPendingAction(CPlayer::ID id);
+        bool hasPendingAction(CPlayer::ID id);
 
         Entity* getLocalPlayer();
 
@@ -109,6 +112,7 @@ class War{
         ActionOutcome nextOutcome;
         ActionOutcome P1nextOutcome;
         ActionOutcome P2nextOutcome;
+        std::vector<std::list<ActionOutcome> > pendingActions;
 
         bool isP1ready;
         bool isP2ready;

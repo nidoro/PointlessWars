@@ -1163,12 +1163,11 @@ void Assets::readAnimations(){
 void Assets::createSprites(){
 	for(map<Animation::ID, Animation>::iterator i = animations.begin(); i != animations.end(); i++){
         Animation& animation = i->second;
-        if (getTexture(animation.id) == nullptr) continue;
+        if (getTexture(animation.id, true) == nullptr) continue;
+        sf::Image image = getTexture(animation.id)->copyToImage();
         sf::IntRect rect(0, 0, animation.wSprite, animation.hSprite);
         for (int i = 0; i < animation.nFrames; i++){
             sf::Texture* sptTexture = new sf::Texture;
-            sf::Image image = getTexture(animation.id)->copyToImage();
-            //sptTexture->loadFromImage(image, rect);
             sptTexture->loadFromImage(image, rect);
             sf::Sprite s(*sptTexture);
             animation.frames.push_back(s);
@@ -1219,13 +1218,14 @@ void Assets::readItems(){
     items.insert(make_pair(Item::HEAVY_ARMOR, Item(2)));
 }
 
-sf::Texture* Assets::getTexture(std::string file){
+sf::Texture* Assets::getTexture(std::string file, bool returnNullIfMissing){
     std::map<std::string, sf::Texture*>::iterator it;
     it = textures.find(file);
 
     if (it == textures.end()){
         printf("Texture not mapped: %s\n", file.c_str());
-        return textures["alpha.png"];
+        if (returnNullIfMissing) return nullptr;
+        else return textures["alpha.png"];
     }else{
         return (*it).second;
     }
