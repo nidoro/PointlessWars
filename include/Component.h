@@ -713,6 +713,7 @@ struct CUnit : public Component{
     string texture;
     string icon;
     string portrait;
+    string portraitHighlit;
     bool hasAction;
 
     sf::Color color;
@@ -744,6 +745,7 @@ struct CCaptain : public Component{
 
     CCaptain(){
         isConfined = false;
+        id = -1;
     }
     CCaptain(ID i){
         id = i;

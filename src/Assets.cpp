@@ -464,6 +464,9 @@ void Assets::createUnits(){
         unit.btActionHov = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
         unit.btActionAct = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
 
+        unit.portrait = "unit-" + int2str(i, 2) + "-counter.png";
+        unit.portraitHighlit = "unit-" + int2str(i, 2) + "-counter-highlit.png";
+
         units.insert(make_pair(unit.id, unit));
     }
 
