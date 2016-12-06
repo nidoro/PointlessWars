@@ -14,6 +14,7 @@ WarSystem::~WarSystem(){
 }
 
 void WarSystem::update(){
+    processPackets();
     if (!hasMatchEnded){
         //if (!war.getRemotelyControled(0)){
             if (war.getActionCompleted() && !war.getPlayingAnimation()){
@@ -22,8 +23,8 @@ void WarSystem::update(){
                 notify(SYSTEM_ACTION);
                 //sendStateToPeer();
             }
-    }
         //}
+    }
 
         for (int i = 0; i < 3; i++){
             if (war.getMultiplayer() && !war.getRemotelyControled(i) && !war.getActionSent(i) && war.getNextActionOutcome(i).ready){
@@ -32,6 +33,16 @@ void WarSystem::update(){
             }
             if ((war.getMultiplayer() && war.getActionReceived(i) && !war.getActionCompleted(i)) || (!war.getMultiplayer() && !war.getActionCompleted(i))){
                 war.setPlayerReady(i, true);
+            }
+            if (war.getRemotelyControled(i) && war.hasPendingAction(i) && !war.getActionCompleted(i) && !war.getActionReceived(i)){
+                war.getNextActionOutcome(i) = war.pullPendingAction(i);
+                war.setActionReceived(i, true);
+
+                Entity* eSend = eManager->createEntity();
+                eSend->add(new CPacket());
+                eSend->get<CPacket>()->packet << sf::String("ACTION-RECEIVED");
+                eSend->get<CPacket>()->packet << sf::Int32(i);
+                notify(SEND_PACKET, eSend);
             }
         }
 }
@@ -184,6 +195,11 @@ void WarSystem::callNextSystemAction(){
 }
 
 void WarSystem::initializeState(){
+    printf("-----------------------------\n");
+    printf(" State %d\n", war.getSystemAction());
+    printf(" Player %d\n", war.getActorID());
+    printf(" Action %d\n", war.getNextActionOutcome(war.getActorID()).action);
+    printf("-----------------------------\n");
     for(int i = 0; i < 3; i++){
         war.getNextActionOutcome(i) = ActionOutcome();
         war.setPlayerReady(i, false);
@@ -192,7 +208,6 @@ void WarSystem::initializeState(){
         war.setActionSent(i, false);
         war.setActionReceived(i, false);
     }
-    Entity* eActor = war.getActor();
 
     if (war.getSystemAction() == war.START_FIRST_BATTLE){
         notify(INITIALIZE_PLAYER, war.getPlayer1());
@@ -206,10 +221,15 @@ void WarSystem::initializeState(){
         CPlayer::ID idFirst = war.getActorID();
         CPlayer::ID idSecond = war.getPlayer(idFirst)->get<CPlayer>()->enemy->get<CPlayer>()->id;
 
-        notify(ASSIGN_RANDOM_ARMY, war.getPlayer(1));
-        notify(ASSIGN_RANDOM_ARMY, war.getPlayer(2));
-        //addSystemAction(war.ASK_ARMY_ASSEMBLE, idFirst);
-        //addSystemAction(war.ASK_ARMY_ASSEMBLE, idSecond);
+        if (war.getMultiplayer()){
+            if (!war.getRemotelyControled(idFirst))
+                addSystemAction(war.ASSIGN_RANDOM_ARMY, idFirst);
+            else
+                addSystemAction(war.ASSIGN_RANDOM_ARMY, idSecond);
+        }else{
+            addSystemAction(war.ASSIGN_RANDOM_ARMY, idFirst);
+            addSystemAction(war.ASSIGN_RANDOM_ARMY, idSecond);
+        }
 
         addSystemAction(war.BEGINING);
         addSystemAction(war.PRESENT_ARMIES);
@@ -225,8 +245,16 @@ void WarSystem::initializeState(){
         }
         addSystemAction(war.PRESENT_HEROES);
 
-        addSystemAction(war.ASK_FORMATION, idFirst);
-        addSystemAction(war.ASK_FORMATION, idSecond);
+
+        if (war.getMultiplayer()){
+            if (!war.getRemotelyControled(idFirst))
+                addSystemAction(war.ASK_FORMATION, idFirst);
+            else
+                addSystemAction(war.ASK_FORMATION, idSecond);
+        }else{
+            addSystemAction(war.ASK_FORMATION, idFirst);
+            addSystemAction(war.ASK_FORMATION, idSecond);
+        }
         addSystemAction(war.ADVANCE_ARMIES);
         addSystemAction(war.COIN, -1);
 /*
@@ -297,6 +325,18 @@ void WarSystem::initializeState(){
         war.setActionCompleted(2, true);
         war.setActionCompleted(war.getActorID(), false);
 
+    }else if (war.getSystemAction() == war.ASSIGN_RANDOM_ARMY){
+
+        if (war.getMultiplayer()){
+            war.setNextAction(war.getActorID(), 511);
+            war.setActionCompleted(1, false);
+            war.setActionCompleted(2, false);
+            //war.setActionCompleted(2, false);
+        }else{
+            war.setNextAction(war.getActorID(), 511);
+            war.setActionCompleted(war.getActorID(), false);
+        }
+
     }else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION){
         /*
         war.setNextAction(0, -1);
@@ -314,6 +354,7 @@ void WarSystem::initializeState(){
         }
 
     }else if (war.getSystemAction() == war.ASK_FORMATION){
+        /*
         war.setNextAction(0, -1);
         war.setNextAction(1, -1);
         war.setNextAction(2, -1);
@@ -321,6 +362,13 @@ void WarSystem::initializeState(){
         war.setActionCompleted(1, true);
         war.setActionCompleted(2, true);
         war.setActionCompleted(war.getActorID(), false);
+        */
+        if (war.getMultiplayer()){
+            war.setActionCompleted(1, false);
+            war.setActionCompleted(2, false);
+        }else{
+            war.setActionCompleted(war.getActorID(), false);
+        }
 
     }else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE){
         CPlayer::ID idPlayer;
@@ -403,6 +451,24 @@ void WarSystem::initializeState(){
     }else{
 
     }
+/*
+    for(int i = 0; i < 3; i++){
+        if (war.hasPendingAction(i)){
+            war.getNextActionOutcome(i) = war.pullPendingAction(i);
+            war.setPlayerReady(i, true);
+            war.setNextAction(i, war.getNextActionOutcome(i).action);
+            war.setActionCompleted(i, false);
+            war.setActionSent(i, true);
+            war.setActionReceived(i, true);
+
+            Entity* eSend = eManager->createEntity();
+            eSend->add(new CPacket());
+            eSend->get<CPacket>()->packet << sf::String("ACTION-RECEIVED");
+            eSend->get<CPacket>()->packet << sf::Int32(i);
+            notify(SEND_PACKET, eSend);
+        }
+    }
+*/
 }
 
 void WarSystem::startBattleActionQueue(){
@@ -418,14 +484,31 @@ void WarSystem::startBattleActionQueue(){
     addSystemAction(war.RECOMPOSE_ARMY, war.getBattleWinner());
     addSystemAction(war.ASK_ARMY_ASSEMBLE, war.getBattleLoser());
 
+
     addSystemAction(war.BEGINING);
     addSystemAction(war.PRESENT_ARMIES);
-    addSystemAction(war.ASK_CAPTAIN_SELECTION, idFirst);
-    addSystemAction(war.ASK_CAPTAIN_SELECTION, idSecond);
+
+    if (war.getMultiplayer()){
+        if (!war.getRemotelyControled(idFirst))
+            addSystemAction(war.ASK_CAPTAIN_SELECTION, idFirst);
+        else
+            addSystemAction(war.ASK_CAPTAIN_SELECTION, idSecond);
+    }else{
+        addSystemAction(war.ASK_CAPTAIN_SELECTION, idFirst);
+        addSystemAction(war.ASK_CAPTAIN_SELECTION, idSecond);
+    }
     addSystemAction(war.PRESENT_HEROES);
 
-    addSystemAction(war.ASK_FORMATION, idFirst);
-    addSystemAction(war.ASK_FORMATION, idSecond);
+
+    if (war.getMultiplayer()){
+        if (!war.getRemotelyControled(idFirst))
+            addSystemAction(war.ASK_FORMATION, idFirst);
+        else
+            addSystemAction(war.ASK_FORMATION, idSecond);
+    }else{
+        addSystemAction(war.ASK_FORMATION, idFirst);
+        addSystemAction(war.ASK_FORMATION, idSecond);
+    }
     addSystemAction(war.ADVANCE_ARMIES);
 
     int nActions = war.getMatchConfig().nTurns;
@@ -474,27 +557,48 @@ void WarSystem::checkBattleClosure(){
 }
 
 void WarSystem::onPacketReceived(Entity* e){
-    sf::Packet& packet = e->get<CPacket>()->packet;
+    sf::Packet packet = e->get<CPacket>()->packet;
+    packetsQueue.push_back(packet);
+}
+
+void WarSystem::processPackets(){
+    if (packetsQueue.empty()) return;
+    sf::Packet packet = packetsQueue.front();
     sf::String id;
     packet >> id;
     if (id == "ACTION"){
+        ActionOutcome action;
         sf::Int32 idActor;
         packet >> idActor;
-        packet >> war.getNextActionOutcome(idActor);
+        packet >> action;
+        war.addPendingAction(idActor, action);
+        /*
+        if (!war.getPlayerReady(idActor)){
+            war.getNextActionOutcome(idActor) = action;
+            war.setActionReceived(idActor, true);
 
-        Entity* eSend = eManager->createEntity();
-        eSend->add(new CPacket());
-        eSend->get<CPacket>()->packet << sf::String("ACTION-RECEIVED");
-        eSend->get<CPacket>()->packet << sf::Int32(idActor);
-        notify(SEND_PACKET, eSend);
-        war.setActionReceived(idActor, true);
+            Entity* eSend = eManager->createEntity();
+            eSend->add(new CPacket());
+            eSend->get<CPacket>()->packet << sf::String("ACTION-RECEIVED");
+            eSend->get<CPacket>()->packet << sf::Int32(idActor);
+            notify(SEND_PACKET, eSend);
+        }else{
+            printf("pending player %d action %d\n", idActor, action.action);
+            war.addPendingAction(idActor, action);
+        }
+        */
         printf("received: player %d action %d\n", idActor, war.getNextActionOutcome(idActor).action);
-
+        for (auto& p : war.getNextActionOutcome(idActor).armyComposition){
+            std::cout << p.first << std::endl;
+        }
     }else if (id == "ACTION-RECEIVED"){
         sf::Int32 idActor;
         packet >> idActor;
         war.setActionReceived(idActor, true);
+        printf("remote client received %d's action\n", idActor);
     }
+
+    packetsQueue.pop_front();
 }
 
 void WarSystem::onEndMatch(Entity* e){

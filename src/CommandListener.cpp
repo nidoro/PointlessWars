@@ -197,9 +197,9 @@ void CommandListener::onShowHeroPool(Entity* e){
         eOption->add(new CPosition(x,y));
         eOption->add(new CTexture());
         //eOption->add(new CDimensions(60, 60));
-        eOption->add(new CDefaultTexture(cap.portrait));
-        eOption->add(new CHoverTexture(cap.portrait));
-        eOption->add(new CActiveTexture(cap.portrait));
+        eOption->add(new CDefaultTexture(cap.btDefTexture));
+        eOption->add(new CHoverTexture(cap.btHovTexture));
+        eOption->add(new CActiveTexture(cap.btActTexture));
         eOption->add(new CDraw(CDraw::GUI));
         eOption->add(new CButtonState());
         eOption->add(new CButtonHitbox(60, 60));

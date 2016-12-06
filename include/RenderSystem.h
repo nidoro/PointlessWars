@@ -5,8 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "Standard.h"
 #include "Assets.h"
-#include "imgui.h"
-
+#include "DebugServices.h"
 
 class RenderSystem : public System{
     public:
@@ -21,8 +20,12 @@ class RenderSystem : public System{
         CDraw::Tag getTag(EntityList& eList);
 
     private:
+        void onKeyReleased(Entity* e);
+
         vector<EntityList> eLists;
         EntityList eWorld;
+
+        bool isDrawingDebug;
 
 };
 

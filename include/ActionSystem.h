@@ -71,11 +71,12 @@ class ActionSystem : public System{
 
         ///NEW THINGS
         void executeAction(CPlayer::ID id);
-        
+
         ///PREPROCESSORS
         void preprocessAction(CPlayer::ID id);
         void preprocessIntimidation(ActionOutcome& outcome, Entity* e);
         void preprocessArmyComposition(ActionOutcome& outcome, Entity* e);
+        void preprocessRandomArmy(ActionOutcome& outcome, Entity* e);
         void preprocessCoinThrow(ActionOutcome& outcome, Entity* e);
         void preprocessBuffDebuff(ActionOutcome& outcome, Entity* e);
         void preprocessConfusion(ActionOutcome& outcome, Entity* e);

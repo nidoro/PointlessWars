@@ -46,8 +46,6 @@
 #include "FormationEditor.h"
 #include "InGameMenu.h"
 #include "SliderSystem.h"
-#include "imgui.h"
-#include "imgui_SFML.h"
 #include "CMDLineSystem.h"
 #include "AnnouncerSystem.h"
 #include "ElipsoidalMovementSystem.h"
@@ -55,6 +53,9 @@
 #include "GUIGroupSystem.h"
 #include "MasterSystem.h"
 #include "TiltSystem.h"
+#include "DebugServices.h"
+#include "imgui-SFML.h"
+#include "imgui.h"
 
 class Game{
     public:

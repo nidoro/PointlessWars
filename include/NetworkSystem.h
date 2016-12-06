@@ -41,6 +41,7 @@ class NetworkSystem : public System{
         int serverPort;
         sf::TcpSocket serverSocket;
         list<sf::Packet> sendQueue;
+        list<sf::Packet> processQueue;
 
         ///CONNECTION WINDOW
         Entity* eInfoWin;

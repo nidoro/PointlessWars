@@ -31,9 +31,12 @@ void Game::start(){
     //window.setFramerateLimit(240);
 
 	//ImGui::SFML::Init(window);
+    DBG_SERVICES.initialize(&window);
+    ImGui::SFML::Init(window);
 
     //initializeSystem(new CursorSystem());
 
+    initializeSystem(new NetworkSystem());
     initializeSystem(new AnimationSystem());
     initializeSystem(new WarSystem());
     //initializeSystem(new StateMachine());
@@ -66,7 +69,6 @@ void Game::start(){
     initializeSystem(new ScrollListSystem());
     initializeSystem(new DragDropSystem());
     initializeSystem(new InputTextBoxSystem());
-    initializeSystem(new NetworkSystem(), -1);
     initializeSystem(new ParticleSystem());
     initializeSystem(new AutoPilotSystem());
     initializeSystem(new DropListSystem());
@@ -83,6 +85,8 @@ void Game::start(){
 
     initializeSystem(new RenderSystem(), -1);
 
+    ERROR_MESSAGE("EEitaaa");
+
     //window.close();
     //window.create(sf::VideoMode(winSize.x, winSize.y), "Pointless Wars", sf::Style::Default);
 
@@ -93,13 +97,15 @@ void Game::start(){
     eInput->add(new CKeyboardInput());
     eInput->add(new CSystem());
 
+    bool networkReadyToUpdate = true;
+    std::vector<bool> updatedAfterNetwork(systems.size(), false);
 
     bool processInput = true;
     while(window.isOpen()){
 
         sf::Event ev;
         while(window.pollEvent(ev)){
-			//ImGui::SFML::ProcessEvent(ev);
+			ImGui::SFML::ProcessEvent(ev);
 
             if (ev.type == sf::Event::Closed){
                 System::notify(WINDOW_CLOSED);
@@ -136,10 +142,29 @@ void Game::start(){
 
 		//ImGui::SFML::Update();
 
-        int nSys = 1;
+        int nSys = 0;
         for (auto sys : systems){
-            //printf("System %d...\n", nSys++);
-            sys->checkAndUpdate();
+            if (nSys > 0){
+                bool updated = sys->checkAndUpdate();
+                if (updated && !networkReadyToUpdate){
+                    updatedAfterNetwork[nSys] = true;
+                    networkReadyToUpdate = true;
+                    for (int i = 1; i < updatedAfterNetwork.size(); i++){
+                        if (!updatedAfterNetwork[i]){
+                            networkReadyToUpdate = false;
+                            break;
+                        }
+                    }
+                }
+            }else if (networkReadyToUpdate){
+                if (sys->checkAndUpdate()){
+                    for (int i = 1; i < updatedAfterNetwork.size(); i++){
+                        updatedAfterNetwork[i] = false;
+                        networkReadyToUpdate = false;
+                    }
+                }
+            }
+            nSys++;
         }
 
         if (eManager.updated()){

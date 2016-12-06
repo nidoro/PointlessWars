@@ -1,6 +1,9 @@
 %Background
 scene-2.bg
 
+%Music
+NONE
+
 %         OBJECT-NAME      X-RELATIVE      Y-RELATIVE    X-SCALE    Y-SCALE     H-FLIP     V-FLIP
                  agua          0.0146          0.1010     1.0000     1.0000          0          0
                  agua          0.0403          0.1003     1.0000     1.0000          0          0

@@ -42,7 +42,7 @@ void DisplayerSystem::update(){
 }
 
 int DisplayerSystem::getUnitCount(Entity* e){
-    Entity* eArmy = e->get<COwner>()->e;
+    Entity* eArmy = e->getObservedEntity("Player");
     CUnit::ID id = e->get<CUnit>()->id;
     int count = 0;
     for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){

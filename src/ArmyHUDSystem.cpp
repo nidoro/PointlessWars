@@ -8,6 +8,7 @@ ArmyHUDSystem::ArmyHUDSystem(){
     addSubscription(SCORE_UPDATED);
     addSubscription(END_MATCH);
     addSubscription(INITIALIZE_WAR);
+    addSubscription(SYSTEM_ACTION);
 
     active = false;
 }
@@ -29,7 +30,7 @@ void ArmyHUDSystem::update(){
             //updateScore(e);
             //updateResistBars(e);
         }
-        if (!entities.empty() && eResists.empty()){
+        if (!entities.empty() && eResists.empty() && isPlayingMainLoop){
             createResistanceHighlighters(entities.front());
         }
     }
@@ -38,42 +39,60 @@ void ArmyHUDSystem::update(){
 void ArmyHUDSystem::createResistanceHighlighters(Entity* e){
     double x = cxWindow - 30/2;
     double y = 70 - 30/2;
+    double x0 = x;
+    double y0 = -50 - 30/2;
 
     for(int i = 0; i < CUnit::N_DAMAGE_TYPES; i+=2){
         Entity* eIcon = eManager->createEntity();
-        eIcon->add(new CPosition(x, y));
+        eIcon->add(new CPosition(x0, y0));
         eIcon->add(new CDraw(CDraw::GUI1));
         eIcon->add(new CTexture("type-" + int2str(i,2) + "-icon-02.png"));
+        eIcon->add(new CButtonTextures("type-" + int2str(i,2) + "-icon-02.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png"));
         eIcon->add(new CDimensions(30, 30));
         eIcon->add(new CButtonState());
         eIcon->add(new CButtonHitbox(30,30));
         eIcon->add(new CButtonTrigger());
         eIcon->add(new CHighlightTrigger(CUnitHighlight2::RESISTANCE, i));
+        eIcon->add(new CActor);
+        eIcon->add(new CVelocity);
         eIcon->add(new COwner(e));
+        eIcon->get<CActor>()->addNode(new AMove(0.0, x, y, 150));
         eIcon->get<CButtonState>()->gainedFocusMessage = HIGHLIGHT_UNITS;
         eIcon->get<CButtonState>()->lostFocusMessage = HIGHLIGHT_UNITS_OFF;
         eResists.push_back(eIcon);
         y += 30;
+        y0 += 30;
     }
 
     x = cxWindow + 30/2;
     y = 70 - 30/2;
+    x0 = x;
+    y0 = -50 - 30/2;
 
     for(int i = 1; i < CUnit::N_DAMAGE_TYPES; i+=2){
         Entity* eIcon = eManager->createEntity();
-        eIcon->add(new CPosition(x,y));
+        eIcon->add(new CPosition(x0,y0));
         eIcon->add(new CDraw(CDraw::GUI1));
         eIcon->add(new CTexture("type-" + int2str(i,2) + "-icon-02.png"));
+        eIcon->add(new CButtonTextures("type-" + int2str(i,2) + "-icon-02.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png"));
         eIcon->add(new CDimensions(30, 30));
         eIcon->add(new CButtonState());
         eIcon->add(new CButtonHitbox(30,30));
         eIcon->add(new CButtonTrigger());
         eIcon->add(new CHighlightTrigger(CUnitHighlight2::RESISTANCE, i));
+        eIcon->add(new CActor);
+        eIcon->add(new CVelocity);
         eIcon->add(new COwner(e));
+        eIcon->get<CActor>()->addNode(new AMove(0.0, x, y, 150));
         eIcon->get<CButtonState>()->gainedFocusMessage = HIGHLIGHT_UNITS;
         eIcon->get<CButtonState>()->lostFocusMessage = HIGHLIGHT_UNITS_OFF;
         eResists.push_back(eIcon);
         y += 30;
+        y0 += 30;
     }
 }
 
@@ -127,16 +146,18 @@ void ArmyHUDSystem::updateNAlive(Entity* e){
     double y = yOff;
 
     if (e->get<CArmyHUD>()->eNAlive == nullptr){
-        Entity* eObj = eManager->createEntity();
-        eObj->add(new CTexture("alive-counter.png", sign == -1 ? false:true));
-        //eObj->add(new CDimensions(w, h));
-        eObj->add(new CDraw(CDraw::GUI));
-        eObj->add(new CPosition(x, y));
-        eObj->add(new CDisplayer(CDisplayer::ALIVE_COUNT, e));
-        eObj->add(new CTextbox2("", Assets::getFont(Assets::secondaryFont), 15));
-        eObj->add(new CActor());
-        eObj->add(new CVelocity());
-        e->get<CArmyHUD>()->eNAlive = eObj;
+        if (isPlayingMainLoop && e->get<CArmyHUD>()->captain && e->get<CArmyHUD>()->captain->get<CPosition>()->y == y){
+            Entity* eObj = eManager->createEntity();
+            eObj->add(new CTexture("alive-counter.png", sign == -1 ? false:true));
+            //eObj->add(new CDimensions(w, h));
+            eObj->add(new CDraw(CDraw::GUI));
+            eObj->add(new CPosition(x, y));
+            eObj->add(new CDisplayer(CDisplayer::ALIVE_COUNT, e));
+            eObj->add(new CTextbox2("", Assets::getFont(Assets::secondaryFont), 15));
+            eObj->add(new CActor());
+            eObj->add(new CVelocity());
+            e->get<CArmyHUD>()->eNAlive = eObj;
+        }
     }
     if (e->get<CArmyHUD>()->eNAlive
     &&  e->get<CArmy>()->nAlive > 0
@@ -226,22 +247,37 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
 
     Entity* eCap = e->get<CArmy>()->captain;
 
-    if (eCap != nullptr){
-        if (e->get<CArmyHUD>()->captain == nullptr){
-            Entity* eIcon = eManager->createEntity();
-            eIcon->add(new CPosition(x, y));
-            eIcon->add(new CTexture(eCap->get<CCaptain>()->portrait, hFlip));
-            eIcon->add(new CDraw(CDraw::GUI1));
-            eIcon->add(new CCaptain(CCaptain::Map[eCap->get<CCaptain>()->id]));
-            //eIcon->add(new CDimensions(60, 60));
-            eIcon->add(new CButtonHitbox(60, 60));
-            eIcon->add(new CButtonTrigger());
-            eIcon->add(new CButtonState());
-            eIcon->add(new CTooltip(CTooltip::CAPTAIN));
-            e->get<CArmyHUD>()->captain = eIcon;
+    if (eCap){
+        ///A CAPTAIN IS SELECTED
+
+        if (!e->get<CArmyHUD>()->captain){
+            ///HUD SHOWS NOTHING
+            if (isPlayingMainLoop){
+                Entity* eIcon = eManager->createEntity();
+                eIcon->add(new CPosition(x, -50));
+                eIcon->add(new CTexture("hero-portrait-empty.png", hFlip));
+                eIcon->add(new CButtonTextures("hero-portrait-empty.png",
+                                               "hero-portrait-empty-highlit.png",
+                                               "hero-portrait-empty-highlit.png"));
+                eIcon->add(new CDraw(CDraw::GUI1));
+                eIcon->add(new CCaptain());
+                //eIcon->add(new CDimensions(60, 60));
+                eIcon->add(new CButtonHitbox(60, 60));
+                eIcon->add(new CButtonTrigger());
+                eIcon->add(new CButtonState());
+                //eIcon->add(new CTooltip(CTooltip::CAPTAIN));
+                eIcon->add(new CVelocity());
+                eIcon->add(new CActor);
+                eIcon->get<CActor>()->addNode(new AMove(0.0, x, y, 150));
+                e->get<CArmyHUD>()->captain = eIcon;
+                eIcon->get<CButtonState>()->lostFocusMessage = EMPTY_MESSAGE;
+                eIcon->get<CButtonState>()->gainedFocusMessage = EMPTY_MESSAGE;
+            }
         }else{
+            ///HUD SHOWS SOMETHING
             Entity* eIcon = e->get<CArmyHUD>()->captain;
             if (eIcon->get<CCaptain>()->id != eCap->get<CCaptain>()->id){
+                ///HUD DOESN'T SHOW SELECTED HERO
                 ///PUFF
                 Entity* eObj = eManager->createEntity();
 
@@ -259,48 +295,48 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
                 eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
                 eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
                 eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
+
+                eIcon->add(new CTooltip(CTooltip::CAPTAIN));
+                eManager->addModified(eIcon);
             }
-            eIcon->get<CTexture>()->file = eCap->get<CCaptain>()->portrait;
+            eIcon->get<CButtonTextures>()->def = eCap->get<CCaptain>()->btDefTexture;
+            eIcon->get<CButtonTextures>()->hov = eCap->get<CCaptain>()->btHovTexture;
+            eIcon->get<CButtonTextures>()->act = eCap->get<CCaptain>()->btActTexture;
             *eIcon->get<CCaptain>() = CCaptain::Map[eCap->get<CCaptain>()->id];
             if (eIcon->get<CButtonState>()->state == CButtonState::LOCKED){
                 eIcon->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
             }
         }
     }else{
+        ///CAPTAIN IS NOT SELECTED
         if (e->get<CArmyHUD>()->captain == nullptr){
-            Entity* eIcon = eManager->createEntity();
-            eIcon->add(new CPosition(x, y));
-            eIcon->add(new CTexture("hero-portrait-empty.png", hFlip));
-            eIcon->add(new CDraw(CDraw::GUI1));
-            eIcon->add(new CCaptain());
-            //eIcon->add(new CDimensions(60, 60));
-            eIcon->add(new CButtonHitbox(60, 60));
-            eIcon->add(new CButtonTrigger());
-            eIcon->add(new CButtonState());
-            eIcon->add(new CTooltip(CTooltip::CAPTAIN));
-            e->get<CArmyHUD>()->captain = eIcon;
-            eIcon->get<CButtonState>()->state = CButtonState::LOCKED;
-
-            ///PUFF
-            Entity* eObj = eManager->createEntity();
-
-            string puffAnimation = "poof-06.png";
-            string sfxPoofIn = "sfx-poof-04.wav";
-            string sfxPoofOut = "sfx-poof-05.wav";
-            double puffDuration = Assets::getAnimation(puffAnimation).duration;
-            eObj = eManager->createEntity();
-            eObj->add(new CPosition(eIcon->get<CPosition>()->x, eIcon->get<CPosition>()->y));
-            eObj->add(new CDraw(CDraw::GUI2));
-            eObj->add(new CDimensions(90, 90));
-            eObj->add(new CAnimation(false, puffAnimation));
-            eObj->add(new CActor());
-
-            eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
-            eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-            eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
+            ///HUD SHOWS NOTHING
+            if (isPlayingMainLoop){
+                Entity* eIcon = eManager->createEntity();
+                eIcon->add(new CPosition(x, -50));
+                eIcon->add(new CTexture("hero-portrait-empty.png", hFlip));
+                eIcon->add(new CButtonTextures("hero-portrait-empty.png",
+                                               "hero-portrait-empty-highlit.png",
+                                               "hero-portrait-empty-highlit.png"));
+                eIcon->add(new CDraw(CDraw::GUI1));
+                eIcon->add(new CCaptain());
+                //eIcon->add(new CDimensions(60, 60));
+                eIcon->add(new CButtonHitbox(60, 60));
+                eIcon->add(new CButtonTrigger());
+                eIcon->add(new CButtonState());
+                //eIcon->add(new CTooltip(CTooltip::CAPTAIN));
+                eIcon->add(new CVelocity());
+                eIcon->add(new CActor);
+                eIcon->get<CActor>()->addNode(new AMove(0.0, x, y, 150));
+                e->get<CArmyHUD>()->captain = eIcon;
+                eIcon->get<CButtonState>()->lostFocusMessage = EMPTY_MESSAGE;
+                eIcon->get<CButtonState>()->gainedFocusMessage = EMPTY_MESSAGE;
+            }
         }else{
+            ///HUD SHOWS SOMETHING
             Entity* eIcon = e->get<CArmyHUD>()->captain;
-            if (eIcon->get<CTexture>()->file != "hero-portrait-empty.png"){
+            if (eIcon->get<CCaptain>()->id != -1){
+                ///HUD SHOWS HERO
                 ///PUFF
                 Entity* eObj = eManager->createEntity();
 
@@ -318,9 +354,16 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
                 eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
                 eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
                 eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
+
+                eIcon->get<CCaptain>()->id = -1;
+                eIcon->remove(Component::TOOLTIP);
+                eManager->addModified(eIcon);
             }
-            eIcon->get<CTexture>()->file = "hero-portrait-empty.png";
-            eIcon->get<CButtonState>()->state = CButtonState::LOCKED;
+            eIcon->get<CButtonTextures>()->def = "hero-portrait-empty.png";
+            eIcon->get<CButtonTextures>()->hov = "hero-portrait-empty-highlit.png";
+            eIcon->get<CButtonTextures>()->act = "hero-portrait-empty-highlit.png";
+            eIcon->get<CButtonState>()->lostFocusMessage = EMPTY_MESSAGE;
+            eIcon->get<CButtonState>()->gainedFocusMessage = EMPTY_MESSAGE;
         }
     }
 }
@@ -395,45 +438,70 @@ void ArmyHUDSystem::updateUnits(Entity* e){
     }
 }
 */
-void ArmyHUDSystem::animateUnitOut(IconDisplayerPair& p){
+void ArmyHUDSystem::animateUnitOut(Entity* eCompound){
     double yTarget = -50;
     double spacing = 30;
     double speed = 150;
     double speed2 = 40;
     double tAux;
 
-    double xCurrent = p.eDisplayer->get<CPosition>()->x;
-    double yCurrent = p.eDisplayer->get<CPosition>()->y;
+    Entity* eIcon = eCompound->getObservedEntity("UnitIcon");
+    Entity* eDisplayer = eCompound->getObservedEntity("UnitCounter");
 
-    p.eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yCurrent + spacing/2, speed2));
+    double xCurrent = eDisplayer->get<CPosition>()->x;
+    double yCurrent = eDisplayer->get<CPosition>()->y;
+
+    eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yCurrent + spacing/2, speed2));
     tAux = getTravelTime(xCurrent, yCurrent, xCurrent, yCurrent + spacing/2, speed2);
-    p.eIcon->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget, speed));
+    eIcon->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget, speed));
     tAux = getTravelTime(xCurrent, yCurrent + spacing/2, xCurrent, yTarget, speed);
-    p.eIcon->get<CActor>()->timeline.push_back(new ADestroy(tAux));
+    //eIcon->get<CActor>()->timeline.push_back(new ADestroy(tAux));
 
-    p.eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yCurrent - spacing/2, speed2));
+    eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yCurrent - spacing/2, speed2));
     tAux = getTravelTime(xCurrent, yCurrent, xCurrent, yCurrent - spacing/2, speed2);
-    p.eDisplayer->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget, speed));
+    eDisplayer->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget, speed));
     tAux = getTravelTime(xCurrent, yCurrent - spacing/2, xCurrent, yTarget, speed);
-    p.eDisplayer->get<CActor>()->timeline.push_back(new ADestroy(tAux));
+    //eDisplayer->get<CActor>()->timeline.push_back(new ADestroy(tAux));
+
+    eCompound->get<CActor>()->timeline.push_back(new ADestroy(tAux));
 }
-void ArmyHUDSystem::animateUnitIn(IconDisplayerPair& p){
+void ArmyHUDSystem::animateUnitIn(Entity* eCompound){
     double yTarget = 70;
     double spacing = 30;
     double speed = 150;
     double speed2 = 40;
     double tAux;
 
-    double xCurrent = p.eDisplayer->get<CPosition>()->x;
-    double yCurrent = p.eDisplayer->get<CPosition>()->y;
+    Entity* eIcon = eCompound->getObservedEntity("UnitIcon");
+    Entity* eDisplayer = eCompound->getObservedEntity("UnitCounter");
 
-    p.eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
-    tAux = getTravelTime(xCurrent, yCurrent, xCurrent, yTarget, speed);
-    p.eIcon->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget - spacing/2, speed2));
+    eCompound->get<CActor>()->clearTimeline();
+    eIcon->get<CActor>()->clearTimeline();
+    eDisplayer->get<CActor>()->clearTimeline();
 
-    p.eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
+    double xCurrent = eCompound->get<CPosition>()->x;
+    double yCurrent = eCompound->get<CPosition>()->y;
+
+    eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
     tAux = getTravelTime(xCurrent, yCurrent, xCurrent, yTarget, speed);
-    p.eDisplayer->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget + spacing/2, speed2));
+    eIcon->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget - spacing/2, speed2));
+
+    eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
+    tAux = getTravelTime(xCurrent, yCurrent, xCurrent, yTarget, speed);
+    eDisplayer->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget + spacing/2, speed2));
+
+    eCompound->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
+}
+
+void ArmyHUDSystem::animateCaptainIn(Entity* e){
+    double yTarget = 70;
+    double speed = 150;
+    double tAux;
+
+    double xCurrent = e->get<CPosition>()->x;
+    double yCurrent = e->get<CPosition>()->y;
+
+    e->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
 }
 
 void ArmyHUDSystem::updateUnits(Entity* e){
@@ -454,8 +522,8 @@ void ArmyHUDSystem::updateUnits(Entity* e){
     }
 
     ///REMOVE DISPLAYERS THAT ARE NO LONGER NEEDED
-    map<CUnit::ID, IconDisplayerPair> newList;
-    for(map<CUnit::ID, IconDisplayerPair>::iterator i = e->get<CArmyHUD>()->units2.begin(); i != e->get<CArmyHUD>()->units2.end(); i++){
+    map<CUnit::ID, Entity*> newList;
+    for(map<CUnit::ID, Entity*>::iterator i = e->get<CArmyHUD>()->unitDisplayers.begin(); i != e->get<CArmyHUD>()->unitDisplayers.end(); i++){
         if (!contains(uniqueUnits, i->first)){
             //eManager->removeEntity(i->second.eIcon);
             //eManager->removeEntity(i->second.eDisplayer);
@@ -465,18 +533,19 @@ void ArmyHUDSystem::updateUnits(Entity* e){
             newList.insert(*i);
         }
     }
-    e->get<CArmyHUD>()->units2 = newList;
+    e->get<CArmyHUD>()->unitDisplayers = newList;
 
     //spacing between icon and displayer
     double spacing = 30;
 
     ///CREATE NEW DISPLAYERS
+    EntityList newOnes;
     for(list<CUnit::ID>::iterator i = uniqueUnits.begin(); i != uniqueUnits.end(); i++){
-        map<CUnit::ID, IconDisplayerPair>::iterator it;
-        it = e->get<CArmyHUD>()->units2.find(*i);
-        if (it == e->get<CArmyHUD>()->units2.end()){
+        map<CUnit::ID, Entity*>::iterator it;
+        it = e->get<CArmyHUD>()->unitDisplayers.find(*i);
+        if (it == e->get<CArmyHUD>()->unitDisplayers.end()){
             CUnit::ID id = *i;
-
+            /*
             Entity* eIcon = eManager->createEntity();
             eIcon->add(new CUnit(CUnit::Map[id]));
             eIcon->add(new CPosition(x, -50));
@@ -512,6 +581,83 @@ void ArmyHUDSystem::updateUnits(Entity* e){
             eDisplayer->get<CPosition>()->x = x;
             animateUnitIn(iconDisp);
             rearrange = true;
+            */
+            sf::Vector2f pos(x, -50);
+            sf::Vector2f dim(40, 70);
+            Entity* eBtInvis = eManager->createEntity();
+            eBtInvis->add(new CUnit(CUnit::Map[id]));
+            eBtInvis->add(new CPosition(x, -50));
+            eBtInvis->add(new CButtonState());
+            eBtInvis->add(new CButtonHitbox(dim.x, dim.y));
+            eBtInvis->add(new CButtonTrigger());
+            eBtInvis->add(new CTooltip(CTooltip::UNIT));
+            eBtInvis->add(new COwner(e));
+            eBtInvis->add(new CHighlightTrigger(CUnitHighlight2::UNIT, id));
+            eBtInvis->add(new CVelocity());
+            eBtInvis->add(new CActor());
+            eBtInvis->add(new CCompoundButton());
+
+            //Temporary for debug
+            sf::RectangleShape shape(dim);
+            shape.setFillColor(sf::Color(255, 0, 255));
+            shape.setOutlineColor(sf::Color::Cyan);
+            shape.setOutlineThickness(1);
+            eBtInvis->add(new CRectShape(shape));
+            eBtInvis->add(new CRectButton(shape, shape, shape));
+            eBtInvis->add(new CDraw(CDraw::HUD1));
+            //---
+
+            eBtInvis->get<CButtonState>()->gainedFocusMessage = HIGHLIGHT_UNITS;
+            eBtInvis->get<CButtonState>()->lostFocusMessage = HIGHLIGHT_UNITS_OFF;
+
+            Entity* eIcon = eManager->createEntity();
+            eIcon->add(new CUnit(CUnit::Map[id]));
+            eIcon->add(new CPosition(x, -50));
+            eIcon->add(new CTexture(CUnit::Map[id].displayer, hFlip));
+            eIcon->add(new CButtonTextures(CUnit::Map[id].portrait, CUnit::Map[id].portraitHighlit, CUnit::Map[id].portraitHighlit));
+            eIcon->add(new CDraw(CDraw::HUD3));
+            eIcon->add(new CButtonState());
+            eIcon->add(new CButtonHitbox());
+            eIcon->add(new CButtonTrigger());
+            eIcon->add(new CVelocity());
+            eIcon->add(new CActor());
+            eIcon->attachEmployer(eBtInvis);
+            eIcon->get<CButtonState>()->isDependent = true;
+            eBtInvis->addObservedEntity("DependentStateButton-01", eIcon);
+            eBtInvis->addObservedEntity("UnitIcon", eIcon);
+
+            Entity* eDisplayer = eManager->createEntity();
+            eDisplayer->add(new CPosition(x, -50));
+            eDisplayer->add(new CTexture("unit-counter.png", hFlip));
+            eDisplayer->add(new CButtonState());
+            eDisplayer->add(new CButtonHitbox());
+            eDisplayer->add(new CButtonTrigger());
+            eDisplayer->add(new CDisplayer(CDisplayer::UNIT_COUNT, eDisplayer));
+            eDisplayer->add(new CTextbox2("", Assets::getFont(Assets::secondaryFont), 15, sf::Color::Black, 0, -2));
+            eDisplayer->add(new CDraw(CDraw::HUD2));
+            eDisplayer->add(new CUnit(CUnit::Map[id]));
+            eDisplayer->add(new CVelocity());
+            eDisplayer->add(new CActor());
+            eDisplayer->attachEmployer(eBtInvis);
+            eDisplayer->get<CButtonState>()->isDependent = true;
+            eDisplayer->addObservedEntity("Player", e);
+            eBtInvis->addObservedEntity("DependentStateButton-02", eDisplayer);
+            eBtInvis->addObservedEntity("UnitCounter", eDisplayer);
+
+            e->get<CArmyHUD>()->unitDisplayers.insert(make_pair(id, eBtInvis));
+
+            newOnes.push_back(eBtInvis);
+            for(auto& j : newOnes){
+                CUnit::ID uID = j->get<CUnit>()->id;
+                Entity* jeIcon = j->getObservedEntity("UnitIcon");
+                Entity* jeDisplayer = j->getObservedEntity("UnitCounter");
+                x = cxWindow + sign*xOff + getIndex(e->get<CArmyHUD>()->unitDisplayers, uID)*sign*dx;
+                jeIcon->get<CPosition>()->x = x;
+                jeDisplayer->get<CPosition>()->x = x;
+                j->get<CPosition>()->x = x;
+                animateUnitIn(eBtInvis);
+            }
+            rearrange = true;
         }
     }
 
@@ -528,12 +674,15 @@ void ArmyHUDSystem::arrangeUnits(Entity* e){
     double speed = 50;
     double dx = 50;
 
-    for(auto& i : e->get<CArmyHUD>()->units2){
-        if (i.second.eDisplayer->get<CPosition>()->x != x && i.second.eDisplayer->get<CActor>()->timeline.empty()){
-            i.second.eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, x, i.second.eIcon->get<CPosition>()->y, speed));
-            i.second.eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, x, i.second.eDisplayer->get<CPosition>()->y, speed));
+    for(auto& i : e->get<CArmyHUD>()->unitDisplayers){
+        x = cxWindow + sign*xOff + getIndex(e->get<CArmyHUD>()->unitDisplayers, i.first)*sign*dx;
+        Entity* eIcon = i.second->getObservedEntity("UnitIcon");
+        Entity* eDisplayer = i.second->getObservedEntity("UnitCounter");
+        if (i.second->get<CPosition>()->x != x && i.second->get<CActor>()->timeline.empty()){
+            i.second->get<CActor>()->timeline.push_back(new AMove(0.0, x, i.second->get<CPosition>()->y, speed));
+            eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, x, eIcon->get<CPosition>()->y, speed));
+            eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, x, eDisplayer->get<CPosition>()->y, speed));
         }
-        x += sign*dx;
     }
 }
 
@@ -879,7 +1028,7 @@ bool ArmyHUDSystem::mapContains(map<CAction::ID, CAction>& m, CAction::ID id){
     return it != m.end();
 }
 
-int ArmyHUDSystem::getIndex(map<CUnit::ID, IconDisplayerPair>& m, CUnit::ID id){
+int ArmyHUDSystem::getIndex(map<CUnit::ID, Entity*>& m, CUnit::ID id){
     int index = 0;
     for (auto& i : m){
         if (i.first == id) return index;
@@ -953,4 +1102,11 @@ void ArmyHUDSystem::onEndMatch(Entity* e){
 
 void ArmyHUDSystem::onInitializeWar(Entity* e){
     active = true;
+    isPlayingMainLoop = false;
+}
+
+void ArmyHUDSystem::onSystemAction(Entity* e){
+    if (war.getSystemAction() == war.START_FIRST_BATTLE){
+        isPlayingMainLoop = true;
+    }
 }

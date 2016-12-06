@@ -24,6 +24,7 @@ void ActionSystem::update(){
 
         ///IF ACTION IS READY TO BE PLAYED AND PLAYER IS READY TO PLAY
         if (war.getNextActionOutcome(i).ready && war.getPlayerReady(i)){
+            printf("executing player %d action %d\n", i, war.getNextActionOutcome(i).action);
             ///EXECUTE ACTION
             executeAction(i);
             ///set action completed and player is not ready to act again until next state
@@ -130,6 +131,7 @@ void ActionSystem::preprocessAction(CPlayer::ID id){
         case 510: war.getNextActionOutcome(id).heroes = war.getMatchConfig().heroPool; break;
         case 511: preprocessArmyComposition(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         case 512: preprocessCoinThrow(war.getNextActionOutcome(id), war.getPlayer(id)); break;
+        //case 513: preprocessRandomArmy(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         ///HERO PICKS
         case 600: war.getNextActionOutcome(id).hero = (CCaptain::ID)war.getNextActionOutcome(id).action - 600; break;
         case 601: war.getNextActionOutcome(id).hero = (CCaptain::ID)war.getNextActionOutcome(id).action - 600; break;
@@ -250,6 +252,8 @@ void ActionSystem::createArmy(Entity* e){
             e->get<CArmy>()->allUnits.push_back(eUnit);
         }
     }
+
+    e->get<CArmy>()->lastArmy = e->get<CArmy>()->unitCount;
 }
 
 void ActionSystem::onExecuteActions(Entity* e){
@@ -1395,6 +1399,30 @@ void ActionSystem::preprocessIntimidation(ActionOutcome& outcome, Entity* e){
 }
 
 void ActionSystem::preprocessArmyComposition(ActionOutcome& outcome, Entity* e){
+    map<CUnit::ID, CUnit>& units = CUnit::Map;
+    outcome.armyComposition.clear();
+    outcome.armyComposition = e->get<CArmy>()->unitCount;
+
+    int nUnits = 0;
+    for (auto& i : outcome.armyComposition){
+        nUnits += i.second;
+    }
+
+    int nRemaining = war.getMatchConfig().armySize - nUnits;
+    list<CUnit::ID>& deck = e->get<CPlayer>()->unitDeck;
+    for(int i = 0; i < nRemaining; i += war.getMatchConfig().recruitGroup){
+        CUnit unit = units[getRandom(deck)];
+
+        map<CUnit::ID, int>::iterator it = outcome.armyComposition.find(unit.id);
+        if (it == outcome.armyComposition.end()){
+            outcome.armyComposition.insert(make_pair(unit.id, war.getMatchConfig().recruitGroup));
+        }else{
+            outcome.armyComposition[unit.id] += war.getMatchConfig().recruitGroup;
+        }
+    }
+}
+
+void ActionSystem::preprocessRandomArmy(ActionOutcome& outcome, Entity* e){
     map<CUnit::ID, CUnit>& units = CUnit::Map;
     outcome.armyComposition.clear();
     outcome.armyComposition = e->get<CArmy>()->unitCount;

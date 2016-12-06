@@ -18,6 +18,7 @@ class ArmyHUDSystem : public System{
         void onScoreUpdated(Entity* e);
         void onEndMatch(Entity* e);
         void onInitializeWar(Entity* e);
+        void onSystemAction(Entity* e);
 
         void updateUnits(Entity* e);
         void updateEffects(Entity* e);
@@ -30,19 +31,21 @@ class ArmyHUDSystem : public System{
         void createResistanceHighlighters(Entity* e);
         bool mapContains(map<CAction::ID, CAction>& m, CAction::ID id);
         double getAverageResistance(Entity* e, CUnit::DamageType dmgType);
-        int getIndex(map<CUnit::ID, IconDisplayerPair>& m, CUnit::ID id);
+        int getIndex(map<CUnit::ID, Entity*>& m, CUnit::ID id);
 
-        void animateUnitIn(IconDisplayerPair& p);
-        void animateUnitOut(IconDisplayerPair& p);
+        void animateUnitIn(Entity* eCompound);
+        void animateUnitOut(Entity* eCompound);
         void arrangeUnits(Entity* e);
         void arrangeEffects(Entity* e);
         void animateAliveCounterIn(Entity* e);
         void animateAliveCounterOut(Entity* e);
         void animateButtonInPuff(Entity* e, double after, bool sound = false);
         void animateButtonOutPuff(Entity* e, double after, bool sound = false);
+        void animateCaptainIn(Entity* e);
 
         EntityList eResists;
         bool active;
+        bool isPlayingMainLoop;
 };
 
 #endif // ARMYHUDSYSTEM_H

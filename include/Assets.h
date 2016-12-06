@@ -205,7 +205,7 @@ class Assets{
 
         static void load();
         static void shutdown();
-        static sf::Texture* getTexture(std::string file);
+        static sf::Texture* getTexture(std::string file, bool returnNullIfMissing = false);
         static Formation getFormation(Formation::ID f);
         static void createBattleSolvings();
         static void createColors();

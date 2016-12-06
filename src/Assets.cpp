@@ -224,8 +224,8 @@ void Assets::createActions(){
     actions.insert(make_pair(K+44, CAction(K+44)));                                     ///RETURN
 
     actions[202].btDefTexture = "intimidate-1.png";
-    actions[202].btHovTexture = "intimidate-2.png";
-    actions[202].btActTexture = "intimidate-2.png";
+    actions[202].btHovTexture = "intimidate-highlit.png";
+    actions[202].btActTexture = "intimidate-highlit.png";
 
     actions[203].btDefTexture = "ressurection-1.png";
     actions[203].btHovTexture = "ressurection-2.png";
@@ -244,8 +244,8 @@ void Assets::createActions(){
     actions[209].btActTexture = "earth-decrease-2.png";
 
     actions[212].btDefTexture = "change-formation-1.png";
-    actions[212].btHovTexture = "change-formation-2.png";
-    actions[212].btActTexture = "change-formation-2.png";
+    actions[212].btHovTexture = "change-formation-highlit.png";
+    actions[212].btActTexture = "change-formation-highlit.png";
 
     actions[216].btDefTexture = "purification-1.png";
     actions[216].btHovTexture = "purification-2.png";
@@ -305,6 +305,9 @@ void Assets::createActions(){
         actions[i].duration = -1;
         actions[i].description = getString("DESCRIPTION-ACTION-" + int2str(i));
         actions[i].name = getString("NAME-ACTION-" + int2str(i));
+        actions[i].btDefTexture = "button-formation-" + int2str(i-300, 2) + ".png";
+        actions[i].btHovTexture = "button-formation-" + int2str(i-300, 2) + "-highlit.png";
+        actions[i].btActTexture = "button-formation-" + int2str(i-300, 2) + "-highlit.png";
     }
 
     ///BATTLE CLOSURES
@@ -314,7 +317,9 @@ void Assets::createActions(){
     actions.insert(make_pair(2+K, CAction(2+K)));
     actions.insert(make_pair(3+K, CAction(3+K)));
     for(int i = 400; i < 404; i++){
-
+        actions[i].btDefTexture = "button-closure-" + int2str(i-400, 2) + ".png";
+        actions[i].btHovTexture = "button-closure-" + int2str(i-400, 2) + "-highlit.png";
+        actions[i].btActTexture = "button-closure-" + int2str(i-400, 2) + "-highlit.png";
     }
     actions[400].name = "Grand Battle";
     actions[401].name = "Duel";
@@ -344,8 +349,8 @@ void Assets::createCaptains(){
         captains[i].portrait = "hero-" + int2str(i, 2) + "-portrait.png";
 
         captains[i].btDefTexture = "hero-" + int2str(i, 2) + "-portrait.png";
-        captains[i].btHovTexture = "hero-" + int2str(i, 2) + "-portrait.png";
-        captains[i].btActTexture = "hero-" + int2str(i, 2) + "-portrait.png";
+        captains[i].btHovTexture = "hero-" + int2str(i, 2) + "-portrait-highlit.png";
+        captains[i].btActTexture = "hero-" + int2str(i, 2) + "-portrait-highlit.png";
     }
     //HERO-00	Chimalmat
     captains[0].actions.push_back(205);
@@ -461,8 +466,11 @@ void Assets::createUnits(){
         unit.aAction04 = "unit-" + int2str(i, 2) + "-action-04.png";
 
         unit.btActionDef = "bt-unit-" + int2str(i, 2) + "-attack-def.png";
-        unit.btActionHov = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
-        unit.btActionAct = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
+        unit.btActionHov = "bt-unit-" + int2str(i, 2) + "-attack-highlit.png";
+        unit.btActionAct = "bt-unit-" + int2str(i, 2) + "-attack-highlit.png";
+
+        unit.portrait = "unit-" + int2str(i, 2) + "-counter.png";
+        unit.portraitHighlit = "unit-" + int2str(i, 2) + "-counter-highlit.png";
 
         units.insert(make_pair(unit.id, unit));
     }
@@ -1163,12 +1171,11 @@ void Assets::readAnimations(){
 void Assets::createSprites(){
 	for(map<Animation::ID, Animation>::iterator i = animations.begin(); i != animations.end(); i++){
         Animation& animation = i->second;
-        if (getTexture(animation.id) == nullptr) continue;
+        if (getTexture(animation.id, true) == nullptr) continue;
+        sf::Image image = getTexture(animation.id)->copyToImage();
         sf::IntRect rect(0, 0, animation.wSprite, animation.hSprite);
         for (int i = 0; i < animation.nFrames; i++){
             sf::Texture* sptTexture = new sf::Texture;
-            sf::Image image = getTexture(animation.id)->copyToImage();
-            //sptTexture->loadFromImage(image, rect);
             sptTexture->loadFromImage(image, rect);
             sf::Sprite s(*sptTexture);
             animation.frames.push_back(s);
@@ -1219,13 +1226,14 @@ void Assets::readItems(){
     items.insert(make_pair(Item::HEAVY_ARMOR, Item(2)));
 }
 
-sf::Texture* Assets::getTexture(std::string file){
+sf::Texture* Assets::getTexture(std::string file, bool returnNullIfMissing){
     std::map<std::string, sf::Texture*>::iterator it;
     it = textures.find(file);
 
     if (it == textures.end()){
         printf("Texture not mapped: %s\n", file.c_str());
-        return textures["alpha.png"];
+        if (returnNullIfMissing) return nullptr;
+        else return textures["alpha.png"];
     }else{
         return (*it).second;
     }
