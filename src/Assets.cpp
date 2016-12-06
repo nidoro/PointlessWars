@@ -224,8 +224,8 @@ void Assets::createActions(){
     actions.insert(make_pair(K+44, CAction(K+44)));                                     ///RETURN
 
     actions[202].btDefTexture = "intimidate-1.png";
-    actions[202].btHovTexture = "intimidate-2.png";
-    actions[202].btActTexture = "intimidate-2.png";
+    actions[202].btHovTexture = "intimidate-highlit.png";
+    actions[202].btActTexture = "intimidate-highlit.png";
 
     actions[203].btDefTexture = "ressurection-1.png";
     actions[203].btHovTexture = "ressurection-2.png";
@@ -244,8 +244,8 @@ void Assets::createActions(){
     actions[209].btActTexture = "earth-decrease-2.png";
 
     actions[212].btDefTexture = "change-formation-1.png";
-    actions[212].btHovTexture = "change-formation-2.png";
-    actions[212].btActTexture = "change-formation-2.png";
+    actions[212].btHovTexture = "change-formation-highlit.png";
+    actions[212].btActTexture = "change-formation-highlit.png";
 
     actions[216].btDefTexture = "purification-1.png";
     actions[216].btHovTexture = "purification-2.png";
@@ -305,6 +305,9 @@ void Assets::createActions(){
         actions[i].duration = -1;
         actions[i].description = getString("DESCRIPTION-ACTION-" + int2str(i));
         actions[i].name = getString("NAME-ACTION-" + int2str(i));
+        actions[i].btDefTexture = "button-formation-" + int2str(i-300, 2) + ".png";
+        actions[i].btHovTexture = "button-formation-" + int2str(i-300, 2) + "-highlit.png";
+        actions[i].btActTexture = "button-formation-" + int2str(i-300, 2) + "-highlit.png";
     }
 
     ///BATTLE CLOSURES
@@ -314,7 +317,9 @@ void Assets::createActions(){
     actions.insert(make_pair(2+K, CAction(2+K)));
     actions.insert(make_pair(3+K, CAction(3+K)));
     for(int i = 400; i < 404; i++){
-
+        actions[i].btDefTexture = "button-closure-" + int2str(i-400, 2) + ".png";
+        actions[i].btHovTexture = "button-closure-" + int2str(i-400, 2) + "-highlit.png";
+        actions[i].btActTexture = "button-closure-" + int2str(i-400, 2) + "-highlit.png";
     }
     actions[400].name = "Grand Battle";
     actions[401].name = "Duel";
@@ -461,8 +466,8 @@ void Assets::createUnits(){
         unit.aAction04 = "unit-" + int2str(i, 2) + "-action-04.png";
 
         unit.btActionDef = "bt-unit-" + int2str(i, 2) + "-attack-def.png";
-        unit.btActionHov = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
-        unit.btActionAct = "bt-unit-" + int2str(i, 2) + "-attack-hov.png";
+        unit.btActionHov = "bt-unit-" + int2str(i, 2) + "-attack-highlit.png";
+        unit.btActionAct = "bt-unit-" + int2str(i, 2) + "-attack-highlit.png";
 
         unit.portrait = "unit-" + int2str(i, 2) + "-counter.png";
         unit.portraitHighlit = "unit-" + int2str(i, 2) + "-counter-highlit.png";

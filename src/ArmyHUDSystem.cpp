@@ -47,6 +47,9 @@ void ArmyHUDSystem::createResistanceHighlighters(Entity* e){
         eIcon->add(new CPosition(x0, y0));
         eIcon->add(new CDraw(CDraw::GUI1));
         eIcon->add(new CTexture("type-" + int2str(i,2) + "-icon-02.png"));
+        eIcon->add(new CButtonTextures("type-" + int2str(i,2) + "-icon-02.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png"));
         eIcon->add(new CDimensions(30, 30));
         eIcon->add(new CButtonState());
         eIcon->add(new CButtonHitbox(30,30));
@@ -73,6 +76,9 @@ void ArmyHUDSystem::createResistanceHighlighters(Entity* e){
         eIcon->add(new CPosition(x0,y0));
         eIcon->add(new CDraw(CDraw::GUI1));
         eIcon->add(new CTexture("type-" + int2str(i,2) + "-icon-02.png"));
+        eIcon->add(new CButtonTextures("type-" + int2str(i,2) + "-icon-02.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png",
+                                       "type-" + int2str(i,2) + "-icon-02-highlit.png"));
         eIcon->add(new CDimensions(30, 30));
         eIcon->add(new CButtonState());
         eIcon->add(new CButtonHitbox(30,30));
@@ -259,7 +265,7 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
                 eIcon->add(new CButtonHitbox(60, 60));
                 eIcon->add(new CButtonTrigger());
                 eIcon->add(new CButtonState());
-                eIcon->add(new CTooltip(CTooltip::CAPTAIN));
+                //eIcon->add(new CTooltip(CTooltip::CAPTAIN));
                 eIcon->add(new CVelocity());
                 eIcon->add(new CActor);
                 eIcon->get<CActor>()->addNode(new AMove(0.0, x, y, 150));
@@ -289,6 +295,9 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
                 eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
                 eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
                 eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
+
+                eIcon->add(new CTooltip(CTooltip::CAPTAIN));
+                eManager->addModified(eIcon);
             }
             eIcon->get<CButtonTextures>()->def = eCap->get<CCaptain>()->btDefTexture;
             eIcon->get<CButtonTextures>()->hov = eCap->get<CCaptain>()->btHovTexture;
@@ -315,7 +324,7 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
                 eIcon->add(new CButtonHitbox(60, 60));
                 eIcon->add(new CButtonTrigger());
                 eIcon->add(new CButtonState());
-                eIcon->add(new CTooltip(CTooltip::CAPTAIN));
+                //eIcon->add(new CTooltip(CTooltip::CAPTAIN));
                 eIcon->add(new CVelocity());
                 eIcon->add(new CActor);
                 eIcon->get<CActor>()->addNode(new AMove(0.0, x, y, 150));
@@ -347,6 +356,8 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
                 eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
 
                 eIcon->get<CCaptain>()->id = -1;
+                eIcon->remove(Component::TOOLTIP);
+                eManager->addModified(eIcon);
             }
             eIcon->get<CButtonTextures>()->def = "hero-portrait-empty.png";
             eIcon->get<CButtonTextures>()->hov = "hero-portrait-empty-highlit.png";
@@ -528,6 +539,7 @@ void ArmyHUDSystem::updateUnits(Entity* e){
     double spacing = 30;
 
     ///CREATE NEW DISPLAYERS
+    EntityList newOnes;
     for(list<CUnit::ID>::iterator i = uniqueUnits.begin(); i != uniqueUnits.end(); i++){
         map<CUnit::ID, Entity*>::iterator it;
         it = e->get<CArmyHUD>()->unitDisplayers.find(*i);
@@ -634,11 +646,15 @@ void ArmyHUDSystem::updateUnits(Entity* e){
 
             e->get<CArmyHUD>()->unitDisplayers.insert(make_pair(id, eBtInvis));
 
-            for(auto& j : e->get<CArmyHUD>()->unitDisplayers){
-                x = cxWindow + sign*xOff + getIndex(e->get<CArmyHUD>()->unitDisplayers, j.first)*sign*dx;
-                eIcon->get<CPosition>()->x = x;
-                eDisplayer->get<CPosition>()->x = x;
-                eBtInvis->get<CPosition>()->x = x;
+            newOnes.push_back(eBtInvis);
+            for(auto& j : newOnes){
+                CUnit::ID uID = j->get<CUnit>()->id;
+                Entity* jeIcon = j->getObservedEntity("UnitIcon");
+                Entity* jeDisplayer = j->getObservedEntity("UnitCounter");
+                x = cxWindow + sign*xOff + getIndex(e->get<CArmyHUD>()->unitDisplayers, uID)*sign*dx;
+                jeIcon->get<CPosition>()->x = x;
+                jeDisplayer->get<CPosition>()->x = x;
+                j->get<CPosition>()->x = x;
                 animateUnitIn(eBtInvis);
             }
             rearrange = true;
@@ -665,7 +681,7 @@ void ArmyHUDSystem::arrangeUnits(Entity* e){
         if (i.second->get<CPosition>()->x != x && i.second->get<CActor>()->timeline.empty()){
             i.second->get<CActor>()->timeline.push_back(new AMove(0.0, x, i.second->get<CPosition>()->y, speed));
             eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, x, eIcon->get<CPosition>()->y, speed));
-            eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, x, eIcon->get<CPosition>()->y, speed));
+            eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, x, eDisplayer->get<CPosition>()->y, speed));
         }
     }
 }
