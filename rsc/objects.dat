@@ -97,6 +97,7 @@ smoke           smoke.png                       smoke.png                       
 tree            tree.png                        tree.png                                empty.wav
 trees           trees.png                       trees.png                               empty.wav
 blacksmith      blacksmith.png                  blacksmith.png                          empty.wav
+<<<<<<< HEAD
 training-field  training-field.png              training-field.png                      empty.wav
 
 %snow
@@ -107,3 +108,13 @@ snowflag-red    obj-snowflag-red.png            obj-snowflag-red.png            
 light           obj-light-off.png               obj-light-on.png                        sfx-lighter.wav
 snowman         obj-snowman-idle.png            obj-snowman-nose.png                    empty.wav
 s-tree          obj-tree.png                    obj-snow-fall.png                       sfx-snow.wav
+=======
+
+%snow
+dog             obj-dog.png                     obj-dog-woof.png                        sfx-dog.wav
+flag-blue       obj-flag-blue-s.png             obj-flag-blue-s.png                     empty.wav
+flag-red        obj-flag-red-s.png              obj-flag-red-s.png                      empty.wav
+light           obj-light-off.png               obj-light-on.png                        sfx-lighter.wav
+snowman         obj-snowman-idle.png            obj-snowman-nose.png                    empty.wav
+tree            obj-tree.png                    obj-snow-fall.png                       sfx-snow.wav
+>>>>>>> refs/remotes/origin/develop
