@@ -148,6 +148,8 @@ struct Component{
             GUI_GROUP,
             TILT,
             STRING_MESSAGE,
+            STATE_DEPENDENT_BUTTON,
+            COMPOUND_BUTTON,
             NUM_COMPONENTS
         };
 
@@ -456,16 +458,20 @@ struct CButtonState : public Component{
         state = NON_ACTIVE;
         gainedFocusMessage = EMPTY_MESSAGE;
         lostFocusMessage = EMPTY_MESSAGE;
+        isDependent = false;
     }
     CButtonState(State s){
         state = s;
         gainedFocusMessage = EMPTY_MESSAGE;
         lostFocusMessage = EMPTY_MESSAGE;
+        isDependent = false;
     }
 
     State state;
     Message gainedFocusMessage;
     Message lostFocusMessage;
+
+    bool isDependent;
 };
 
 struct CButtonTrigger : public Component{
@@ -1454,6 +1460,7 @@ struct CArmyHUD : public Component{
         eCoin = nullptr;
     }
 
+    map<CUnit::ID, Entity*> unitDisplayers;
     map<CUnit::ID, IconDisplayerPair> units2;
     map<CUnit::ID, Entity*> units;
     map<CAction::ID, Entity*> effects;
@@ -1904,6 +1911,14 @@ struct CActor : public Component{
 
     void addNode(AnimationNode* node){
         timeline.push_back(node);
+    }
+
+    void clearTimeline(){
+        for (auto& i : timeline){
+            delete i;
+        }
+        timeline.clear();
+        acting = false;
     }
 
     list<AnimationNode*> timeline;
@@ -2454,6 +2469,10 @@ struct CStringMessage : public Component{
     }
 
     std::string value;
+};
+
+struct CCompoundButton : public Component{
+    static Type getType(){return COMPOUND_BUTTON;}
 };
 
 #endif // COMPONENT_H

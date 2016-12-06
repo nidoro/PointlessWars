@@ -30,10 +30,10 @@ class ArmyHUDSystem : public System{
         void createResistanceHighlighters(Entity* e);
         bool mapContains(map<CAction::ID, CAction>& m, CAction::ID id);
         double getAverageResistance(Entity* e, CUnit::DamageType dmgType);
-        int getIndex(map<CUnit::ID, IconDisplayerPair>& m, CUnit::ID id);
+        int getIndex(map<CUnit::ID, Entity*>& m, CUnit::ID id);
 
-        void animateUnitIn(IconDisplayerPair& p);
-        void animateUnitOut(IconDisplayerPair& p);
+        void animateUnitIn(Entity* eCompound);
+        void animateUnitOut(Entity* eCompound);
         void arrangeUnits(Entity* e);
         void arrangeEffects(Entity* e);
         void animateAliveCounterIn(Entity* e);

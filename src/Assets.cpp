@@ -344,8 +344,8 @@ void Assets::createCaptains(){
         captains[i].portrait = "hero-" + int2str(i, 2) + "-portrait.png";
 
         captains[i].btDefTexture = "hero-" + int2str(i, 2) + "-portrait.png";
-        captains[i].btHovTexture = "hero-" + int2str(i, 2) + "-portrait.png";
-        captains[i].btActTexture = "hero-" + int2str(i, 2) + "-portrait.png";
+        captains[i].btHovTexture = "hero-" + int2str(i, 2) + "-portrait-highlit.png";
+        captains[i].btActTexture = "hero-" + int2str(i, 2) + "-portrait-highlit.png";
     }
     //HERO-00	Chimalmat
     captains[0].actions.push_back(205);

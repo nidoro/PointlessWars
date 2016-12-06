@@ -52,7 +52,7 @@ void ButtonSystem::updateButtonState(Entity* e){
     if (topUILayer != CUILayer::NONE){
         if (!e->has(Component::UI_LAYER)
         || (e->has(Component::UI_LAYER) && e->get<CUILayer>()->layer != topUILayer)){
-            e->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
+            setState(e, CButtonState::NON_ACTIVE);
             notify(BUTTON_LOST_FOCUS, e);
             notify(e->get<CButtonState>()->lostFocusMessage, e);
             return;
@@ -63,6 +63,7 @@ void ButtonSystem::updateButtonState(Entity* e){
         notify(e->get<CButtonState>()->lostFocusMessage, e);
         return;
     }
+    if (e->get<CButtonState>()->isDependent) return;
     CButtonHitbox* cHitbox = e->get<CButtonHitbox>();
     CButtonState* cState = e->get<CButtonState>();
     CPosition* cPosition = e->get<CPosition>();
@@ -79,12 +80,12 @@ void ButtonSystem::updateButtonState(Entity* e){
             if (cState->state != CButtonState::ACTIVE){
                 notify(BUTTON_PRESSED, e);
             }
-            cState->state = CButtonState::ACTIVE;
+            setState(e, CButtonState::ACTIVE);
         }else if (cState->state == CButtonState::ACTIVE){
             notify(BUTTON_RELEASED, e);
-            if (cState->state != CButtonState::LOCKED) cState->state = CButtonState::HOVERED;
+            if (cState->state != CButtonState::LOCKED) setState(e, CButtonState::HOVERED);
         }else{
-            cState->state = CButtonState::HOVERED;
+            setState(e, CButtonState::HOVERED);
         }
     }else if (cHitbox->shape == CButtonHitbox::CIRCLE
            && getDistance(mp.x, mp.y, cPosition->x, cPosition->y) <= cHitbox->radius){
@@ -98,19 +99,19 @@ void ButtonSystem::updateButtonState(Entity* e){
             if (cState->state != CButtonState::ACTIVE){
                 notify(BUTTON_PRESSED, e);
             }
-            cState->state = CButtonState::ACTIVE;
+            setState(e, CButtonState::ACTIVE);
         }else if (cState->state == CButtonState::ACTIVE && e->has(Component::BUTTON_TRIGGER)){
             notify(BUTTON_RELEASED, e);
-            if (cState->state != CButtonState::LOCKED) cState->state = CButtonState::HOVERED;
+            if (cState->state != CButtonState::LOCKED) setState(e, CButtonState::HOVERED);
         }else{
-            cState->state = CButtonState::HOVERED;
+            setState(e, CButtonState::HOVERED);
         }
     }else{
         if (cState->state != CButtonState::NON_ACTIVE || eManager->isDead(e)){
             notify(BUTTON_LOST_FOCUS, e);
             notify(e->get<CButtonState>()->lostFocusMessage, e);
         }
-        cState->state = CButtonState::NON_ACTIVE;
+        setState(e, CButtonState::NON_ACTIVE);
     }
     if (eManager->isDead(e)){
         notify(BUTTON_LOST_FOCUS, e);
@@ -206,6 +207,7 @@ void ButtonSystem::onButtonPressed(Entity* e){
 void ButtonSystem::onButtonReleased(Entity* e){
     if (!windowFocused) return;
     if (e->get<CButtonState>()->state == CButtonState::LOCKED) return;
+
     if (e->has(Component::BUTTON_TRIGGER) && e->get<CButtonTrigger>()->action == CButtonTrigger::ON_RELEASE){
         for (auto& m : e->get<CButtonTrigger>()->msgs){
             notify(m, e);
@@ -232,7 +234,7 @@ void ButtonSystem::onKeyReleased(Entity* e){
 void ButtonSystem::onStartScreenTransition(Entity* e){
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* eBt = *i;
-        eBt->get<CButtonState>()->state = CButtonState::LOCKED;
+        setState(eBt, CButtonState::LOCKED);
     }
 }
 
@@ -242,7 +244,7 @@ void ButtonSystem::onLockAllButtons(Entity* e){
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* eBt = *i;
         if (eBt->get<CButtonState>()->state != CButtonState::LOCKED){
-            eBt->get<CButtonState>()->state = CButtonState::LOCKED;
+            setState(eBt, CButtonState::LOCKED);
             buttonsLocked[lastLayer].push_back(eBt);
         }
     }
@@ -258,7 +260,7 @@ void ButtonSystem::onUnlockAllButtons(Entity* e){
     for(EntityListIt i = buttonsLocked[lastLayer].begin(); i != buttonsLocked[lastLayer].end(); i++){
         Entity* eBt = *i;
         if (eManager->isDead(eBt)) continue;
-        eBt->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
+        setState(eBt, CButtonState::NON_ACTIVE);
     }
     buttonsLocked[lastLayer].clear();
     buttonsLocked.pop_back();
@@ -270,6 +272,7 @@ void ButtonSystem::onNewScreen(Entity* e){
 
 void ButtonSystem::onButtonGainedFocus(Entity* e){
     if (!e->has(Component::BUTTON_SOUNDS)) return;
+
     Entity* eSound = eManager->createEntity();
     eSound->add(new CSound(e->get<CButtonSounds>()->focused, CSound::REMOVE_ENTITY));
     notify(PLAY_SOUND, eSound);
@@ -305,5 +308,15 @@ void ButtonSystem::onDoToggleAction(Entity* e){
         e->get<CStringToggleButton>()->toggle();
 
         notify(e->get<CStringToggleButton>()->msgOnToggle, e);
+    }
+}
+
+void ButtonSystem::setState(Entity* e, CButtonState::State state){
+    e->get<CButtonState>()->state = state;
+    if (e->has(Component::COMPOUND_BUTTON)){
+        EntityList children = e->getObservedEntities("DependentStateButton");
+        for (auto& c : children){
+            c->get<CButtonState>()->state = state;
+        }
     }
 }

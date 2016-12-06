@@ -32,6 +32,7 @@ class ButtonSystem : public System{
         void updateButtonColor(Entity* e);
         void updateButtonRect(Entity* e);
         void updateButtonCircle(Entity* e);
+        void setState(Entity* e, CButtonState::State state);
 
         vector<EntityList> buttonsLocked;
         void lockButton(Entity* e);

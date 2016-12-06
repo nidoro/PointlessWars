@@ -31,6 +31,8 @@ void Game::start(){
     //window.setFramerateLimit(240);
 
 	//ImGui::SFML::Init(window);
+    DBG_SERVICES.initialize(&window);
+    ImGui::SFML::Init(window);
 
     //initializeSystem(new CursorSystem());
 
@@ -83,6 +85,8 @@ void Game::start(){
 
     initializeSystem(new RenderSystem(), -1);
 
+    ERROR_MESSAGE("EEitaaa");
+
     //window.close();
     //window.create(sf::VideoMode(winSize.x, winSize.y), "Pointless Wars", sf::Style::Default);
 
@@ -101,7 +105,7 @@ void Game::start(){
 
         sf::Event ev;
         while(window.pollEvent(ev)){
-			//ImGui::SFML::ProcessEvent(ev);
+			ImGui::SFML::ProcessEvent(ev);
 
             if (ev.type == sf::Event::Closed){
                 System::notify(WINDOW_CLOSED);

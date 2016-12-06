@@ -26,6 +26,9 @@
 //---- Don't define obsolete functions names
 //#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
 
+//---- Pack colors to BGRA instead of RGBA (remove need to post process vertex buffer in back ends)
+//#define IMGUI_USE_BGRA_PACKED_COLOR
+
 //---- Implement STB libraries in a namespace to avoid conflicts
 //#define IMGUI_STB_NAMESPACE     ImGuiStb
 
@@ -49,10 +52,31 @@ namespace ImGui
 }
 */
 
-#include <SFML/System/Vector2.hpp>
+// Add this to your imconfig.h
 
-#define IM_VEC2_CLASS_EXTRA                                                 \
-        ImVec2(const sf::Vector2f& v) { x = v.x; y = v.y; }                 \
-        operator sf::Vector2f() const { return sf::Vector2f(x, y); }
-		
-		
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Color.hpp>
+
+#define IM_VEC2_CLASS_EXTRA                                             \
+    template <typename T>                                               \
+    ImVec2(const sf::Vector2<T>& v) {                                   \
+        x = static_cast<float>(v.x);                                    \
+        y = static_cast<float>(v.y);                                    \
+    }                                                                   \
+                                                                        \
+    template <typename T>                                               \
+    operator sf::Vector2<T>() const {                                   \
+        return sf::Vector2<T>(x, y);                                    \
+    }
+
+#define IM_VEC4_CLASS_EXTRA                                             \
+    ImVec4(const sf::Color & c)                                         \
+        : ImVec4(c.r / 255.f, c.g / 255.f, c.b / 255.f, c.a / 255.f) {  \
+    }                                                                   \
+    operator sf::Color() const {                                        \
+        return sf::Color(                                               \
+            static_cast<sf::Uint8>(x * 255.f),                          \
+            static_cast<sf::Uint8>(y * 255.f),                          \
+            static_cast<sf::Uint8>(z * 255.f),                          \
+            static_cast<sf::Uint8>(w * 255.f));                         \
+    }

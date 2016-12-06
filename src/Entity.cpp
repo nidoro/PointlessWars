@@ -103,13 +103,21 @@ EntityList& Entity::getEmployers(){
 
 Entity* Entity::getObservedEntity(string id){
     map<string, Entity*>::iterator it = observedEntities.find(id);
-    return it != observedEntities.end() ? it->second : nullptr;
+    if (it != observedEntities.end()){
+        return it->second;
+    }else{
+        //WARNING_MESSAGE("Observed entity not found: " + id);
+        return nullptr;
+    }
 }
 EntityList Entity::getObservedEntities(string prefix){
     EntityList l;
     for (auto& i : observedEntities){
         string id = i.first;
         if (prefix.empty() || hasBegining(id, prefix)) l.push_back(i.second);
+    }
+    if (l.empty()){
+        //WARNING_MESSAGE("Observed entities not found: " + prefix);
     }
     return l;
 }

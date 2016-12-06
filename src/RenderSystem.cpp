@@ -3,6 +3,8 @@
 RenderSystem::RenderSystem(){
     addRequirement(Component::DRAW);
     addRequirement(Component::POSITION);
+
+    addSubscription(KEY_RELEASED);
     eLists.resize(CDraw::N_TAGS);
 }
 
@@ -14,6 +16,7 @@ void RenderSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, do
     this->eManager = eManager;
     this->window = window;
     this->targetUPS = targetUPS;
+
 /*
     wWindow = window->getView().getSize().x;
     hWindow = window->getView().getSize().y;
@@ -26,6 +29,12 @@ void RenderSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, do
     cyWindow = hWindow/2;
 
     eLists.resize(CDraw::N_TAGS);
+
+    isDrawingDebug = false;
+
+    for(list<Message>::iterator i = subscripts.begin(); i != subscripts.end(); i++){
+        subscribe(*i);
+    }
 }
 
 void RenderSystem::updateEntities(){
@@ -136,7 +145,10 @@ void RenderSystem::update(){
             }
         }
     }
-    //ImGui::Render();
+    ImGui::SFML::Update(*window, sf::Time(sf::seconds(delay)));
+    if (isDrawingDebug) DBG_SERVICES.showUI();
+    ImGui::Render();
+    window->resetGLStates();
     window->display();
 }
 
@@ -435,6 +447,12 @@ void RenderSystem::drawNinePatch(Entity* e){
 
 }
 
+void RenderSystem::onKeyReleased(Entity* e){
+    std::cout << "okasod\n";
+    if (e->get<CKeyboardInput>()->code == sf::Keyboard::F1){
+        isDrawingDebug = !isDrawingDebug;
+    }
+}
 
 
 

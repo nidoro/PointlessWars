@@ -3,6 +3,7 @@
 #include "Component.h"
 #include <vector>
 #include <cstdlib>
+#include "DebugServices.h"
 
 typedef std::list<Entity*> EntityList;
 typedef std::list<Entity*>::iterator EntityListIt;
