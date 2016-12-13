@@ -6467,7 +6467,7 @@ void ScriptedAnimation::scriptVictoryAnimation(double delay){
     ePanel->add(new CPosition(cxWindow, cyWindow - 80));
     ePanel->add(new CDimensions(wMin, hPanel));
     ePanel->add(new CDraw(drawTag, true, 255));
-    ePanel->add(new CTexture("9p-frame-02.png"));
+    ePanel->add(new CTexture(texturePanel));
     ePanel->add(new CActor());
     ePanel->add(new CAutoPilot());
     ePanel->add(new CElipsoidalMovement(cxWindow, cyWindow - 80, 0, 4, 180));
@@ -6554,6 +6554,17 @@ void ScriptedAnimation::scriptVictoryAnimation(double delay){
     scriptPoofAt(bottomRight.x, bottomRight.y - 25, tPanelReady + 4*objectsDelay);
 
     scriptConfettiRain(delay);
+
+    /// SFX: FANFARE
+    eObj = eManager->createEntity();
+    eObj->add(new CActor());
+    eObj->get<CActor>()->addNode(new ASound(0.0, "fanfare-medium.ogg"));
+
+    notify(STOP_MUSIC);
+    /// MUSIC WINNING LOOP
+    eObj = eManager->createEntity();
+    eObj->add(new CTimer(3.92, PLAY_MUSIC));
+    eObj->add(new CMusic("winning-loop.ogg"));
 
     askEndOfMatchQuestions(delay);
 }

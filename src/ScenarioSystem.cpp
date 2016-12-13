@@ -17,7 +17,7 @@ void ScenarioSystem::update(){
     }
 }
 void ScenarioSystem::load(string name, double xOff, double yOff){
-    if (name == "RANDOM") name = getRandom(current);
+    if (toUpper(name) == "RANDOM") name = getRandom(current);
 
     CScenario scenario = CScenario::Map[name];
 

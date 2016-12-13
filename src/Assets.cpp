@@ -228,64 +228,64 @@ void Assets::createActions(){
     actions[202].btActTexture = "intimidate-highlit.png";
 
     actions[203].btDefTexture = "ressurection-1.png";
-    actions[203].btHovTexture = "ressurection-2.png";
-    actions[203].btActTexture = "ressurection-2.png";
+    actions[203].btHovTexture = "ressurection-highlit.png";
+    actions[203].btActTexture = "ressurection-highlit.png";
 
     actions[207].btDefTexture = "fire-decrease-1.png";
-    actions[207].btHovTexture = "fire-decrease-2.png";
-    actions[207].btActTexture = "fire-decrease-2.png";
+    actions[207].btHovTexture = "fire-decrease-highlit.png";
+    actions[207].btActTexture = "fire-decrease-highlit.png";
 
     actions[208].btDefTexture = "water-decrease-1.png";
-    actions[208].btHovTexture = "water-decrease-2.png";
-    actions[208].btActTexture = "water-decrease-2.png";
+    actions[208].btHovTexture = "water-decrease-highlit.png";
+    actions[208].btActTexture = "water-decrease-highlit.png";
 
     actions[209].btDefTexture = "earth-decrease-1.png";
-    actions[209].btHovTexture = "earth-decrease-2.png";
-    actions[209].btActTexture = "earth-decrease-2.png";
+    actions[209].btHovTexture = "earth-decrease-highlit.png";
+    actions[209].btActTexture = "earth-decrease-highlit.png";
 
     actions[212].btDefTexture = "change-formation-1.png";
     actions[212].btHovTexture = "change-formation-highlit.png";
     actions[212].btActTexture = "change-formation-highlit.png";
 
     actions[216].btDefTexture = "purification-1.png";
-    actions[216].btHovTexture = "purification-2.png";
-    actions[216].btActTexture = "purification-2.png";
+    actions[216].btHovTexture = "purification-highlit.png";
+    actions[216].btActTexture = "purification-highlit.png";
 
     actions[219].btDefTexture = "true-form-1.png";
-    actions[219].btHovTexture = "true-form-2.png";
-    actions[219].btActTexture = "true-form-2.png";
+    actions[219].btHovTexture = "true-form-highlit.png";
+    actions[219].btActTexture = "true-form-highlit.png";
 
     actions[222].btDefTexture = "doom-1.png";
-    actions[222].btHovTexture = "doom-2.png";
-    actions[222].btActTexture = "doom-2.png";
+    actions[222].btHovTexture = "doom-highlit.png";
+    actions[222].btActTexture = "doom-highlit.png";
 
     actions[223].btDefTexture = "hex-1.png";
-    actions[223].btHovTexture = "hex-2.png";
-    actions[223].btActTexture = "hex-2.png";
+    actions[223].btHovTexture = "hex-highlit.png";
+    actions[223].btActTexture = "hex-highlit.png";
 
     actions[227].btDefTexture = "tarot-1.png";
-    actions[227].btHovTexture = "tarot-2.png";
-    actions[227].btActTexture = "tarot-2.png";
+    actions[227].btHovTexture = "tarot-highlit.png";
+    actions[227].btActTexture = "tarot-highlit.png";
 
     actions[233].btDefTexture = "air-decrease-1.png";
-    actions[233].btHovTexture = "air-decrease-2.png";
-    actions[233].btActTexture = "air-decrease-2.png";
+    actions[233].btHovTexture = "air-decrease-highlit.png";
+    actions[233].btActTexture = "air-decrease-highlit.png";
 
     actions[239].btDefTexture = "call-slaves-1.png";
-    actions[239].btHovTexture = "call-slaves-2.png";
-    actions[239].btActTexture = "call-slaves-2.png";
+    actions[239].btHovTexture = "call-slaves-highlit.png";
+    actions[239].btActTexture = "call-slaves-highlit.png";
 
     actions[240].btDefTexture = "croak-1.png";
-    actions[240].btHovTexture = "croak-2.png";
-    actions[240].btActTexture = "croak-2.png";
+    actions[240].btHovTexture = "croak-highlit.png";
+    actions[240].btActTexture = "croak-highlit.png";
 
     actions[241].btDefTexture = "stampede-1.png";
-    actions[241].btHovTexture = "stampede-2.png";
-    actions[241].btActTexture = "stampede-2.png";
+    actions[241].btHovTexture = "stampede-highlit.png";
+    actions[241].btActTexture = "stampede-highlit.png";
 
     actions[242].btDefTexture = "become-human-1.png";
-    actions[242].btHovTexture = "become-human-2.png";
-    actions[242].btActTexture = "become-human-2.png";
+    actions[242].btHovTexture = "become-human-highlit.png";
+    actions[242].btActTexture = "become-human-highlit.png";
 
     map<CAction::ID, CAction>::iterator it;
     for(it = actions.begin(); it != actions.end(); it++){

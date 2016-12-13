@@ -182,6 +182,7 @@ void System::onNotify(Message m, Entity* e){
         case END_HERO_POOL: onEndHeroPool(e); break;
         case SCORE_UPDATED: onScoreUpdated(e); break;
         case PLAY_MUSIC: onPlayMusic(e); break;
+        case STOP_MUSIC: onStopMusic(e); break;
         case ADD_ACTOR: onAddActor(e); break;
         case NEW_COMMAND_LINE: onNewCommandLine(e); break;
         case BRING_UI_LAYER_FORWARD: onBringUILayerForward(e); break;

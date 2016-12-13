@@ -66,8 +66,8 @@ void AISystem::selectBattleClosure(Entity* e){
         actions.push_back(i);
     }
 
-    war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
-    //war.getNextActionOutcome(e->get<CPlayer>()->id).action = 401;
+    //war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
+    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 400;
     e->get<CAInt>()->actionSelected = true;
 }
 

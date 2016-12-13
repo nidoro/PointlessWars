@@ -174,6 +174,7 @@ class System{
         virtual void onEndHeroPool(Entity* e){}
         virtual void onScoreUpdated(Entity* e){}
         virtual void onPlayMusic(Entity* e){}
+        virtual void onStopMusic(Entity* e){}
         virtual void onAddActor(Entity* e){}
         virtual void onNewCommandLine(Entity* e){}
         virtual void onBringUILayerForward(Entity* e){}

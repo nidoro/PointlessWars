@@ -1,10 +1,10 @@
 <!-- Match Config -->
 <MatchConfig>
     <Name>Prototype</Name>
-    <Scenery>desert.sce</Scenery>
+    <Scenery>Random</Scenery>
     <HeroesPerPlayer>3</HeroesPerPlayer>
     <MaxBattles>NONE</MaxBattles>
-    <Turns>3</Turns>
+    <Turns>1</Turns>
     <ArmySize>50</ArmySize>
     <UnitaryBlockChance>0.25</UnitaryBlockChance>
     <OptionsOnRebuild>16</OptionsOnRebuild>

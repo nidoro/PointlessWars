@@ -17,6 +17,7 @@ class SoundSystem : public System{
     private:
         void onPlaySound(Entity* e);
         void onPlayMusic(Entity* e);
+        void onStopMusic(Entity* e);
         void onWindowClosed(Entity* e);
         void onWindowGainedFocus(Entity* e);
         void onWindowLostFocus(Entity* e);

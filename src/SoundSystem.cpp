@@ -7,12 +7,13 @@ SoundSystem::SoundSystem(){
     addSubscription(NEW_COMMAND_LINE);
     addSubscription(WINDOW_LOST_FOCUS);
     addSubscription(WINDOW_GAINED_FOCUS);
+    addSubscription(STOP_MUSIC);
 
     eNowPlaying = nullptr;
     eNextMusic = nullptr;
 
     musFadeInLength = 0.1;
-    musFadeOutLength = 0.1;
+    musFadeOutLength = 1.0;
     musMaxVolume = 10;
     fadingOut = false;
     mute = false;
@@ -159,6 +160,10 @@ void SoundSystem::updateMusic(){
 void SoundSystem::startMusicFadeOut(){
     eNowPlaying->get<CMusic>()->duration = Assets::getMusic(eNowPlaying->get<CMusic>()->name)->getPlayingOffset().asSeconds();
     fadingOut = true;
+}
+
+void SoundSystem::onStopMusic(Entity* e){
+    startMusicFadeOut();
 }
 
 void SoundSystem::updateMusicVolume(){
