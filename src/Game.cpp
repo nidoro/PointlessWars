@@ -80,7 +80,6 @@ void Game::start(){
     initializeSystem(new ElipsoidalMovementSystem());
     initializeSystem(new SideUISystem());
     initializeSystem(new GUIGroupSystem());
-    initializeSystem(new MasterSystem());
     initializeSystem(new TiltSystem());
 
     initializeSystem(new RenderSystem(), -1);

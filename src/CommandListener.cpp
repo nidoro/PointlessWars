@@ -286,9 +286,9 @@ void CommandListener::showFormationOptions(Entity* e){
     int nAvailableOptions = options;
     if (e->get<CArmy>()->prohibitedFormation != CArmy::N_FORMATIONS) nAvailableOptions--;
 
-    double w = 50;
-    double h = 50;
-    double cellSpacing = 60;
+    double w = 40;
+    double h = 40;
+    double cellSpacing = 50;
     double x = cxWindow;
     double y = cyWindow - (nAvailableOptions-1)*cellSpacing/2;
     double tStart = 0.0;
@@ -439,9 +439,9 @@ void CommandListener::showBattleClosureOptions(Entity* e){
     int K = 400;
     int options = 4;
 
-    double w = 50;
-    double h = 50;
-    double cellSpacing = 60;
+    double w = 40;
+    double h = 40;
+    double cellSpacing = 50;
     double x = cxWindow;
     double y = cyWindow - (options-1)*cellSpacing/2;
     double tStart = 0.0;
