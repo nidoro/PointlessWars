@@ -5,6 +5,7 @@ ScenarioSystem::ScenarioSystem(){
     addSubscription(INITIALIZE_WAR);
     addSubscription(LOAD_SCENARIO);
     addSubscription(NEW_COMMAND_LINE);
+    regularScenarios = {"desert.sce", "snow.sce", "woods.sce", "beach.sce"};
 }
 
 ScenarioSystem::~ScenarioSystem(){
@@ -70,15 +71,13 @@ void ScenarioSystem::clear(){
 }
 
 string ScenarioSystem::getRandom(string except){
-    map<string, CScenario>::iterator it;
-    int nScenarios = CScenario::Map.size();
-    string name;
-    do{
-        it = CScenario::Map.begin();
-        advance(it, randomInt(0, nScenarios-1));
-        name = it->first;
-    }while (name == except);
-    return name;
+  std::list<std::string> candidates = regularScenarios;
+  candidates.remove(except);
+  if (candidates.empty()) return "";
+  std::list<std::string>::iterator it = candidates.begin();
+  int i = randomInt(0, candidates.size()-1);
+  std::advance(it, i);
+  return *it;
 }
 
 void ScenarioSystem::onNewCommandLine(Entity* e){

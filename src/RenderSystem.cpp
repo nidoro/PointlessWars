@@ -443,12 +443,12 @@ void RenderSystem::drawNinePatch(Entity* e){
             window->draw(parts[i][j]);
         }
     }
-
-
 }
 
+
+
 void RenderSystem::onKeyReleased(Entity* e){
-    std::cout << "okasod\n";
+    //std::cout << "okasod\n";
     if (e->get<CKeyboardInput>()->code == sf::Keyboard::F1){
         isDrawingDebug = !isDrawingDebug;
     }

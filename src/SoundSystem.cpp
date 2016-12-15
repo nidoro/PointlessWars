@@ -44,6 +44,9 @@ void SoundSystem::update(){
             }
         }
     }
+    
+    if (window->hasFocus()) mute = false;
+    else                    mute = true;
     updateMusic();
 }
 
@@ -163,6 +166,7 @@ void SoundSystem::startMusicFadeOut(){
 }
 
 void SoundSystem::onStopMusic(Entity* e){
+    if (!eNowPlaying) return;
     startMusicFadeOut();
 }
 

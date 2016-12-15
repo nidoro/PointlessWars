@@ -117,7 +117,8 @@ void Game::start(){
                 System::notify(WINDOW_GAINED_FOCUS);
                 processInput = true;
             }
-
+            if (window.hasFocus()) processInput = true;
+            else                    processInput = false;
             if (processInput){
                 if (ev.type == sf::Event::MouseButtonPressed){
                     eInput->get<CMouseInput>()->buttonPressed = ev.mouseButton.button;
