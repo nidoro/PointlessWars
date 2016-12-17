@@ -70,14 +70,14 @@ void FormationEditor::onLoadFormation(Entity* e){
 void FormationEditor::onDeleteFormation(Entity* e){
     string nameFormation = eLoad->get<CDropList>()->value;
 
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/formations.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Error!\n");
     }
-    XMLNode* node = doc.FirstChildElement(nameFormation.c_str());
-    XMLElement* element;
-    XMLElement* elPositions;
+    tinyxml2::XMLNode* node = doc.FirstChildElement(nameFormation.c_str());
+    tinyxml2::XMLElement* element;
+    tinyxml2::XMLElement* elPositions;
     if (node == nullptr){
         return;
     }else{
@@ -93,14 +93,14 @@ void FormationEditor::onDeleteFormation(Entity* e){
 void FormationEditor::onSaveFormation(Entity* e){
     string name = eSave->get<CInputTextBox>()->content;
 
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/formations.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Error!\n");
     }
-    XMLNode* node = doc.FirstChildElement(name.c_str());
-    XMLElement* element;
-    XMLElement* elPositions;
+    tinyxml2::XMLNode* node = doc.FirstChildElement(name.c_str());
+    tinyxml2::XMLElement* element;
+    tinyxml2::XMLElement* elPositions;
     if (node == nullptr){
         element = doc.NewElement(name.c_str());
         elPositions = doc.NewElement("Positions");
@@ -115,7 +115,8 @@ void FormationEditor::onSaveFormation(Entity* e){
     const int row = 23;
 
     std::stringstream ss;
-    ss << '\n';    for(int i = 0; i < row; i++){
+    ss << '\n';
+    for(int i = 0; i < row; i++){
         for(int j = 0; j < col; j++){
             int value = 0;
             if (positions[i][col-1-j]->get<CCheckBox>()->on){
@@ -464,12 +465,12 @@ void FormationEditor::updateLoadOptions(){
     const int col = 15;
     const int row = 23;
 
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/formations.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Could not open formations.xml!\n");
     }
-    XMLElement* element = doc.FirstChildElement();
+    tinyxml2::XMLElement* element = doc.FirstChildElement();
 
     for (element; element != nullptr; element = element->NextSiblingElement()){
         CFormation formation;

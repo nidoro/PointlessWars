@@ -5,6 +5,7 @@
 #include "Standard.h"
 #include "War.h"
 #include "Config.h"
+#include "OSAppDataDir.h"
 
 class System{
     public:
@@ -47,6 +48,8 @@ class System{
         static War war;
         static Config config;
         static CUILayer::Layer topUILayer;
+        static std::string getAppDataDir();
+        
     protected:
         virtual void onGameStarted(Entity* e){}
         virtual void onButtonGainedFocus(Entity* e){}
@@ -197,7 +200,8 @@ class System{
         virtual void onCancelQuickMatchSearch(Entity* e){}
         virtual void onEndMatch(Entity* e){}
         virtual void onSetMatchConfig(Entity* e){}
-
+        virtual void onChooseLanguage(Entity* e){}
+        
         void subscribe(Message m){
             addObserver(this, m);
         }
@@ -225,10 +229,10 @@ class System{
         sf::RenderWindow* window;
 
         list<Message> subscripts;
-
+        
     private:
         static vector< list<System*> > observers;
-
+        static std::string appDataDir;
 };
 
 #endif // SYSTEM_H

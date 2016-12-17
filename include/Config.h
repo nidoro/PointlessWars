@@ -2,9 +2,10 @@
 #define CONFIG_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include "tinyxml2.h"
 #include "Standard.h"
-#include <SFML/Window.hpp>
+#include "OSAppDataDir.h"
 
 class Config{
     public:
@@ -18,7 +19,10 @@ class Config{
         bool getDeadBodies();
         bool getSkipIntro();
         string getQuickStart();
-
+        string getLanguage();
+        std::list<std::string> getSupportedLanguages();
+        std::string isLanguageSupported(std::string lan);
+        
         void setResolution(unsigned w, unsigned h);
         void setFullscreen(bool value);
         void setMusMaxVolume(double value);
@@ -26,7 +30,8 @@ class Config{
         void setDeadBodies(bool value);
         void setSkipIntro(bool value);
         void setQuickStart(string value);
-
+        void setLanguage(string lan);
+        
         bool loadConfigFile(std::string file);
         bool saveConfigFile(std::string file);
         void validateValues();
@@ -45,7 +50,8 @@ class Config{
         string quickStart;
         bool skipIntro;
         list<string> secretOptions;
-
+        string language;
+        std::list<std::string> supportedLanguages;
 };
 
 #endif // CONFIG_H

@@ -4,6 +4,7 @@ War System::war;
 Config System::config;
 CProfile System::profile;
 CUILayer::Layer System::topUILayer = CUILayer::NONE;
+std::string System::appDataDir = helper::getAppDataDir();
 
 System::System(){
     //ctor
@@ -205,6 +206,7 @@ void System::onNotify(Message m, Entity* e){
         case CANCEL_QUICK_MATCH_SEARCH: onCancelQuickMatchSearch(e); break;
         case END_MATCH: onEndMatch(e); break;
         case SET_MATCH_CONFIG: onSetMatchConfig(e); break;
+        case CHOOSE_LANGUAGE: onChooseLanguage(e); break;
         default: break;
     }
 }
@@ -251,7 +253,9 @@ void System::shutdownAll(){
     observers.clear();
 }
 
-
+std::string System::getAppDataDir(){
+    return appDataDir;
+}
 
 
 

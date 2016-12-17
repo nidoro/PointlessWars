@@ -1,5 +1,6 @@
 #pragma once
 #include "System.h"
+#include "Assets.h"
 
 class GUIGroupSystem : public System{
     public:
@@ -13,7 +14,7 @@ class GUIGroupSystem : public System{
         void onRemoveGUIGroup(Entity* e);
         void onMouseButtonPressed(Entity* e);
         void onDisconnectFromServer(Entity* e);
-
+        
         void createWindowSinglePlayer(Entity* e);
         Entity* createWindowMultiplayer(Entity* e);
         void createWindowOptions(Entity* e);

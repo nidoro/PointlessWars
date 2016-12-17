@@ -389,13 +389,13 @@ void CustomMatchSystem::onStartCustomMatch(Entity* e){
 }
 
 void CustomMatchSystem::saveConfiguration(string name){
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = Assets::rscRoot + "match-config.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Error!\n");
     }
-    XMLNode* node = doc.FirstChildElement(name.c_str());
-    XMLElement* element;
+    tinyxml2::XMLNode* node = doc.FirstChildElement(name.c_str());
+    tinyxml2::XMLElement* element;
     if (node == nullptr){
         element = doc.NewElement(name.c_str());
         doc.InsertEndChild(element);

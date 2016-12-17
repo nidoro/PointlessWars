@@ -16,8 +16,8 @@
 #include "Component.h"
 #include "tinyxml2.h"
 #include "json.hpp"
+#include "OSAppDataDir.h"
 
-using namespace tinyxml2;
 namespace fs = boost::filesystem;
 
 const int wWorld = 1280;
@@ -296,7 +296,8 @@ class Assets{
 
         static map<string, char*> musicBuffers;
         static map<string, char*> fontBuffers;
-
+          
+        static std::string appDataDir;
 };
 
 char* mallocFile(string filename, int& length);

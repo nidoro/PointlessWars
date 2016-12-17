@@ -1,8 +1,0 @@
-Determining if the C compiler works failed with the following output:
-Change Dir: C:/Users/Davi Doro/PW Local/PointlessWars/bin/windows-debug/build/CMakeFiles/CMakeTmp
-
-Run Build Command:"nmake" "/NOLOGO" "cmTC_e34f0\fast"
-
-Generator: execution of make failed. Make command was: "nmake" "/NOLOGO" "cmTC_e34f0\fast"
-
-

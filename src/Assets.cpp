@@ -21,7 +21,7 @@ vector< vector<sf::Color> > Assets::scale;
 string Assets::primaryFont = "8bitOperatorPlusSC-Bold.ttf";
 string Assets::secondaryFont = "8bitOperatorPlusSC-Regular.ttf";
 string Assets::rscRoot = "../../rsc/";
-
+std::string Assets::appDataDir = helper::getAppDataDir();
 
 Assets::Assets(){
     //ctor
@@ -114,24 +114,24 @@ void Assets::createNinePatches(){
 }
 
 void Assets::readChars(){
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = rscRoot + "chars/chars.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Could not open chars.xml!\n");
     }
-    XMLElement* element = doc.FirstChildElement();
+    tinyxml2::XMLElement* element = doc.FirstChildElement();
 
     for (element; element != nullptr; element = element->NextSiblingElement()){
         CChar cchar;
         cchar.name = element->Value();
 
-        XMLElement* elAnimations = element->FirstChildElement("Animations");
+        tinyxml2::XMLElement* elAnimations = element->FirstChildElement("Animations");
         cchar.aIdle = elAnimations->FirstChildElement("Idle")->Attribute("File");
         cchar.aWalk = elAnimations->FirstChildElement("Walk")->Attribute("File");
 
         CChar::Map.insert(make_pair(cchar.name, cchar));
 
-        XMLElement* elAnim;
+        tinyxml2::XMLElement* elAnim;
         sf::Texture* texture;
         Animation animation;
 
@@ -376,7 +376,7 @@ void Assets::createCaptains(){
     //HERO-06	Caeser
     captains[6].actions.push_back(232);
     captains[6].actions.push_back(221);
-    //HERO-07	Tárrega
+    //HERO-07	Tï¿½rrega
     captains[7].actions.push_back(213);
     captains[7].actions.push_back(235);
     //HERO-08	Catherine
@@ -579,7 +579,7 @@ void Assets::createColors(){
     srand(time(nullptr));
 }
 void Assets::readStrings(string language){
-    std::string filename = rscRoot + "strings-" + language + ".json";
+    std::string filename = appDataDir + "/strings-" + language + ".json";
     std::ifstream file(filename.c_str());
     if (!file.is_open()){
         printf("strings-%s.dat not found!\n", language.c_str());
@@ -588,7 +588,7 @@ void Assets::readStrings(string language){
     std::istream& fileStream = file;
     nlohmann::json j;
     fileStream >> j;
-
+    stringMap.clear();
     for (nlohmann::json::iterator entry = j.begin(); entry != j.end(); entry++){
         std::string value = entry.value();
         for(int c = 0; c < value.size(); c++){

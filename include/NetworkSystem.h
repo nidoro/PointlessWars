@@ -1,8 +1,9 @@
 #ifndef NETWORKSYSTEM_H
 #define NETWORKSYSTEM_H
 
-#include "System.h"
 #include <SFML/Network.hpp>
+#include "System.h"
+#include "Assets.h"
 #include "imgui.h"
 
 class NetworkSystem : public System{

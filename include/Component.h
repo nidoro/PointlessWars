@@ -2170,7 +2170,7 @@ struct CAverageUnit : public Component{
 
 struct CScreen : public Component{
     static Type getType(){return SCREEN;}
-    enum ID{MAIN_MENU, MAIN_MENU_NO_ANIMATION, SPLASH_1, SPLASH_2, SPLASH_3, MATCH, CUSTOM_MATCH, FORMATION_EDITOR};
+    enum ID{MAIN_MENU, MAIN_MENU_NO_ANIMATION, SPLASH_1, SPLASH_2, SPLASH_3, MATCH, CUSTOM_MATCH, FORMATION_EDITOR, LANGUAGE_MENU};
     enum Transition{FADE_BLACK};
 
     CScreen(ID id, Transition t){

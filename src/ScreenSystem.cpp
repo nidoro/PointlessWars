@@ -9,6 +9,7 @@ ScreenSystem::ScreenSystem(){
     addSubscription(KEY_PRESSED);
     addSubscription(UPDATE_RESOLUTION_WITH_DROP_LIST);
     addSubscription(UPDATE_FULLSCREEN_WITH_TOGGLE_BUTTON);
+    addSubscription(CHOOSE_LANGUAGE);
     //addSubscription(OPEN_MENU);
     //addSubscription(RESUME_GAME);
 }
@@ -28,6 +29,7 @@ void ScreenSystem::onCreateScreen(Entity* e){
         case CScreen::SPLASH_1: eManager->clearSystem(); createSplash1(e); notify(NEW_SCREEN); break;
         case CScreen::SPLASH_2: eManager->clearSystem(); createSplash2(e); notify(NEW_SCREEN); break;
         case CScreen::MATCH: eManager->clearSystem(); createMatch(e); notify(NEW_SCREEN); break;
+        case CScreen::LANGUAGE_MENU: eManager->clearSystem(); createLanguageMenu(e); notify(NEW_SCREEN); break;
         default: break;
     }
 }
@@ -129,7 +131,9 @@ void ScreenSystem::onGameStarted(Entity* e){
 */
     Entity* eScreen = eManager->createEntity();
     string quickStart = config.getQuickStart();
-    if (!quickStart.empty()){
+    if (config.getLanguage().empty()){
+        eScreen->add(new CScreen(CScreen::LANGUAGE_MENU, CScreen::FADE_BLACK));
+    }else if (!quickStart.empty()){
         notify(SET_MATCH_CONFIG, quickStart);
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
     }else if (!config.getSkipIntro()){
@@ -165,7 +169,7 @@ void ScreenSystem::onKeyPressed(Entity* e){
                       "Pointless Wars",
                       config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
 
-        config.saveConfigFile("config.xml");
+        config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
     }
 }
 
@@ -175,7 +179,7 @@ void ScreenSystem::onUpdateFullscreenWithToggleButton(Entity* e){
                    "Pointless Wars",
                     config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
 
-    config.saveConfigFile("config.xml");
+    config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
 void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
     stringstream ss(e->get<CDropList>()->value);
@@ -187,5 +191,78 @@ void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
     window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
                    "Pointless Wars",
                     config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
-    config.saveConfigFile("config.xml");
+    config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
+
+void ScreenSystem::createLanguageMenu(Entity* e){
+    std::list<std::string> supportedLanguages = config.getSupportedLanguages();
+    std::map<std::string, std::string> flags;
+    for (auto& i : supportedLanguages){
+        if (i == "en"){
+            flags[i] = "us-flag";
+        }else if (i == "pt"){
+            flags[i] = "br-flag";
+        }else if (i == "es"){
+            flags[i] = "es-flag";
+        }
+    }
+    
+    double spacing = 50;
+    double x = cxWindow - (flags.size()-1)*spacing/2.f;
+    double y = cyWindow;
+    for (auto& i : flags){
+        Entity* eObj = createFlagButton(i.second, i.first, x, y);
+    }
+}
+
+Entity* ScreenSystem::createFlagButton(std::string flag, std::string lan, double x, double y){
+    Entity* e = eManager->createEntity();
+    double w = Assets::getTexture(flag + "-default.png")->getSize().x;
+    double h = Assets::getTexture(flag + "-default.png")->getSize().y;
+    e->add(new CPosition(x, y));
+    e->add(new CTexture());
+    e->add(new CDimensions(w, h));
+    e->add(new CButtonHitbox(w, h));
+    e->add(new CButtonTextures(flag+"-default.png", flag+"-highlit.png", flag+"-highlit.png"));
+    e->add(new CButtonState());
+    e->add(new CButtonTrigger(CHOOSE_LANGUAGE));
+    e->add(new CDraw(CDraw::GUI_01));
+    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CStringMessage(lan));
+    e->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
+    e->get<CButtonTrigger>()->msgs.push_back(START_SCREEN_TRANSITION);
+    
+    return e;
+}
+
+void ScreenSystem::onChooseLanguage(Entity* e){
+    config.setLanguage(e->get<CStringMessage>()->value);
+    config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
+    Assets::readStrings(e->get<CStringMessage>()->value);
+}
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

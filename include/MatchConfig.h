@@ -4,9 +4,9 @@
 #include "Standard.h"
 #include "tinyxml2.h"
 #include "Component.h"
-#include "Assets.h"
 #include <sstream>
 #include <SFML/Network.hpp>
+#include "OSAppDataDir.h"
 
 class MatchConfig{
     public:

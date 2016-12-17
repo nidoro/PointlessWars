@@ -437,12 +437,12 @@ void MainMenuSystem::onChangeMenuPage(Entity* e){
 }
 
 void MainMenuSystem::updatePlayers(){
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Could not open profiles.xml!\n");
     }
-    XMLElement* element = doc.FirstChildElement();
+    tinyxml2::XMLElement* element = doc.FirstChildElement();
 
     CProfile profile;
     for (element; element != nullptr; element = element->NextSiblingElement()){
@@ -518,12 +518,12 @@ void MainMenuSystem::createPlayerSelect(){
 void MainMenuSystem::loadProfiles(){
     profiles.clear();
 
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Could not open profiles.xml!\n");
     }
-    XMLElement* element = doc.FirstChildElement("Profile");
+    tinyxml2::XMLElement* element = doc.FirstChildElement("Profile");
 
     for (element; element != nullptr; element = element->NextSiblingElement("Profile")){
         CProfile profile;
@@ -659,19 +659,19 @@ void MainMenuSystem::saveProfile(Entity* e){
     if (e->has(Component::PROFILE)) prvName = e->get<CProfile>()->name;
     string name = eName->get<CInputTextBox>()->content;
 
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Error!\n");
     }
-    XMLNode* node = doc.FirstChildElement("Profile");
+    tinyxml2::XMLNode* node = doc.FirstChildElement("Profile");
     for(node; node != nullptr; node = node->NextSibling()){
-        XMLElement* elm = node->ToElement();
+        tinyxml2::XMLElement* elm = node->ToElement();
         if (string(elm->FirstChildElement("Name")->GetText()) == prvName) break;
     }
-    XMLElement* element;
-    XMLElement* elChar;
-    XMLElement* elName;
+    tinyxml2::XMLElement* element;
+    tinyxml2::XMLElement* elChar;
+    tinyxml2::XMLElement* elName;
     if (node == nullptr){
         element = doc.NewElement(name.c_str());
         elChar = doc.NewElement("Char");
@@ -724,10 +724,12 @@ void MainMenuSystem::onCreateProfileMenu(Entity* e){
     eObj->add(new CParentPanel(e));
     e->get<CPanel>()->objects.push_back(eObj);
     e->attachEmployee(eObj);
-    y += spacing;
+
+    y += spacing;
     eObj = createButton(Assets::getString("LABEL-DELETE-PROFILE"), w, h, x, y, DELETE_PROFILE);
     eObj->add(new CProfile(*e->get<CProfile>()));
-    eObj->add(new CParentPanel(e));    e->get<CPanel>()->objects.push_back(eObj);
+    eObj->add(new CParentPanel(e));
+    e->get<CPanel>()->objects.push_back(eObj);
     e->attachEmployee(eObj);
 }
 void MainMenuSystem::onEditProfile(Entity* e){
@@ -748,19 +750,19 @@ void MainMenuSystem::onSelectProfile(Entity* e){
 void MainMenuSystem::deleteProfile(Entity* e){
     string name = e->get<CProfile>()->name;
 
-    XMLDocument doc;
+    tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Error!\n");
     }
-    XMLNode* node = doc.FirstChildElement("Profile");
+    tinyxml2::XMLNode* node = doc.FirstChildElement("Profile");
     for(node; node != nullptr; node = node->NextSibling()){
-        XMLElement* elm = node->ToElement();
+        tinyxml2::XMLElement* elm = node->ToElement();
         if (string(elm->FirstChildElement("Name")->GetText()) == name) break;
     }
-    XMLElement* element;
-    XMLElement* elChar;
-    XMLElement* elName;
+    tinyxml2::XMLElement* element;
+    tinyxml2::XMLElement* elChar;
+    tinyxml2::XMLElement* elName;
     if (node == nullptr){
         element = doc.NewElement(name.c_str());
         elChar = doc.NewElement("Char");

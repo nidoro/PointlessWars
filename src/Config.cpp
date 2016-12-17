@@ -75,6 +75,10 @@ bool Config::loadConfigFile(string file){
                 setResolution(el->IntAttribute("width"), el->IntAttribute("height"));
             }else if (element == "Fullscreen"){
                 el->QueryBoolText(&fullscreen);
+            }else if (element == "Language"){
+                if (el->GetText()){
+                    language = el->GetText();
+                }
             }else if (element == "Volume"){
                 setMusMaxVolume(el->DoubleAttribute("music"));
                 setSfxMaxVolume(el->DoubleAttribute("sfx"));
@@ -101,6 +105,7 @@ bool Config::saveConfigFile(string name){
     sprintf(str, "<!-- Config File -->\n"); file << str;
     sprintf(str, "<Resolution width=\"%u\" height=\"%u\"/>\n", resolution.x, resolution.y); file << str;
     sprintf(str, "<Fullscreen>%s</Fullscreen>\n", fullscreen ? "true" : "false"); file << str;
+    sprintf(str, "<Language>%s</Language>\n", language.c_str()); file << str;
     sprintf(str, "<Volume music=\"%.4f\" sfx=\"%.4f\"/>\n", musMaxVolume, sfxMaxVolume); file << str;
     sprintf(str, "<DeadBodies>%s</DeadBodies>\n", deadBodies ? "true" : "false"); file << str;
 
@@ -132,6 +137,10 @@ void Config::validateValues(){
             resolution.y = sf::VideoMode::getDesktopMode().height;
         }
     }
+    
+    if (!language.empty() && !contains(supportedLanguages, language)){
+        language = "en";
+    }
 }
 
 void Config::setWindowIcon(sf::Texture* texture){
@@ -142,9 +151,26 @@ sf::Image& Config::getWindowIcon(){
     return windowIcon;
 }
 
+void Config::setLanguage(string lan){
+    language = lan;
+}
 
+std::string Config::getLanguage(){
+    return language;
+}
 
-
+std::list<std::string> Config::getSupportedLanguages(){
+    if (supportedLanguages.empty()){
+        std::list<std::string> candidates = {"en", "pt", "fr", "de", "es"};
+        for (auto& i : candidates){
+            if (helper::fileExists(helper::getAppDataDir() + "/strings-" + i + ".json")){
+                supportedLanguages.push_back(i);
+            }
+        }
+    }
+    
+    return supportedLanguages;
+}
 
 
 

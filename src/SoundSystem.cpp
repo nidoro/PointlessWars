@@ -20,7 +20,7 @@ SoundSystem::SoundSystem(){
 }
 
 SoundSystem::~SoundSystem(){
-    //dtor
+    //
 }
 
 void SoundSystem::update(){

@@ -40,7 +40,7 @@ void MatchConfig::loadFromFile(string name){
     MatchConfig();
 
     tinyxml2::XMLDocument doc;
-    string path = Assets::rscRoot + "match-config.xml";
+    string path = helper::getAppDataDir() + "/match-config.xml";
     if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
         printf("Could not open match-config.xml!\n");
         return;

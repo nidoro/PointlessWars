@@ -9,6 +9,8 @@ Game::~Game(){
 }
 
 void Game::start(){
+    helper::initializeAppDataDirectory();
+    
     srand(time(nullptr));
     sf::ContextSettings ctx;
     ctx.antialiasingLevel = 0;
@@ -16,8 +18,7 @@ void Game::start(){
     Assets::load();
     //Assets::packResources("resource-pack");
     //Assets::unpackResources("resource-pack");
-
-    System::config.loadConfigFile("config.xml");
+    System::config.loadConfigFile(helper::getAppDataDir() + "/config.xml");
     System::config.setWindowIcon(Assets::getTexture("icon-v3.png"));
 
     window.create(sf::VideoMode(System::config.getResolution().x, System::config.getResolution().y),
@@ -118,7 +119,7 @@ void Game::start(){
                 processInput = true;
             }
             if (window.hasFocus()) processInput = true;
-            else                    processInput = false;
+            else                   processInput = false;
             if (processInput){
                 if (ev.type == sf::Event::MouseButtonPressed){
                     eInput->get<CMouseInput>()->buttonPressed = ev.mouseButton.button;
@@ -139,8 +140,6 @@ void Game::start(){
             }
 
         }
-
-		//ImGui::SFML::Update();
 
         int nSys = 0;
         for (auto sys : systems){
@@ -174,9 +173,6 @@ void Game::start(){
             eManager.updateList();
             eManager.clearEvents();
         }
-
-        //ImGui::Render();
-        //window.display();
     }
 
     System::shutdownAll();

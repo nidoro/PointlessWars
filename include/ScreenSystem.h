@@ -23,13 +23,15 @@ class ScreenSystem : public System{
         void onKeyPressed(Entity* e);
         void onUpdateFullscreenWithToggleButton(Entity* e);
         void onUpdateResolutionWithDropList(Entity* e);
+        void onChooseLanguage(Entity* e);
 
         void createMainMenu(Entity* e);
         void createSplash1(Entity* e);
         void createSplash2(Entity* e);
         void createMatch(Entity* e);
         void createCustomMatch(Entity* e);
-
+        void createLanguageMenu(Entity* e);
+        Entity* createFlagButton(std::string flag, std::string lan, double x, double y);
 
 
 };
