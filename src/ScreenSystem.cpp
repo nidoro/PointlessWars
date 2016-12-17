@@ -50,6 +50,10 @@ void ScreenSystem::createSplash1(Entity* e){
     eObj = eManager->createEntity();
     eObj->add(new CScreen(CScreen::SPLASH_2, CScreen::FADE_BLACK));
     eObj->add(new CTimer(1.5, START_SCREEN_TRANSITION));
+
+    eObj = eManager->createEntity();
+    eObj->add(new CMusic("main-theme.ogg"));
+    notify(PLAY_MUSIC, eObj);
 }
 
 void ScreenSystem::createSplash2(Entity* e){
@@ -112,7 +116,7 @@ void ScreenSystem::onStartScreenTransition(Entity* e){
     eFold->get<CActor>()->timeline.push_back(new ADestroy(1.0));
     eFold->add(new CTimer(1.0, CREATE_SCREEN));
     notify(LOCK_ALL_BUTTONS);
-    eManager->removeEntity(e);
+    //eManager->removeEntity(e);
 }
 
 void ScreenSystem::onBtNewGame(Entity* e){
@@ -207,11 +211,12 @@ void ScreenSystem::createLanguageMenu(Entity* e){
         }
     }
     
-    double spacing = 50;
+    double spacing = 70;
     double x = cxWindow - (flags.size()-1)*spacing/2.f;
     double y = cyWindow;
     for (auto& i : flags){
         Entity* eObj = createFlagButton(i.second, i.first, x, y);
+        x += spacing;
     }
 }
 
