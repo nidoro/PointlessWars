@@ -29,7 +29,7 @@ void Game::start(){
 
     window.setMouseCursorVisible(true);
     //window.setVerticalSyncEnabled(true);
-    //window.setFramerateLimit(240);
+    //window.setFramerateLimit(60);
 
 	//ImGui::SFML::Init(window);
     DBG_SERVICES.initialize(&window);
