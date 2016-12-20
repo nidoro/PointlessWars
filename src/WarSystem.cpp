@@ -67,7 +67,14 @@ void WarSystem::onInitializeWar(Entity* e){
     eBtReturn->add(new CButtonState());
     eBtReturn->add(new CButtonHitbox());
     eBtReturn->add(new CPosition());
-    eBtReturn->add(new CButtonTrigger(OPEN_MENU, CButtonTrigger::ON_RELEASE, sf::Keyboard::Escape));
+    eBtReturn->add(new CButtonTrigger(CREATE_GUI_GROUP, CButtonTrigger::ON_RELEASE, sf::Keyboard::Escape));
+
+    Entity* eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup("window", "in-game-menu"));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+
+    eBtReturn->addObservedEntity("create-gui-group", eGUI);
 
     Entity* P1 = eManager->createEntity();
     Entity* P2 = eManager->createEntity();
@@ -134,6 +141,7 @@ void WarSystem::onInitializeWar(Entity* e){
     notify(SYSTEM_ACTION);
 
     hasMatchEnded = false;
+    inBattle = false;
 
     /*
     Entity* eDisplayer = eManager->createEntity();
@@ -603,6 +611,8 @@ void WarSystem::processPackets(){
 
 void WarSystem::onEndMatch(Entity* e){
     war = War();
+    hasMatchEnded = true;
+    inBattle = false;
 }
 
 void WarSystem::onSetMatchConfig(Entity* e){

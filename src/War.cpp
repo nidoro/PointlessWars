@@ -27,6 +27,7 @@ War::War(){
     playing = false;
 
     pendingActions.resize(3);
+    sysAction = NONE;
 }
 
 War::~War(){

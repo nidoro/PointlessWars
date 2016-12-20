@@ -19,7 +19,7 @@ ButtonSystem::ButtonSystem(){
     addSubscription(WINDOW_GAINED_FOCUS);
     addSubscription(DO_TOGGLE_ACTION);
 
-
+    uiLayers.push(CUILayer::NONE);
     topUILayer = CUILayer::NONE;
     windowFocused = true;
 
@@ -49,9 +49,20 @@ void ButtonSystem::update(){
 }
 
 void ButtonSystem::updateButtonState(Entity* e){
+    /*
     if (topUILayer != CUILayer::NONE){
         if (!e->has(Component::UI_LAYER)
         || (e->has(Component::UI_LAYER) && e->get<CUILayer>()->layer != topUILayer)){
+            setState(e, CButtonState::NON_ACTIVE);
+            notify(BUTTON_LOST_FOCUS, e);
+            notify(e->get<CButtonState>()->lostFocusMessage, e);
+            return;
+        }
+    }
+    */
+    if (uiLayers.top() != CUILayer::NONE){
+        if (!e->has(Component::UI_LAYER)
+        || (e->has(Component::UI_LAYER) && e->get<CUILayer>()->layer != uiLayers.top())){
             setState(e, CButtonState::NON_ACTIVE);
             notify(BUTTON_LOST_FOCUS, e);
             notify(e->get<CButtonState>()->lostFocusMessage, e);
@@ -219,8 +230,14 @@ void ButtonSystem::onKeyReleased(Entity* e){
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* eBt = *i;
         if (eBt->get<CButtonState>()->state == CButtonState::LOCKED) continue;
+        /*
         if (topUILayer != CUILayer::NONE && (eBt->has(Component::UI_LAYER) &&  eBt->get<CUILayer>()->layer != topUILayer)
         || (topUILayer != CUILayer::NONE && !eBt->has(Component::UI_LAYER))){
+            continue;
+        }
+        */
+        if (uiLayers.top() != CUILayer::NONE && (eBt->has(Component::UI_LAYER) &&  eBt->get<CUILayer>()->layer != uiLayers.top())
+        || (uiLayers.top() != CUILayer::NONE && !eBt->has(Component::UI_LAYER))){
             continue;
         }
         if (e->get<CKeyboardInput>()->code != sf::Keyboard::Unknown
@@ -268,6 +285,8 @@ void ButtonSystem::onUnlockAllButtons(Entity* e){
 
 void ButtonSystem::onNewScreen(Entity* e){
     buttonsLocked.clear();
+    uiLayers = std::stack<CUILayer::Layer>();
+    uiLayers.push(CUILayer::NONE);
 }
 
 void ButtonSystem::onButtonGainedFocus(Entity* e){
@@ -290,8 +309,12 @@ void ButtonSystem::onToggleCheckBox(Entity* e){
 void ButtonSystem::onBringUILayerForward(Entity* e){
     if (e && e->has(Component::UI_LAYER)){
         topUILayer = e->get<CUILayer>()->layer;
+        uiLayers.push(e->get<CUILayer>()->layer);
     }else{
         topUILayer = CUILayer::NONE;
+        if (uiLayers.size() > 1){
+            uiLayers.pop();
+        }
     }
 }
 

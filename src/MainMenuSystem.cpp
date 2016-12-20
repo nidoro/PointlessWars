@@ -253,7 +253,6 @@ void MainMenuSystem::create(){
 
 void MainMenuSystem::createMenu(bool animated){
     Entity* eObj;
-
     ///BACKGROUND 1
     /*
     eObj = eManager->createEntity();
@@ -360,7 +359,7 @@ void MainMenuSystem::createMenu(bool animated){
     eObj->add(new CButtonTrigger(CREATE_GUI_GROUP));
 
     eGUI = eManager->createEntity();
-    eGUI->add(new CGUIGroup("window", "options"));
+    eGUI->add(new CGUIGroup("window", "game-options"));
     eGUI->add(new CUILayer(CUILayer::L1));
     eGUI->add(new CDraw(CDraw::GUI_00));
 

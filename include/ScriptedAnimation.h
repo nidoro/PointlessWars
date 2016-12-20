@@ -20,6 +20,7 @@ class ScriptedAnimation : public System{
         void onThrowCoin(Entity* e);
         void onPlayAction(Entity* e);
         void onAddActor(Entity* e);
+        void onNewScreen(Entity* e);
 
         void triggerNode(Entity* e, AnimationNode* node);
         void popFrontAnimationNode(Entity* e);

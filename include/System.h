@@ -1,12 +1,12 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
+#include <stack>
 #include "Entity.h"
 #include "EntitiesManager.h"
 #include "Standard.h"
 #include "War.h"
 #include "Config.h"
 #include "OSAppDataDir.h"
-
 class System{
     public:
         System();
@@ -48,6 +48,7 @@ class System{
         static War war;
         static Config config;
         static CUILayer::Layer topUILayer;
+        static std::stack<CUILayer::Layer> uiLayers;
         static std::string getAppDataDir();
         
     protected:

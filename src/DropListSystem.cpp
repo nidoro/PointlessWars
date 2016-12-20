@@ -88,7 +88,8 @@ void DropListSystem::onCollapseDropList(Entity* e){
     e->get<CButtonTrigger>()->setUniqueTrigger(EXPAND_DROP_LIST);
     eDropOn = nullptr;
     active = false;
-    notify(BRING_UI_LAYER_FORWARD, e);
+    //notify(BRING_UI_LAYER_FORWARD, e);
+    notify(BRING_UI_LAYER_FORWARD);
 }
 
 void DropListSystem::onUpdateDropList(Entity* e){

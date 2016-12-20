@@ -4,6 +4,7 @@ War System::war;
 Config System::config;
 CProfile System::profile;
 CUILayer::Layer System::topUILayer = CUILayer::NONE;
+std::stack<CUILayer::Layer> System::uiLayers;
 std::string System::appDataDir = helper::getAppDataDir();
 
 System::System(){

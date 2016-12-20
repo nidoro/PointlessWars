@@ -10,7 +10,8 @@ ScriptedAnimation::ScriptedAnimation(){
     //addSubscription(THROW_COIN);
     addSubscription(PLAY_ACTION);
     addSubscription(ADD_ACTOR);
-
+    addSubscription(NEW_SCREEN);
+    
     addRequirement(Component::ACTOR);
 
     playingScene = false;
@@ -6644,3 +6645,8 @@ sf::Vector2f ScriptedAnimation::getArmyMiddlePoint(Entity* e){
     return point;
 }
 
+void ScriptedAnimation::onNewScreen(Entity* e){
+    clearScene();
+    playingScene = false;
+    notify(SCENE_ENDED);
+}
