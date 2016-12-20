@@ -101,7 +101,6 @@ blacksmith      blacksmith.png                  blacksmith.png                  
 training-field  training-field.png              training-field.png                      empty.wav
 
 %snow
-chicken		chicken-idle.png		chicken-singing.png			cocorico.wav
 dog             obj-dog.png                     obj-dog-woof.png                        sfx-dog.wav
 snowflag-blue   obj-snowflag-blue.png           obj-snowflag-blue.png                   empty.wav
 snowflag-red    obj-snowflag-red.png            obj-snowflag-red.png                    empty.wav
@@ -109,10 +108,3 @@ light           obj-light-off.png               obj-light-on.png                
 snowman         obj-snowman-idle.png            obj-snowman-nose.png                    empty.wav
 s-tree          obj-tree.png                    obj-snow-fall.png                       sfx-snow.wav
 
-%snow
-dog             obj-dog.png                     obj-dog-woof.png                        sfx-dog.wav
-flag-blue       obj-flag-blue-s.png             obj-flag-blue-s.png                     empty.wav
-flag-red        obj-flag-red-s.png              obj-flag-red-s.png                      empty.wav
-light           obj-light-off.png               obj-light-on.png                        sfx-lighter.wav
-snowman         obj-snowman-idle.png            obj-snowman-nose.png                    empty.wav
-tree            obj-tree.png                    obj-snow-fall.png                       sfx-snow.wav

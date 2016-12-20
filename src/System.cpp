@@ -8,6 +8,7 @@ std::stack<CUILayer::Layer> System::uiLayers;
 std::string System::appDataDir = helper::getAppDataDir();
 
 System::System(){
+    delay = 0.f;
     //ctor
 }
 
@@ -213,6 +214,7 @@ void System::onNotify(Message m, Entity* e){
 }
 
 bool System::checkAndUpdate(){
+    /*
     if (targetUPS < 0){
         delay = updateClock.restart().asSeconds();
         update();
@@ -220,6 +222,21 @@ bool System::checkAndUpdate(){
     }else if (updateClock.getElapsedTime().asSeconds() >= 1.f/targetUPS){
         delay = updateClock.restart().asSeconds();
         update();
+        return true;
+    }
+    return false;
+     */
+    delay += updateClock.restart().asSeconds();
+    if (targetUPS < 0){
+        delay = updateClock.restart().asSeconds();
+        update();
+        return true;
+    }else if (delay >= 1.f/targetUPS){
+        double aux = delay;
+        delay = 1.f/targetUPS;
+        update();
+        delay = aux;
+        delay -= 1.f/targetUPS;
         return true;
     }
     return false;

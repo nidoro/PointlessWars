@@ -147,8 +147,8 @@ void RenderSystem::update(){
     }
     ImGui::SFML::Update(*window, sf::Time(sf::seconds(delay)));
     if (isDrawingDebug) DBG_SERVICES.showUI();
-    ImGui::Render();
-    window->resetGLStates();
+    //ImGui::Render();
+    //window->resetGLStates();
     window->display();
 }
 

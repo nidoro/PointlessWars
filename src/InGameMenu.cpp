@@ -309,7 +309,7 @@ void InGameMenu::onHasBeenToggled(Entity* e){
             window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
                           "Pointless Wars",
                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
-
+            window->setVerticalSyncEnabled(true);
             config.saveConfigFile("config.xml");
         }
     }
@@ -327,6 +327,7 @@ void InGameMenu::onHasChangedValue(Entity* e){
             window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
                           "Pointless Wars",
                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+            window->setVerticalSyncEnabled(true);
 
             config.saveConfigFile("config.xml");
         }

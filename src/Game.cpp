@@ -28,7 +28,7 @@ void Game::start(){
     window.setIcon(System::config.getWindowIcon().getSize().x, System::config.getWindowIcon().getSize().y, System::config.getWindowIcon().getPixelsPtr());
 
     window.setMouseCursorVisible(true);
-    //window.setVerticalSyncEnabled(true);
+    window.setVerticalSyncEnabled(true);
     //window.setFramerateLimit(60);
 
 	//ImGui::SFML::Init(window);
