@@ -800,6 +800,8 @@ struct CPlayer : public Component{
 
     list<CCaptain::ID> heroDeck;
     list<CUnit::ID> unitDeck;
+    std::list<CCaptain::ID> heroPool;
+    
     PlayerColor color;
     string name;
     int maxPicks;
@@ -2395,8 +2397,13 @@ struct CAInt : public Component{
 
     CAInt(){
         actionSelected = false;
+        waitingOnBrain = false;
+        brainDelay = 0.f;
     }
-
+    
+    bool waitingOnBrain;
+    double brainDelay;
+    sf::Clock brainClock;
     bool actionSelected;
 };
 struct CFormation : public Component{

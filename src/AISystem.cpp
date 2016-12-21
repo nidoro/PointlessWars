@@ -13,9 +13,16 @@ AISystem::~AISystem(){
 void AISystem::update(){
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* e = *i;
+        if (e->get<CAInt>()->waitingOnBrain){
+            if (e->get<CAInt>()->brainClock.getElapsedTime().asSeconds() >= e->get<CAInt>()->brainDelay){
+                e->get<CAInt>()->actionSelected = true;
+                e->get<CAInt>()->waitingOnBrain = false;
+            }
+        }
+        
         if (e->get<CAInt>()->actionSelected){
             notify(ACTION_SELECTED);
-            e->get<CAInt>()->actionSelected = false;
+            //e->get<CAInt>()->actionSelected = false;
         }
     }
 }
@@ -35,16 +42,25 @@ void AISystem::onSystemAction(Entity* e){
 
     if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE){
         //showUnitOptions(eActor);
+        //eActor->get<CAInt>()->brainDelay = randomDouble(1.0, 2.0);
+    }else if (war.getSystemAction() == War::ASK_HERO_PICK){
+        pickHeroFromPool(eActor);    
+        eActor->get<CAInt>()->brainDelay = randomDouble(1.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION){
         selectHero(eActor);
+        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_FORMATION){
         selectFormation(eActor);
+        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION){
         selectHeroAction(eActor);
+        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_ARMY_ACTION){
         selectArmyAction(eActor);
+        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_BATTLE_CLOSURE){
         selectBattleClosure(eActor);
+        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
     }else if (war.getSystemAction() == War::PRESENT_ARMY){
         //presentArmy(eActor);
     }else if (war.getSystemAction() == War::ADVANCE_ARMY){
@@ -55,7 +71,14 @@ void AISystem::onSystemAction(Entity* e){
         //showHeroPool();
     }else if (war.getSystemAction() == War::ASK_HERO_PICK){
         //askHeroPick(eActor);
+    }else if (war.getSystemAction() == War::ASSIGN_RANDOM_ARMY){
+        eActor->get<CAInt>()->brainDelay = 0.f;
     }
+    
+    eActor->get<CAInt>()->actionSelected = false;
+    eActor->get<CAInt>()->brainClock.restart();
+    eActor->get<CAInt>()->waitingOnBrain = true;
+    
 }
 
 void AISystem::selectBattleClosure(Entity* e){
@@ -122,6 +145,12 @@ void AISystem::selectArmyAction(Entity* e){
     }
     if (actions.empty())  e->get<CArmy>()->nextAction = -1;
     war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
+    e->get<CAInt>()->actionSelected = true;
+}
+
+void AISystem::pickHeroFromPool(Entity* e){
+    war.getNextActionOutcome(e->get<CPlayer>()->id).hero = popRandom(e->get<CPlayer>()->heroPool);
+    war.getNextActionOutcome(e->get<CPlayer>()->id).action = war.getNextActionOutcome(e->get<CPlayer>()->id).hero + 600;
     e->get<CAInt>()->actionSelected = true;
 }
 

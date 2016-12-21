@@ -1988,6 +1988,7 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
     eCap->get<CActor>()->timeline.push_back(new ASpeak(tResolution, "Mercy, please!", 5));
     eCap->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, hFlip));
     eCap->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200));
+    eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
     double t = getTravelTime(eCap->get<CPosition>()->x, eCap->get<CPosition>()->y, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200);
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eCap->get<CCaptain>()->aIdle));
     eCap->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, opposite(hFlip)));

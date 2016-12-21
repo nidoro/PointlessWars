@@ -54,7 +54,8 @@ void CommandListener::update(){
         }else if (e->has(Component::ARMY_COMPOSITION) && !e->get<CArmyComposition>()->composed){
             /*
             if (checkArmySize(e)){
-                e->get<CTooltip>()->text = "OK!";                e->get<CButtonTrigger>()->message = CREATE_ARMY;
+                e->get<CTooltip>()->text = "OK!";
+                e->get<CButtonTrigger>()->message = CREATE_ARMY;
             }else{
                 Entity* eArmy = e->get<CCommandOption>()->eArmy;
                 int maxPicks = eArmy->get<CPlayer>()->maxPicks;
@@ -164,7 +165,7 @@ void CommandListener::askHeroPick(Entity* e){
     if (!eListener) return;
     EntityList eOptionList = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
     //printf("options size = %d", eOptionList.size());
-    if (!war.getRemotelyControled(e->get<CPlayer>()->id) && !war.getNextActionOutcome(e->get<CPlayer>()->id).ready){
+    if (!war.getRemotelyControled(e->get<CPlayer>()->id) && !e->has(Component::AI) && !war.getNextActionOutcome(e->get<CPlayer>()->id).ready){
         eListener->addObservedEntity("PlayerBeingListenedTo", e);
         for(auto& eOpt : eOptionList){
             eOpt->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
@@ -182,6 +183,8 @@ void CommandListener::onShowHeroPool(Entity* e){
     eListener = eManager->createEntity();
 
     list<CCaptain::ID> options = war.getNextActionOutcome().heroes;
+    war.getPlayer(1)->get<CPlayer>()->heroPool = options;
+    war.getPlayer(2)->get<CPlayer>()->heroPool = options;
     double spacing = 70;
     double x = cxWindow - (options.size()-1)*spacing/2;
     double y = cyWindow - spacing;
@@ -762,7 +765,6 @@ void CommandListener::onSelectAction(Entity* e){
         Entity* eButton = eListener->getObservedEntity("HeroOptions")->getObservedEntity(int2str((int) heroID));
         eListener->getObservedEntity("HeroOptions")->removeObservedEntity(eButton);
         animateButtonOutPuff(eButton);
-
     }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
         eArmy->get<CArmy>()->unitCount.clear();
         map<CUnit::ID, CUnit>& units = CUnit::Map;

@@ -40,8 +40,8 @@ void Assets::load(){
     readAnimations();
     readObjects();
     //readFonts();
-    readStrings("en");
-    readChars();
+    //readStrings("en");
+    //readChars();
     //readScenarios();
     //readMusics();
     //readSounds();
@@ -320,11 +320,9 @@ void Assets::createActions(){
         actions[i].btDefTexture = "button-closure-" + int2str(i-400, 2) + ".png";
         actions[i].btHovTexture = "button-closure-" + int2str(i-400, 2) + "-highlit.png";
         actions[i].btActTexture = "button-closure-" + int2str(i-400, 2) + "-highlit.png";
+        actions[i].name = getString("NAME-ACTION-" + int2str(i, 2));
+        actions[i].description = getString("DESCRIPTION-ACTION-" + int2str(i, 2));
     }
-    actions[400].name = "Grand Battle";
-    actions[401].name = "Duel";
-    actions[402].name = "Confine";
-    actions[403].name = "Mercy";
 
     ///OTHERS
     K = 500;
@@ -376,7 +374,7 @@ void Assets::createCaptains(){
     //HERO-06	Caeser
     captains[6].actions.push_back(232);
     captains[6].actions.push_back(221);
-    //HERO-07	T�rrega
+    //HERO-07	Tï¿½rrega
     captains[7].actions.push_back(213);
     captains[7].actions.push_back(235);
     //HERO-08	Catherine
@@ -597,6 +595,16 @@ void Assets::readStrings(string language){
             }
         }
         stringMap.insert(make_pair(entry.key(), value));
+    }
+    
+    if (language == "en"){
+        stringMap["MESSAGE-SPLASH-SCREEN-01"] = "This game makes use of free graphic assets available online";
+        stringMap["MESSAGE-SPLASH-SCREEN-02"] = "with little to no modification. See credits in game.";
+        stringMap["MESSAGE-SPLASH-SCREEN-03"] = "Thank you!";
+    }else if (language == "pt"){
+        stringMap["MESSAGE-SPLASH-SCREEN-01"] = "Este jogo utiliza recursos graficos disponibilizados online gratuitamente";
+        stringMap["MESSAGE-SPLASH-SCREEN-02"] = "com pouca ou nenhuma modificacao. Ver creditos no jogo.";
+        stringMap["MESSAGE-SPLASH-SCREEN-03"] = "Obrigadinha!";
     }
 }
 

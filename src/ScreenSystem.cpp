@@ -46,6 +46,7 @@ void ScreenSystem::createSplash1(Entity* e){
     eObj->add(new CPosition(cxWindow, cyWindow));
     eObj->add(new CTexture("sfml-logo-small.png"));
     eObj->add(new CDraw(CDraw::GUI1));
+    eObj->add(new CElipsoidalMovement(cxWindow, cyWindow, 0.f, 5.f, 180));
 
     eObj = eManager->createEntity();
     eObj->add(new CScreen(CScreen::SPLASH_2, CScreen::FADE_BLACK));
@@ -64,13 +65,13 @@ void ScreenSystem::createSplash2(Entity* e){
 
     eObj = eManager->createEntity();
     eObj->add(new CPosition(cxWindow, cyWindow - lineSpacing/2));
-    eObj->add(new CTextbox2("This game makes use of free graphic assets available online",
+    eObj->add(new CTextbox2(Assets::getString("MESSAGE-SPLASH-SCREEN-01"),
                             Assets::getFont(Assets::getPrimaryFont()), fontSize, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
     eObj->add(new CDraw(CDraw::GUI1));
 
     eObj = eManager->createEntity();
     eObj->add(new CPosition(cxWindow, cyWindow + lineSpacing/2));
-    eObj->add(new CTextbox2("with little to no modification. See credits in game.",
+    eObj->add(new CTextbox2(Assets::getString("MESSAGE-SPLASH-SCREEN-02"),
                             Assets::getFont(Assets::getPrimaryFont()), fontSize, sf::Color::White, 0, 0, CTextbox2::CENTRALIZED));
     eObj->add(new CDraw(CDraw::GUI1));
 
@@ -93,7 +94,7 @@ void ScreenSystem::createSplash2(Entity* e){
     eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, "hero-12-walk.png"));
     eObj->get<CActor>()->addNode(new AMove(0.0, xTarget, yStart, walkSpeed));
     eObj->get<CActor>()->addNode(new ASpriteAnimation(getTravelTime(xStart, yStart, xTarget, yStart, walkSpeed), "hero-12-idle.png"));
-    eObj->get<CActor>()->addNode(new ASpeak(0.0, "Thank you!", 5));
+    eObj->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("MESSAGE-SPLASH-SCREEN-03"), 5));
 }
 
 void ScreenSystem::createMatch(Entity* e){

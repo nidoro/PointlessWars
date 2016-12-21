@@ -54,4 +54,6 @@ class Config{
         std::list<std::string> supportedLanguages;
 };
 
+bool isVideoModeSupported(sf::VideoMode mode);
+
 #endif // CONFIG_H

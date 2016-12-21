@@ -15,10 +15,13 @@ void Game::start(){
     sf::ContextSettings ctx;
     ctx.antialiasingLevel = 0;
 
-    Assets::load();
     //Assets::packResources("resource-pack");
     //Assets::unpackResources("resource-pack");
     System::config.loadConfigFile(helper::getAppDataDir() + "/config.xml");
+    if (!System::config.getLanguage().empty()) Assets::readStrings(System::config.getLanguage());
+    else                                       Assets::readStrings("en");
+    
+    Assets::load();
     System::config.setWindowIcon(Assets::getTexture("icon-v3.png"));
 
     window.create(sf::VideoMode(System::config.getResolution().x, System::config.getResolution().y),

@@ -296,16 +296,19 @@ void TooltipSystem::createFormationTooltip(Entity* e){
     CAction act = CAction::Map[e->get<CAction>()->id];
 
     double xOff = 30;
+    double marginWidth = 10;
 
     string text = toUpper(act.name) + ": " + act.description;
-
+    
     eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
-    double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2;
-    double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2;
-    eTip->get<CTextbox2>()->xOff = -w/2;
-    eTip->get<CTextbox2>()->yOff = -h/2;
+    double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
+    double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
+    eTip->get<CTextbox2>()->xOff = -w/2 + marginWidth;
+    eTip->get<CTextbox2>()->yOff = -h/2 + marginWidth;
     eTip->add(new CPanel());
-    eTip->add(new CRectShape(w, h, sf::Color::White, 1, sf::Color::Black));
+    //eTip->add(new CRectShape(w, h, sf::Color::White, 1, sf::Color::Black));
+    eTip->add(new CTexture("9p-tooltip-bg-03.png"));
+    eTip->add(new CDimensions(w, h));
     eTip->add(new CPosition(e->get<CPosition>()->x + w/2 + xOff, e->get<CPosition>()->y));
     eTip->add(new CDraw(CDraw::GUI2));
     eTip->add(new CParentPanel(e));
@@ -318,55 +321,47 @@ void TooltipSystem::createBattleClosureTooltip(Entity* e){
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
-    double w = 200;
-    double h = 20;
     double xOff = 30;
+    double marginWidth = 10;
 
-    double chancePlayer;
-    double chanceEnemy;
-
-    char text[300];
-    sprintf(text, "%s", act.name.c_str());
-
-    sf::Text txt;
-    txt.setFont(Assets::getFont(Assets::getPrimaryFont()));
-    txt.setCharacterSize(14);
-    txt.setFillColor(sf::Color::Black);
-    txt.setString(text);
-
-    sf::RectangleShape rect;
-    rect.setSize(sf::Vector2f(w,h));
-    rect.setFillColor(sf::Color::White);
-    rect.setOutlineColor(sf::Color::Black);
-    rect.setOutlineThickness(1);
-
+    string text = toUpper(act.name) + ": " + act.description;
+    
+    eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
+    double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
+    double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
+    eTip->get<CTextbox2>()->xOff = -w/2 + marginWidth;
+    eTip->get<CTextbox2>()->yOff = -h/2 + marginWidth;
     eTip->add(new CPanel());
-    eTip->add(new CRectShape(rect));
+    //eTip->add(new CRectShape(w, h, sf::Color::White, 1, sf::Color::Black));
+    eTip->add(new CTexture("9p-tooltip-bg-03.png"));
+    eTip->add(new CDimensions(w, h));
     eTip->add(new CPosition(e->get<CPosition>()->x + w/2 + xOff, e->get<CPosition>()->y));
     eTip->add(new CDraw(CDraw::GUI2));
-    eTip->add(new CTextbox2(txt, -w/2, -h/2, CTextbox2::NORMAL));
     eTip->add(new CParentPanel(e));
 
     e->addObservedEntity("Tooltip", eTip);
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createEffectTooltip(Entity* e){
+void TooltipSystem::createEffectTooltip(Entity* e){    
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
     double yOff = 30;
+    double marginWidth = 10;
 
-    string text = toUpper(Assets::getString(act.strName)) + ": " + Assets::getString(act.strDescription);
-
-    eTip->add(new CPanel());
+    string text = toUpper(act.name) + ": " + act.description;
+    
     eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
-    double w = eTip->get<CTextbox2>()->content.getLocalBounds().width+2;
-    double h = eTip->get<CTextbox2>()->content.getLocalBounds().height+2;
-    eTip->get<CTextbox2>()->xOff = -w/2;
-    eTip->get<CTextbox2>()->yOff = -h/2;
-    eTip->add(new CRectShape(w, h, sf::Color::White, 1, sf::Color::Black));
-    eTip->add(new CPosition(e->get<CPosition>()->x, e->get<CPosition>()->y + h/2 + yOff));
+    double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
+    double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
+    eTip->get<CTextbox2>()->xOff = -w/2 + marginWidth;
+    eTip->get<CTextbox2>()->yOff = -h/2 + marginWidth;
+    eTip->add(new CPanel());
+    //eTip->add(new CRectShape(w, h, sf::Color::White, 1, sf::Color::Black));
+    eTip->add(new CTexture("9p-tooltip-bg-03.png"));
+    eTip->add(new CDimensions(w, h));
+    eTip->add(new CPosition(e->get<CPosition>()->x, e->get<CPosition>()->y + h/2.f + yOff));
     eTip->add(new CDraw(CDraw::GUI2));
     eTip->add(new CParentPanel(e));
 

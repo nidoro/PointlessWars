@@ -328,6 +328,7 @@ void ArmySystem::onSystemAction(Entity* e){
                     eCaptain->get<CCaptain>()->actions.push_back(idAct);
                 }
             }
+            
             eArmy->get<CArmy>()->captain = nullptr;
             eArmy->get<CArmy>()->ready = false;
         }
@@ -366,6 +367,10 @@ void ArmySystem::onSystemAction(Entity* e){
 
             eArmy->get<CArmy>()->hasCoin = id == war.getFirstMover() ? true : false;
             notify(SCORE_UPDATED, eArmy);
+        }
+    }else if (war.getSystemAction() == war.ANNOUNCE_VICTORY){
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+            (*i)->get<CArmy>()->armyEffects.clear();
         }
     }
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){

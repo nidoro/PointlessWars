@@ -31,7 +31,7 @@ class ArmySystem : public System{
         void clearArmy(Entity* e);
 
         EntityList getAliveUnits(Entity* e);
-
+        void removeFormationEffect(Entity* e);
 };
 
 #endif // ARMYSYSTEM_H

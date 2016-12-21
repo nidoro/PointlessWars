@@ -16,10 +16,20 @@ void ActionSystem::update(){
     if (!war.getPlaying()) return;
     for(int i = 0; i < 3; i++){
         if (!war.getNextActionOutcome(i).ready && war.getNextActionOutcome(i).action >= 0 && !war.getRemotelyControled(i)){
-            ///PREPROCESS ACTION
-            preprocessAction(i);
-            ///ACTION READY TO BE PLAYED
-            war.getNextActionOutcome(i).ready = true;
+            if (i > 0 && war.getPlayer(i)->has(Component::AI)){
+                if (war.getPlayer(i)->get<CAInt>()->actionSelected){
+                    ///PREPROCESS ACTION
+                    preprocessAction(i);
+                    ///ACTION READY TO BE PLAYED
+                    war.getNextActionOutcome(i).ready = true;
+                    war.getPlayer(i)->get<CAInt>()->actionSelected = false;
+                }
+            }else{
+                ///PREPROCESS ACTION
+                preprocessAction(i);
+                ///ACTION READY TO BE PLAYED
+                war.getNextActionOutcome(i).ready = true;
+            }
         }
 
         ///IF ACTION IS READY TO BE PLAYED AND PLAYER IS READY TO PLAY
@@ -184,14 +194,15 @@ void ActionSystem::executeAction(CPlayer::ID id){
         }
     }else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 600, 699)){
         ///HERO PICKS
-        //to do: remove hero from pool when clicked, not when executing action
-        //to do: prevent hero from selecting multiple heroes
+        CCaptain::ID heroID = war.getNextActionOutcome(id).hero;
         war.getPlayer(id)->get<CPlayer>()->heroDeck.push_back(war.getNextActionOutcome(id).hero);
-        if (war.getRemotelyControled(id)){
+        if (war.getRemotelyControled(id) || war.getPlayer(id)->has(Component::AI)){
             Entity* eAct = eManager->createEntity();
             eAct->add(new CAction(war.getNextActionOutcome(id).action));
             notify(SELECT_ACTION, eAct);
         }
+        war.getPlayer(1)->get<CPlayer>()->heroPool.remove(heroID);
+        war.getPlayer(2)->get<CPlayer>()->heroPool.remove(heroID);
         //notify(REMOVE_FROM_HERO_POOL, war.getPlayer(id));
     }
 }

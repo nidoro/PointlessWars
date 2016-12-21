@@ -1,7 +1,11 @@
 #include "Config.h"
 
 Config::Config(){
-    sf::VideoMode vMode = sf::VideoMode::getDesktopMode();
+    sf::VideoMode vMode;
+    vMode.bitsPerPixel = sf::VideoMode::getDesktopMode().bitsPerPixel;
+    vMode.width = 1280;
+    vMode.height = 720;
+    if (!vMode.isValid()) vMode = sf::VideoMode::getDesktopMode();
 
     musMaxVolume = 70;
     sfxMaxVolume = 70;
@@ -138,7 +142,7 @@ void Config::validateValues(){
         }
     }
     
-    if (!language.empty() && !contains(supportedLanguages, language)){
+    if (!language.empty() && !contains(getSupportedLanguages(), language)){
         language = "en";
     }
 }
@@ -172,5 +176,11 @@ std::list<std::string> Config::getSupportedLanguages(){
     return supportedLanguages;
 }
 
-
+bool isVideoModeSupported(sf::VideoMode mode){
+    std::vector<sf::VideoMode> supported = sf::VideoMode::getFullscreenModes();
+    for (int i = 0; i < supported.size(); i++){
+        if (supported[i] == mode) return true;
+    }
+    return false;
+}
 

@@ -127,7 +127,21 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
         }
         //NEW MEDAL
         eObj->get<CActor>()->timeline.push_back(new AMove(1.0, xMed - sign*w/2, yMed, 50));
+        
+        ///PUFF
+                string puffAnimation = "poof-06.png";
+                string sfxPoofIn = "sfx-poof-04.wav";
+                string sfxPoofOut = "sfx-poof-05.wav";
+                double puffDuration = Assets::getAnimation(puffAnimation).duration;
+                eObj = eManager->createEntity();
+                eObj->add(new CPosition(cxWindow, 150));
+                eObj->add(new CDraw(CDraw::GUI2));
+                eObj->add(new CDimensions(90, 90));
+                eObj->add(new CAnimation(false, puffAnimation));
+                eObj->add(new CActor());
 
+                eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
+                eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
     }else if (e->get<CArmyHUD>()->medals.size() > e->get<CArmy>()->score){
         for(int i = 0; i < e->get<CArmyHUD>()->medals.size(); i++){
             eManager->removeEntity(e->get<CArmyHUD>()->medals[i]);
@@ -598,6 +612,7 @@ void ArmyHUDSystem::updateUnits(Entity* e){
             eBtInvis->add(new CCompoundButton());
 
             //Temporary for debug
+            /*
             sf::RectangleShape shape(dim);
             shape.setFillColor(sf::Color(255, 0, 255));
             shape.setOutlineColor(sf::Color::Cyan);
@@ -605,6 +620,7 @@ void ArmyHUDSystem::updateUnits(Entity* e){
             eBtInvis->add(new CRectShape(shape));
             eBtInvis->add(new CRectButton(shape, shape, shape));
             eBtInvis->add(new CDraw(CDraw::HUD1));
+            */
             //---
 
             eBtInvis->get<CButtonState>()->gainedFocusMessage = HIGHLIGHT_UNITS;
@@ -733,7 +749,7 @@ void ArmyHUDSystem::updateEffects(Entity* e){
     int nEffects = effects.size();
     int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
     double xOff = 160;
-    double yOff = 130;
+    double yOff = 122;
     double dx = 50;
     double x = cxWindow + sign*xOff + sign*(nEffects-1)*dx;
     double y = yOff;
@@ -747,9 +763,10 @@ void ArmyHUDSystem::updateEffects(Entity* e){
             Entity* eIcon = eManager->createEntity();
             eIcon->add(new CDraw(CDraw::GUI1));
             eIcon->add(new CPosition(x, y));
-            eIcon->add(new CTexture("button-action-00-default.png"));
-            eIcon->add(new CDimensions(36,36));
-            eIcon->add(new CButtonHitbox(36,36));
+            eIcon->add(new CTexture());
+            eIcon->add(new CButtonTextures(CAction::Map[*i].btDefTexture, CAction::Map[*i].btHovTexture, CAction::Map[*i].btActTexture));
+            eIcon->add(new CDimensions(32,32));
+            eIcon->add(new CButtonHitbox(32,32));
             eIcon->add(new CButtonState());
             eIcon->add(new CButtonTrigger());
             eIcon->add(new CHighlightTrigger(CUnitHighlight2::EFFECT, *i));
