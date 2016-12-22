@@ -19,6 +19,8 @@ class AISystem : public System{
         void selectHero(Entity* e);
         void selectBattleClosure(Entity* e);
         void pickHeroFromPool(Entity* e);
+        void assembleArmy(Entity* e);
+        void selectRandomUnits(list<CUnit::ID>& output, list<CUnit::ID>& input, int n);
         
         EntityList getAliveUnits(Entity* e);
         EntityList getDeadUnits(Entity* e);

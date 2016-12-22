@@ -30,8 +30,12 @@ class TooltipSystem : public System{
         void createCaptainTooltip(Entity* e);
         void createCaptainTooltip2(Entity* e);
         void createTextTooltip1(Entity* e);
+        void createArmyCompositionStatusTooltip(Entity* e);
 
         void createTooltip(Entity* e);
+        
+        int getCurrentArmyCompositionSize(Entity* e);
+        int getMaxArmySize(Entity* e);
 };
 
 #endif // TOOLTIPSYSTEM_H

@@ -1269,7 +1269,7 @@ struct CTooltip : public Component{
     static Type getType(){return TOOLTIP;}
     enum Style{STYLE_1, STYLE_2, N_STYLES};
     enum Position{TL, TC, TR, ML, MC, MR, BL, BC, BR};
-    enum Info{SECTOR, UNIT_GROUP, UNIT, ACTION, EFFECT, CAPTAIN, TEXT_1};
+    enum Info{SECTOR, UNIT_GROUP, UNIT, ACTION, EFFECT, CAPTAIN, TEXT_1, ARMY_COMPOSITION_STATUS};
 
     CTooltip(Info i){
         info = i;

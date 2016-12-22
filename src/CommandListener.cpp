@@ -82,8 +82,10 @@ void CommandListener::update(){
             if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
                 //clearArmy(war.getPlayer1());
                 //cout << war.getActorID() << endl;
-                showUnitOptions(eActor);
-                listening = true;
+                if (!eActor->has(Component::AI)){
+                    showUnitOptions(eActor);
+                    listening = true;
+                }
                 /*
                 clearArmy(war.getPlayer2());
                 notify(RECOMPOSE_ARMY, war.getPlayer2());
@@ -115,6 +117,16 @@ void CommandListener::update(){
             }
             */else if (war.getSystemAction() == War::ASK_HERO_PICK){
                 askHeroPick(eActor);
+            }
+        }else{
+            if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE){
+                if (eListener && eListener->getObservedEntity("AssemblyDone")){
+                    if (getArmyCompositionSize(eListener) > eActor->get<CPlayer>()->maxPicks){
+                        eListener->getObservedEntity("AssemblyDone")->get<CButtonTrigger>()->setUniqueTrigger(EMPTY_MESSAGE);
+                    }else{
+                        eListener->getObservedEntity("AssemblyDone")->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
+                    }
+                }
             }
         }
     //}
@@ -602,8 +614,9 @@ void CommandListener::showUnitOptions(Entity* e){
         //btEnd->add(new CArmyComposition(eOptions));
         btEnd->add(new CAction(511));
         btEnd->add(new CTextbox2(Assets::getString("LABEL-READY"), Assets::getFont(Assets::getPrimaryFont()), 18, sf::Color::White));
-        btEnd->add(new CTooltip(CTooltip::TEXT_1));
+        btEnd->add(new CTooltip(CTooltip::ARMY_COMPOSITION_STATUS));
         btEnd->add(new CActor());
+        btEnd->addObservedEntity("UnitOptions", eOptions);
 
         ///ANIMATE READY BUTTON
         animateButtonInPuff(btEnd, 1.5, true);
@@ -757,7 +770,6 @@ void CommandListener::onEndHeroPool(Entity* e){
 void CommandListener::onSelectAction(Entity* e){
     ///FIRST SAVE THE ACTION ID TO THE ACTION OUTCOME STRUCTURE
     Entity* eArmy = eListener->getObservedEntity("PlayerBeingListenedTo");
-    war.getNextActionOutcome(eArmy->get<CPlayer>()->id).action = e->get<CAction>()->id;
 
     ///THEN REMOVE OPTIONS FROM SCREEN
     if (war.getSystemAction() == war.ASK_HERO_PICK){
@@ -798,6 +810,8 @@ void CommandListener::onSelectAction(Entity* e){
         }
         eListener = nullptr;
     }
+
+    war.getNextActionOutcome(eArmy->get<CPlayer>()->id).action = e->get<CAction>()->id;
 }
 
 void CommandListener::onRemoveFromHeroPool(Entity* e){
@@ -972,7 +986,15 @@ void CommandListener::animateUnitOptionOut(Entity* e, bool sound){
     notify(ADD_ACTOR, eSmoke);
 }
 
-
+int CommandListener::getArmyCompositionSize(Entity* e){
+    Entity* eOptions = e->getObservedEntity("UnitOptions");
+    EntityList options = eOptions->getObservedEntities();
+    int sum = 0;
+    for (Entity* i : options){
+        sum += i->get<CSpinButton>()->value;
+    }
+    return sum;
+}
 
 
 

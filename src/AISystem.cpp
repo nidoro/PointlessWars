@@ -41,17 +41,17 @@ void AISystem::onSystemAction(Entity* e){
     if (!eActor->has(Component::AI))return;
 
     if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE){
-        //showUnitOptions(eActor);
-        //eActor->get<CAInt>()->brainDelay = randomDouble(1.0, 2.0);
+        assembleArmy(eActor);
+        eActor->get<CAInt>()->brainDelay = randomDouble(1.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_HERO_PICK){
-        pickHeroFromPool(eActor);    
+        pickHeroFromPool(eActor);
         eActor->get<CAInt>()->brainDelay = randomDouble(1.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION){
         selectHero(eActor);
-        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
+        eActor->get<CAInt>()->brainDelay = 0.f;
     }else if (war.getSystemAction() == War::ASK_FORMATION){
         selectFormation(eActor);
-        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
+        eActor->get<CAInt>()->brainDelay = 0.f;
     }else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION){
         selectHeroAction(eActor);
         eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
@@ -60,7 +60,7 @@ void AISystem::onSystemAction(Entity* e){
         eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
     }else if (war.getSystemAction() == War::ASK_BATTLE_CLOSURE){
         selectBattleClosure(eActor);
-        eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
+        eActor->get<CAInt>()->brainDelay = randomDouble(0.5, 2.0);
     }else if (war.getSystemAction() == War::PRESENT_ARMY){
         //presentArmy(eActor);
     }else if (war.getSystemAction() == War::ADVANCE_ARMY){
@@ -146,6 +146,50 @@ void AISystem::selectArmyAction(Entity* e){
     if (actions.empty())  e->get<CArmy>()->nextAction = -1;
     war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
     e->get<CAInt>()->actionSelected = true;
+}
+
+void AISystem::assembleArmy(Entity* e){
+    if (!war.getMatchConfig().randomArmy){
+        list<CUnit::ID> options;
+        Entity* eOptions = eManager->createEntity();
+        list<CUnit::ID> unitDeck;
+        for (list<CUnit::ID>::iterator it = e->get<CPlayer>()->unitDeck.begin(); it != e->get<CPlayer>()->unitDeck.end(); it++){
+            if (CUnit::Map[*it].damage != e->get<CArmy>()->prohibitedDamageType){
+                //unitDeck.remove(*it);
+                unitDeck.push_back(*it);
+            }else{
+                //it++;
+            }
+        }
+        selectRandomUnits(options, unitDeck, war.getMatchConfig().nUnitOpt);
+
+        e->get<CArmy>()->unitCount.clear();
+        map<CUnit::ID, CUnit>& units = CUnit::Map;
+        
+        //choose randomly
+        int nUnits = 0;
+        while (nUnits < war.getMatchConfig().armySize){
+            CUnit::ID uID = getRandom(options);
+            map<CUnit::ID, int>::iterator it = e->get<CArmy>()->unitCount.find(uID);
+            if (it != e->get<CArmy>()->unitCount.end()){
+                it->second += war.getMatchConfig().recruitGroup;
+            }else{
+                e->get<CArmy>()->unitCount[uID] = war.getMatchConfig().recruitGroup;
+            }
+            nUnits += war.getMatchConfig().recruitGroup;
+        }
+        
+        war.getNextActionOutcome(e->get<CPlayer>()->id).action = 511;
+    }
+}
+
+void AISystem::selectRandomUnits(list<CUnit::ID>& output, list<CUnit::ID>& input, int n){
+    output.clear();
+    list<CUnit::ID> deck = input;
+    n = min(n, (int) deck.size());
+    for(int i = 0; i < n; i++){
+        output.push_back(popRandom(deck));
+    }
 }
 
 void AISystem::pickHeroFromPool(Entity* e){

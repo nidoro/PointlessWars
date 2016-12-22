@@ -49,6 +49,8 @@ class CommandListener : public System{
         void animateUnitOptionIn(Entity* e);
         void animateUnitOptionOut(Entity* e, bool sound);
 
+        int getArmyCompositionSize(Entity* e);
+        
         Entity* eListener;
         bool listening;
 };

@@ -44,7 +44,7 @@ void TooltipSystem::onButtonLostFocus(Entity* e){
     if (e->has(Component::TOOLTIP)){
         if (e->get<CTooltip>()->isShowing){
             Entity* eTip = e->getObservedEntity("Tooltip");
-
+            
             eManager->removeEntity(eTip);
 
             e->removeObservedEntity("Tooltip");
@@ -62,10 +62,44 @@ void TooltipSystem::createTooltip(Entity* e){
         case CTooltip::EFFECT: createEffectTooltip(e); break;
         case CTooltip::CAPTAIN: createCaptainTooltip2(e); break;
         case CTooltip::TEXT_1: createTextTooltip1(e); break;
+        case CTooltip::ARMY_COMPOSITION_STATUS: createArmyCompositionStatusTooltip(e); break;
         default: break;
     }
 }
 
+void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e){
+
+    double yOff = 30;
+    double marginWidth = 10;
+    
+    string text;
+    int armySize = getCurrentArmyCompositionSize(e);
+    int maxArmySize = getMaxArmySize(e);
+    if (armySize > maxArmySize){
+        text = "You can not recruit more than " + int2str(maxArmySize) + " units!";
+    }else if (armySize < maxArmySize){
+        text = "If you do not recruit x, the missing units will be chosen randomly.";
+    }else{
+        return;
+    }
+    Entity* eTip = eManager->createEntity();
+    
+    eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
+    double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
+    double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
+    eTip->get<CTextbox2>()->xOff = -w/2 + marginWidth;
+    eTip->get<CTextbox2>()->yOff = -h/2 + marginWidth;
+    eTip->add(new CPanel());
+    //eTip->add(new CRectShape(w, h, sf::Color::White, 1, sf::Color::Black));
+    eTip->add(new CTexture("9p-tooltip-bg-03.png"));
+    eTip->add(new CDimensions(w, h));
+    eTip->add(new CPosition(e->get<CPosition>()->x, e->get<CPosition>()->y + h/2.f + yOff));
+    eTip->add(new CDraw(CDraw::GUI2));
+    eTip->add(new CParentPanel(e));
+
+    e->addObservedEntity("Tooltip", eTip);
+    e->attachEmployee(eTip);
+}
 void TooltipSystem::createSectorTooltip(Entity* e){
     Entity* eTip = eManager->createEntity();
     CSector sector = *e->get<CSector>();
@@ -471,7 +505,19 @@ void TooltipSystem::onUpdateTooltip(Entity* e){
     }
 }
 
+int TooltipSystem::getCurrentArmyCompositionSize(Entity* e){
+    Entity* eOptions = e->getObservedEntity("UnitOptions");
+    EntityList options = eOptions->getObservedEntities();
+    int sum = 0;
+    for (Entity* i : options){
+        sum += i->get<CSpinButton>()->value;
+    }
+    return sum;
+}
 
-
-
+int TooltipSystem::getMaxArmySize(Entity* e){
+    Entity* eOptions = e->getObservedEntity("UnitOptions");
+    EntityList options = eOptions->getObservedEntities();
+    return options.front()->get<CSpinButton>()->max;    
+}
 
