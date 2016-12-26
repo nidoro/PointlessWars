@@ -34,7 +34,7 @@ void ActionSystem::update(){
 
         ///IF ACTION IS READY TO BE PLAYED AND PLAYER IS READY TO PLAY
         if (war.getNextActionOutcome(i).ready && war.getPlayerReady(i)){
-            printf("executing player %d action %d\n", i, war.getNextActionOutcome(i).action);
+            //printf("executing player %d action %d\n", i, war.getNextActionOutcome(i).action);
             ///EXECUTE ACTION
             executeAction(i);
             ///set action completed and player is not ready to act again until next state
@@ -123,11 +123,11 @@ void ActionSystem::preprocessAction(CPlayer::ID id){
         case 241: preprocessStampede(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         //case 242: playBecomeHuman(e); break;
         ///FORMATION SELECTION
-        case 300: war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
-        case 301: war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
-        case 302: war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
-        case 303: war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
-        case 304: war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
+        case 300: war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
+        case 301: war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
+        case 302: war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
+        case 303: war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
+        case 304: war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300); break;
         ///BATTLE CLOSURES
         case 400: preprocessArmyVsArmy(war.getNextActionOutcome(id), war.getPlayer(id)); break;
         case 401: preprocessManVsMan(war.getNextActionOutcome(id), war.getPlayer(id)); break;
@@ -376,12 +376,12 @@ void ActionSystem::playAction(Entity* e){
         case 240: playCroak(e); break;
         case 241: playStampede(e); break;
         //case 242: playBecomeHuman(e); break;
-        /*
-        case 300: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); grantFormationBuff(e); playAdvanceArmy(e); break;
-        case 301: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); grantFormationBuff(e); playAdvanceArmy(e); break;
-        case 302: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); grantFormationBuff(e); playAdvanceArmy(e); break;
-        case 303: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); grantFormationBuff(e); playAdvanceArmy(e); break;
-        */
+        
+        case 300: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); break;
+        case 301: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); break;
+        case 302: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); break;
+        case 303: e->get<CArmy>()->formation = (CArmy::Formation)(e->get<CArmy>()->nextAction - 300); break;
+        
         case 400: playMeleeBattle(e); break;
         case 401: playManVsMan(e); break;
         case 402: playEnslave(e); break;
@@ -657,7 +657,7 @@ void ActionSystem::playIntimidate(Entity* e){
     for(EntityListIt i = alive.begin(); i != alive.end(); i++){
         if (randomInt(1, 100) <= bailChance){
             eOutcome->get<CActionOutcome>()->targets.push_back(*i);
-            eEnemy->get<CArmy>()->allUnits.remove(*i);
+            //eEnemy->get<CArmy>()->allUnits.remove(*i);
         }
     }
 

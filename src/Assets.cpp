@@ -64,6 +64,7 @@ void Assets::createNinePatches(){
             sf::Image img = getTexture(filename)->copyToImage();
             vector< vector<sf::IntRect> > rects(3, vector<sf::IntRect>(3, sf::IntRect(0,0,0,0)));
             NinePatch ninePatch;
+            ninePatch.textureParts = std::vector<std::vector< sf::Texture*> > (3, std::vector<sf::Texture*>(3, nullptr));
 
             for (int iPart = 0; iPart < 3; iPart++){
                 for (int jPart = 0; jPart < 3; jPart++){
@@ -96,6 +97,7 @@ void Assets::createNinePatches(){
 
                     sf::Texture* pieceTexture = new sf::Texture;
                     pieceTexture->loadFromImage(img, rects[iPart][jPart]);
+                    ninePatch.textureParts[iPart][jPart] = pieceTexture;
 
                     //printf("left %d top %d\n", rects[iPart][jPart].left, rects[iPart][jPart].top);
                     //printf("width %d height %d\n", rects[iPart][jPart].width, rects[iPart][jPart].height);
@@ -1517,12 +1519,20 @@ void Assets::shutdown(){
     for(auto& i : textures){
         if (i.second != nullptr) delete i.second;
     }
+    for(auto& i : ninePatches){
+        for (int m = 0; m < i.second.textureParts.size(); m++){
+            for (int n = 0; n < i.second.textureParts[m].size(); n++){
+                if (i.second.textureParts[m][n] != nullptr) delete i.second.textureParts[m][n];
+            }
+        }
+    }
     for(auto& i : musics){
         if (i.second != nullptr) delete i.second;
     }
     for(auto& i : sounds){
         if (i.second != nullptr) delete i.second;
     }
+    ninePatches.clear();
     textures.clear();
     musics.clear();
     sounds.clear();

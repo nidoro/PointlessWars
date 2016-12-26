@@ -161,22 +161,25 @@ void AISystem::assembleArmy(Entity* e){
                 //it++;
             }
         }
-        selectRandomUnits(options, unitDeck, war.getMatchConfig().nUnitOpt);
-
-        e->get<CArmy>()->unitCount.clear();
-        map<CUnit::ID, CUnit>& units = CUnit::Map;
         
-        //choose randomly
-        int nUnits = 0;
-        while (nUnits < war.getMatchConfig().armySize){
-            CUnit::ID uID = getRandom(options);
-            map<CUnit::ID, int>::iterator it = e->get<CArmy>()->unitCount.find(uID);
-            if (it != e->get<CArmy>()->unitCount.end()){
-                it->second += war.getMatchConfig().recruitGroup;
-            }else{
-                e->get<CArmy>()->unitCount[uID] = war.getMatchConfig().recruitGroup;
+        e->get<CArmy>()->unitCount.clear();
+        if (!unitDeck.empty()){
+            selectRandomUnits(options, unitDeck, war.getMatchConfig().nUnitOpt);
+
+            map<CUnit::ID, CUnit>& units = CUnit::Map;
+
+            //choose randomly
+            int nUnits = 0;
+            while (nUnits < war.getMatchConfig().armySize){
+                CUnit::ID uID = getRandom(options);
+                map<CUnit::ID, int>::iterator it = e->get<CArmy>()->unitCount.find(uID);
+                if (it != e->get<CArmy>()->unitCount.end()){
+                    it->second += war.getMatchConfig().recruitGroup;
+                }else{
+                    e->get<CArmy>()->unitCount[uID] = war.getMatchConfig().recruitGroup;
+                }
+                nUnits += war.getMatchConfig().recruitGroup;
             }
-            nUnits += war.getMatchConfig().recruitGroup;
         }
         
         war.getNextActionOutcome(e->get<CPlayer>()->id).action = 511;

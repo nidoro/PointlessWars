@@ -253,7 +253,10 @@ void ScriptedAnimation::onSystemAction(Entity* e){
         scriptPresentArmy(war.getPlayer1());
         scriptPresentArmy(war.getPlayer2());
         notify(SCENE_STARTED, e);
+    }else if (war.getSystemAction() == war.SET_FORMATION_EFFECT){
+        scriptGrantFormationBuff(war.getNextActionOutcome(war.getActorID()), war.getActor());
     }
+            
 }
 
 void ScriptedAnimation::onThrowCoin(Entity* e){
@@ -346,10 +349,10 @@ void ScriptedAnimation::onPlayAction(Entity* e){
         case 241: scriptStampede(war.getNextActionOutcome(idPlayer), e); break;
         case 242: scriptBecomeHuman(war.getNextActionOutcome(idPlayer), e); break;
 
-        case 300: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 301: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 302: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 303: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
+//        case 300: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
+//        case 301: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
+//        case 302: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
+//        case 303: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
 
         case 400: scriptArmyVsArmy(war.getNextActionOutcome(idPlayer), e); break;
         case 401: scriptManVsMan(war.getNextActionOutcome(idPlayer), e); break;
@@ -809,7 +812,6 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
 
         eCapNew->get<CActor>()->addNode(new ATeleport(tHit, eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
         eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-FROG"), 2));
-
 
         addActor(eCapOld);
         addActor(eCapNew);
@@ -1288,7 +1290,7 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e){
 
         Entity* eBuffalo = eManager->createEntity();
         eBuffalo->add(new CPosition(xBuffalo, yBuffalo));
-        eBuffalo->add(new CDraw(CDraw::WORLD));
+        eBuffalo->add(new CDraw(CDraw::WORLD_1));
         eBuffalo->add(new CAnimation(hFlip, "buffalo-run.png"));
         eBuffalo->add(new CVelocity());
         eBuffalo->add(new CActor());
@@ -2318,6 +2320,9 @@ void ScriptedAnimation::scriptBattleCleanup(){
         scriptRemoveDead(war.getPlayer(1));
         scriptRemoveDead(war.getPlayer(2));
     }
+    
+    eWinner->get<CArmy>()->allUnits.clear();
+    eLoser->get<CArmy>()->allUnits.clear();
 }
 
 void ScriptedAnimation::scriptRemoveDead(Entity* e){
@@ -6275,7 +6280,7 @@ Entity* ScriptedAnimation::getUnitByID(Entity* eArmy, int id){
 }
 
 void ScriptedAnimation::scriptGrantFormationBuff(ActionOutcome& outcome, Entity* e){
-    e->get<CArmy>()->formation = outcome.formation;
+//    e->get<CArmy>()->formation = outcome.formation;
     CArmy::Formation formation = e->get<CArmy>()->formation;
     CAction::ID effect;
     switch(formation){
@@ -6400,7 +6405,7 @@ void ScriptedAnimation::scriptBlockIcon(double x, double y, double timing, bool 
     Entity* eIcon = eManager->createEntity();
     eIcon->add(new CPosition(x, yOrigin));
     eIcon->add(new CTexture(pic, hFlip));
-    eIcon->add(new CDraw(CDraw::WORLD_2));
+    eIcon->add(new CDraw(CDraw::WORLD_3));
     eIcon->add(new CActor());
     eIcon->add(new CVelocity());
 
@@ -6428,7 +6433,7 @@ void ScriptedAnimation::scriptDeathIcon(double x, double y, double timing, bool 
     Entity* eIcon = eManager->createEntity();
     eIcon->add(new CPosition(x, yOrigin));
     eIcon->add(new CTexture(pic, hFlip));
-    eIcon->add(new CDraw(CDraw::WORLD_2));
+    eIcon->add(new CDraw(CDraw::WORLD_3));
     eIcon->add(new CActor());
     eIcon->add(new CVelocity());
 

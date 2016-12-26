@@ -195,6 +195,7 @@ struct NinePatch{
     }
 
     vector< vector<sf::Sprite> > parts;
+    vector< vector<sf::Texture*> > textureParts;
     double wMin, hMin;
 };
 

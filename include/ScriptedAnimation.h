@@ -129,6 +129,7 @@ class ScriptedAnimation : public System{
         void scriptVictoryAnimation(double delay);
         void scriptConfettiRain(double delay);
         void askEndOfMatchQuestions(double delay);
+        
         void scriptPoofAt(double x, double y, double when);
         void scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);

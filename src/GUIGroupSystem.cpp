@@ -339,6 +339,39 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
 
     double sliderSize = 125;
     double hText;
+    
+    /// SFX LABEL
+    y += spcButton;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-SFX"), Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::White, 0, 0, CTextbox2::NORMAL));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x - 125, y - hText/2.f));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
+
+    /// SFX SLIDER
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x - sliderSize/2 + (config.getMusMaxVolume()/100)*sliderSize + sliderSize/2.f - 5, y));
+    eObj->add(new CTexture("slider-01.png"));
+    eObj->add(new CSlider(x + sliderSize/2.f - 5, y, sliderSize, (config.getMusMaxVolume()/100), CSlider::HORIZONTAL, "sfx-volume"));
+    eObj->add(new CDraw(CDraw::GUI_02));
+    eObj->add(new CDimensions(19, 30));
+    eObj->add(new CButtonHitbox(19, 30));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(START_SLIDING, CButtonTrigger::ON_PRESS));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
+
+    /// SFX SLIDER BAR
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + sliderSize/2.f - 5, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CDimensions(sliderSize, 2));
+    eObj->add(new CRectShape(sliderSize, 2, sf::Color::White));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
+
     /// MUSIC LABEL
     y += spcButton;
     eObj = eManager->createEntity();

@@ -203,11 +203,6 @@ void WarSystem::callNextSystemAction(){
 }
 
 void WarSystem::initializeState(){
-    printf("-----------------------------\n");
-    printf(" State %d\n", war.getSystemAction());
-    printf(" Player %d\n", war.getActorID());
-    printf(" Action %d\n", war.getNextActionOutcome(war.getActorID()).action);
-    printf("-----------------------------\n");
     for(int i = 0; i < 3; i++){
         war.getNextActionOutcome(i) = ActionOutcome();
         war.setPlayerReady(i, false);
@@ -253,7 +248,6 @@ void WarSystem::initializeState(){
         }
         addSystemAction(war.PRESENT_HEROES);
 
-
         if (war.getMultiplayer()){
             if (!war.getRemotelyControled(idFirst))
                 addSystemAction(war.ASK_FORMATION, idFirst);
@@ -263,6 +257,8 @@ void WarSystem::initializeState(){
             addSystemAction(war.ASK_FORMATION, idFirst);
             addSystemAction(war.ASK_FORMATION, idSecond);
         }
+        addSystemAction(war.SET_FORMATION_EFFECT, idFirst);
+        addSystemAction(war.SET_FORMATION_EFFECT, idSecond);
         addSystemAction(war.ADVANCE_ARMIES);
         addSystemAction(war.COIN, -1);
 /*
@@ -517,8 +513,10 @@ void WarSystem::startBattleActionQueue(){
         addSystemAction(war.ASK_FORMATION, idFirst);
         addSystemAction(war.ASK_FORMATION, idSecond);
     }
+    addSystemAction(war.SET_FORMATION_EFFECT, idFirst);
+    addSystemAction(war.SET_FORMATION_EFFECT, idSecond);
     addSystemAction(war.ADVANCE_ARMIES);
-
+        
     int nActions = war.getMatchConfig().nTurns;
     for(int i = 0; i < nActions; i++){
         addSystemAction(war.ASK_CAPTAIN_ACTION, idFirst);
