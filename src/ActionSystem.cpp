@@ -1729,7 +1729,7 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e){
         uout.idTarget = eTarget->get<CUnit>()->armyID;
 
         int resPoints = eUnit->get<CUnit>()->realResist[eCauser->get<CUnit>()->damage];
-        double resChance = resPoints*war.getMatchConfig().uBlockChance;
+        double resChance = resPoints*war.getMatchConfig().uBlockChance + war.getMatchConfig().baseBlockChance;
         if (randomDouble(0,1) <= resChance){
             uout.id = uout.BLOCKED;
         }else{

@@ -353,7 +353,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
 
     /// SFX SLIDER
     eObj = eManager->createEntity();
-    eObj->add(new CPosition(x - sliderSize/2 + (config.getMusMaxVolume()/100)*sliderSize + sliderSize/2.f - 5, y));
+    eObj->add(new CPosition(x - sliderSize/2 + (config.getSfxMaxVolume()/100)*sliderSize + sliderSize/2.f - 5, y));
     eObj->add(new CTexture("slider-01.png"));
     eObj->add(new CSlider(x + sliderSize/2.f - 5, y, sliderSize, (config.getMusMaxVolume()/100), CSlider::HORIZONTAL, "sfx-volume"));
     eObj->add(new CDraw(CDraw::GUI_02));
@@ -362,6 +362,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
     eObj->add(new CButtonState());
     eObj->add(new CButtonTrigger(START_SLIDING, CButtonTrigger::ON_PRESS));
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CButtonSounds("NONE", "NONE", "sfx-poof-03.wav"));
     eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
 
     /// SFX SLIDER BAR

@@ -55,15 +55,15 @@ void SliderSystem::updateValue(Entity* e){
         posMin = e->get<CSlider>()->y - length/2;
         e->get<CSlider>()->value = 1 - (pos-posMin)/(length);
     }
-    e->get<CSlider>()->value = min(e->get<CSlider>()->value, 100.0);
-    e->get<CSlider>()->value = max(e->get<CSlider>()->value, 0.0);
+    e->get<CSlider>()->value = min(e->get<CSlider>()->value, (double)100.f);
+    e->get<CSlider>()->value = max(e->get<CSlider>()->value, (double)0.f);
 }
 
 void SliderSystem::updateVariable(Entity* e){
     if (e->get<CSlider>()->variable == "music-volume"){
-        config.setMusMaxVolume(e->get<CSlider>()->value*100);
+        config.setMusMaxVolume(e->get<CSlider>()->value*100.f);
     }else if (e->get<CSlider>()->variable == "sfx-volume"){
-        config.setSfxMaxVolume(e->get<CSlider>()->value*100);
+        config.setSfxMaxVolume(e->get<CSlider>()->value*100.f);
     }
 }
 
@@ -73,13 +73,13 @@ void SliderSystem::onStartSliding(Entity* e){
 }
 
 void SliderSystem::onMouseButtonReleased(Entity* e){
-    bool sliding = false;
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* eSlider = *i;
-        if (eSlider->get<CSlider>()->sliding) sliding = true;
+        if (eSlider->get<CSlider>()->sliding){
+            if (eSlider->get<CSlider>()->variable == "music-volume" || eSlider->get<CSlider>()->variable == "sfx-volume"){
+                config.saveConfigFile(getAppDataDir() + "/config.xml");
+            }
+        }
         eSlider->get<CSlider>()->sliding = false;
-    }
-    if (sliding){
-        //notify(UNLOCK_ALL_BUTTONS);
     }
 }

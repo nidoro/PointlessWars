@@ -7,7 +7,8 @@ MatchConfig::MatchConfig(){
     armySize = 50;
     nUnitOpt = 5;
     recruitGroup = 5;
-    uBlockChance = 0.3;
+    uBlockChance = 0.25;
+    baseBlockChance = 0.10;
     streakToWin = 2;
     maxResistance = 3;
     nPlayerHeroes = 3;
@@ -93,6 +94,7 @@ void MatchConfig::loadFromFile(string name){
     element->FirstChildElement("MaxBattles")->QueryIntText(&maxBattles);
     element->FirstChildElement("ArmySize")->QueryIntText(&armySize);
     element->FirstChildElement("UnitaryBlockChance")->QueryDoubleText(&uBlockChance);
+    element->FirstChildElement("BaseBlockChance")->QueryDoubleText(&baseBlockChance);
     element->FirstChildElement("OptionsOnRebuild")->QueryIntText(&nUnitOpt);
     element->FirstChildElement("RecruitGroup")->QueryIntText(&recruitGroup);
     element->FirstChildElement("GoalScore")->QueryIntText(&streakToWin);

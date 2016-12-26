@@ -16,6 +16,7 @@ class SoundSystem : public System{
 
     private:
         void onPlaySound(Entity* e);
+        void onPlaySound(std::string filename);
         void onPlayMusic(Entity* e);
         void onStopMusic(Entity* e);
         void onWindowClosed(Entity* e);

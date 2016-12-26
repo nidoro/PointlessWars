@@ -144,7 +144,7 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node){
         eCallout->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black));
         eCallout->add(new CRectShape(boxAux.content.getLocalBounds().width + 5, 20, sf::Color::White, 1));
         eCallout->add(new CPosition(e->get<CPosition>()->x, e->get<CPosition>()->y + yOff));
-        eCallout->add(new CDraw(CDraw::GUI));
+        eCallout->add(new CDraw(CDraw::SKY));
         eCallout->add(new CTimer(nd->duration, REMOVE_ENTITY));
         eCallout->add(new CAnchor(0, yOff));
         eCallout->add(new CTypingEffect(nd->text, 40));
@@ -2034,7 +2034,7 @@ void ScriptedAnimation::scriptFightSmokeCloud(double duration){
 
         eCloud->add(new CPosition(x, y));
         eCloud->add(new CAnimation(false, ani));
-        eCloud->add(new CDraw(CDraw::GUI1, 0));
+        eCloud->add(new CDraw(CDraw::SKY, 0));
         eCloud->add(new CDimensions(130, 120));
         eCloud->add(new CActor());
 

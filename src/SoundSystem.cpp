@@ -44,7 +44,7 @@ void SoundSystem::update(){
             }
         }
     }
-    
+
     if (window->hasFocus()) mute = false;
     else                    mute = true;
     updateMusic();
@@ -53,6 +53,10 @@ void SoundSystem::update(){
 void SoundSystem::onPlaySound(Entity* e){
     if (mute) return;
     if (e->get<CSound>()->name.empty()) return;
+    if (toUpper(e->get<CSound>()->name) == "NONE") {
+        eManager->removeEntity(e);
+        return;
+    }
     if (Assets::getSound(e->get<CSound>()->name) == NULL){
         e->get<CSound>()->sound.play();
     }else{
@@ -63,7 +67,7 @@ void SoundSystem::onPlaySound(Entity* e){
         }
 
         if (e->get<CSound>()->fadeInLength > 0.f){
-            e->get<CSound>()->volumn = 0;
+            e->get<CSound>()->volumn = 0.f;
         }else{
             e->get<CSound>()->volumn = e->get<CSound>()->maxVolumn;
         }
@@ -79,18 +83,20 @@ void SoundSystem::updateVolumn(Entity* e){
     double timeElapsed = e->get<CSound>()->clock.getElapsedTime().asSeconds();
     double fadeInLength = e->get<CSound>()->fadeInLength;
     double fadeOutLength = e->get<CSound>()->fadeOutLength;
-    double maxVolumn = e->get<CSound>()->maxVolumn;
-    double fadeSpeed = 0;
-    if (timeElapsed < fadeInLength){
+    //double maxVolumn = e->get<CSound>()->maxVolumn;
+    double maxVolumn = mute ? 0.f : config.getSfxMaxVolume();
+    double fadeSpeed = 0.f;
+    if (timeElapsed < fadeInLength && fadeInLength > 0.f){
         fadeSpeed = maxVolumn/fadeInLength;
-    }else if (duration - timeElapsed < fadeOutLength){
+    }else if (duration - timeElapsed < fadeOutLength && fadeOutLength > 0.f){
         fadeSpeed = -maxVolumn/fadeOutLength;
     }
 
     e->get<CSound>()->volumn += fadeSpeed*delay;
-    e->get<CSound>()->volumn = min(e->get<CSound>()->volumn, maxVolumn);
-    e->get<CSound>()->volumn = max(e->get<CSound>()->volumn, 0.0);
+    e->get<CSound>()->volumn = min(e->get<CSound>()->volumn, (double)maxVolumn);
+    e->get<CSound>()->volumn = max(e->get<CSound>()->volumn, (double)0.1f);
 
+    double checkVolume = e->get<CSound>()->volumn;
     e->get<CSound>()->sound.setVolume(e->get<CSound>()->volumn);
 }
 

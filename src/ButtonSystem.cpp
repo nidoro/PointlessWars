@@ -224,6 +224,10 @@ void ButtonSystem::onButtonReleased(Entity* e){
             notify(m, e);
         }
     }
+    if (!e->has(Component::BUTTON_SOUNDS)) return;
+    Entity* eSound = eManager->createEntity();
+    eSound->add(new CSound(e->get<CButtonSounds>()->released, CSound::REMOVE_ENTITY));
+    notify(PLAY_SOUND, eSound);
 }
 
 void ButtonSystem::onKeyReleased(Entity* e){
