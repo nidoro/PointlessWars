@@ -244,8 +244,8 @@ void CommandListener::showCaptainOptions(Entity* e){
     int K = 100;
     int options = e->get<CArmy>()->captains.size();
 
-    double w = 50;
-    double h = 50;
+    double w = 54;
+    double h = 52;
     double cellSpacing = 60;
     double x = cxWindow;
     double y = cyWindow - (options-1)*cellSpacing/2;

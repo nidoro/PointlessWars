@@ -369,7 +369,7 @@ void MainMenuSystem::createMenu(bool animated){
     /// MULTIPLAYER BUTTON
     xRel = 0.9135f;
     yRel = 0.1880f;
-    buttonTexture = "castle-contour.png";
+    buttonTexture = "castle-contour-2.png";
     wButton = Assets::getTexture(buttonTexture)->getSize().x;
     hButton = Assets::getTexture(buttonTexture)->getSize().y;
     eObj = eManager->createEntity();

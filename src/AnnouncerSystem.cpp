@@ -86,36 +86,64 @@ void AnnouncerSystem::onEndMatch(Entity* e){
 
 string AnnouncerSystem::getGameStateString(){
     Entity* ePlayer = war.getActor();
+    CAction::ID actionID = -1; 
     string playerName;
     string stateString;
     if (ePlayer) playerName = ePlayer->get<CPlayer>()->name;
+    if (ePlayer) actionID = war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action;
+
     if (war.getSystemAction() == war.NONE){
         return "";
     }else if (war.getSystemAction() == war.COIN){
-        return "Behold the almighty coin...";
+        return "Behold the almighty coin!";
     }else if (war.getSystemAction() == war.ASK_HERO_PICK){
-        return playerName + " is thinking...";
+        return playerName + " is picking a hero...";
     }else if (war.getSystemAction() == war.ASK_FORMATION){
-        return playerName + " is thinking...";
+        return playerName + " is adopting a battle formation...";
     }else if (war.getSystemAction() == war.PLAY_FORMATION){
-        return playerName + " is thinking...";
+        return playerName + " is adopting a battle formation...";
     }else if (war.getSystemAction() == war.ADVANCE_ARMY){
         return "";
     }else if (war.getSystemAction() == war.PLAY_ACTION){
     }else if (war.getSystemAction() == war.BETWEEN_ROUNDS){
     }else if (war.getSystemAction() == war.ASK_CAPTAIN_ACTION){
-        return playerName + " is thinking...";
+        if (war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action == -1){
+            return playerName + " is thinking...";
+        }else{
+            return playerName + " used " + Assets::getString("NAME-ACTION-" + int2str(actionID)) + "!";
+        }
     }else if (war.getSystemAction() == war.ASK_ARMY_ACTION){
-        return playerName + " is thinking...";
+        if (war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action == -1){
+            return playerName + " is thinking...";
+        }else{
+            return playerName + " is attacking!";
+        }
     }else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE){
-        return playerName + " is thinking...";
+        if (war.getPlayingAnimation()){
+            std::string winnerName = war.getPlayer(war.getBattleWinner())->get<CPlayer>()->name;
+            if (war.getBattleClosure() == war.ALL_KILLED) return  "Wow!";
+            if (war.getBattleClosure() == war.ARMY_VS_ARMY) return "Numbers win wars, usually";
+            if (war.getBattleClosure() == war.MERCY) return winnerName + " is merciful";
+            if (war.getBattleClosure() == war.MAN_VS_MAN) return "Who are these two?";
+        }else{
+            return playerName + " is choosing a battle closure...";
+        }
+    }else if (war.getSystemAction() == war.CLEAR_BATTLE_FIELD){
+        std::string winnerName = war.getPlayer(war.getBattleWinner())->get<CPlayer>()->name;
+        std::string loserName = war.getPlayer(war.getBattleLoser())->get<CPlayer>()->name;
+        if (war.getBattleClosure() == war.ALL_KILLED) return  "Wow!";
+        if (war.getBattleClosure() == war.ARMY_VS_ARMY) return "Numbers win wars, usually";
+        if (war.getBattleClosure() == war.MERCY) return winnerName + " is merciful";
+        if (war.getBattleClosure() == war.CONFINE) return loserName + " is toasted!";
+        if (war.getBattleClosure() == war.MAN_VS_MAN) return "Who are these two?";
+        
     }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
-        return playerName + " is thinking...";
+        return playerName + " is recruiting a powerful army!";
     }else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION){
-        return playerName + " is thinking...";
+        return playerName + " is choosing a hero...";
     }else if (war.getSystemAction() == war.PRESENT_ARMY){
     }else if (war.getSystemAction() == war.PRESENT_ARMIES){
-        return "Presenting for duty...";
+        return "Prepare for battle!";
     }else if (war.getSystemAction() == war.RECOMPOSE_ARMY){
     }else if (war.getSystemAction() == war.SHOW_HERO_POOL){
 
@@ -125,6 +153,9 @@ string AnnouncerSystem::getGameStateString(){
     }else if (war.getSystemAction() == war.BETWEEN_TURNS){
     }else if (war.getSystemAction() == war.ENDING){
     }else if (war.getSystemAction() == war.UPDATE_SCORE){
+    }else if (war.getSystemAction() == war.ANNOUNCE_VICTORY){
+        Entity* eWinner = war.getPlayer(war.getBattleWinner());
+        return eWinner->get<CPlayer>()->name + " is the best!";
     }
     return "";
 }

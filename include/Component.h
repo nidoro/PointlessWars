@@ -848,11 +848,10 @@ struct CSector : public Component{
 struct CArmy : public Component{
     static Type getType(){return ARMY;};
 
-    enum Side{LEFT, RIGHT};
 
     enum Formation{F1, F2, F3, F4, N_FORMATIONS};
 
-    CArmy(Side side){
+    CArmy(CPlayer::Side side){
         this->side = side;
         x = 0;
         captain = nullptr;
@@ -890,7 +889,7 @@ struct CArmy : public Component{
 
     bool hasCoin;
     int nAlive;
-    Side side;
+    CPlayer::Side side;
     double x;
     bool ready;
     int repicks;

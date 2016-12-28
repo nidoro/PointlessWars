@@ -97,7 +97,7 @@ void ArmyHUDSystem::createResistanceHighlighters(Entity* e){
 }
 
 void ArmyHUDSystem::onScoreUpdated(Entity* e){
-    double sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 70;
     double yOff = 130;
     double x = cxWindow + sign*xOff;
@@ -105,7 +105,7 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
     double w = 30;
     double h = 40;
 
-    string color = e->get<CArmy>()->side == CArmy::LEFT ? "blue":"red";
+    string color = e->get<CArmy>()->side == CPlayer::LEFT ? "blue":"red";
 
     if (e->get<CArmyHUD>()->medals.size() < e->get<CArmy>()->score){
         Entity* eObj = eManager->createEntity();
@@ -127,7 +127,7 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
         }
         //NEW MEDAL
         eObj->get<CActor>()->timeline.push_back(new AMove(1.0, xMed - sign*w/2, yMed, 50));
-        
+
         ///PUFF
                 string puffAnimation = "poof-06.png";
                 string sfxPoofIn = "sfx-poof-04.wav";
@@ -151,7 +151,7 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
 }
 
 void ArmyHUDSystem::updateNAlive(Entity* e){
-    double sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double w = 30;
     double h = 30;
     double xOff = 70;
@@ -189,7 +189,7 @@ void ArmyHUDSystem::updateNAlive(Entity* e){
 }
 
 void ArmyHUDSystem::animateAliveCounterIn(Entity* e){
-    double sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double w = 30;
     double h = 30;
     double xOff = 70;
@@ -206,7 +206,7 @@ void ArmyHUDSystem::animateAliveCounterIn(Entity* e){
 }
 
 void ArmyHUDSystem::animateAliveCounterOut(Entity* e){
-    double sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double w = 30;
     double h = 30;
     double xOff = 70;
@@ -252,7 +252,7 @@ void ArmyHUDSystem::updateResistBars(Entity* e){
 }
 
 void ArmyHUDSystem::updateCaptain(Entity* e){
-    int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 70;
     double yOff = 70;
     double x = cxWindow + sign*xOff;
@@ -383,7 +383,7 @@ void ArmyHUDSystem::updateCaptain(Entity* e){
 }
 /*
 void ArmyHUDSystem::updateUnits(Entity* e){
-    int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
     double yOff = 70;
     double dx = 50;
@@ -458,6 +458,7 @@ void ArmyHUDSystem::animateUnitOut(Entity* eCompound){
     double speed = 150;
     double speed2 = 40;
     double tAux;
+    double tDestroy = 0.f;
 
     Entity* eIcon = eCompound->getObservedEntity("UnitIcon");
     Entity* eDisplayer = eCompound->getObservedEntity("UnitCounter");
@@ -473,11 +474,14 @@ void ArmyHUDSystem::animateUnitOut(Entity* eCompound){
 
     eDisplayer->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yCurrent - spacing/2, speed2));
     tAux = getTravelTime(xCurrent, yCurrent, xCurrent, yCurrent - spacing/2, speed2);
+    tDestroy += tAux;
     eDisplayer->get<CActor>()->timeline.push_back(new AMove(tAux, xCurrent, yTarget, speed));
     tAux = getTravelTime(xCurrent, yCurrent - spacing/2, xCurrent, yTarget, speed);
+    tDestroy += tAux;
     //eDisplayer->get<CActor>()->timeline.push_back(new ADestroy(tAux));
 
-    eCompound->get<CActor>()->timeline.push_back(new ADestroy(tAux));
+    eCompound->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::BUT_LOCKED, true));
+    eCompound->get<CActor>()->timeline.push_back(new ADestroy(tDestroy));
 }
 void ArmyHUDSystem::animateUnitIn(Entity* eCompound){
     double yTarget = 70;
@@ -519,7 +523,7 @@ void ArmyHUDSystem::animateCaptainIn(Entity* e){
 }
 
 void ArmyHUDSystem::updateUnits(Entity* e){
-    int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
     double yOff = 70;
     double dx = 50;
@@ -682,7 +686,7 @@ void ArmyHUDSystem::updateUnits(Entity* e){
 }
 
 void ArmyHUDSystem::arrangeUnits(Entity* e){
-    int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
     double yOff = 70;
     double x = cxWindow + sign*xOff;
@@ -703,7 +707,7 @@ void ArmyHUDSystem::arrangeUnits(Entity* e){
 }
 
 void ArmyHUDSystem::arrangeEffects(Entity* e){
-    int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
     double yOff = 130;
     double x = cxWindow + sign*xOff;
@@ -747,7 +751,7 @@ void ArmyHUDSystem::updateEffects(Entity* e){
 
     bool rearrange = false;
     int nEffects = effects.size();
-    int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+    int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
     double yOff = 122;
     double dx = 50;
@@ -804,7 +808,7 @@ void ArmyHUDSystem::updateEffects(Entity* e){
 
 void ArmyHUDSystem::updateCoin(Entity* e){
     if (e->get<CArmy>()->hasCoin && e->get<CArmyHUD>()->eCoin == nullptr){
-        int sign = e->get<CArmy>()->side == CArmy::LEFT ? -1:1;
+        int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
         double xOff = 50;
         double yOff = 90;
         double x = cxWindow + sign*xOff;

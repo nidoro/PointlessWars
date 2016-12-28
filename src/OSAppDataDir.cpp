@@ -841,15 +841,16 @@ R"(
     <Scenery>Random</Scenery>
     <HeroesPerPlayer>3</HeroesPerPlayer>
     <MaxBattles>NONE</MaxBattles>
-    <Turns>1</Turns>
+    <Turns>3</Turns>
     <ArmySize>50</ArmySize>
+    <BaseBlockChance>0.10</BaseBlockChance>
     <UnitaryBlockChance>0.25</UnitaryBlockChance>
     <OptionsOnRebuild>16</OptionsOnRebuild>
     <RecruitGroup>10</RecruitGroup>
-    <GoalScore>1</GoalScore>
+    <GoalScore>2</GoalScore>
     <RandomArmy>false</RandomArmy>
 <!--    <UnitPool>00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15</UnitPool> -->
-    <UnitPool>00 01 02 03</UnitPool>
+    <UnitPool>00 01 02 03 04 05 06 07</UnitPool>
     <HeroPool>02 03 04 05 08 10</HeroPool>
 </MatchConfig>
 )";

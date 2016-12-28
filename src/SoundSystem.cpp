@@ -94,7 +94,7 @@ void SoundSystem::updateVolumn(Entity* e){
 
     e->get<CSound>()->volumn += fadeSpeed*delay;
     e->get<CSound>()->volumn = min(e->get<CSound>()->volumn, (double)maxVolumn);
-    e->get<CSound>()->volumn = max(e->get<CSound>()->volumn, (double)0.1f);
+    e->get<CSound>()->volumn = max(e->get<CSound>()->volumn, (double)0.0f);
 
     double checkVolume = e->get<CSound>()->volumn;
     e->get<CSound>()->sound.setVolume(e->get<CSound>()->volumn);

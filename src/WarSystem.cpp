@@ -79,8 +79,8 @@ void WarSystem::onInitializeWar(Entity* e){
     Entity* P1 = eManager->createEntity();
     Entity* P2 = eManager->createEntity();
 
-    P1->add(new CArmy(CArmy::LEFT));
-    P2->add(new CArmy(CArmy::RIGHT));
+    P1->add(new CArmy(CPlayer::LEFT));
+    P2->add(new CArmy(CPlayer::RIGHT));
 
     P1->add(new CArmyHUD());
     P2->add(new CArmyHUD());
@@ -104,8 +104,8 @@ void WarSystem::onInitializeWar(Entity* e){
     if (war.getRemotelyControled(1)){
         P1->get<CPlayer>()->side = CPlayer::RIGHT;
         P2->get<CPlayer>()->side = CPlayer::LEFT;
-        P1->get<CArmy>()->side = CArmy::RIGHT;
-        P2->get<CArmy>()->side = CArmy::LEFT;
+        P1->get<CArmy>()->side = CPlayer::RIGHT;
+        P2->get<CArmy>()->side = CPlayer::LEFT;
         P1->get<CPlayer>()->color = RED;
         P2->get<CPlayer>()->color = BLUE;
         P1->add(new CRemotelyControled());
@@ -113,16 +113,16 @@ void WarSystem::onInitializeWar(Entity* e){
     }else{
         P1->get<CPlayer>()->side = CPlayer::LEFT;
         P2->get<CPlayer>()->side = CPlayer::RIGHT;
-        P1->get<CArmy>()->side = CArmy::LEFT;
-        P2->get<CArmy>()->side = CArmy::RIGHT;
+        P1->get<CArmy>()->side = CPlayer::LEFT;
+        P2->get<CArmy>()->side = CPlayer::RIGHT;
         P1->get<CPlayer>()->color = BLUE;
         P2->get<CPlayer>()->color = RED;
         P2->add(new CRemotelyControled());
         P1->add(new CRemoteControler());
     }
 
-    P1->get<CPlayer>()->name = "Tukimitzu";
-    P2->get<CPlayer>()->name = "Geogab";
+    P1->get<CPlayer>()->name = "Jeff";
+    P2->get<CPlayer>()->name = "Bobby bot";
 
     P1->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
     P2->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
@@ -516,7 +516,7 @@ void WarSystem::startBattleActionQueue(){
     addSystemAction(war.SET_FORMATION_EFFECT, idFirst);
     addSystemAction(war.SET_FORMATION_EFFECT, idSecond);
     addSystemAction(war.ADVANCE_ARMIES);
-        
+
     int nActions = war.getMatchConfig().nTurns;
     for(int i = 0; i < nActions; i++){
         addSystemAction(war.ASK_CAPTAIN_ACTION, idFirst);
@@ -627,7 +627,7 @@ void WarSystem::onEndCaptainsPoolPhase(Entity* e){
     Entity* P1;
     Entity* P2;
 
-    if (e->get<CArmy>()->side == CArmy::LEFT){
+    if (e->get<CArmy>()->side == CPlayer::LEFT){
         P1 = e;
         P2 = e->get<CPlayer>()->enemy;
     }else{
@@ -738,6 +738,7 @@ StateMachine::~StateMachine(){
 }
 
 void StateMachine::update(){
+
     if (!eBattle) return;
 }
 

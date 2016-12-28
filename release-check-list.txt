@@ -1,0 +1,4 @@
+- Update the OSAppDataDir with the default content of the following files:
+    - match-config.xml
+    - strings-en.json
+    
