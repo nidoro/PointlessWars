@@ -852,7 +852,6 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
     double spacing = w + 10;
     double x0 = eCap->get<CPosition>()->x - (spacing);
     double y0 = eCap->get<CPosition>()->y + yOff;
-
     string spriteCard;
     switch(outcome.iValue){
         case 1: spriteCard = "tarot-luck"; break;
