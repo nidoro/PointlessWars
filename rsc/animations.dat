@@ -220,7 +220,7 @@ hero-04-idle.png			46		46		8			8		1
 hero-05-idle.png			46		46		2			8		1
 hero-06-idle.png			46		46		12			10		1
 hero-07-idle.png			46		46		2			4		1
-hero-08-idle.png			46		46		12			24		1
+hero-08-idle.png			46		46		12			12		1
 hero-09-idle.png			46		46		12			12		1
 hero-10-idle.png			46		46		2			4		1
 hero-11-idle.png			46		46		3			6		1
@@ -247,7 +247,7 @@ hero-14-walk.png			46		46		12			24		1
 hero-00-intimidation.png	46		46		12			4		1
 hero-01-intimidation.png	46		46		10			4		1
 hero-02-intimidation.png	60		60		9			4		1
-hero-03-intimidation.png	46		46		12			12		1
+hero-03-intimidation.png	46		46		12			6		1
 hero-04-intimidation.png	46		46		12			4		1
 hero-05-intimidation.png	46		46		12			4		1
 hero-06-intimidation.png	46		46		12			4		1
@@ -263,6 +263,7 @@ hero-14-intimidation.png	46		46		12			24		1
 etelka-hex.png				60		60		7			8
 etelka-change-formation.png 60		60		2			8
 goraidh-purification.png	46		46		12			8
+nagendra-tarot.png          46      46      12          10
 %================
 % UNITS
 %================
