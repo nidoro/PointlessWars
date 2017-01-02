@@ -6,6 +6,7 @@ CProfile System::profile;
 CUILayer::Layer System::topUILayer = CUILayer::NONE;
 std::stack<CUILayer::Layer> System::uiLayers;
 std::string System::appDataDir = helper::getAppDataDir();
+const std::string System::appVersion = "Alpha";
 
 System::System(){
     delay = 0.f;

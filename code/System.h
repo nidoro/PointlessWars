@@ -50,6 +50,7 @@ class System{
         static CUILayer::Layer topUILayer;
         static std::stack<CUILayer::Layer> uiLayers;
         static std::string getAppDataDir();
+        static const std::string appVersion;
         
     protected:
         virtual void onGameStarted(Entity* e){}

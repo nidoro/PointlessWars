@@ -19,6 +19,7 @@ class ArmyHUDSystem : public System{
         void onEndMatch(Entity* e);
         void onInitializeWar(Entity* e);
         void onSystemAction(Entity* e);
+        void onKeyPressed(Entity* e);
 
         void updateUnits(Entity* e);
         void updateEffects(Entity* e);
@@ -42,6 +43,7 @@ class ArmyHUDSystem : public System{
         void animateButtonInPuff(Entity* e, double after, bool sound = false);
         void animateButtonOutPuff(Entity* e, double after, bool sound = false);
         void animateCaptainIn(Entity* e);
+        void toggleHiddenRecursively(Entity* e);
 
         EntityList eResists;
         bool active;

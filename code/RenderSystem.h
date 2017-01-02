@@ -26,7 +26,7 @@ class RenderSystem : public System{
         EntityList eWorld;
 
         bool isDrawingDebug;
-
+        bool hideGUIandHUD;
 };
 
 #endif // RENDERSYSTEM_H

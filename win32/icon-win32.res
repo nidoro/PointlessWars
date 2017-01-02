@@ -1,0 +1,1 @@
+APP_ICON ICON "icon-v3.ico"

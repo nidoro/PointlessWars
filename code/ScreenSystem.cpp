@@ -174,7 +174,7 @@ void ScreenSystem::onKeyPressed(Entity* e){
                       "Pointless Wars",
                       config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
         window->setVerticalSyncEnabled(true);
-
+        window->setMouseCursorVisible(false);
         config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
     }
 }
@@ -185,7 +185,8 @@ void ScreenSystem::onUpdateFullscreenWithToggleButton(Entity* e){
                    "Pointless Wars",
                     config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
     window->setVerticalSyncEnabled(true);
-
+    window->setMouseCursorVisible(false);
+            
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
 void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
@@ -199,6 +200,7 @@ void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
                    "Pointless Wars",
                     config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
     window->setVerticalSyncEnabled(true);
+    window->setMouseCursorVisible(false);
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
 

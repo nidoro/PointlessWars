@@ -17,10 +17,12 @@ class AnnouncerSystem : public System{
 
         void onInitializeWar(Entity* e);
         void onEndMatch(Entity* e);
+        void onKeyPressed(Entity* e);
 
         string getGameStateString();
         string currentString;
         string nextString;
+        std::string getString(std::string id);
 
         Entity* eText;
         Entity* eBanner;

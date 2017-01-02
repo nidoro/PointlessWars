@@ -291,6 +291,21 @@ void MainMenuSystem::createMenu(bool animated){
         eObj->add(new CElipsoidalMovement(cxWindow, 130, 0, 10, 180));
         eObj->add(new CActor());
         eObj->get<CActor>()->addNode(new AFade(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)-0.5, 255, 255));
+        Entity* eLogo = eObj;
+        ///VERSION BOX
+        CTextbox2 txtBox(appVersion, Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::Black);
+        sf::RectangleShape rectShape;
+        rectShape.setSize(sf::Vector2f(txtBox.content.getLocalBounds().width, txtBox.content.getLocalBounds().height));
+        rectShape.setFillColor(sf::Color::Red);
+        rectShape.setOutlineColor(sf::Color::Black);
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(-100, -100));
+        eObj->add(new CAnchor(0.f, 200));
+        eObj->add(new CRectShape(rectShape));
+        eObj->add(new CTextbox2(txtBox));
+        eObj->add(new CDraw(CDraw::GUI));
+        eObj->addObservedEntity("Anchor", eLogo);
+        eObj->attachEmployer(eLogo);
     }else{
         ///TITLE
         eObj = eManager->createEntity();
@@ -299,7 +314,23 @@ void MainMenuSystem::createMenu(bool animated){
         eObj->add(new CTexture("pw-logo.png"));
         eObj->add(new CElipsoidalMovement(cxWindow, 130, 0, 10, 180));
         eObj->add(new CActor());
-
+        Entity* eLogo = eObj;
+        ///VERSION BOX
+        CTextbox2 txtBox(appVersion, Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::White);
+        sf::RectangleShape rectShape;
+        rectShape.setSize(sf::Vector2f(txtBox.content.getLocalBounds().width + 20, txtBox.content.getLocalBounds().height + 8));
+        rectShape.setFillColor(sf::Color(190,0,0));
+        rectShape.setOutlineColor(sf::Color::Black);
+        rectShape.setOutlineThickness(2.f);
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(-100, -100));
+        eObj->add(new CAnchor(140, 86));
+        eObj->add(new CRectShape(rectShape));
+        eObj->add(new CTextbox2(txtBox));
+        eObj->add(new CDraw(CDraw::GUI));
+        eObj->addObservedEntity("Anchor", eLogo);
+        eObj->attachEmployer(eLogo);
+        
         ///MUSIC
         Entity* eMusic = eManager->createEntity();
         eMusic->add(new CMusic("main-theme.ogg"));

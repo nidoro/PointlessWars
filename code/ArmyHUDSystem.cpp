@@ -9,6 +9,7 @@ ArmyHUDSystem::ArmyHUDSystem(){
     addSubscription(END_MATCH);
     addSubscription(INITIALIZE_WAR);
     addSubscription(SYSTEM_ACTION);
+    addSubscription(KEY_PRESSED);
 
     active = false;
 }
@@ -1129,5 +1130,40 @@ void ArmyHUDSystem::onInitializeWar(Entity* e){
 void ArmyHUDSystem::onSystemAction(Entity* e){
     if (war.getSystemAction() == war.START_FIRST_BATTLE){
         isPlayingMainLoop = true;
+    }
+}
+
+void ArmyHUDSystem::onKeyPressed(Entity* e){
+    if (e->get<CKeyboardInput>()->code == sf::Keyboard::F2){
+        for (auto& i : entities){
+            if (i->get<CArmyHUD>()->eNAlive){
+                i->get<CArmyHUD>()->eNAlive->get<CDraw>()->isHidden = !i->get<CArmyHUD>()->eNAlive->get<CDraw>()->isHidden;
+            }
+            if (i->get<CArmyHUD>()->captain){
+                i->get<CArmyHUD>()->captain->get<CDraw>()->isHidden = !i->get<CArmyHUD>()->captain->get<CDraw>()->isHidden;
+            }
+            for (auto& p : i->get<CArmyHUD>()->unitDisplayers){
+                toggleHiddenRecursively(p.second);
+            }
+            for (auto& p : i->get<CArmyHUD>()->effects){
+                toggleHiddenRecursively(p.second);
+            }
+            if (i->get<CArmyHUD>()->eCoin){
+                toggleHiddenRecursively(i);
+            }
+        }
+        for (auto& i : eResists){
+            toggleHiddenRecursively(i);
+        }
+    }
+}
+
+void ArmyHUDSystem::toggleHiddenRecursively(Entity* e){
+    if (e->has(Component::DRAW)){
+        e->get<CDraw>()->isHidden = !e->get<CDraw>()->isHidden;
+    }
+    EntityList employees = e->getEmployees();
+    for (auto& i : employees){
+        toggleHiddenRecursively(i);
     }
 }

@@ -310,6 +310,7 @@ void InGameMenu::onHasBeenToggled(Entity* e){
                           "Pointless Wars",
                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
             window->setVerticalSyncEnabled(true);
+            window->setMouseCursorVisible(false);
             config.saveConfigFile("config.xml");
         }
     }
@@ -328,6 +329,7 @@ void InGameMenu::onHasChangedValue(Entity* e){
                           "Pointless Wars",
                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
             window->setVerticalSyncEnabled(true);
+            window->setMouseCursorVisible(false);            
 
             config.saveConfigFile("config.xml");
         }

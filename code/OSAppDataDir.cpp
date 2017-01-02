@@ -861,7 +861,24 @@ R"(
     "SPEECH-01-UNIT-17-PRE-ATTACK":"...",
     "SPEECH-01-UNIT-18-PRE-ATTACK":"...",
     "SPEECH-01-UNIT-19-PRE-ATTACK":"...",
-    "SPEECH-01-UNIT-20-PRE-ATTACK":"..."
+    "SPEECH-01-UNIT-20-PRE-ATTACK":"...",
+    "BANNER-COIN":"Behold the almighty coin!",
+    "BANNER-PLAYER-PICKING-HERO":" is picking a hero...",
+    "BANNER-PLAYER-SELECTING-FORMATION":" is adopting a battle formation...",
+    "BANNER-PLAYER-SELECTING-HERO-ACTION":" is thinking...",
+    "BANNER-PLAYER-USED-HERO-ACTION":" used ",
+    "BANNER-PLAYER-SELECTING-ATTACK":" is thinking...",
+    "BANNER-PLAYER-ATTACKING":" is attacking!",
+    "BANNER-PLAYER-SELECTING-BATTLE-CLOSURE":" is bringing this battle to an end...!",
+    "BANNER-WHEN-ALL-KILLED":"Wow!",
+    "BANNER-WHEN-ARMY-VS-ARMY":"Numbers win wars, usually...",
+    "BANNER-WHEN-MERCY":" is merciful!",
+    "BANNER-WHEN-CONFINE":" is toasted!",
+    "BANNER-WHEN-MAN-VS-MAN":"Who are these two?",
+    "BANNER-PLAYER-RECRUITING":" is recruiting...",
+    "BANNER-PLAYER-SELECTING-HERO":" is choosing a hero...",
+    "BANNER-WHEN-PRESENTING-ARMIES":"Prepare for battle!",
+    "BANNER-ANNOUNCE-VICTORY":" is the best!"
 }
 )";
          }else if (filename == "config.xml"){

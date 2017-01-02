@@ -31,6 +31,7 @@ void RenderSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, do
     eLists.resize(CDraw::N_TAGS);
 
     isDrawingDebug = false;
+    hideGUIandHUD = false;
 
     for(list<Message>::iterator i = subscripts.begin(); i != subscripts.end(); i++){
         subscribe(*i);
@@ -137,6 +138,7 @@ void RenderSystem::update(){
     eLists[CDraw::WORLD_2].sort(orderUnits);
     eLists[CDraw::WORLD_3].sort(orderUnits);
     for (unsigned int i = 0; i < eLists.size(); i++){
+        if (hideGUIandHUD && ((i >= CDraw::HUD1 && i <= CDraw::GUI_05) || i == CDraw::CURSOR)) continue;
         for (it = eLists[i].begin(); it != eLists[i].end(); it++){
             Entity* e = *it;
             if (eManager->isDead(e)) continue;
@@ -451,6 +453,8 @@ void RenderSystem::onKeyReleased(Entity* e){
     //std::cout << "okasod\n";
     if (e->get<CKeyboardInput>()->code == sf::Keyboard::F1){
         isDrawingDebug = !isDrawingDebug;
+    }else if (e->get<CKeyboardInput>()->code == sf::Keyboard::F3){
+        hideGUIandHUD = !hideGUIandHUD;
     }
 }
 
