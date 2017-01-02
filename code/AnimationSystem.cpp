@@ -18,7 +18,9 @@ void AnimationSystem::update(){
     for (EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* e = *i;
         if (eManager->isDead(e)) continue;
-        if (!e->get<CAnimation>()->freeze && !e->get<CAnimation>()->current.empty()){
+        if (Entity* p = e->getObservedEntity("TiedAnimation")){
+            *e->get<CAnimation>() = *p->get<CAnimation>();
+        }else if (!e->get<CAnimation>()->freeze && !e->get<CAnimation>()->current.empty()){
             updateFrame(e);
         }
     }

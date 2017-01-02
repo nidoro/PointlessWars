@@ -790,7 +790,7 @@ void Assets::loadScenariosAt(fs::path path){
                         }else{
                             CScenarioObject object;
                             int column = 0;
-                            while(++column <= 7){
+                            while(++column <= 8){
                                 switch(column){
                                     case 1: ss >> object.id; break;
                                     case 2: ss >> object.xRelative; break;
@@ -799,6 +799,7 @@ void Assets::loadScenariosAt(fs::path path){
                                     case 5: ss >> object.yScale; break;
                                     case 6: ss >> object.hFlip; break;
                                     case 7: ss >> object.vFlip; break;
+                                    case 8: ss >> object.bindedAnimationID; break;
                                     default: break;
                                 }
                             }
@@ -960,7 +961,7 @@ void Assets::readScenarios(){
                         }else{
                             CScenarioObject object;
                             int column = 0;
-                            while(++column <= 7){
+                            while(++column <= 8){
                                 switch(column){
                                     case 1: ss >> object.id; break;
                                     case 2: ss >> object.xRelative; break;
@@ -969,6 +970,7 @@ void Assets::readScenarios(){
                                     case 5: ss >> object.yScale; break;
                                     case 6: ss >> object.hFlip; break;
                                     case 7: ss >> object.vFlip; break;
+                                    case 8: ss >> object.bindedAnimationID; break;
                                     default: break;
                                 }
                             }

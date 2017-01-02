@@ -1984,7 +1984,9 @@ struct CScenarioObject : public Component{
     typedef string ID;
     ID id;
     static map<ID, CScenarioObject> Map;
-    CScenarioObject(){}
+    CScenarioObject(){
+        bindedAnimationID = 0;
+    }
 
     CScenarioObject(string def, string click, string sound){
         aDefault = def;
@@ -1994,6 +1996,7 @@ struct CScenarioObject : public Component{
         yScale = 1;
         hFlip = false;
         vFlip = false;
+        bindedAnimationID = 0;
     }
 
     string aDefault;
@@ -2004,6 +2007,7 @@ struct CScenarioObject : public Component{
     double width, height;
     double xScale, yScale;
     bool hFlip, vFlip;
+    int bindedAnimationID;
 
 };
 

@@ -32,7 +32,8 @@ void ScenarioSystem::load(string name, double xOff, double yOff){
     Entity* eMusic = eManager->createEntity();
     eMusic->add(new CMusic(scenario.bgMusic));
     notify(PLAY_MUSIC, eMusic);
-
+    
+    EntityList objectsWithBindedAnim;
     for(list<CScenarioObject>::iterator i = scenario.objects.begin(); i != scenario.objects.end(); i++){
         Entity* eObj = eManager->createEntity();
         eObj->add(new CAnimation(false, CScenarioObject::Map[i->id].aDefault));
@@ -45,9 +46,30 @@ void ScenarioSystem::load(string name, double xOff, double yOff){
             eObj->add(new CButtonState());
         }
         eObj->add(new CActor());
-        eObj->add(new CScenarioObject(CScenarioObject::Map[i->id]));
+        eObj->add(new CScenarioObject(*i));
+        eObj->get<CAnimation>()->frame = randomInt(0, Assets::getAnimation(eObj->get<CAnimation>()->current).nFrames - 1);
+        eObj->get<CAnimation>()->sprite = Assets::getAnimation(eObj->get<CAnimation>()->current).frames[eObj->get<CAnimation>()->frame];
+        eObj->get<CAnimation>()->update = false;
+        if (eObj->get<CScenarioObject>()->bindedAnimationID != 0){
+            objectsWithBindedAnim.push_back(eObj);
+        }
     }
-
+    
+    std::map<int, Entity*> bindedAnimationsMap;
+    for (Entity* eObj : objectsWithBindedAnim){
+        if (bindedAnimationsMap.find(eObj->get<CScenarioObject>()->bindedAnimationID) == bindedAnimationsMap.end()){
+            bindedAnimationsMap.insert(std::make_pair(eObj->get<CScenarioObject>()->bindedAnimationID, eObj));
+        }
+    }
+    
+    for (auto& p : bindedAnimationsMap){
+        for (Entity* eObj : objectsWithBindedAnim){
+            if (eObj != bindedAnimationsMap[p.first]){
+                eObj->addObservedEntity("TiedAnimation", bindedAnimationsMap[p.first]);
+            }
+        }
+    }
+    
     current = name;
 }
 
