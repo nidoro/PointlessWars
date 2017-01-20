@@ -345,7 +345,7 @@ void CommandListener::showCaptainActionOptions(Entity* e){
     eListener = eManager->createEntity();
     Entity* eOptions = eManager->createEntity();
 
-    int K = 100;
+    //int K = 100;
     int options = e->get<CArmy>()->captain->get<CCaptain>()->actions.size();
     if (contains(e->get<CArmy>()->captain->get<CCaptain>()->actions, 226)) options--;
 
@@ -393,7 +393,7 @@ void CommandListener::showArmyActionOptions(Entity* e){
     eListener = eManager->createEntity();
     Entity* eOptions = eManager->createEntity();
 
-    int K = 100;
+    //int K = 100;
     int options = e->get<CArmy>()->unitCount.size();
 
     //double w = Assets::getTexture(CUnit::Map.begin()->second.btActionDef)->getSize().x*1.5;
@@ -448,7 +448,7 @@ void CommandListener::showArmyActionOptions(Entity* e){
 void CommandListener::showBattleClosureOptions(Entity* e){
     eListener = eManager->createEntity();
 
-    Entity* eCap = e->get<CArmy>()->captain;
+    //Entity* eCap = e->get<CArmy>()->captain;
     Entity* eOptions = eManager->createEntity();
 
     int K = 400;
@@ -601,7 +601,7 @@ void CommandListener::showUnitOptions(Entity* e){
         y = cyWindow + 100;
         double w = 120;
         double h = 35;
-        int act = 500;
+        //int act = 500;
         btEnd->add(new CPosition(x, y));
         btEnd->add(new CDimensions(w, h));
         btEnd->add(new CButtonHitbox(w, h));
@@ -636,7 +636,7 @@ void CommandListener::showUnitOptions(Entity* e){
         double y = 150;
         double w = 100;
         double h = 50;
-        int act = 500;
+        //int act = 500;
         btEnd->add(new CPosition(x, y));
         btEnd->add(new CDimensions(w, h));
         btEnd->add(new CButtonHitbox(w, h));
@@ -779,7 +779,7 @@ void CommandListener::onSelectAction(Entity* e){
         animateButtonOutPuff(eButton);
     }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
         eArmy->get<CArmy>()->unitCount.clear();
-        map<CUnit::ID, CUnit>& units = CUnit::Map;
+        //map<CUnit::ID, CUnit>& units = CUnit::Map;
         EntityList eOptions = eListener->getObservedEntity("UnitOptions")->getObservedEntities();
 
         bool first = true;
@@ -933,9 +933,9 @@ void CommandListener::animateUnitOptionIn(Entity* e){
 }
 void CommandListener::animateUnitOptionOut(Entity* e, bool sound){
     double yTarget = cyWindow - 60;
-    double spacing = 30;
-    double spacing2 = 106;
-    double speed = 250;
+    //double spacing = 30;
+    //double spacing2 = 106;
+    //double speed = 250;
     double speed2 = 40;
     double speed3 = 300;
     double tAux;

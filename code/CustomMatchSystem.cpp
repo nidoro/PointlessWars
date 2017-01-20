@@ -32,7 +32,7 @@ void CustomMatchSystem::createMenu(){
     double xAux, yAux;
     double x0, y0;
 
-    double spacing = 100;
+    //double spacing = 100;
     double w = 160;
     double h = 40;
 
@@ -208,8 +208,8 @@ void CustomMatchSystem::createMenu(){
     double w1 = 200;
     double w2 = 50;
     double space = 38;
-    double x1 = cxWindow - (w1+space+w2)/2 + w1/2;
-    double x2 = cxWindow + (w1+space+w2)/2 - w2/2;
+    //double x1 = cxWindow - (w1+space+w2)/2 + w1/2;
+    //double x2 = cxWindow + (w1+space+w2)/2 - w2/2;
     double dy = 32;
     y0 = 380;
 

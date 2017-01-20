@@ -87,7 +87,7 @@ void ScrollListSystem::updateCells(Entity* e){
         x = e->get<CPosition>()->x;
     }
 
-    for(int i = 0; i < e->get<CScrollList>()->cells.size(); i++){
+    for(unsigned int i = 0; i < e->get<CScrollList>()->cells.size(); i++){
         Entity* eCell = e->get<CScrollList>()->cells[i];
         eCell->get<CDraw>()->isHidden = true;
         eCell->get<CButtonState>()->state = CButtonState::LOCKED;
@@ -95,7 +95,7 @@ void ScrollListSystem::updateCells(Entity* e){
 
     int c = e->get<CScrollList>()->front;
     for(int i = 0; i < e->get<CScrollList>()->size; i++){
-        if (i >= e->get<CScrollList>()->cells.size()) break;
+        if ((unsigned) i >= e->get<CScrollList>()->cells.size()) break;
         Entity* eCell = e->get<CScrollList>()->cells[c];
         eCell->get<CDraw>()->isHidden = false;
         eCell->get<CButtonState>()->state = CButtonState::NON_ACTIVE;

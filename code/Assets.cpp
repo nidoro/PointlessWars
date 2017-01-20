@@ -37,7 +37,7 @@ void Assets::load(){
     packResources(rscRoot + "resources");
 #endif
     unpackResources(rscRoot + "resources");
-    
+
     loadScenariosAt(rscRoot + "sceneries");
     readAnimations();
     readObjects();
@@ -82,7 +82,7 @@ void Assets::createNinePatches(){
                     iPix = rects[iPart][jPart].top;
                     jPix = rects[iPart][jPart].left;
                     pixel = img.getPixel(jPix, iPix);
-                    while (pixel != sf::Color(255,0,255,255) && jPix < img.getSize().x){
+                    while (pixel != sf::Color(255,0,255,255) && (unsigned) jPix < img.getSize().x){
                         jPix++;
                         rects[iPart][jPart].width++;
                         pixel = img.getPixel(jPix, iPix);
@@ -91,7 +91,7 @@ void Assets::createNinePatches(){
                     iPix = rects[iPart][jPart].top;
                     jPix = rects[iPart][jPart].left;
                     pixel = img.getPixel(jPix, iPix);
-                    while (pixel != sf::Color(255,0,255,255) && iPix < img.getSize().y){
+                    while (pixel != sf::Color(255,0,255,255) && (unsigned) iPix < img.getSize().y){
                         iPix++;
                         rects[iPart][jPart].height++;
                         pixel = img.getPixel(jPix, iPix);
@@ -125,7 +125,7 @@ void Assets::readChars(){
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement();
 
-    for (element; element != nullptr; element = element->NextSiblingElement()){
+    for ( ; element != nullptr; element = element->NextSiblingElement()){
         CChar cchar;
         cchar.name = element->Value();
 
@@ -593,14 +593,14 @@ void Assets::readStrings(string language){
     stringMap.clear();
     for (nlohmann::json::iterator entry = j.begin(); entry != j.end(); entry++){
         std::string value = entry.value();
-        for(int c = 0; c < value.size(); c++){
+        for(unsigned int c = 0; c < value.size(); c++){
             if (value[c] == '/'){
                 value[c] = '\n';
             }
         }
         stringMap.insert(make_pair(entry.key(), value));
     }
-    
+
     if (language == "en"){
         stringMap["MESSAGE-SPLASH-SCREEN-01"] = "This game makes use of free graphic assets available online";
         stringMap["MESSAGE-SPLASH-SCREEN-02"] = "with little to no modification. See credits in game.";
@@ -1520,12 +1520,12 @@ list<string> Assets::getBackgrounds(){
 }
 
 void Assets::shutdown(){
-    for(auto& i : textures){
+    for (auto& i : textures){
         if (i.second != nullptr) delete i.second;
     }
-    for(auto& i : ninePatches){
-        for (int m = 0; m < i.second.textureParts.size(); m++){
-            for (int n = 0; n < i.second.textureParts[m].size(); n++){
+    for (auto& i : ninePatches){
+        for (unsigned int m = 0; m < i.second.textureParts.size(); m++){
+            for (unsigned int n = 0; n < i.second.textureParts[m].size(); n++){
                 if (i.second.textureParts[m][n] != nullptr) delete i.second.textureParts[m][n];
             }
         }

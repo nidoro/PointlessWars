@@ -45,11 +45,12 @@ void AnnouncerSystem::createAnnouncer(){
 }
 
 void AnnouncerSystem::startTextTransition(){
-    double tAux = 0;
+    //unused:
+    //double tAux = 0;
     //eText->get<CActor>()->addNode(new AFade(0.0, -255, 0));
     eText->get<CActor>()->addNode(new ADestroy(0.0));
     bool isHidden = eText->get<CDraw>()->isHidden;
-    
+
     eText = eManager->createEntity();
     eText->add(new CPosition(cxWindow, 15));
     eText->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 16));
@@ -89,7 +90,7 @@ void AnnouncerSystem::onEndMatch(Entity* e){
 
 string AnnouncerSystem::getGameStateString(){
     Entity* ePlayer = war.getActor();
-    CAction::ID actionID = -1; 
+    CAction::ID actionID = -1;
     string playerName;
     string stateString;
     if (ePlayer) playerName = ePlayer->get<CPlayer>()->name;
@@ -141,7 +142,7 @@ string AnnouncerSystem::getGameStateString(){
         if (war.getBattleClosure() == war.MERCY) return winnerName + getString("BANNER-WHEN-MERCY");
         if (war.getBattleClosure() == war.CONFINE) return loserName + getString("BANNER-WHEN-CONFINE");
         if (war.getBattleClosure() == war.MAN_VS_MAN) return getString("BANNER-WHEN-MAN-VS-MAN");
-        
+
     }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
         return playerName + getString("BANNER-PLAYER-RECRUITING");
     }else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION){

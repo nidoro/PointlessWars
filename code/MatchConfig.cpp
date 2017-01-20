@@ -35,6 +35,7 @@ sf::Packet& operator >>(sf::Packet& packet, tinyxml2::XMLDocument& doc){
     string s;
     packet >> s;
     doc.Parse(s.c_str());
+    return packet;
 }
 
 void MatchConfig::loadFromFile(string name){

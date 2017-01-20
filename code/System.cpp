@@ -228,11 +228,11 @@ bool System::checkAndUpdate(){
     return false;
      */
     delay += updateClock.restart().asSeconds();
-    if (targetUPS < 0){
+    if (targetUPS < 0.f) {
         delay = updateClock.restart().asSeconds();
         update();
         return true;
-    }else if (delay >= 1.f/targetUPS){
+    } else if (delay >= 1.f/targetUPS) {
         double aux = delay;
         delay = 1.f/targetUPS;
         update();

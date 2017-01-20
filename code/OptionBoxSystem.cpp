@@ -22,7 +22,7 @@ void OptionBoxSystem::onExpandOptionBox(Entity* e){
     COptionBox* box = e->get<COptionBox>();
     double x = e->get<CPosition>()->x + e->get<COptionBox>()->offset.x;
     double y = e->get<CPosition>()->y + e->get<COptionBox>()->offset.y;
-    CButtonHitbox::Shape shape = e->get<CButtonHitbox>()->shape;
+    //CButtonHitbox::Shape shape = e->get<CButtonHitbox>()->shape;
     double w = e->get<CDimensions>()->width;
     double h = e->get<CDimensions>()->height;
 

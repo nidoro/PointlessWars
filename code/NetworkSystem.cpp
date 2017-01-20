@@ -15,10 +15,10 @@ NetworkSystem::NetworkSystem(){
     eQMDisplayer = nullptr;
 }
 
-NetworkSystem::~NetworkSystem(){
+NetworkSystem::~NetworkSystem() {
 }
 
-void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, double targetUPS){
+void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, double targetUPS) {
     this->eManager = eManager;
     this->window = window;
     this->targetUPS = targetUPS;
@@ -33,11 +33,11 @@ void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, d
     cxWindow = wWindow/2;
     cyWindow = hWindow/2;
 
-    for(list<Message>::iterator i = subscripts.begin(); i != subscripts.end(); i++){
+    for(list<Message>::iterator i = subscripts.begin(); i != subscripts.end(); i++) {
         subscribe(*i);
     }
 
-    serverPort = 9090;
+    serverPort = 8080;
     serverIP = "52.67.40.198";
     serverSocket.setBlocking(false);
 

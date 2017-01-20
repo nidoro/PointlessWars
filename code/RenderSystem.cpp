@@ -113,8 +113,8 @@ bool orderUnits(Entity* a, Entity* b){
         hb = Assets::getTexture(b->get<CTexture>()->file)->getSize().y;
     }
 
-    double xa = a->get<CPosition>()->x;
-    double xb = b->get<CPosition>()->x;
+    //double xa = a->get<CPosition>()->x;
+    //double xb = b->get<CPosition>()->x;
     double ya = a->get<CPosition>()->y + ha/2;
     double yb = b->get<CPosition>()->y + hb/2;
 
@@ -127,6 +127,7 @@ bool orderUnits(Entity* a, Entity* b){
             return true;
         }
     }
+    return false;
 }
 
 void RenderSystem::update(){
@@ -147,8 +148,8 @@ void RenderSystem::update(){
             }
         }
     }
-    ImGui::SFML::Update(*window, sf::Time(sf::seconds(delay)));
-    if (isDrawingDebug) DBG_SERVICES.showUI();
+    //ImGui::SFML::Update(*window, sf::Time(sf::seconds(delay)));
+    //if (isDrawingDebug) DBG_SERVICES.showUI();
     //ImGui::Render();
     //window->resetGLStates();
     window->display();
@@ -250,11 +251,11 @@ void RenderSystem::draw(Entity* e){
         }
         sprite.setColor(sf::Color(255,255,255,e->get<CDraw>()->alpha));
         sprite.scale((e->get<CAnimation>()->hFlip ? -1:1), (e->get<CAnimation>()->vFlip ? -1:1));
-        if (e->has(Component::UNIT)){
-            sf::Color c = e->get<CUnit>()->color;
-            c.a = e->get<CDraw>()->alpha;
+        //if (e->has(Component::UNIT)){
+            //sf::Color c = e->get<CUnit>()->color;
+            //c.a = e->get<CDraw>()->alpha;
             //sprite.setColor(c);
-        }
+        //}
         if (e->has(Component::ROTATION)){
             sprite.setRotation(e->get<CRotation>()->angle);
         }
@@ -272,7 +273,7 @@ void RenderSystem::draw(Entity* e){
     if (e->has(Component::RECT_SHAPE)){
         sf::Color color = e->get<CRectShape>()->shape.getFillColor();
         color.a = e->get<CDraw>()->alpha;
-        sf::FloatRect rect = e->get<CRectShape>()->shape.getLocalBounds();
+        //sf::FloatRect rect = e->get<CRectShape>()->shape.getLocalBounds();
         sf::Vector2f size = sf::Vector2f(e->get<CRectShape>()->shape.getSize().x, e->get<CRectShape>()->shape.getSize().y);
         e->get<CRectShape>()->shape.setFillColor(color);
         //e->get<CRectShape>()->shape.setOrigin(rect.width/2, rect.height/2);
@@ -324,7 +325,7 @@ void RenderSystem::draw(Entity* e){
             e->get<CTextbox2>()->content.setOrigin(0, 0);
         }
 
-        sf::Color color = e->get<CTextbox2>()->content.getColor();
+        sf::Color color = e->get<CTextbox2>()->content.getFillColor();
         color.a = e->get<CDraw>()->alpha;
         e->get<CTextbox2>()->content.setFillColor(color);
 

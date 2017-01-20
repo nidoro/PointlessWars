@@ -8,8 +8,9 @@ namespace helper{
     bool initializeAppDataDirectory(){
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
         TCHAR path[MAX_PATH];
-        // TODO(davi): handle error and exceptions
-        HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+        // TODO: handle error and exceptions (inspect HRESULT hr = ...)
+        //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+        SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
         std::string appRootDir = std::string(path) + "/Pointless Wars";
         createDirectory(appRootDir);
         if (!fileExists(appRootDir + "/animations.dat")){
@@ -37,7 +38,7 @@ namespace helper{
             file << getDefaultFileContent("config.xml");
             file.close();
         }
-        
+
         return true;
 #elif defined(__unix__) || defined(__unix) || defined(__linux__)
         passwd* pw = getpwuid(getuid());
@@ -48,7 +49,9 @@ namespace helper{
     std::string getAppDataDir(){
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
         TCHAR path[MAX_PATH];
-        HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+        //TODO: inspect HRESULT
+        //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+        SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
         return std::string(std::string(path) + "/Pointless Wars");
 #elif defined(__unix__) || defined(__unix) || defined(__linux__)
         passwd* pw = getpwuid(getuid());
@@ -56,7 +59,7 @@ namespace helper{
         path += "/.Pointless Wars";
 #endif
     }
-     
+
      bool createDirectory(std::string path){
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
          return CreateDirectory(path.c_str(), nullptr);
@@ -64,12 +67,12 @@ namespace helper{
 
 #endif
      }
-     
+
      bool fileExists(std::string path){
          std::ifstream file(path.c_str());
          return file.good();
      }
-     
+
      std::string getDefaultFileContent(std::string filename){
          if (filename == "animations.dat"){
              return
@@ -95,7 +98,7 @@ flag-red-01.png                  	47      24      6           6       1
 fisherman-01.png                		85      250     6           5       1
 
 % -- BEACH
-chicken-idle.png            26      21      2           4   
+chicken-idle.png            26      21      2           4
 chicken-singing.png         26      21      1           0.5
 obj-sea.png                 73      173     12          3
 obj-hut.png                 74      78      1           1
@@ -507,8 +510,8 @@ unit-07-action-02.png		32		32		1			4		1
 unit-04-action-03.png		32		32		1			4		1
 
 %snow
-chicken-idle.png            26      21      2           4   
-chicken-singing.png         26      21      1           0.5 
+chicken-idle.png            26      21      2           4
+chicken-singing.png         26      21      1           0.5
 obj-dog.png                 30      24      5           3
 obj-dog-woof.png            30      24      4           3
 obj-snowflag-blue.png       120     80      9           4
@@ -789,7 +792,7 @@ R"(
     "SPEECH-INTIMIDATION-CATHERINE-02":"Communism, join us... or DIE!",
     "SPEECH-INTIMIDATION-IMAMU-01":"This is what will happen to you!",
     "SPEECH-INTIMIDATION-IMAMU-02":"All humans must suffer!",
-    
+
     "SPEECH-PRESENTATION-ETELKA-01":"You have nothing against me!",
     "SPEECH-PRESENTATION-ETELKA-02":"Me and Philip will crush you!",
     "SPEECH-PRESENTATION-NAGENDRA-01":"I foresee death in your future!",
@@ -802,7 +805,7 @@ R"(
     "SPEECH-PRESENTATION-CATHERINE-02":"Communism, join us... or DIE!",
     "SPEECH-PRESENTATION-IMAMU-01":"Finnally!",
     "SPEECH-PRESENTATION-IMAMU-02":"All humans must suffer!",
-    
+
     "SPEECH-INTIMIDATION-1":"You are facing death!",
     "SPEECH-INTIMIDATION-2":"Come and I'll kill you!",
     "SPEECH-INTIMIDATION-3":"Are you scared?",
@@ -950,57 +953,57 @@ R"(
 
 <Spear>
     <Positions>
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   0   0   0   0   0   0  35   0  46   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   0   0   0   0  24   0  33   0  44   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   0   0  15   0  22   0  31   0  42   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   8   0  13   0  20   0  29   0  40   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   3   0   6   0  11   0  18   0  27   0  38   0  49 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        1   0   2   0   5   0  10   0  17   0  26   0  37   0  48 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   4   0   7   0  12   0  19   0  28   0  39   0  50 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   9   0  14   0  21   0  31   0  41   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   0   0  16   0  23   0  32   0  43   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   0   0   0   0  25   0  34   0  45   0   0 
-        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
-        0   0   0   0   0   0   0   0   0   0  36   0  47   0   0 
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   0   0   0   0   0   0  35   0  46   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   0   0   0   0  24   0  33   0  44   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   0   0  15   0  22   0  31   0  42   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   8   0  13   0  20   0  29   0  40   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   3   0   6   0  11   0  18   0  27   0  38   0  49
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        1   0   2   0   5   0  10   0  17   0  26   0  37   0  48
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   4   0   7   0  12   0  19   0  28   0  39   0  50
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   9   0  14   0  21   0  31   0  41   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   0   0  16   0  23   0  32   0  43   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   0   0   0   0  25   0  34   0  45   0   0
+        0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+        0   0   0   0   0   0   0   0   0   0  36   0  47   0   0
         0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
 	</Positions>
 </Spear>
 
 <something>
     <Positions>
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        9 0 19 0 29 0 0 0 0 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
-        7 0 17 0 27 0 0 0 0 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
-        5 0 15 0 25 0 35 0 0 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
-        3 0 13 0 23 0 33 0 0 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
-        1 0 11 0 21 0 31 0 41 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        2 0 12 0 22 0 32 0 42 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        4 0 14 0 24 0 34 0 44 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        6 0 16 0 26 0 36 0 46 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        8 0 18 0 28 0 38 0 48 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        10 0 20 0 30 0 40 0 50 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        9 0 19 0 29 0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+        7 0 17 0 27 0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+        5 0 15 0 25 0 35 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+        3 0 13 0 23 0 33 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 1 0 0 0 0
+        1 0 11 0 21 0 31 0 41 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        2 0 12 0 22 0 32 0 42 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        4 0 14 0 24 0 34 0 44 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        6 0 16 0 26 0 36 0 46 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        8 0 18 0 28 0 38 0 48 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        10 0 20 0 30 0 40 0 50 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 </Positions>
 </something>
 )";

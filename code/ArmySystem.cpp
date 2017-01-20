@@ -58,8 +58,8 @@ void ArmySystem::onInitializePlayer(Entity* e){
     double xSpawn = cxWindow + sign*wWindow/2 + sign*80;
     double ySpawn = cyWindow;
 
-    double wField = 0.70*wWindow;
-    double step = wField/((war.getMatchConfig().nTurns+1)*2);
+    //double wField = 0.70*wWindow;
+    //double step = wField/((war.getMatchConfig().nTurns+1)*2);
     e->get<CArmy>()->x = 0;
 
     for(auto& i : e->get<CPlayer>()->heroDeck){
@@ -138,7 +138,7 @@ void ArmySystem::composeArmy(Entity* eArmy, EntityList eOptions){
 
     int nRemaining = war.getMatchConfig().armySize - nUnits;
     for(int i = 0; i < nRemaining; i+=war.getMatchConfig().recruitGroup){
-        Entity* eUnitGroup;
+        //Entity* eUnitGroup;
         list<CUnit::ID>& deck = eArmy->get<CPlayer>()->unitDeck;
         CUnit unit = units[getRandom(deck)];
 
@@ -163,8 +163,8 @@ void ArmySystem::recordArmy(Entity* e){
 void ArmySystem::createArmy(Entity* e){
     e->get<CArmy>()->allUnits.clear();
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
-    double wField = 0.70*wWindow;
-    double step = wField/((war.getMatchConfig().nTurns+2)*2);
+    //double wField = 0.70*wWindow;
+    //double step = wField/((war.getMatchConfig().nTurns+2)*2);
     e->get<CArmy>()->x = 0;
 
     bool flip = e->get<CArmy>()->side == CPlayer::LEFT ? false:true;
@@ -328,7 +328,7 @@ void ArmySystem::onSystemAction(Entity* e){
                     eCaptain->get<CCaptain>()->actions.push_back(idAct);
                 }
             }
-            
+
             eArmy->get<CArmy>()->captain = nullptr;
             eArmy->get<CArmy>()->ready = false;
         }

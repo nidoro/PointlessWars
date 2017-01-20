@@ -1,6 +1,6 @@
 #include "MainMenuSystem.h"
 
-MainMenuSystem::MainMenuSystem(){
+MainMenuSystem::MainMenuSystem() {
     addSubscription(CREATE_SCREEN);
     addSubscription(CHANGE_MENU_PAGE);
     addSubscription(CREATE_PLAYER_EDITOR);
@@ -330,7 +330,7 @@ void MainMenuSystem::createMenu(bool animated){
         eObj->add(new CDraw(CDraw::GUI));
         eObj->addObservedEntity("Anchor", eLogo);
         eObj->attachEmployer(eLogo);
-        
+
         ///MUSIC
         Entity* eMusic = eManager->createEntity();
         eMusic->add(new CMusic("main-theme.ogg"));
@@ -339,8 +339,8 @@ void MainMenuSystem::createMenu(bool animated){
     }
 
     /// BUTTONS
-    double x = 100;
-    double y = 100;
+    //double x = 100;
+    //double y = 100;
     double wButton = 180;
     double hButton = 50;
     double xRel, yRel;
@@ -475,7 +475,7 @@ void MainMenuSystem::updatePlayers(){
     tinyxml2::XMLElement* element = doc.FirstChildElement();
 
     CProfile profile;
-    for (element; element != nullptr; element = element->NextSiblingElement()){
+    for (    ; element != nullptr; element = element->NextSiblingElement()){
         profile.name = element->Value();
     }
 }
@@ -504,8 +504,8 @@ void MainMenuSystem::createPlayerSelect(){
     double y0 = 250;
     double x = x0;
     double y = y0;
-    double w = 60;
-    double h = 60;
+    //double w = 60;
+    //double h = 60;
 
     for(list<CProfile>::iterator i = profiles.begin(); i != profiles.end(); i++){
         CProfile profile = *i;
@@ -555,7 +555,7 @@ void MainMenuSystem::loadProfiles(){
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement("Profile");
 
-    for (element; element != nullptr; element = element->NextSiblingElement("Profile")){
+    for (    ; element != nullptr; element = element->NextSiblingElement("Profile")){
         CProfile profile;
         profile.name = string(element->FirstChildElement("Name")->GetText());
         profile.charName = element->FirstChildElement("Char")->GetText();
@@ -695,7 +695,7 @@ void MainMenuSystem::saveProfile(Entity* e){
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement("Profile");
-    for(node; node != nullptr; node = node->NextSibling()){
+    for(    ; node != nullptr; node = node->NextSibling()){
         tinyxml2::XMLElement* elm = node->ToElement();
         if (string(elm->FirstChildElement("Name")->GetText()) == prvName) break;
     }
@@ -786,7 +786,7 @@ void MainMenuSystem::deleteProfile(Entity* e){
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement("Profile");
-    for(node; node != nullptr; node = node->NextSibling()){
+    for(    ; node != nullptr; node = node->NextSibling()){
         tinyxml2::XMLElement* elm = node->ToElement();
         if (string(elm->FirstChildElement("Name")->GetText()) == name) break;
     }

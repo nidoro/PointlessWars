@@ -73,7 +73,7 @@ bool Config::loadConfigFile(string file){
         printf("config.xml will be created.\n");
     }else{
         tinyxml2::XMLElement* el = doc.FirstChildElement();
-        for(el; el != nullptr; el = el->NextSiblingElement()){
+        for( ; el != nullptr; el = el->NextSiblingElement()){
             string element = el->Value();
             if (element == "Resolution"){
                 setResolution(el->IntAttribute("width"), el->IntAttribute("height"));
@@ -100,6 +100,7 @@ bool Config::loadConfigFile(string file){
 
     validateValues();
     saveConfigFile(file);
+    return true;
 }
 
 bool Config::saveConfigFile(string name){
@@ -120,6 +121,7 @@ bool Config::saveConfigFile(string name){
         sprintf(str, "<QuickStart>%s</QuickStart>\n", quickStart.c_str()); file << str;
     }
     file.close();
+    return true;
 }
 
 void Config::validateValues(){
@@ -141,7 +143,7 @@ void Config::validateValues(){
             resolution.y = sf::VideoMode::getDesktopMode().height;
         }
     }
-    
+
     if (!language.empty() && !contains(getSupportedLanguages(), language)){
         language = "en";
     }
@@ -172,13 +174,13 @@ std::list<std::string> Config::getSupportedLanguages(){
             }
         }
     }
-    
+
     return supportedLanguages;
 }
 
 bool isVideoModeSupported(sf::VideoMode mode){
     std::vector<sf::VideoMode> supported = sf::VideoMode::getFullscreenModes();
-    for (int i = 0; i < supported.size(); i++){
+    for (unsigned int i = 0; i < supported.size(); i++){
         if (supported[i] == mode) return true;
     }
     return false;

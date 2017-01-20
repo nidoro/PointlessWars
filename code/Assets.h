@@ -1,5 +1,6 @@
 #ifndef ASSETS_H
 #define ASSETS_H
+
 #include <map>
 #include <cstring>
 #include <string>
@@ -48,7 +49,7 @@ struct Animation{
     Message endMessage;
 };
 
-struct Buff{
+struct Buff {
     enum ID{
         NONE,
         FORMATION_SQUARE,
@@ -199,6 +200,8 @@ struct NinePatch{
     double wMin, hMin;
 };
 
+char* mallocFile(string filename, int& length);
+
 class Assets{
     public:
         Assets();
@@ -300,7 +303,5 @@ class Assets{
           
         static std::string appDataDir;
 };
-
-char* mallocFile(string filename, int& length);
 
 #endif // ASSETS_H

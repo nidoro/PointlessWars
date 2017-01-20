@@ -186,7 +186,7 @@ void ScreenSystem::onUpdateFullscreenWithToggleButton(Entity* e){
                     config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
     window->setVerticalSyncEnabled(true);
     window->setMouseCursorVisible(false);
-            
+
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
 void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
@@ -216,12 +216,13 @@ void ScreenSystem::createLanguageMenu(Entity* e){
             flags[i] = "es-flag";
         }
     }
-    
+
     double spacing = 70;
     double x = cxWindow - (flags.size()-1)*spacing/2.f;
     double y = cyWindow;
     for (auto& i : flags){
-        Entity* eObj = createFlagButton(i.second, i.first, x, y);
+        //Entity* eObj = createFlagButton(i.second, i.first, x, y);
+        createFlagButton(i.second, i.first, x, y);
         x += spacing;
     }
 }
@@ -242,7 +243,7 @@ Entity* ScreenSystem::createFlagButton(std::string flag, std::string lan, double
     e->add(new CStringMessage(lan));
     e->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
     e->get<CButtonTrigger>()->msgs.push_back(START_SCREEN_TRANSITION);
-    
+
     return e;
 }
 
@@ -258,22 +259,21 @@ void ScreenSystem::onChooseLanguage(Entity* e){
 
 
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

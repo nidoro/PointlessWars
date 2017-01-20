@@ -129,6 +129,7 @@ bool War::getSystemReady(){
 
 bool War::getPeerReady(){
     //return peerReady;
+    return false;
 }
 
 void War::setPeerReady(bool b){

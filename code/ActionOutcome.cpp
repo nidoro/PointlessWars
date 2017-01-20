@@ -6,7 +6,7 @@ ActionOutcome::ActionOutcome(){
 
 sf::Packet& operator <<(sf::Packet& packet, const ActionOutcome& outcome){
     packet << sf::Int32(outcome.action);
-    
+
     packet << sf::Int32(outcome.idActor);
     packet << sf::Int32(outcome.idEnemy);
 

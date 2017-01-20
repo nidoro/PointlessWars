@@ -3216,7 +3216,7 @@ void ScriptedAnimation::scriptRollingStones(Entity* e){
 
         ///DEFENDER
         double t3 = getTravelTime(cxWindow, eDef->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, speed2);
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1+t3, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
@@ -3257,7 +3257,7 @@ void ScriptedAnimation::scriptStalactite(Entity* e){
         eObj->add(new CDimensions(20, 40));
 
         ///DEFENDER
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eDef->get<CUnit>()->aDeath));
             //eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
@@ -3888,7 +3888,7 @@ void ScriptedAnimation::scriptFlamingArrows(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aHurt));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(hurtDuration, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-hit-1.wav"));
@@ -3927,7 +3927,7 @@ void ScriptedAnimation::scriptLongbow(Entity* e){
         double angle = getAngleToHit2(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, projSpeed, gravity);
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
         ///DEFENDER
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-hit-2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
@@ -4031,7 +4031,7 @@ void ScriptedAnimation::scriptMakeItRain(Entity* e){
 
 
         ///DEFENDER
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(xCloud, 0, cxArmy, 0, 100), eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
@@ -4383,7 +4383,7 @@ void ScriptedAnimation::scriptDaggerRain(Entity* e){
 
         ///DEFENDER
         double deathTime = randomDouble(4, 6);
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
@@ -4482,7 +4482,7 @@ void ScriptedAnimation::scriptThrowScimitar(Entity* e){
         double travelTime = getDistance(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y)/projSpeed;
 
         ///DEFENDER
-        if (it->id == UnitActionOutcome::DIED){
+        if (it->id == TargetOutcome::DIED){
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-scimitar-hit.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
@@ -4533,7 +4533,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
                                           projSpeed);
 
         ///DEFENDER
-        if (out.id == TargetOutcome::DIED){
+        if (out.id == UnitActionOutcome::DIED){
             if (!died[eDef]){
                 whoDiedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 died[eDef] = true;
@@ -4853,7 +4853,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
 
 
         ///DEFENDER
-        if (out.id == TargetOutcome::DIED){
+        if (out.id == UnitActionOutcome::DIED){
             if (!died[eDef]){
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
@@ -4990,7 +4990,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
 
 
         ///DEFENDER
-        if (out.id == TargetOutcome::DIED){
+        if (out.id == UnitActionOutcome::DIED){
             if (!died[eDef]){
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
@@ -5153,7 +5153,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
 
 
         ///DEFENDER
-        if (out.id == TargetOutcome::DIED){
+        if (out.id == UnitActionOutcome::DIED){
             if (!died[eDef]){
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
@@ -5319,7 +5319,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
         double t0 = tStart + tTravel;
 
         ///DEFENDER
-        if (out.id == TargetOutcome::DIED){
+        if (out.id == UnitActionOutcome::DIED){
             if (!died[eDef]){
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
@@ -5487,7 +5487,7 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (out.id == TargetOutcome::DIED){
+        if (out.id == UnitActionOutcome::DIED){
             if (!died[eDef]){
                 whoDiedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 died[eDef] = true;

@@ -3,14 +3,14 @@
 DebugServices* DebugServices::instance = nullptr;
 
 DebugServices::DebugServices() : clockDebugStart(std::clock()),
-                                 outputStream(std::cout.rdbuf()),
-                                 errorOutputStream(std::cout.rdbuf()),
                                  maxStoredTimedBlockEntries(30000),
                                  maxStoredWatchedVariableEntries(30000),
                                  maxStoredMessages(30000),
                                  maxShowedWatchedVariableEntries(100),
                                  maxShowedTimedBlockEntries(100),
-                                 maxShowedMessages(100){
+                                 maxShowedMessages(100),
+                                 outputStream(std::cout.rdbuf()),
+                                 errorOutputStream(std::cout.rdbuf()){
 
 }
 
@@ -85,7 +85,7 @@ void DebugServices::showUI(){
                         ImGui::PushItemWidth(60);
                         ImGui::Text("%s = %s (at instant %.4fs)", i.name.c_str(), i.value.c_str(), i.timeStamp);
                         ImGui::PopItemWidth();
-                        if (++showCount >= maxShowedWatchedVariableEntries) break;
+                        if ((unsigned) ++showCount >= maxShowedWatchedVariableEntries) break;
                     }
                     ImGui::TreePop();
                 }

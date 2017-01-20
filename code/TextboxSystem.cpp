@@ -26,7 +26,7 @@ void TextboxSystem::update(){
 
                 e->get<CTypingEffect>()->clock.restart();
                 e->get<CTypingEffect>()->iNextChar++;
-                if (e->get<CTypingEffect>()->iNextChar >= e->get<CTypingEffect>()->fullText.size()){
+                if ((unsigned) e->get<CTypingEffect>()->iNextChar >= e->get<CTypingEffect>()->fullText.size()){
                     e->remove(Component::TYPING_EFFECT);
                     eManager->addModified(e);
                 }

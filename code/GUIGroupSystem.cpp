@@ -56,23 +56,23 @@ void GUIGroupSystem::createWindowGameOptions(Entity* e){
 
     eGUI->getObservedEntity("page-game-options")->addObservedEntity("window", eGUI);
 
-    Entity* eObj;
+    //Entity* eObj;
 
     ///================
     /// First page:
     ///================
-    double wButton = 180;
-    double hButton = 40;
-    double spcButton = 50;
+    //double wButton = 180;
+    //double hButton = 40;
+    //double spcButton = 50;
     double wPanel = 290;
     double hPanel = 350;
     double xPanel = cxWindow;
     double yPanel = cyWindow + 100;
 
-    double x0 = xPanel;
-    double y0 = yPanel - hPanel/2 + 30;
-    double x = x0;
-    double y = y0;
+    //double x0 = xPanel;
+    //double y0 = yPanel - hPanel/2 + 30;
+    //double x = x0;
+    //double y = y0;
 
     sf::Color darkBlue(15, 30, 60);
 
@@ -110,8 +110,8 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     ///================
     /// First page:
     ///================
-    double wButton = 180;
-    double hButton = 40;
+    //double wButton = 180;
+    //double hButton = 40;
     double spcButton = 50;
     double wPanel = 290;
     double hPanel = 350;
@@ -213,8 +213,8 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
 
     Entity* eObj;
 
-    double wButton = 180;
-    double hButton = 40;
+    //double wButton = 180;
+    //double hButton = 40;
     double spcButton = 50;
     double wPanel = 290;
     double hPanel = 350;
@@ -237,7 +237,7 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CDraw(CDraw::GUI_00));
     eGUI->add(new CUILayer(CUILayer::L1));
-    
+
     ///================
     /// First page:
     ///================
@@ -270,7 +270,7 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
     eObj->get<CButtonTrigger>()->hotkey = sf::Keyboard::Escape;
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
     eObj->addObservedEntity("remove-gui-group", eGUI);
-    
+
     /// Game Options
     y += spcButton;
     eObj = createRectButton(Assets::getString("LABEL-OPTIONS"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CHANGE_WINDOW_PAGE, eGUI->get<CUILayer>()->layer);
@@ -281,7 +281,7 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
     y += spcButton;
     eObj = createRectButton(Assets::getString("LABEL-QUIT"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CREATE_GUI_GROUP, eGUI->get<CUILayer>()->layer);
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
-    
+
     Entity* eAux = eManager->createEntity();
     eAux->add(new CGUIGroup("window", "leave-match-confirmation"));
     eAux->add(new CUILayer(CUILayer::L3));
@@ -292,16 +292,16 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
     /// Options page:
     ///================
     initializeGameOptionsPage(eGUI, false);
-    
+
     return eGUI;
 }
 void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
     /// Assumes that e has a CGUIGroup, a page of name game-options and a CUILayer
-    
-    double wButton = 180;
-    double hButton = 40;
+
+    //double wButton = 180;
+    //double hButton = 40;
     double spcButton = 50;
-    double wPanel = 290;
+    //double wPanel = 290;
     double hPanel = 350;
     double xPanel = cxWindow;
     double yPanel = closeOnEsc ? cyWindow + 100 : cyWindow;
@@ -310,9 +310,9 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
     double y0 = yPanel - hPanel/2 + 30;
     double x = x0;
     double y = y0;
-    
+
     sf::Color darkBlue(15, 30, 60);
-    
+
     Entity* eObj;
     /// Title
     eObj = eManager->createEntity();
@@ -339,7 +339,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
 
     double sliderSize = 125;
     double hText;
-    
+
     /// SFX LABEL
     y += spcButton;
     eObj = eManager->createEntity();
@@ -419,7 +419,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
     /// RESOLUTION DROP LIST
     list<string> resStrings;
     unsigned int bbp = sf::VideoMode::getFullscreenModes()[0].bitsPerPixel;
-    for (int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
+    for (unsigned int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
         if (sf::VideoMode::getFullscreenModes()[i].bitsPerPixel != bbp) continue;
         resStrings.push_back(int2str(sf::VideoMode::getFullscreenModes()[i].width) + " x " + int2str(sf::VideoMode::getFullscreenModes()[i].height));
     }
@@ -511,7 +511,7 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e){
     double wPanel = 450;
     double hPanel = 100;
     CUILayer::Layer uiLayer = e->get<CUILayer>()->layer;
-    
+
     Entity* eInfoWin;
     eInfoWin = eManager->createEntity();
     eInfoWin->add(new CPosition(xPanel, yPanel));
@@ -527,7 +527,7 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e){
     y = yPanel;
     double spacing = 30;
     double hSpacing = 100;
-    
+
     /// Dark background
     eObj = eManager->createEntity();
     eObj->add(new CRectShape(wWindow, hWindow, sf::Color(0,0,0,100)));
@@ -535,7 +535,7 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e){
     eObj->add(new CPosition(cxWindow, cyWindow));
     eObj->get<CDraw>()->alpha = 150;
     eObj->attachEmployer(eInfoWin);
-    
+
     /// Message
     eObj = eManager->createEntity();
     eObj->add(new CPosition(x, y - spacing/2));
@@ -561,6 +561,8 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e){
     eObj->attachEmployer(eInfoWin);
     eObj->addObservedEntity("remove-gui-group", eInfoWin);
     eObj->get<CButtonTrigger>()->msgs = {REMOVE_GUI_GROUP};
+
+    return eInfoWin;
 }
 Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
     /// e has CGUIGroup, CDraw and CUILayer
@@ -584,8 +586,8 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
     ///================
     /// First page:
     ///================
-    double wButton = 180;
-    double hButton = 40;
+    //double wButton = 180;
+    //double hButton = 40;
     double spcButton = 50;
     double wPanel = 290;
     double hPanel = 350;

@@ -27,7 +27,7 @@ void AnimationSystem::update(){
 }
 void AnimationSystem::updateFrame(Entity* e){
     Animation animation = Assets::getAnimation(e->get<CAnimation>()->current);
-    if (e->get<CAnimation>()->clock.getElapsedTime().asSeconds() >= animation.rate || e->get<CAnimation>()->update){
+    if (e->get<CAnimation>()->clock.getElapsedTime().asSeconds() >= animation.rate || e->get<CAnimation>()->update) {
         if (!e->get<CAnimation>()->update){
             e->get<CAnimation>()->frame = (e->get<CAnimation>()->frame+1) % animation.nFrames;
         }else{

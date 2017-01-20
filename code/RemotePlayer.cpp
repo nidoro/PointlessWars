@@ -9,7 +9,7 @@ RemotePlayer::~RemotePlayer(){
 }
 
 void RemotePlayer::update(){
-    for (Entity* e : entities){
+    //for (Entity* e : entities){
 
-    }
+    //}
 }

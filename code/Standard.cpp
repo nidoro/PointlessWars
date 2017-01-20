@@ -117,7 +117,7 @@ bool contains(vector<int> l, int v){
 
 string toUpper(string str){
     string s;
-    for(int i = 0; i < str.size(); i++){
+    for(unsigned int i = 0; i < str.size(); i++){
         s.push_back(toupper(str[i]));
     }
     return s;
@@ -144,7 +144,7 @@ void clearBuff(char* buff, int size){
 }
 
 bool checkNumOnly(string str){
-    for(int i = 0; i < str.size(); i++){
+    for(unsigned int i = 0; i < str.size(); i++){
         char c = str[i];
         if (!(c >= 48 && c <= 57)){
             return false;

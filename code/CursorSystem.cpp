@@ -16,7 +16,7 @@ void CursorSystem::update(){
         sf::Vector2f cursorPosition = window->mapPixelToCoords(mousePosition);
         e->get<CPosition>()->x = cursorPosition.x;
         e->get<CPosition>()->y = cursorPosition.y;
-        
+
         if (e->has(Component::PARTICLE_EMMITER)){
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
                 e->get<CParticleEmmiter>()->on = true;

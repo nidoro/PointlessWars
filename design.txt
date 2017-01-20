@@ -4,7 +4,7 @@
 1. Deve estar sujeito à todas as limitações técnicas dos programadores 
    envolvidos:
     1.1 Deve ser em C++.
-    1.2 Deve ser 2D.
+    1.2 Deve utilizar somente tecnologia 2D.
     1.3 Deve ter câmera estática.
     1.4 Se multiplayer for necessário, não deve ser jogo em tempo-real.
     1.5 Deve trabalhar com animações por sprite.

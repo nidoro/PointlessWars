@@ -44,7 +44,7 @@ void TooltipSystem::onButtonLostFocus(Entity* e){
     if (e->has(Component::TOOLTIP)){
         if (e->get<CTooltip>()->isShowing){
             Entity* eTip = e->getObservedEntity("Tooltip");
-            
+
             eManager->removeEntity(eTip);
 
             e->removeObservedEntity("Tooltip");
@@ -73,7 +73,7 @@ void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e){
 
     double yOff = 30;
     double marginWidth = 10;
-    
+
     string text;
     int armySize = getCurrentArmyCompositionSize(e);
     int maxArmySize = getMaxArmySize(e);
@@ -85,7 +85,7 @@ void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e){
         return;
     }
     Entity* eTip = eManager->createEntity();
-    
+
     eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
     double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
     double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
@@ -163,7 +163,7 @@ void TooltipSystem::createUnitTooltip(Entity* e){
 
     double xAux, yAux;
     double wAux = 0;
-    double hAux = 0;
+    //double hAux = 0;
     double w = 150;
     double h = 166;
     double yOff = 54;
@@ -218,8 +218,8 @@ void TooltipSystem::createUnitTooltip(Entity* e){
     vector<Entity*> resIcons(CUnit::N_DAMAGE_TYPES);
 
     double wBarFull = 10 + 30 + 15/2 + 3*15 + 10;
-    double hBar = 10;
-    double wBarUnit = wBarFull/3;
+    //double hBar = 10;
+    //double wBarUnit = wBarFull/3;
     xAux = x - wBarFull/2 + 30/2 + 10;
 
     for(int i = 0; i < CUnit::N_DAMAGE_TYPES; i++){
@@ -308,7 +308,7 @@ void TooltipSystem::createCaptainActionTooltip(Entity* e){
 
     double xOff = 30;
     double marginWidth = 10;
-    
+
     std::string panelTexture = "9p-tooltip-bg-03.png";
 
     string str;
@@ -338,7 +338,7 @@ void TooltipSystem::createFormationTooltip(Entity* e){
     double marginWidth = 10;
 
     string text = toUpper(act.name) + ": " + act.description;
-    
+
     eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
     double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
     double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
@@ -364,7 +364,7 @@ void TooltipSystem::createBattleClosureTooltip(Entity* e){
     double marginWidth = 10;
 
     string text = toUpper(act.name) + ": " + act.description;
-    
+
     eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
     double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
     double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
@@ -382,7 +382,7 @@ void TooltipSystem::createBattleClosureTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createEffectTooltip(Entity* e){    
+void TooltipSystem::createEffectTooltip(Entity* e){
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
@@ -390,7 +390,7 @@ void TooltipSystem::createEffectTooltip(Entity* e){
     double marginWidth = 10;
 
     string text = toUpper(act.name) + ": " + act.description;
-    
+
     eTip->add(new CTextbox2(text, Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black, 0, 0, CTextbox2::NORMAL));
     double w = eTip->get<CTextbox2>()->content.getLocalBounds().width + 2*marginWidth;
     double h = eTip->get<CTextbox2>()->content.getLocalBounds().height + 2*marginWidth;
@@ -414,8 +414,8 @@ void TooltipSystem::createCaptainTooltip(Entity* e){
 
     double xOff = 30;
     std::string panelTexture = "9p-scroll-horizontal.png";
-    double topMargin = 10;
-    double leftMargin = 20;
+    //double topMargin = 10;
+    //double leftMargin = 20;
 
     string str;
     bool firstOne = true;
@@ -446,7 +446,7 @@ void TooltipSystem::createCaptainTooltip(Entity* e){
 void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yOffPanel){
     Entity* eTip = eManager->createEntity();
     CCaptain cap = *e->get<CCaptain>();
-    
+
     double itemSpacing = 20.f;
     double fontSize1 = 16.f;
     double fontSize2 = 12.f;
@@ -463,39 +463,39 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     CTextbox2 txtBoxCaptainName = txtBox;
     txtBoxCaptainName.content.setString(Assets::getString(cap.strName));
     txtBoxCaptainName.align = CTextbox2::CENTRALIZED;
-    
+
     std::list<CTextbox2> txtBoxActions;
     for (auto& i : cap.actions){
         if (i == 202) continue;
         std::string txt;
         txt += toUpper(Assets::getString(CAction::Map[i].strName)) + ": ";
         txt += Assets::getString(CAction::Map[i].strDescription);
-        
+
         CTextbox2 txtBoxAction = txtBox;
         txtBoxAction.content.setString(txt);
         txtBoxAction.align = CTextbox2::NORMAL;
         txtBoxAction.content.setCharacterSize(fontSize2);
         txtBoxActions.push_back(txtBoxAction);
-        
+
         wPanel = max(wPanel, (double)txtBoxAction.content.getLocalBounds().width);
         hPanel += txtBoxAction.content.getLocalBounds().height + itemSpacing;
     }
     wPanel += 2.f*leftMargin;
     hPanel += 2.f*topMargin;
-    
+
     //set offsets relative to panel
     double yOffItem = -hPanel/2.f + topMargin;
-    
+
     txtBoxCaptainName.xOff = 0.f;
     txtBoxCaptainName.yOff = yOffItem;
-    
+
     for (auto& box : txtBoxActions){
         yOffItem += itemSpacing;
         box.xOff = -wPanel/2.f + leftMargin;
         box.yOff = yOffItem;
         yOffItem += box.content.getLocalBounds().height;
     }
-    
+
     //create entities
     Entity* eItem;
     //Panel
@@ -509,14 +509,14 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     eItem->add(new CDimensions(wPanel, hPanel));
     eItem->add(new CDraw(CDraw::GUI1));
     eTip->attachEmployee(eItem);
-    
+
     //Name
     eItem = eManager->createEntity();
     eItem->add(new CPosition(xPanel, yPanel));
     eItem->add(new CDraw(CDraw::GUI2));
     eItem->add(new CTextbox2(txtBoxCaptainName));
     eTip->attachEmployee(eItem);
-    
+
     //Actions
     for (auto& box : txtBoxActions){
         eItem = eManager->createEntity();
@@ -530,7 +530,7 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     string str;
     string capName = Assets::getString(e->get<CCaptain>()->strName);
     str += toUpper(capName);
-    
+
     CTextbox2 txtBox("", Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::Black);
 
     bool firstOne = true;
@@ -608,6 +608,6 @@ int TooltipSystem::getCurrentArmyCompositionSize(Entity* e){
 int TooltipSystem::getMaxArmySize(Entity* e){
     Entity* eOptions = e->getObservedEntity("UnitOptions");
     EntityList options = eOptions->getObservedEntities();
-    return options.front()->get<CSpinButton>()->max;    
+    return options.front()->get<CSpinButton>()->max;
 }
 

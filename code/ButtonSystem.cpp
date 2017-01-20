@@ -162,8 +162,8 @@ void ButtonSystem::updateButtonTexture(Entity* e){
 
 void ButtonSystem::updateButtonColor(Entity* e){
     CButtonState* cState = e->get<CButtonState>();
-    sf::Color color = e->get<CSimpleButton>()->shape.getFillColor();
-    sf::Color defColor = e->get<CSimpleButton>()->defaultColor;
+    //sf::Color color = e->get<CSimpleButton>()->shape.getFillColor();
+    //sf::Color defColor = e->get<CSimpleButton>()->defaultColor;
     if (cState->state == CButtonState::NON_ACTIVE){
         e->get<CSimpleButton>()->shape.setFillColor(e->get<CSimpleButton>()->defaultColor);
     }else if (cState->state == CButtonState::HOVERED){
@@ -240,7 +240,7 @@ void ButtonSystem::onKeyReleased(Entity* e){
             continue;
         }
         */
-        if (uiLayers.top() != CUILayer::NONE && (eBt->has(Component::UI_LAYER) &&  eBt->get<CUILayer>()->layer != uiLayers.top())
+        if ((uiLayers.top() != CUILayer::NONE && (eBt->has(Component::UI_LAYER) &&  eBt->get<CUILayer>()->layer != uiLayers.top()))
         || (uiLayers.top() != CUILayer::NONE && !eBt->has(Component::UI_LAYER))){
             continue;
         }

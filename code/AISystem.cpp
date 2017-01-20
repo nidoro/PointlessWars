@@ -19,7 +19,7 @@ void AISystem::update(){
                 e->get<CAInt>()->waitingOnBrain = false;
             }
         }
-        
+
         if (e->get<CAInt>()->actionSelected){
             notify(ACTION_SELECTED);
             //e->get<CAInt>()->actionSelected = false;
@@ -78,16 +78,17 @@ void AISystem::onSystemAction(Entity* e){
     }else if (war.getSystemAction() == War::ASSIGN_RANDOM_ARMY){
         eActor->get<CAInt>()->brainDelay = 0.f;
     }
-    
+
     eActor->get<CAInt>()->actionSelected = false;
     eActor->get<CAInt>()->brainClock.restart();
     eActor->get<CAInt>()->waitingOnBrain = true;
-    
+
 }
 
 void AISystem::selectBattleClosure(Entity* e){
     vector<CAction::ID> actions;
-    Entity* eCap = e->get<CArmy>()->captain;
+    //unused:
+    //Entity* eCap = e->get<CArmy>()->captain;
 
     for(int i = 400; i <= 403; i++){
         actions.push_back(i);
@@ -154,8 +155,9 @@ void AISystem::selectArmyAction(Entity* e){
 
 void AISystem::assembleArmy(Entity* e){
     if (!war.getMatchConfig().randomArmy){
+        //unused:
+        //Entity* eOptions = eManager->createEntity();
         list<CUnit::ID> options;
-        Entity* eOptions = eManager->createEntity();
         list<CUnit::ID> unitDeck;
         for (list<CUnit::ID>::iterator it = e->get<CPlayer>()->unitDeck.begin(); it != e->get<CPlayer>()->unitDeck.end(); it++){
             if (CUnit::Map[*it].damage != e->get<CArmy>()->prohibitedDamageType){
@@ -165,12 +167,13 @@ void AISystem::assembleArmy(Entity* e){
                 //it++;
             }
         }
-        
+
         e->get<CArmy>()->unitCount.clear();
         if (!unitDeck.empty()){
             selectRandomUnits(options, unitDeck, war.getMatchConfig().nUnitOpt);
 
-            map<CUnit::ID, CUnit>& units = CUnit::Map;
+            //unused:
+            //map<CUnit::ID, CUnit>& units = CUnit::Map;
 
             //choose randomly
             int nUnits = 0;
@@ -185,7 +188,7 @@ void AISystem::assembleArmy(Entity* e){
                 nUnits += war.getMatchConfig().recruitGroup;
             }
         }
-        
+
         war.getNextActionOutcome(e->get<CPlayer>()->id).action = 511;
     }
 }

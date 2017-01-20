@@ -32,8 +32,8 @@ void InGameMenu::create(){
 
     Entity* eObj;
 
-    double w = 180;
-    double h = 40;
+    //double w = 180;
+    //double h = 40;
     double spacing = 50;
     double x0 = cxWindow;
     double y0 = cyWindow - spacing/2;
@@ -121,7 +121,7 @@ void InGameMenu::create(){
     /// RESOLUTION DROP LIST
     list<string> resStrings;
     unsigned int bbp = sf::VideoMode::getFullscreenModes()[0].bitsPerPixel;
-    for (int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
+    for (unsigned int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
         if (sf::VideoMode::getFullscreenModes()[i].bitsPerPixel != bbp) continue;
         resStrings.push_back(int2str(sf::VideoMode::getFullscreenModes()[i].width) + " x " + int2str(sf::VideoMode::getFullscreenModes()[i].height));
     }
@@ -209,7 +209,7 @@ void InGameMenu::onChangeMenuPage(Entity* e){
 }
 
 CInGameMenuPage::ID InGameMenu::getPage(Entity* e){
-    for (int i = 0; i < pages.size(); i++){
+    for (unsigned int i = 0; i < pages.size(); i++){
         for (Entity* eObj : pages[i]){
             if (eObj == e) return (CInGameMenuPage::ID) i;
         }
@@ -329,7 +329,7 @@ void InGameMenu::onHasChangedValue(Entity* e){
                           "Pointless Wars",
                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
             window->setVerticalSyncEnabled(true);
-            window->setMouseCursorVisible(false);            
+            window->setMouseCursorVisible(false);
 
             config.saveConfigFile("config.xml");
         }

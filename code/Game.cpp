@@ -10,7 +10,7 @@ Game::~Game(){
 
 void Game::start(){
     helper::initializeAppDataDirectory();
-    
+
     srand(time(nullptr));
     sf::ContextSettings ctx;
     ctx.antialiasingLevel = 0;
@@ -18,7 +18,7 @@ void Game::start(){
     System::config.loadConfigFile(helper::getAppDataDir() + "/config.xml");
     if (!System::config.getLanguage().empty()) Assets::readStrings(System::config.getLanguage());
     else                                       Assets::readStrings("en");
-    
+
     Assets::load();
     System::config.setWindowIcon(Assets::getTexture("icon-v3.png"));
 
@@ -29,19 +29,16 @@ void Game::start(){
     window.setIcon(System::config.getWindowIcon().getSize().x, System::config.getWindowIcon().getSize().y, System::config.getWindowIcon().getPixelsPtr());
 
     window.setVerticalSyncEnabled(true);
-    //window.setFramerateLimit(60);
 
-	//ImGui::SFML::Init(window);
     DBG_SERVICES.initialize(&window);
-    ImGui::SFML::Init(window);
+    //ImGui::SFML::Init(window);
 
     window.setMouseCursorVisible(false);
-    initializeSystem(new CursorSystem());
 
     initializeSystem(new NetworkSystem());
+    initializeSystem(new CursorSystem());
     initializeSystem(new AnimationSystem());
     initializeSystem(new WarSystem());
-    //initializeSystem(new StateMachine());
     initializeSystem(new ScenarioSystem());
     initializeSystem(new CustomMatchSystem());
     initializeSystem(new MainMenuSystem());
@@ -86,11 +83,6 @@ void Game::start(){
 
     initializeSystem(new RenderSystem(), -1);
 
-    ERROR_MESSAGE("EEitaaa");
-
-    //window.close();
-    //window.create(sf::VideoMode(winSize.x, winSize.y), "Pointless Wars", sf::Style::Default);
-
     System::notify(GAME_STARTED);
     Entity* eInput = eManager.createEntity();
     eInput->add(new CTextInput());
@@ -106,7 +98,7 @@ void Game::start(){
 
         sf::Event ev;
         while(window.pollEvent(ev)){
-			ImGui::SFML::ProcessEvent(ev);
+			//ImGui::SFML::ProcessEvent(ev);
 
             if (ev.type == sf::Event::Closed){
                 System::notify(WINDOW_CLOSED);
@@ -141,7 +133,7 @@ void Game::start(){
             }
 
         }
-
+        
         int nSys = 0;
         for (auto sys : systems){
             if (nSys > 0){
@@ -149,7 +141,7 @@ void Game::start(){
                 if (updated && !networkReadyToUpdate){
                     updatedAfterNetwork[nSys] = true;
                     networkReadyToUpdate = true;
-                    for (int i = 1; i < updatedAfterNetwork.size(); i++){
+                    for (unsigned int i = 1; i < updatedAfterNetwork.size(); i++){
                         if (!updatedAfterNetwork[i]){
                             networkReadyToUpdate = false;
                             break;
@@ -158,7 +150,7 @@ void Game::start(){
                 }
             }else if (networkReadyToUpdate){
                 if (sys->checkAndUpdate()){
-                    for (int i = 1; i < updatedAfterNetwork.size(); i++){
+                    for (unsigned int i = 1; i < updatedAfterNetwork.size(); i++){
                         updatedAfterNetwork[i] = false;
                         networkReadyToUpdate = false;
                     }
@@ -166,7 +158,12 @@ void Game::start(){
             }
             nSys++;
         }
-
+        
+        /*
+        for (auto& sys : systems) {
+            sys->checkAndUpdate();
+        }
+         */
         if (eManager.updated()){
             for (auto sys : systems){
                 sys->updateEntities();

@@ -104,11 +104,12 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
     double x = cxWindow + sign*xOff;
     double y = yOff;
     double w = 30;
-    double h = 40;
+    //unused:
+    //double h = 40;
 
     string color = e->get<CArmy>()->side == CPlayer::LEFT ? "blue":"red";
 
-    if (e->get<CArmyHUD>()->medals.size() < e->get<CArmy>()->score){
+    if (e->get<CArmyHUD>()->medals.size() < (unsigned)e->get<CArmy>()->score){
         Entity* eObj = eManager->createEntity();
         eObj->add(new CAnimation(false, "medal-" + color + "-idle.png"));
         //eObj->add(new CDimensions(30, 40));
@@ -120,7 +121,7 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
 
         //OLD MEDALS
         double xMed = x + sign*w/2, yMed = y;
-        for(int i = 0; i < e->get<CArmyHUD>()->medals.size()-1; i++){
+        for(unsigned int i = 0; i < e->get<CArmyHUD>()->medals.size()-1; i++){
             Entity* eMed = e->get<CArmyHUD>()->medals[i];
             xMed = eMed->get<CPosition>()->x;
             yMed = eMed->get<CPosition>()->y;
@@ -143,8 +144,8 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
 
                 eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
                 eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
-    }else if (e->get<CArmyHUD>()->medals.size() > e->get<CArmy>()->score){
-        for(int i = 0; i < e->get<CArmyHUD>()->medals.size(); i++){
+    }else if (e->get<CArmyHUD>()->medals.size() > (unsigned) e->get<CArmy>()->score){
+        for(unsigned int i = 0; i < e->get<CArmyHUD>()->medals.size(); i++){
             eManager->removeEntity(e->get<CArmyHUD>()->medals[i]);
         }
         e->get<CArmyHUD>()->medals.clear();
@@ -153,8 +154,9 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e){
 
 void ArmyHUDSystem::updateNAlive(Entity* e){
     double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
-    double w = 30;
-    double h = 30;
+    //unused:
+    //double w = 30;
+    //double h = 30;
     double xOff = 70;
     double yOff = 70;
     double x = cxWindow + sign*(xOff);
@@ -192,15 +194,16 @@ void ArmyHUDSystem::updateNAlive(Entity* e){
 void ArmyHUDSystem::animateAliveCounterIn(Entity* e){
     double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double w = 30;
-    double h = 30;
+    //unused:
+    //double h = 30;
     double xOff = 70;
-    double yOff = 70;
+    //double yOff = 70;
     double xTarget = cxWindow + sign*(xOff+60/2+(w-5)/2-2);
     double speed = 40;
-    double tAux;
+    //double tAux;
 
     Entity* eCounter = e->get<CArmyHUD>()->eNAlive;
-    double xCurrent = eCounter->get<CPosition>()->x;
+    //double xCurrent = eCounter->get<CPosition>()->x;
     double yCurrent = eCounter->get<CPosition>()->y;
 
     eCounter->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, yCurrent, speed));
@@ -208,16 +211,16 @@ void ArmyHUDSystem::animateAliveCounterIn(Entity* e){
 
 void ArmyHUDSystem::animateAliveCounterOut(Entity* e){
     double sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
-    double w = 30;
-    double h = 30;
+    //double w = 30;
+    //double h = 30;
     double xOff = 70;
-    double yOff = 70;
+    //double yOff = 70;
     double xTarget = cxWindow + sign*(xOff);
     double speed = 40;
-    double tAux;
+    //double tAux;
 
     Entity* eCounter = e->get<CArmyHUD>()->eNAlive;
-    double xCurrent = eCounter->get<CPosition>()->x;
+    //double xCurrent = eCounter->get<CPosition>()->x;
     double yCurrent = eCounter->get<CPosition>()->y;
 
     eCounter->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, yCurrent, speed));
@@ -515,10 +518,10 @@ void ArmyHUDSystem::animateUnitIn(Entity* eCompound){
 void ArmyHUDSystem::animateCaptainIn(Entity* e){
     double yTarget = 70;
     double speed = 150;
-    double tAux;
+    //double tAux;
 
     double xCurrent = e->get<CPosition>()->x;
-    double yCurrent = e->get<CPosition>()->y;
+    //double yCurrent = e->get<CPosition>()->y;
 
     e->get<CActor>()->timeline.push_back(new AMove(0.0, xCurrent, yTarget, speed));
 }
@@ -526,10 +529,10 @@ void ArmyHUDSystem::animateCaptainIn(Entity* e){
 void ArmyHUDSystem::updateUnits(Entity* e){
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
-    double yOff = 70;
+    //double yOff = 70;
     double dx = 50;
     double x = cxWindow + sign*xOff;
-    double y = yOff;
+    //double y = yOff;
     bool hFlip = sign == -1? false:true;
     bool rearrange = false;
 
@@ -555,7 +558,7 @@ void ArmyHUDSystem::updateUnits(Entity* e){
     e->get<CArmyHUD>()->unitDisplayers = newList;
 
     //spacing between icon and displayer
-    double spacing = 30;
+    //double spacing = 30;
 
     ///CREATE NEW DISPLAYERS
     EntityList newOnes;
@@ -689,9 +692,9 @@ void ArmyHUDSystem::updateUnits(Entity* e){
 void ArmyHUDSystem::arrangeUnits(Entity* e){
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
-    double yOff = 70;
+    //double yOff = 70;
     double x = cxWindow + sign*xOff;
-    double y = yOff;
+    //double y = yOff;
     double speed = 50;
     double dx = 50;
 
@@ -710,9 +713,9 @@ void ArmyHUDSystem::arrangeUnits(Entity* e){
 void ArmyHUDSystem::arrangeEffects(Entity* e){
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
-    double yOff = 130;
+    //double yOff = 130;
     double x = cxWindow + sign*xOff;
-    double y = yOff;
+    //double y = yOff;
     double speed = 50;
     double dx = 50;
 
@@ -750,7 +753,7 @@ void ArmyHUDSystem::updateEffects(Entity* e){
         oldEffects.push_back(it->first);
     }
 
-    bool rearrange = false;
+    //bool rearrange = false;
     int nEffects = effects.size();
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     double xOff = 160;
@@ -785,7 +788,7 @@ void ArmyHUDSystem::updateEffects(Entity* e){
             e->get<CArmyHUD>()->effects.insert(make_pair(*i, eIcon));
             animateButtonInPuff(eIcon, 0.0);
             x += sign*dx;
-            rearrange = true;
+            //rearrange = true;
         }
     }
 
@@ -797,7 +800,7 @@ void ArmyHUDSystem::updateEffects(Entity* e){
             animateButtonOutPuff(e->get<CArmyHUD>()->effects[*i], 0.0);
             map<CAction::ID, Entity*>::iterator it = e->get<CArmyHUD>()->effects.find(*i);
             e->get<CArmyHUD>()->effects.erase(it);
-            rearrange = true;
+            //rearrange = true;
         }
     }
 
@@ -812,9 +815,9 @@ void ArmyHUDSystem::updateCoin(Entity* e){
         int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
         double xOff = 50;
         double yOff = 90;
-        double x = cxWindow + sign*xOff;
-        double y = yOff;
-        bool hFlip = sign == -1? false:true;
+        //double x = cxWindow + sign*xOff;
+        //double y = yOff;
+        //bool hFlip = sign == -1? false:true;
 
         Entity* eCoin = eManager->createEntity();
         eCoin->add(new CPosition(cxWindow + sign*xOff, yOff));
@@ -898,7 +901,7 @@ void ArmyHUDSystem::onHighlightUnits(Entity* e){
         for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
             Entity* eUnit = *i;
             if (eUnit->get<CUnit>()->dead) continue;
-            CUnitHighlight2::Info info = e->get<CHighlightTrigger>()->info;
+            //CUnitHighlight2::Info info = e->get<CHighlightTrigger>()->info;
             int value = e->get<CHighlightTrigger>()->value;
             eUnit->get<CUnitHighlight2>()->state = CUnitHighlight2::ON;
             eUnit->get<CUnitHighlight2>()->info = CUnitHighlight2::RESISTANCE;
@@ -909,7 +912,7 @@ void ArmyHUDSystem::onHighlightUnits(Entity* e){
         for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
             Entity* eUnit = *i;
             if (eUnit->get<CUnit>()->dead) continue;
-            CUnitHighlight2::Info info = e->get<CHighlightTrigger>()->info;
+            //CUnitHighlight2::Info info = e->get<CHighlightTrigger>()->info;
             int value = e->get<CHighlightTrigger>()->value;
             eUnit->get<CUnitHighlight2>()->state = CUnitHighlight2::ON;
             eUnit->get<CUnitHighlight2>()->info = CUnitHighlight2::RESISTANCE;

@@ -46,7 +46,7 @@ EntityList pickNRandom(EntityList& L, int n){
     EntityList LL;
     int c = 0;
     while(++c <= n){
-        if (c > L.size()){
+        if ((unsigned) c > L.size()){
             LC = L;
         }
         Entity* el = pickRandom(LC);
@@ -135,7 +135,7 @@ void Entity::removeObservedEntity(string id){
 
 void Entity::removeObservedEntity(Entity* e){
     map<string, Entity*>::iterator it = observedEntities.begin();
-    for(it; it != observedEntities.end(); it++){
+    for(    ; it != observedEntities.end(); it++){
         if (it->second == e) break;
     }
     if (it != observedEntities.end()) observedEntities.erase(it);

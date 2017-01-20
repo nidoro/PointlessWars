@@ -40,7 +40,7 @@ void DropListSystem::onExpandDropList(Entity* e){
     }
 
     double hTotal = e->get<CDropList>()->values.size() * dy;
-    double wTotal = e->get<CDropList>()->values.size() * dx;
+    //double wTotal = e->get<CDropList>()->values.size() * dx;
 
     if (e->get<CDropList>()->direction == CDropList::DOWN){
         hTotal = e->get<CDropList>()->values.size() * dy;

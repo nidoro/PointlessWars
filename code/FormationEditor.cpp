@@ -76,8 +76,8 @@ void FormationEditor::onDeleteFormation(Entity* e){
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement(nameFormation.c_str());
-    tinyxml2::XMLElement* element;
-    tinyxml2::XMLElement* elPositions;
+    //tinyxml2::XMLElement* element;
+    //tinyxml2::XMLElement* elPositions;
     if (node == nullptr){
         return;
     }else{
@@ -264,7 +264,7 @@ void FormationEditor::create(){
     eBack->add(new CTexture("background-woods-01.png"));
     eBack->add(new CDraw(CDraw::BACKGROUND));
 
-    Entity* eObj;
+    //Entity* eObj;
 
     createGrid();
     createUnits();
@@ -284,8 +284,8 @@ void FormationEditor::createMenu(){
     double h = (row-1)*uy;
     double wButton = 90;
     double hButton = 30;
-    double x0 = cxWindow + w + wButton/2;
-    double y0 = cyWindow - h/2 + hButton/2;
+    //double x0 = cxWindow + w + wButton/2;
+    //double y0 = cyWindow - h/2 + hButton/2;
     double x = cxWindow + w/2 - 1*wButton;
     double y = cyWindow - h/2 - hButton/2 - uy/2;
 
@@ -302,18 +302,22 @@ void FormationEditor::createMenu(){
     eLoad->add(new CDisplayer(CDisplayer::DROP_LIST_VALUE, eLoad));
 
     x = cxWindow + w/2;
-    Entity* eObj;
-    eObj = createButton(Assets::getString("LABEL-LOAD"), wButton, hButton, x, y, LOAD_FORMATION);
+    //Entity* eObj;
+    //eObj = createButton(Assets::getString("LABEL-LOAD"), wButton, hButton, x, y, LOAD_FORMATION);
+    createButton(Assets::getString("LABEL-LOAD"), wButton, hButton, x, y, LOAD_FORMATION);
 
     x = cxWindow + w/2 + 1*wButton;
-    eObj = createButton(Assets::getString("LABEL-DELETE"), wButton, hButton, x, y, DELETE_FORMATION);
+    //eObj = createButton(Assets::getString("LABEL-DELETE"), wButton, hButton, x, y, DELETE_FORMATION);
+    createButton(Assets::getString("LABEL-DELETE"), wButton, hButton, x, y, DELETE_FORMATION);
 
     x = cxWindow + w/2 - 0.5*wButton;
     y = cyWindow + h/2 + hButton/2 + uy/2;
-    eObj = createButton(Assets::getString("LABEL-CLEAR"), wButton, hButton, x, y, CLEAR_FORMATION_EDITOR);
+    //eObj = createButton(Assets::getString("LABEL-CLEAR"), wButton, hButton, x, y, CLEAR_FORMATION_EDITOR);
+    createButton(Assets::getString("LABEL-CLEAR"), wButton, hButton, x, y, CLEAR_FORMATION_EDITOR);
 
     x = cxWindow + w/2 + 0.5*wButton;
-    eObj = createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
+    //eObj = createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
+    createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
 }
 
 void FormationEditor::clearGrid(){
@@ -472,7 +476,7 @@ void FormationEditor::updateLoadOptions(){
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement();
 
-    for (element; element != nullptr; element = element->NextSiblingElement()){
+    for (    ; element != nullptr; element = element->NextSiblingElement()){
         CFormation formation;
         formation.name = element->Value();
         string strPos = element->FirstChildElement("Positions")->GetText();
