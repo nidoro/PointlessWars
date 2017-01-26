@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class EditorSystem : public System{
+class EditorSystem : public System {
     public:
         EditorSystem();
         ~EditorSystem();

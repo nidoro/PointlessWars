@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class DragDropSystem : public System{
+class DragDropSystem : public System {
     public:
         DragDropSystem();
         ~DragDropSystem();

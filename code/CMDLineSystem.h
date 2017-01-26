@@ -4,7 +4,7 @@
 #include "System.h"
 #include <thread>
 
-class CMDLineSystem : public System{
+class CMDLineSystem : public System {
     public:
         CMDLineSystem();
         ~CMDLineSystem();

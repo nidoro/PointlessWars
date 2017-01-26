@@ -5,7 +5,7 @@
 #include "Standard.h"
 using namespace sf;
 
-class ButtonSystem : public System{
+class ButtonSystem : public System {
     public:
         ButtonSystem();
         ~ButtonSystem();

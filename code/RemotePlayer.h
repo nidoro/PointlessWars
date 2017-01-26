@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class RemotePlayer : public System{
+class RemotePlayer : public System {
     public:
         RemotePlayer();
         ~RemotePlayer();

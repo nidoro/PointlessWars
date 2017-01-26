@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class ParticleSystem : public System{
+class ParticleSystem : public System {
     public:
         ParticleSystem();
         ~ParticleSystem();

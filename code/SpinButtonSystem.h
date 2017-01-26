@@ -5,8 +5,8 @@
 #include "Standard.h"
 #include "Assets.h"
 
-struct SpinButtonStyle{
-    enum Align{VERTICAL, HORIZONTAL};
+struct SpinButtonStyle {
+    enum Align {VERTICAL, HORIZONTAL};
 
     string btIncreaseDef;
     string btIncreaseHov;
@@ -21,7 +21,7 @@ struct SpinButtonStyle{
     Align align;
 };
 
-class SpinButtonSystem : public System{
+class SpinButtonSystem : public System {
     public:
         SpinButtonSystem();
         ~SpinButtonSystem();

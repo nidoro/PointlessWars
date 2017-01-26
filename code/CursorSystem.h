@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class CursorSystem : public System{
+class CursorSystem : public System {
     public:
         CursorSystem();
         ~CursorSystem();

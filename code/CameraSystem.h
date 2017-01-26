@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class CameraSystem : public System{
+class CameraSystem : public System {
     public:
         CameraSystem();
         ~CameraSystem();

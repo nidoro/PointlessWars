@@ -1,6 +1,6 @@
 #include "FormationEditor.h"
 
-FormationEditor::FormationEditor(){
+FormationEditor::FormationEditor() {
     addSubscription(CREATE_SCREEN);
     addSubscription(LOAD_FORMATION);
     addSubscription(SAVE_FORMATION);
@@ -12,23 +12,23 @@ FormationEditor::FormationEditor(){
     active = false;
 }
 
-FormationEditor::~FormationEditor(){
+FormationEditor::~FormationEditor() {
     //dtor
 }
 
-void FormationEditor::update(){
+void FormationEditor::update() {
     if (!active) return;
     const int col = 15;
     const int row = 23;
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
-            if (positions[i][j]->get<CCheckBox>()->on){
-                if (order[i][j]->get<CButtonState>()->state == CButtonState::LOCKED){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
+            if (positions[i][j]->get<CCheckBox>()->on) {
+                if (order[i][j]->get<CButtonState>()->state == CButtonState::LOCKED) {
                     order[i][j]->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
                 }
                 units[i][j]->get<CDraw>()->isHidden = false;
-            }else{
-                if (order[i][j]->get<CInputTextBox>()->state == CInputTextBox::ACTIVE){
+            } else {
+                if (order[i][j]->get<CInputTextBox>()->state == CInputTextBox::ACTIVE) {
                     notify(DEACTIVATE_INPUT_TEXT_BOX);
                 }
                 order[i][j]->get<CInputTextBox>()->content = "";
@@ -40,12 +40,12 @@ void FormationEditor::update(){
     }
 }
 
-void FormationEditor::onLoadFormation(Entity* e){
+void FormationEditor::onLoadFormation(Entity* e) {
     string nameFormation = eLoad->get<CDropList>()->value;
     if (nameFormation.empty()) return;
     CFormation F;
-    for(list<CFormation>::iterator i = formations.begin(); i != formations.end(); i++){
-        if (i->name == nameFormation){
+    for(list<CFormation>::iterator i = formations.begin(); i != formations.end(); i++) {
+        if (i->name == nameFormation) {
             F = *i;
             break;
         }
@@ -56,9 +56,9 @@ void FormationEditor::onLoadFormation(Entity* e){
     const int col = 15;
     const int row = 23;
 
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
-            if (F.positions[i][col-1-j] > 0){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
+            if (F.positions[i][col-1-j] > 0) {
                 notify(TOGGLE_CHECK_BOX, positions[i][j]);
                 order[i][j]->get<CInputTextBox>()->content = int2str(F.positions[i][col-1-j]);
                 order[i][j]->get<CInputTextBox>()->charCount = int2str(F.positions[i][col-1-j]).size();
@@ -67,20 +67,20 @@ void FormationEditor::onLoadFormation(Entity* e){
     }
 }
 
-void FormationEditor::onDeleteFormation(Entity* e){
+void FormationEditor::onDeleteFormation(Entity* e) {
     string nameFormation = eLoad->get<CDropList>()->value;
 
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/formations.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement(nameFormation.c_str());
     //tinyxml2::XMLElement* element;
     //tinyxml2::XMLElement* elPositions;
-    if (node == nullptr){
+    if (node == nullptr) {
         return;
-    }else{
+    } else {
         doc.DeleteNode(node);
     }
 
@@ -90,23 +90,23 @@ void FormationEditor::onDeleteFormation(Entity* e){
     eLoad->get<CDropList>()->value = "";
 }
 
-void FormationEditor::onSaveFormation(Entity* e){
+void FormationEditor::onSaveFormation(Entity* e) {
     string name = eSave->get<CInputTextBox>()->content;
 
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/formations.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement(name.c_str());
     tinyxml2::XMLElement* element;
     tinyxml2::XMLElement* elPositions;
-    if (node == nullptr){
+    if (node == nullptr) {
         element = doc.NewElement(name.c_str());
         elPositions = doc.NewElement("Positions");
         doc.InsertEndChild(element);
         element->InsertEndChild(elPositions);
-    }else{
+    } else {
         element = node->ToElement();
         elPositions = element->FirstChildElement("Positions");
     }
@@ -116,12 +116,12 @@ void FormationEditor::onSaveFormation(Entity* e){
 
     std::stringstream ss;
     ss << '\n';
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
             int value = 0;
-            if (positions[i][col-1-j]->get<CCheckBox>()->on){
+            if (positions[i][col-1-j]->get<CCheckBox>()->on) {
                 value = 1;
-                if (str2int(order[i][col-1-j]->get<CInputTextBox>()->content) > 0){
+                if (str2int(order[i][col-1-j]->get<CInputTextBox>()->content) > 0) {
                     value = str2int(order[i][col-1-j]->get<CInputTextBox>()->content);
                 }
             }
@@ -137,12 +137,12 @@ void FormationEditor::onSaveFormation(Entity* e){
 
     updateLoadOptions();
 }
-void FormationEditor::onBtFormationSave(Entity* e){
+void FormationEditor::onBtFormationSave(Entity* e) {
     notify(LOCK_ALL_BUTTONS);
     createSaveInputTextBox();
 }
 
-void FormationEditor::createSaveInputTextBox(){
+void FormationEditor::createSaveInputTextBox() {
     double width = wWindow;
     double height = hWindow;
     double xc = cxWindow;
@@ -235,30 +235,35 @@ void FormationEditor::createSaveInputTextBox(){
     notify(END_PANEL);
 }
 
-void FormationEditor::onCreateScreen(Entity* e){
-    switch(e->get<CScreen>()->id){
-        case CScreen::FORMATION_EDITOR: eManager->clearSystem(); create(); notify(NEW_SCREEN); break;
-        default: break;
+void FormationEditor::onCreateScreen(Entity* e) {
+    switch(e->get<CScreen>()->id) {
+    case CScreen::FORMATION_EDITOR:
+        eManager->clearSystem();
+        create();
+        notify(NEW_SCREEN);
+        break;
+    default:
+        break;
     }
 }
 
-void FormationEditor::clearPositions(){
+void FormationEditor::clearPositions() {
     const int col = 15;
     const int row = 23;
 
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
             positions[i][j]->get<CCheckBox>()->on = false;
             positions[i][j]->get<CTexture>()->file = positions[i][j]->get<CCheckBox>()->offTexture;
         }
     }
 }
 
-void FormationEditor::onClearFormationEditor(Entity* e){
+void FormationEditor::onClearFormationEditor(Entity* e) {
     clearPositions();
 }
 
-void FormationEditor::create(){
+void FormationEditor::create() {
     Entity* eBack = eManager->createEntity();
     eBack->add(new CPosition(cxWindow, cyWindow));
     eBack->add(new CTexture("background-woods-01.png"));
@@ -274,7 +279,7 @@ void FormationEditor::create(){
     active = true;
 }
 
-void FormationEditor::createMenu(){
+void FormationEditor::createMenu() {
     const int col = 15;
     const int row = 23;
 
@@ -320,7 +325,7 @@ void FormationEditor::createMenu(){
     createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
 }
 
-void FormationEditor::clearGrid(){
+void FormationEditor::clearGrid() {
     positions.clear();
     order.clear();
 
@@ -328,15 +333,15 @@ void FormationEditor::clearGrid(){
     const int row = 23;
     positions = vector< vector<Entity*> >(row, vector<Entity*>(col));
     order = vector< vector<Entity*> >(row, vector<Entity*>(col));
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
             positions[i][j] = nullptr;
             order[i][j] = nullptr;
         }
     }
 }
 
-void FormationEditor::createUnits(){
+void FormationEditor::createUnits() {
     double uxFormation = 16;
     double uyFormation = 13;
     double hFormation = 23*uyFormation;
@@ -354,8 +359,8 @@ void FormationEditor::createUnits(){
 
     units.clear();
     units = vector< vector<Entity*> >(row, vector<Entity*>(col));
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
             Entity* eUnit = eManager->createEntity();
             eUnit->add(new CUnit(CUnit::Map[id]));
             eUnit->add(new CAnimation(false, CUnit::Map[id].aIdle));
@@ -370,7 +375,7 @@ void FormationEditor::createUnits(){
     }
 }
 
-void FormationEditor::createGrid(){
+void FormationEditor::createGrid() {
     clearGrid();
 
     const int col = 15;
@@ -393,7 +398,7 @@ void FormationEditor::createGrid(){
     eObj->add(new CTexture("back-formation-grid.png"));
     eObj->add(new CDraw(CDraw::GUI));
 
-    for(int i = 0; i < col; i++){
+    for(int i = 0; i < col; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x, y));
         eObj->add(new CDraw(CDraw::GUI1));
@@ -406,7 +411,7 @@ void FormationEditor::createGrid(){
     x = x0;
     y = y0;
 
-    for(int i = 0; i < row; i++){
+    for(int i = 0; i < row; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x, y));
         eObj->add(new CDraw(CDraw::GUI1));
@@ -419,8 +424,8 @@ void FormationEditor::createGrid(){
     x = x0;
     y = y0;
 
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
             eObj = eManager->createEntity();
             eObj->add(new CPosition(x, y));
             eObj->add(new CDraw(CDraw::GUI2));
@@ -442,8 +447,8 @@ void FormationEditor::createGrid(){
     x = x0;
     y = y0;
 
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
             eObj = eManager->createEntity();
             eObj->add(new CPosition(x, y));
             eObj->add(new CDraw(CDraw::GUI3));
@@ -464,25 +469,25 @@ void FormationEditor::createGrid(){
     }
 }
 
-void FormationEditor::updateLoadOptions(){
+void FormationEditor::updateLoadOptions() {
     formations.clear();
     const int col = 15;
     const int row = 23;
 
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/formations.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Could not open formations.xml!\n");
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement();
 
-    for (    ; element != nullptr; element = element->NextSiblingElement()){
+    for (    ; element != nullptr; element = element->NextSiblingElement()) {
         CFormation formation;
         formation.name = element->Value();
         string strPos = element->FirstChildElement("Positions")->GetText();
         std::stringstream ss(strPos);
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
+        for(int i = 0; i < row; i++) {
+            for(int j = 0; j < col; j++) {
                 ss >> formation.positions[i][j];
             }
         }
@@ -490,12 +495,12 @@ void FormationEditor::updateLoadOptions(){
     }
 
     eLoad->get<CDropList>()->values.clear();
-    for(list<CFormation>::iterator i = formations.begin(); i != formations.end(); i++){
+    for(list<CFormation>::iterator i = formations.begin(); i != formations.end(); i++) {
         eLoad->get<CDropList>()->values.push_back(i->name);
     }
 }
 
-Entity* FormationEditor::createButton(string label, double w, double h, double x, double y, Message m){
+Entity* FormationEditor::createButton(string label, double w, double h, double x, double y, Message m) {
     Entity* e = eManager->createEntity();
     e->add(new CTexture());
     e->add(new CPosition(x, y));

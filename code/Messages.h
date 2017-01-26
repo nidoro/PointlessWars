@@ -2,7 +2,7 @@
 #define MESSAGES_H
 class Entity;
 
-enum Message{
+enum Message {
     EMPTY_MESSAGE,
 
     EXPAND_OPTION_BOX,
@@ -229,13 +229,13 @@ enum Message{
 
     SET_MATCH_CONFIG,
     START_MATCH,
-    
+
     GAME_STARTED,
     SPLASH_ENDED,
     UNIT_EFFECTS_UPDATED,
     UPDATE_EFFECTS,
     CHOOSE_LANGUAGE,
-    
+
     STOP_CONNECTION_TRY,
     CONNECTION_SUCCESSFUL,
     CONNECTION_LOST,

@@ -1,6 +1,6 @@
 #include "MatchConfig.h"
 
-MatchConfig::MatchConfig(){
+MatchConfig::MatchConfig() {
     name = "Prototype";
     scenario = "scenario-00";
     nTurns = 3;
@@ -20,73 +20,73 @@ MatchConfig::MatchConfig(){
     unitPool.clear();
 }
 
-string xmldoc2string(tinyxml2::XMLDocument& doc, bool compact = true){
+string xmldoc2string(tinyxml2::XMLDocument& doc, bool compact = true) {
     tinyxml2::XMLPrinter printer(nullptr, compact);
     doc.Print(&printer);
     return string(printer.CStr());
 }
 
-sf::Packet& operator <<(sf::Packet& packet, tinyxml2::XMLDocument& doc){
+sf::Packet& operator <<(sf::Packet& packet, tinyxml2::XMLDocument& doc) {
     tinyxml2::XMLPrinter printer(nullptr, false);
     doc.Print(&printer);
     return packet << printer.CStr();
 }
-sf::Packet& operator >>(sf::Packet& packet, tinyxml2::XMLDocument& doc){
+sf::Packet& operator >>(sf::Packet& packet, tinyxml2::XMLDocument& doc) {
     string s;
     packet >> s;
     doc.Parse(s.c_str());
     return packet;
 }
 
-void MatchConfig::loadFromFile(string name){
+void MatchConfig::loadFromFile(string name) {
     MatchConfig();
 
     tinyxml2::XMLDocument doc;
     string path = helper::getAppDataDir() + "/match-config.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Could not open match-config.xml!\n");
         return;
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement("MatchConfig");
-    while (element){
+    while (element) {
         string configName = element->FirstChildElement("Name")->GetText();
-        if (configName == name){
+        if (configName == name) {
             break;
         }
         element = element->NextSiblingElement("MatchConfig");
     }
-    if (!element){
+    if (!element) {
         printf("Could not find match config %s\n", name.c_str());
         return;
     }
-/*
-    std::stringstream ssDocTest;
-    ssDocTest << "<Prototype>";
-        ssDocTest << "<Name>Prototype</Name>";
-        ssDocTest << "<HeroesPerPlayer>3</HeroesPerPlayer>";
-        ssDocTest << "<MaxBattles>NONE</MaxBattles>";
-        ssDocTest << "<Turns>3</Turns>";
-        ssDocTest << "<ArmySize>50</ArmySize>";
-        ssDocTest << "<UnitaryBlockChance>0.25</UnitaryBlockChance>";
-        ssDocTest << "<OptionsOnRebuild>16</OptionsOnRebuild>";
-        ssDocTest << "<RecruitGroup>10</RecruitGroup>";
-        ssDocTest << "<GoalScore>3</GoalScore>";
-        ssDocTest << "<RandomArmy>false</RandomArmy>";
-        ssDocTest << "<UnitPool>00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15</UnitPool>";
-        ssDocTest << "<HeroPool>00 01 02 03 04 05 06 07 08 09 10 11 12</HeroPool>";
-    ssDocTest << "</Prototype>";
+    /*
+        std::stringstream ssDocTest;
+        ssDocTest << "<Prototype>";
+            ssDocTest << "<Name>Prototype</Name>";
+            ssDocTest << "<HeroesPerPlayer>3</HeroesPerPlayer>";
+            ssDocTest << "<MaxBattles>NONE</MaxBattles>";
+            ssDocTest << "<Turns>3</Turns>";
+            ssDocTest << "<ArmySize>50</ArmySize>";
+            ssDocTest << "<UnitaryBlockChance>0.25</UnitaryBlockChance>";
+            ssDocTest << "<OptionsOnRebuild>16</OptionsOnRebuild>";
+            ssDocTest << "<RecruitGroup>10</RecruitGroup>";
+            ssDocTest << "<GoalScore>3</GoalScore>";
+            ssDocTest << "<RandomArmy>false</RandomArmy>";
+            ssDocTest << "<UnitPool>00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15</UnitPool>";
+            ssDocTest << "<HeroPool>00 01 02 03 04 05 06 07 08 09 10 11 12</HeroPool>";
+        ssDocTest << "</Prototype>";
 
-    tinyxml2::XMLDocument docTest;
-    docTest.Parse(ssDocTest.str().c_str());
+        tinyxml2::XMLDocument docTest;
+        docTest.Parse(ssDocTest.str().c_str());
 
-    sf::Packet pkt;
-    pkt << xmldoc2string(docTest, false);
-    tinyxml2::XMLDocument docOut;
-    pkt >> docOut;
+        sf::Packet pkt;
+        pkt << xmldoc2string(docTest, false);
+        tinyxml2::XMLDocument docOut;
+        pkt >> docOut;
 
-    string str = xmldoc2string(docOut, false);
-    cout << str << endl;
-*/
+        string str = xmldoc2string(docOut, false);
+        cout << str << endl;
+    */
 
     this->name = element->FirstChildElement("Name")->GetText();
     this->scenario = element->FirstChildElement("Scenery")->GetText();
@@ -104,12 +104,12 @@ void MatchConfig::loadFromFile(string name){
     string sValue;
 
     stringstream fileUnitPool(element->FirstChildElement("UnitPool")->GetText());
-    while(fileUnitPool >> sValue){
+    while(fileUnitPool >> sValue) {
         unitPool.push_back(str2int(sValue));
     }
 
     stringstream fileHeroPool(element->FirstChildElement("HeroPool")->GetText());
-    while(fileHeroPool >> sValue){
+    while(fileHeroPool >> sValue) {
         heroPool.push_back(str2int(sValue));
     }
 

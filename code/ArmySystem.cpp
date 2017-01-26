@@ -1,6 +1,6 @@
 #include "ArmySystem.h"
 
-ArmySystem::ArmySystem(){
+ArmySystem::ArmySystem() {
     addRequirement(Component::ARMY);
 
     addSubscription(PLAYER_CREATED);
@@ -19,18 +19,18 @@ ArmySystem::ArmySystem(){
     //addSubscription(PICK_HERO);
 }
 
-ArmySystem::~ArmySystem(){
+ArmySystem::~ArmySystem() {
     //dtor
 }
 
-void ArmySystem::update(){
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+void ArmySystem::update() {
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
         updateUnitCount(e);
     }
 }
 
-void ArmySystem::onPickHero(Entity* e){
+void ArmySystem::onPickHero(Entity* e) {
     Entity* eArmy = e->get<CParentPanel>()->e->get<COwner>()->e;
 
     CCaptain::ID id = e->get<CCaptain>()->id;
@@ -43,14 +43,27 @@ void ArmySystem::onPickHero(Entity* e){
     //eTurnDisplayer->get<CTextbox2>()->content.setString(eChooser->get<CPlayer>()->name + " is choosing a captain");
 }
 
-void ArmySystem::onAssignRandomArmy(Entity* e){
+void ArmySystem::onAssignRandomArmy(Entity* e) {
     clearArmy(e);
+#if 0
     createRandomArmy(e);
+#else
+    double xOff = 500;
+    e->get<CPosition>()->x = e->get<CPlayer>()->side == CPlayer::LEFT ? xOff : wWindow - xOff;
+    e->get<CPosition>()->y = cyWindow;
+    e->get<CArmy>()->unitCount.clear();
+
+    if (e->get<CPlayer>()->side == CPlayer::LEFT) {
+        e->get<CArmy>()->unitCount.insert(make_pair(1, 50));
+    } else {
+        e->get<CArmy>()->unitCount.insert(make_pair(2, 50));
+    }
+#endif
     createArmy(e);
     recordArmy(e);
 }
 
-void ArmySystem::onInitializePlayer(Entity* e){
+void ArmySystem::onInitializePlayer(Entity* e) {
     e->get<CArmy>()->captains.clear();
 
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
@@ -58,11 +71,9 @@ void ArmySystem::onInitializePlayer(Entity* e){
     double xSpawn = cxWindow + sign*wWindow/2 + sign*80;
     double ySpawn = cyWindow;
 
-    //double wField = 0.70*wWindow;
-    //double step = wField/((war.getMatchConfig().nTurns+1)*2);
     e->get<CArmy>()->x = 0;
 
-    for(auto& i : e->get<CPlayer>()->heroDeck){
+    for(auto& i : e->get<CPlayer>()->heroDeck) {
         CCaptain::ID id = i;
         Entity* eCap = eManager->createEntity();
         eCap->add(new CCaptain(CCaptain::Map[id]));
@@ -78,7 +89,7 @@ void ArmySystem::onInitializePlayer(Entity* e){
     }
 }
 
-void ArmySystem::createRandomArmy(Entity* e){
+void ArmySystem::createRandomArmy(Entity* e) {
     double xOff = 500;
     e->get<CPosition>()->x = e->get<CPlayer>()->side == CPlayer::LEFT ? xOff : wWindow - xOff;
     e->get<CPosition>()->y = cyWindow;
@@ -90,20 +101,20 @@ void ArmySystem::createRandomArmy(Entity* e){
 
     map<CUnit::ID, CUnit>& units = CUnit::Map;
 
-    for(int i = 0; i < nGroups; i++){
+    for(int i = 0; i < nGroups; i++) {
         list<CUnit::ID> deck = e->get<CPlayer>()->unitDeck;
         CUnit unit = units[getRandom(deck)];
 
         map<CUnit::ID, int>::iterator it = e->get<CArmy>()->unitCount.find(unit.id);
-        if (it == e->get<CArmy>()->unitCount.end()){
+        if (it == e->get<CArmy>()->unitCount.end()) {
             e->get<CArmy>()->unitCount.insert(make_pair(unit.id, groupSize));
-        }else{
+        } else {
             e->get<CArmy>()->unitCount[unit.id] += groupSize;
         }
     }
 }
 
-void ArmySystem::onCreateArmy(Entity* e){
+void ArmySystem::onCreateArmy(Entity* e) {
     Entity* eArmy = e->get<CCommandOption>()->eArmy;
     EntityList eOptions = e->get<CArmyComposition>()->eOptions;
     composeArmy(eArmy, eOptions);
@@ -112,13 +123,13 @@ void ArmySystem::onCreateArmy(Entity* e){
     e->get<CArmyComposition>()->composed = true;
 }
 
-void ArmySystem::onRecomposeArmy(Entity* e){
+void ArmySystem::onRecomposeArmy(Entity* e) {
     recomposeArmy(e);
     createArmy(e);
     recordArmy(e);
 }
 
-void ArmySystem::composeArmy(Entity* eArmy, EntityList eOptions){
+void ArmySystem::composeArmy(Entity* eArmy, EntityList eOptions) {
     double xOff = 500;
     eArmy->get<CPosition>()->x = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? xOff : wWindow - xOff;
     eArmy->get<CPosition>()->y = cyWindow;
@@ -127,40 +138,40 @@ void ArmySystem::composeArmy(Entity* eArmy, EntityList eOptions){
     map<CUnit::ID, CUnit>& units = CUnit::Map;
 
     int nUnits = 0;
-    for (EntityListIt i = eOptions.begin(); i != eOptions.end(); i++){
+    for (EntityListIt i = eOptions.begin(); i != eOptions.end(); i++) {
         Entity* eOpt = *i;
         CUnit::ID id = eOpt->get<CUnit>()->id;
-        if (eOpt->get<CSpinButton>()->value > 0){
+        if (eOpt->get<CSpinButton>()->value > 0) {
             eArmy->get<CArmy>()->unitCount.insert(make_pair(id, eOpt->get<CSpinButton>()->value));
             nUnits += eOpt->get<CSpinButton>()->value;
         }
     }
 
     int nRemaining = war.getMatchConfig().armySize - nUnits;
-    for(int i = 0; i < nRemaining; i+=war.getMatchConfig().recruitGroup){
+    for(int i = 0; i < nRemaining; i+=war.getMatchConfig().recruitGroup) {
         //Entity* eUnitGroup;
         list<CUnit::ID>& deck = eArmy->get<CPlayer>()->unitDeck;
         CUnit unit = units[getRandom(deck)];
 
         map<CUnit::ID, int>::iterator it = eArmy->get<CArmy>()->unitCount.find(unit.id);
-        if (it == eArmy->get<CArmy>()->unitCount.end()){
+        if (it == eArmy->get<CArmy>()->unitCount.end()) {
             eArmy->get<CArmy>()->unitCount.insert(make_pair(unit.id, war.getMatchConfig().recruitGroup));
-        }else{
+        } else {
             eArmy->get<CArmy>()->unitCount[unit.id] += war.getMatchConfig().recruitGroup;
         }
     }
 
 }
 
-void ArmySystem::recomposeArmy(Entity* eArmy){
+void ArmySystem::recomposeArmy(Entity* eArmy) {
     eArmy->get<CArmy>()->unitCount = eArmy->get<CArmy>()->lastArmy;
 }
 
-void ArmySystem::recordArmy(Entity* e){
+void ArmySystem::recordArmy(Entity* e) {
     e->get<CArmy>()->lastArmy = e->get<CArmy>()->unitCount;
 }
 
-void ArmySystem::createArmy(Entity* e){
+void ArmySystem::createArmy(Entity* e) {
     e->get<CArmy>()->allUnits.clear();
     int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
     //double wField = 0.70*wWindow;
@@ -173,10 +184,10 @@ void ArmySystem::createArmy(Entity* e){
     double xSpawn = cxWindow + sign*wWindow/2 + sign*wSpawn;
     double ySpawn = cyWindow;
 
-    for(map<CUnit::ID, int>::iterator i = e->get<CArmy>()->unitCount.begin(); i != e->get<CArmy>()->unitCount.end(); i++){
+    for(map<CUnit::ID, int>::iterator i = e->get<CArmy>()->unitCount.begin(); i != e->get<CArmy>()->unitCount.end(); i++) {
         CUnit::ID id = i->first;
         int n = i->second;
-        for(int c = 0; c < n; c++){
+        for(int c = 0; c < n; c++) {
             Entity* eUnit = eManager->createEntity();
             eUnit->add(new CUnit(CUnit::Map[id]));
             eUnit->add(new COwner(e));
@@ -195,136 +206,136 @@ void ArmySystem::createArmy(Entity* e){
     }
 }
 
-void ArmySystem::onStartBattleState(Entity* e){
+void ArmySystem::onStartBattleState(Entity* e) {
     BattleState state = e->get<CBattle>()->state;
-    if (state.id == state.BETWEEN_TURNS){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    if (state.id == state.BETWEEN_TURNS) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             ///UNIT EFFECTS
-            for(EntityListIt j = eArmy->get<CArmy>()->allUnits.begin(); j != eArmy->get<CArmy>()->allUnits.end(); j++){
+            for(EntityListIt j = eArmy->get<CArmy>()->allUnits.begin(); j != eArmy->get<CArmy>()->allUnits.end(); j++) {
                 Entity* eUnit = *j;
                 map<CAction::ID, CAction>::iterator it;
                 IntList toErase;
-                for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++){
+                for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++) {
                     CAction::ID id = it->first;
                     if (eUnit->get<CUnit>()->effects[id].duration > 0) eUnit->get<CUnit>()->effects[id].duration--;
                     if (eUnit->get<CUnit>()->effects[id].duration == 0) toErase.push_back(id);
                 }
 
-                for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+                for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                     eUnit->get<CUnit>()->effects.erase(eUnit->get<CUnit>()->effects.find(*iter));
                 }
             }
             ///ARMY EFFECTS
             map<CAction::ID, CAction>::iterator it;
             IntList toErase;
-            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++){
+            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++) {
                 CAction::ID id = it->first;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration > 0) eArmy->get<CArmy>()->armyEffects[id].duration--;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration == 0) toErase.push_back(id);
             }
-            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                 eArmy->get<CArmy>()->armyEffects.erase(eArmy->get<CArmy>()->armyEffects.find(*iter));
             }
         }
-    }else if (state.id == state.ENDING){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (state.id == state.ENDING) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             ///ARMY EFFECTS
             map<CAction::ID, CAction>::iterator it;
             IntList toErase;
-            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++){
+            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++) {
                 CAction::ID id = it->first;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration == -1) toErase.push_back(id);
             }
-            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                 eArmy->get<CArmy>()->armyEffects.erase(eArmy->get<CArmy>()->armyEffects.find(*iter));
             }
             ///CAPTAIN ACTIONS
             Entity* eCaptain = eArmy->get<CArmy>()->captain;
             CCaptain::ID idCap = eCaptain->get<CCaptain>()->id;
-            for(IntListIt j = CCaptain::Map[idCap].actions.begin(); j != CCaptain::Map[idCap].actions.end(); j++){
+            for(IntListIt j = CCaptain::Map[idCap].actions.begin(); j != CCaptain::Map[idCap].actions.end(); j++) {
                 CAction::ID idAct = *j;
-                if (CAction::Map[idAct].oneTimeBattle && !contains(eCaptain->get<CCaptain>()->actions, idAct)){
+                if (CAction::Map[idAct].oneTimeBattle && !contains(eCaptain->get<CCaptain>()->actions, idAct)) {
                     eCaptain->get<CCaptain>()->actions.push_back(idAct);
                 }
             }
             eArmy->get<CArmy>()->captain = nullptr;
             eArmy->get<CArmy>()->ready = false;
         }
-    }else if (state.id == state.BEGINING){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (state.id == state.BEGINING) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             ///ARMY EFFECTS
             map<CAction::ID, CAction>::iterator it;
             IntList toErase;
-            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++){
+            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++) {
                 CAction::ID id = it->first;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration == -2) toErase.push_back(id);
             }
-            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                 eArmy->get<CArmy>()->armyEffects.erase(eArmy->get<CArmy>()->armyEffects.find(*iter));
             }
             eArmy->get<CArmy>()->ready = true;
         }
     }
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         updateUnitCount(*i);
     }
 }
 
-void ArmySystem::onSystemAction(Entity* e){
-    if (war.getSystemAction() == war.RECOMPOSE_ARMY){
+void ArmySystem::onSystemAction(Entity* e) {
+    if (war.getSystemAction() == war.RECOMPOSE_ARMY) {
         onRecomposeArmy(war.getActor());
-    }else if (war.getSystemAction() == war.BETWEEN_TURNS){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (war.getSystemAction() == war.BETWEEN_TURNS) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             ///UNIT EFFECTS
-            for(EntityListIt j = eArmy->get<CArmy>()->allUnits.begin(); j != eArmy->get<CArmy>()->allUnits.end(); j++){
+            for(EntityListIt j = eArmy->get<CArmy>()->allUnits.begin(); j != eArmy->get<CArmy>()->allUnits.end(); j++) {
                 Entity* eUnit = *j;
                 map<CAction::ID, CAction>::iterator it;
                 IntList toErase;
-                for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++){
+                for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++) {
                     CAction::ID id = it->first;
                     if (eUnit->get<CUnit>()->effects[id].duration > 0) eUnit->get<CUnit>()->effects[id].duration--;
                     if (eUnit->get<CUnit>()->effects[id].duration == 0) toErase.push_back(id);
                 }
 
-                for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+                for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                     eUnit->get<CUnit>()->effects.erase(eUnit->get<CUnit>()->effects.find(*iter));
                 }
             }
             ///ARMY EFFECTS
             map<CAction::ID, CAction>::iterator it;
             IntList toErase;
-            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++){
+            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++) {
                 CAction::ID id = it->first;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration > 0) eArmy->get<CArmy>()->armyEffects[id].duration--;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration == 0) toErase.push_back(id);
             }
-            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                 eArmy->get<CArmy>()->armyEffects.erase(eArmy->get<CArmy>()->armyEffects.find(*iter));
             }
         }
-    }else if (war.getSystemAction() == war.ENDING){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (war.getSystemAction() == war.ENDING) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             ///ARMY EFFECTS
             map<CAction::ID, CAction>::iterator it;
             IntList toErase;
-            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++){
+            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++) {
                 CAction::ID id = it->first;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration == -1) toErase.push_back(id);
             }
-            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                 eArmy->get<CArmy>()->armyEffects.erase(eArmy->get<CArmy>()->armyEffects.find(*iter));
             }
             ///CAPTAIN ACTIONS
             Entity* eCaptain = eArmy->get<CArmy>()->captain;
             CCaptain::ID idCap = eCaptain->get<CCaptain>()->id;
-            for(IntListIt j = CCaptain::Map[idCap].actions.begin(); j != CCaptain::Map[idCap].actions.end(); j++){
+            for(IntListIt j = CCaptain::Map[idCap].actions.begin(); j != CCaptain::Map[idCap].actions.end(); j++) {
                 CAction::ID idAct = *j;
-                if (CAction::Map[idAct].oneTimeBattle && !contains(eCaptain->get<CCaptain>()->actions, idAct)){
+                if (CAction::Map[idAct].oneTimeBattle && !contains(eCaptain->get<CCaptain>()->actions, idAct)) {
                     eCaptain->get<CCaptain>()->actions.push_back(idAct);
                 }
             }
@@ -332,35 +343,35 @@ void ArmySystem::onSystemAction(Entity* e){
             eArmy->get<CArmy>()->captain = nullptr;
             eArmy->get<CArmy>()->ready = false;
         }
-    }else if (war.getSystemAction() == war.BEGINING){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (war.getSystemAction() == war.BEGINING) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             ///ARMY EFFECTS
             map<CAction::ID, CAction>::iterator it;
             IntList toErase;
-            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++){
+            for(it = eArmy->get<CArmy>()->armyEffects.begin(); it != eArmy->get<CArmy>()->armyEffects.end(); it++) {
                 CAction::ID id = it->first;
                 if (eArmy->get<CArmy>()->armyEffects[id].duration == -2) toErase.push_back(id);
             }
-            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++){
+            for(IntListIt iter = toErase.begin(); iter != toErase.end(); iter++) {
                 eArmy->get<CArmy>()->armyEffects.erase(eArmy->get<CArmy>()->armyEffects.find(*iter));
             }
             eArmy->get<CArmy>()->ready = true;
         }
-    }else if (war.getSystemAction() == war.UPDATE_SCORE){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (war.getSystemAction() == war.UPDATE_SCORE) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             Entity* eArmy = *i;
             int score = eArmy->get<CArmy>()->score;
             CPlayer::ID id = eArmy->get<CPlayer>()->id;
             if (war.getBattleClosure() == war.ARMY_VS_ARMY
-            ||  war.getBattleClosure() == war.ALL_KILLED){
+                    ||  war.getBattleClosure() == war.ALL_KILLED) {
                 eArmy->get<CArmy>()->score = id == war.getBattleWinner() ? score+1 : 0;
 
-            }else if (war.getBattleClosure() == war.CONFINE
-                  ||  war.getBattleClosure() == war.MAN_VS_MAN){
+            } else if (war.getBattleClosure() == war.CONFINE
+                       ||  war.getBattleClosure() == war.MAN_VS_MAN) {
                 //eArmy->get<CArmy>()->score = id == war.getBattleWinner() ? score : 0;
 
-            }else if (war.getBattleClosure() == war.MERCY){
+            } else if (war.getBattleClosure() == war.MERCY) {
                 eArmy->get<CArmy>()->score = 0;
 
             }
@@ -368,43 +379,43 @@ void ArmySystem::onSystemAction(Entity* e){
             eArmy->get<CArmy>()->hasCoin = id == war.getFirstMover() ? true : false;
             notify(SCORE_UPDATED, eArmy);
         }
-    }else if (war.getSystemAction() == war.ANNOUNCE_VICTORY){
-        for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    } else if (war.getSystemAction() == war.ANNOUNCE_VICTORY) {
+        for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
             (*i)->get<CArmy>()->armyEffects.clear();
         }
     }
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         updateUnitCount(*i);
     }
 }
 
-void ArmySystem::clearArmy(Entity* e){
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+void ArmySystem::clearArmy(Entity* e) {
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
-        if (!eManager->isDead(eUnit)){
+        if (!eManager->isDead(eUnit)) {
             eManager->removeEntity(eUnit);
         }
     }
     e->get<CArmy>()->allUnits.clear();
 }
 
-EntityList ArmySystem::getAliveUnits(Entity* e){
+EntityList ArmySystem::getAliveUnits(Entity* e) {
     EntityList l;
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (!eUnit->get<CUnit>()->dead) l.push_back(eUnit);
     }
     return l;
 }
 
-void ArmySystem::updateUnitCount(Entity* e){
+void ArmySystem::updateUnitCount(Entity* e) {
     e->get<CArmy>()->nAlive = 0;
-    if (!e->get<CArmy>()->unitCount.empty()){
-        for(auto& i : e->get<CArmy>()->unitCount){
+    if (!e->get<CArmy>()->unitCount.empty()) {
+        for(auto& i : e->get<CArmy>()->unitCount) {
             i.second = 0;
         }
 
-        for(Entity* eUnit : e->get<CArmy>()->allUnits){
+        for(Entity* eUnit : e->get<CArmy>()->allUnits) {
             if (eUnit->get<CUnit>()->dead) continue;
             e->get<CArmy>()->unitCount[eUnit->get<CUnit>()->id]++;
             e->get<CArmy>()->nAlive++;

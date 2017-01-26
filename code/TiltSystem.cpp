@@ -1,12 +1,12 @@
 #include "TiltSystem.h"
 
-TiltSystem::TiltSystem(){
+TiltSystem::TiltSystem() {
     addRequirement(Component::ROTATION);
     addRequirement(Component::TILT);
 }
 
-void TiltSystem::update(){
-    for(Entity* e : entities){
+void TiltSystem::update() {
+    for(Entity* e : entities) {
         if (!hasRequirements(e)) continue;
         e->get<CTilt>()->angle += e->get<CTilt>()->tiltSpeed*delay;
         double angle = e->get<CTilt>()->angle;

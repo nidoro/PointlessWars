@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class MainMenuSystem : public System{
+class MainMenuSystem : public System {
     public:
         MainMenuSystem();
         ~MainMenuSystem();

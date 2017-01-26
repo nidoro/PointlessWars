@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class FadeSystem : public System{
+class FadeSystem : public System {
     public:
         FadeSystem();
         ~FadeSystem();

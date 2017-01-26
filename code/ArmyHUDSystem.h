@@ -5,7 +5,7 @@
 #include "Assets.h"
 
 
-class ArmyHUDSystem : public System{
+class ArmyHUDSystem : public System {
     public:
         ArmyHUDSystem();
         ~ArmyHUDSystem();

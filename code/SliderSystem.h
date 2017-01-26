@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class SliderSystem : public System{
+class SliderSystem : public System {
     public:
         SliderSystem();
         ~SliderSystem();

@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class ScrollListSystem : public System{
+class ScrollListSystem : public System {
     public:
         ScrollListSystem();
         ~ScrollListSystem();

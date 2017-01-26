@@ -1,6 +1,6 @@
 #include "ScreenSystem.h"
 
-ScreenSystem::ScreenSystem(){
+ScreenSystem::ScreenSystem() {
     addSubscription(GAME_STARTED);
     addSubscription(START_SCREEN_TRANSITION);
     addSubscription(CREATE_SCREEN);
@@ -14,33 +14,50 @@ ScreenSystem::ScreenSystem(){
     //addSubscription(RESUME_GAME);
 }
 
-ScreenSystem::~ScreenSystem(){
+ScreenSystem::~ScreenSystem() {
 
 }
 
-void ScreenSystem::update(){
+void ScreenSystem::update() {
     string windowName;
     windowName = "Pointless Wars";
     window->setTitle(windowName);
 }
 
-void ScreenSystem::onCreateScreen(Entity* e){
-    switch(e->get<CScreen>()->id){
-        case CScreen::SPLASH_1: eManager->clearSystem(); createSplash1(e); notify(NEW_SCREEN); break;
-        case CScreen::SPLASH_2: eManager->clearSystem(); createSplash2(e); notify(NEW_SCREEN); break;
-        case CScreen::MATCH: eManager->clearSystem(); createMatch(e); notify(NEW_SCREEN); break;
-        case CScreen::LANGUAGE_MENU: eManager->clearSystem(); createLanguageMenu(e); notify(NEW_SCREEN); break;
-        default: break;
+void ScreenSystem::onCreateScreen(Entity* e) {
+    switch(e->get<CScreen>()->id) {
+    case CScreen::SPLASH_1:
+        eManager->clearSystem();
+        createSplash1(e);
+        notify(NEW_SCREEN);
+        break;
+    case CScreen::SPLASH_2:
+        eManager->clearSystem();
+        createSplash2(e);
+        notify(NEW_SCREEN);
+        break;
+    case CScreen::MATCH:
+        eManager->clearSystem();
+        createMatch(e);
+        notify(NEW_SCREEN);
+        break;
+    case CScreen::LANGUAGE_MENU:
+        eManager->clearSystem();
+        createLanguageMenu(e);
+        notify(NEW_SCREEN);
+        break;
+    default:
+        break;
     }
 }
 
-void ScreenSystem::createCustomMatch(Entity* e){
+void ScreenSystem::createCustomMatch(Entity* e) {
 }
 
-void ScreenSystem::createMainMenu(Entity* e){
+void ScreenSystem::createMainMenu(Entity* e) {
 }
 
-void ScreenSystem::createSplash1(Entity* e){
+void ScreenSystem::createSplash1(Entity* e) {
     Entity* eObj;
     eObj = eManager->createEntity();
     eObj->add(new CPosition(cxWindow, cyWindow));
@@ -57,7 +74,7 @@ void ScreenSystem::createSplash1(Entity* e){
     notify(PLAY_MUSIC, eObj);
 }
 
-void ScreenSystem::createSplash2(Entity* e){
+void ScreenSystem::createSplash2(Entity* e) {
     Entity* eObj;
 
     double lineSpacing = 24;
@@ -97,11 +114,11 @@ void ScreenSystem::createSplash2(Entity* e){
     eObj->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("MESSAGE-SPLASH-SCREEN-03"), 5));
 }
 
-void ScreenSystem::createMatch(Entity* e){
+void ScreenSystem::createMatch(Entity* e) {
     notify(INITIALIZE_WAR, e);
 }
 
-void ScreenSystem::onStartScreenTransition(Entity* e){
+void ScreenSystem::onStartScreenTransition(Entity* e) {
     ///===========
     /// Blindfold
     ///===========
@@ -120,76 +137,76 @@ void ScreenSystem::onStartScreenTransition(Entity* e){
     //eManager->removeEntity(e);
 }
 
-void ScreenSystem::onBtNewGame(Entity* e){
+void ScreenSystem::onBtNewGame(Entity* e) {
     Entity* eScreen = eManager->createEntity();
     eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
     notify(START_SCREEN_TRANSITION, eScreen);
 }
 
-void ScreenSystem::onGameStarted(Entity* e){
+void ScreenSystem::onGameStarted(Entity* e) {
     //war.setMultiplayer(false);
     //onBtNewGame(e);
-/*
-    Entity* eScreen = eManager->createEntity();
-    eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
-    notify(START_SCREEN_TRANSITION, eScreen);
-*/
+    /*
+        Entity* eScreen = eManager->createEntity();
+        eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
+        notify(START_SCREEN_TRANSITION, eScreen);
+    */
     Entity* eScreen = eManager->createEntity();
     string quickStart = config.getQuickStart();
-    if (config.getLanguage().empty()){
+    if (config.getLanguage().empty()) {
         eScreen->add(new CScreen(CScreen::LANGUAGE_MENU, CScreen::FADE_BLACK));
-    }else if (!quickStart.empty()){
+    } else if (!quickStart.empty()) {
         notify(SET_MATCH_CONFIG, quickStart);
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
-    }else if (!config.getSkipIntro()){
+    } else if (!config.getSkipIntro()) {
         eScreen->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
-    }else{
+    } else {
         eScreen->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
     }
     eScreen->add(new CTimer(0.0, START_SCREEN_TRANSITION));
-/*
-*/
+    /*
+    */
 
 }
 
-void ScreenSystem::onOpenMenu(Entity* e){
+void ScreenSystem::onOpenMenu(Entity* e) {
 
 }
 
-void ScreenSystem::onResumeGame(Entity* e){
+void ScreenSystem::onResumeGame(Entity* e) {
 
 }
 
-void ScreenSystem::onNewCommandLine(Entity* e){
-    if ("new-game" == e->get<CCommandLine>()->command){
+void ScreenSystem::onNewCommandLine(Entity* e) {
+    if ("new-game" == e->get<CCommandLine>()->command) {
         war.setMultiplayer(false);
         onBtNewGame(e);
     }
 }
 
-void ScreenSystem::onKeyPressed(Entity* e){
-    if (e->get<CKeyboardInput>()->alt && e->get<CKeyboardInput>()->code == sf::Keyboard::Return){
+void ScreenSystem::onKeyPressed(Entity* e) {
+    if (e->get<CKeyboardInput>()->alt && e->get<CKeyboardInput>()->code == sf::Keyboard::Return) {
         config.setFullscreen(opposite(config.getFullscreen()));
         window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
-                      "Pointless Wars",
-                      config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+                       "Pointless Wars",
+                       config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
         window->setVerticalSyncEnabled(true);
         window->setMouseCursorVisible(false);
         config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
     }
 }
 
-void ScreenSystem::onUpdateFullscreenWithToggleButton(Entity* e){
+void ScreenSystem::onUpdateFullscreenWithToggleButton(Entity* e) {
     config.setFullscreen(e->get<CStringToggleButton>()->valueIndex == 0 ? true:false);
     window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
                    "Pointless Wars",
-                    config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+                   config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
     window->setVerticalSyncEnabled(true);
     window->setMouseCursorVisible(false);
 
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
-void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
+void ScreenSystem::onUpdateResolutionWithDropList(Entity* e) {
     stringstream ss(e->get<CDropList>()->value);
     string strWRes, strAux, strHRes;
     ss >> strWRes;
@@ -198,21 +215,21 @@ void ScreenSystem::onUpdateResolutionWithDropList(Entity* e){
     config.setResolution(str2int(strWRes), str2int(strHRes));
     window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
                    "Pointless Wars",
-                    config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+                   config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
     window->setVerticalSyncEnabled(true);
     window->setMouseCursorVisible(false);
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
 
-void ScreenSystem::createLanguageMenu(Entity* e){
+void ScreenSystem::createLanguageMenu(Entity* e) {
     std::list<std::string> supportedLanguages = config.getSupportedLanguages();
     std::map<std::string, std::string> flags;
-    for (auto& i : supportedLanguages){
-        if (i == "en"){
+    for (auto& i : supportedLanguages) {
+        if (i == "en") {
             flags[i] = "us-flag";
-        }else if (i == "pt"){
+        } else if (i == "pt") {
             flags[i] = "br-flag";
-        }else if (i == "es"){
+        } else if (i == "es") {
             flags[i] = "es-flag";
         }
     }
@@ -220,14 +237,14 @@ void ScreenSystem::createLanguageMenu(Entity* e){
     double spacing = 70;
     double x = cxWindow - (flags.size()-1)*spacing/2.f;
     double y = cyWindow;
-    for (auto& i : flags){
+    for (auto& i : flags) {
         //Entity* eObj = createFlagButton(i.second, i.first, x, y);
         createFlagButton(i.second, i.first, x, y);
         x += spacing;
     }
 }
 
-Entity* ScreenSystem::createFlagButton(std::string flag, std::string lan, double x, double y){
+Entity* ScreenSystem::createFlagButton(std::string flag, std::string lan, double x, double y) {
     Entity* e = eManager->createEntity();
     double w = Assets::getTexture(flag + "-default.png")->getSize().x;
     double h = Assets::getTexture(flag + "-default.png")->getSize().y;
@@ -247,7 +264,7 @@ Entity* ScreenSystem::createFlagButton(std::string flag, std::string lan, double
     return e;
 }
 
-void ScreenSystem::onChooseLanguage(Entity* e){
+void ScreenSystem::onChooseLanguage(Entity* e) {
     config.setLanguage(e->get<CStringMessage>()->value);
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
     Assets::readStrings(e->get<CStringMessage>()->value);

@@ -5,7 +5,7 @@
 #include "Standard.h"
 #include "Assets.h"
 
-class ActionSystem : public System{
+class ActionSystem : public System {
     public:
         ActionSystem();
         ~ActionSystem();

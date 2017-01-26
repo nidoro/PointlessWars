@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class ScenarioSystem : public System{
+class ScenarioSystem : public System {
     public:
         ScenarioSystem();
         ~ScenarioSystem();
@@ -19,7 +19,7 @@ class ScenarioSystem : public System{
         void onNewCommandLine(Entity* e);
 
         string current;
-	list<string> regularScenarios;
+        list<string> regularScenarios;
 };
 
 #endif // SCENARIOSYSTEM_H

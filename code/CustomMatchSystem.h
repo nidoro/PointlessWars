@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class CustomMatchSystem : public System{
+class CustomMatchSystem : public System {
     public:
         CustomMatchSystem();
         ~CustomMatchSystem();

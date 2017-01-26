@@ -1,6 +1,6 @@
 #include "EditorSystem.h"
 
-EditorSystem::EditorSystem(){
+EditorSystem::EditorSystem() {
     addSubscription(INITIALIZE_EDITOR);
     addSubscription(SET_PREVIEW_BACKGROUND);
     addSubscription(ADD_OBJECT_TO_PREVIEW);
@@ -16,11 +16,11 @@ EditorSystem::EditorSystem(){
     eLoadPanel = nullptr;
 }
 
-EditorSystem::~EditorSystem(){
+EditorSystem::~EditorSystem() {
     //dtor
 }
 
-void EditorSystem::onInitializeEditor(Entity* e){
+void EditorSystem::onInitializeEditor(Entity* e) {
     eManager->clearSystem();
 
     height = 0.8*hWindow;
@@ -44,15 +44,15 @@ void EditorSystem::onInitializeEditor(Entity* e){
     loadScenario("temp");
 }
 
-void EditorSystem::createBackgroundOptions(){
+void EditorSystem::createBackgroundOptions() {
     list<string> backgrounds = Assets::getBackgrounds();
 
-	double hMiniature = 0.10*hWindow;
-	double wMiniature = hMiniature*16/9;
+    double hMiniature = 0.10*hWindow;
+    double wMiniature = hMiniature*16/9;
 
-	EntityList cells;
+    EntityList cells;
 
-	for(list<string>::iterator i = backgrounds.begin(); i != backgrounds.end(); i++){
+    for(list<string>::iterator i = backgrounds.begin(); i != backgrounds.end(); i++) {
         Entity* e = eManager->createEntity();
         e->add(new CTexture(*i));
         e->add(new CPosition());
@@ -62,7 +62,7 @@ void EditorSystem::createBackgroundOptions(){
         e->add(new CButtonState());
         e->add(new CButtonTrigger(SET_PREVIEW_BACKGROUND));
         cells.push_back(e);
-	}
+    }
 
     Entity* bgList = eManager->createEntity();
     bgList->add(new CScrollList(cells));
@@ -73,14 +73,14 @@ void EditorSystem::createBackgroundOptions(){
     notify(INITIALIZE_SCROLL_LIST, bgList);
 }
 
-void EditorSystem::createObjectOptions(){
+void EditorSystem::createObjectOptions() {
 
-	double hMiniature = 0.065*hWindow;
-	double wMiniature = hMiniature;
+    double hMiniature = 0.065*hWindow;
+    double wMiniature = hMiniature;
 
-	EntityList cells;
+    EntityList cells;
 
-	for(map<string, CScenarioObject>::iterator i = CScenarioObject::Map.begin(); i != CScenarioObject::Map.end(); i++){
+    for(map<string, CScenarioObject>::iterator i = CScenarioObject::Map.begin(); i != CScenarioObject::Map.end(); i++) {
         CScenarioObject obj = i->second;
         Entity* e = eManager->createEntity();
         e->add(new CAnimation(false, obj.aDefault));
@@ -92,7 +92,7 @@ void EditorSystem::createObjectOptions(){
         e->add(new CButtonTrigger(ADD_OBJECT_TO_PREVIEW, CButtonTrigger::ON_PRESS));
         e->add(new CScenarioObject(obj));
         cells.push_back(e);
-	}
+    }
 
     Entity* objList = eManager->createEntity();
     objList->add(new CScrollList(cells));
@@ -103,11 +103,11 @@ void EditorSystem::createObjectOptions(){
     notify(INITIALIZE_SCROLL_LIST, objList);
 }
 
-void EditorSystem::onSetPreviewBackground(Entity* e){
+void EditorSystem::onSetPreviewBackground(Entity* e) {
     eBack->get<CTexture>()->file = e->get<CTexture>()->file;
 }
 
-void EditorSystem::createMenuOptions(){
+void EditorSystem::createMenuOptions() {
 
     double w = 80;
     double h = 40;
@@ -183,7 +183,7 @@ void EditorSystem::createMenuOptions(){
     eBtTest->add(new CButtonSounds("click2.wav", "rollover2.wav"));
 }
 
-void EditorSystem::onAddObjectToPreview(Entity* e){
+void EditorSystem::onAddObjectToPreview(Entity* e) {
     Entity* eObj = eManager->createEntity();
     CScenarioObject obj = *e->get<CScenarioObject>();
     double w = Assets::getAnimation(obj.aDefault).wSprite*xScale;
@@ -201,16 +201,16 @@ void EditorSystem::onAddObjectToPreview(Entity* e){
     objects.push_back(eObj);
 }
 
-void EditorSystem::onDrop(Entity* e){
+void EditorSystem::onDrop(Entity* e) {
     double ex0 = e->get<CPosition>()->x - e->get<CDimensions>()->width/2;
     double ey0 = e->get<CPosition>()->y - e->get<CDimensions>()->height/2;
-    if (ex0+e->get<CDimensions>()->width < x0 || ex0 > x0+width || ey0+e->get<CDimensions>()->height < y0 || ey0 > y0+height){
+    if (ex0+e->get<CDimensions>()->width < x0 || ex0 > x0+width || ey0+e->get<CDimensions>()->height < y0 || ey0 > y0+height) {
         objects.remove(e);
         eManager->removeEntity(e);
     }
 }
 
-void EditorSystem::onBtEditorTest(Entity* e){
+void EditorSystem::onBtEditorTest(Entity* e) {
     Entity* eFade = eManager->createEntity();
     eFade->add(new CFadeTransition());
     eFade->get<CFadeTransition>()->color = sf::Color::Black;
@@ -218,7 +218,7 @@ void EditorSystem::onBtEditorTest(Entity* e){
     notify(START_FADE_OUT_TRANSITION, eFade);
 }
 
-void EditorSystem::onTestScenario(Entity* e){
+void EditorSystem::onTestScenario(Entity* e) {
     saveScenario("temp");
     clearPreview();
     eManager->clearSystem();
@@ -231,12 +231,12 @@ void EditorSystem::onTestScenario(Entity* e){
     notify(LOAD_SCENARIO, eScenario);
 }
 
-void EditorSystem::onBtEditorLoad(Entity* e){
+void EditorSystem::onBtEditorLoad(Entity* e) {
     createLoadInputBox();
     //loadScenario("temp.dat");
 }
 
-void EditorSystem::createLoadInputBox(){
+void EditorSystem::createLoadInputBox() {
     eLoadPanel = eManager->createEntity();
     eLoadPanel->add(new CPosition(xc, yc));
     eLoadPanel->add(new CTexture("frame-600-200.png"));
@@ -323,14 +323,14 @@ void EditorSystem::createLoadInputBox(){
     notify(END_PANEL);
 }
 
-void EditorSystem::saveScenario(string name){
+void EditorSystem::saveScenario(string name) {
     string path = "../rsc-0.1/scenarios/" + name + ".sce";
     FILE* file = fopen(path.c_str(), "w");
     fprintf(file, "%%Background\n");
     fprintf(file, "%s\n\n", eBack->get<CTexture>()->file.c_str());
     fprintf(file, "%%%20s %15s %15s %10s %10s %10s %10s\n", "OBJECT-NAME", "X-RELATIVE", "Y-RELATIVE", "X-SCALE", "Y-SCALE", "H-FLIP", "V-FLIP");
 
-    for(EntityListIt i = objects.begin(); i != objects.end(); i++){
+    for(EntityListIt i = objects.begin(); i != objects.end(); i++) {
         Entity* e = *i;
         string objName = e->get<CScenarioObject>()->id;
         double x = (e->get<CPosition>()->x - x0)/width;
@@ -345,33 +345,48 @@ void EditorSystem::saveScenario(string name){
     fclose(file);
 }
 
-bool EditorSystem::loadScenario(string name){
+bool EditorSystem::loadScenario(string name) {
     CScenario scenario;
     scenario.name = name;
     ifstream file(string(string("../rsc-0.1/scenarios/") + name + ".sce").c_str());
-    if (!file.is_open()){
+    if (!file.is_open()) {
         printf("%s not found!\n", name.c_str());
         return false;
     }
     string line;
-    while(!file.eof()){
-        if (line.size() != 0 && line[0] != '%'){
+    while(!file.eof()) {
+        if (line.size() != 0 && line[0] != '%') {
             istringstream ss(line);
-            if (scenario.background.empty()){
+            if (scenario.background.empty()) {
                 ss >> scenario.background;
-            }else{
+            } else {
                 CScenarioObject object;
                 int column = 0;
-                while(++column <= 7){
-                    switch(column){
-                        case 1: ss >> object.id; break;
-                        case 2: ss >> object.xRelative; break;
-                        case 3: ss >> object.yRelative; break;
-                        case 4: ss >> object.xScale; break;
-                        case 5: ss >> object.yScale; break;
-                        case 6: ss >> object.hFlip; break;
-                        case 7: ss >> object.vFlip; break;
-                        default: break;
+                while(++column <= 7) {
+                    switch(column) {
+                    case 1:
+                        ss >> object.id;
+                        break;
+                    case 2:
+                        ss >> object.xRelative;
+                        break;
+                    case 3:
+                        ss >> object.yRelative;
+                        break;
+                    case 4:
+                        ss >> object.xScale;
+                        break;
+                    case 5:
+                        ss >> object.yScale;
+                        break;
+                    case 6:
+                        ss >> object.hFlip;
+                        break;
+                    case 7:
+                        ss >> object.vFlip;
+                        break;
+                    default:
+                        break;
                     }
                 }
                 scenario.objects.push_back(object);
@@ -384,10 +399,10 @@ bool EditorSystem::loadScenario(string name){
     return true;
 }
 
-void EditorSystem::createPreview(CScenario scenario){
+void EditorSystem::createPreview(CScenario scenario) {
     clearPreview();
     eBack->get<CTexture>()->file = scenario.background;
-    for(list<CScenarioObject>::iterator i = scenario.objects.begin(); i != scenario.objects.end(); i++){
+    for(list<CScenarioObject>::iterator i = scenario.objects.begin(); i != scenario.objects.end(); i++) {
         Entity* eObj = eManager->createEntity();
         CScenarioObject object = *i;
         double w = CScenarioObject::Map[i->id].width*xScale*object.xScale;
@@ -405,35 +420,35 @@ void EditorSystem::createPreview(CScenario scenario){
     }
 }
 
-void EditorSystem::clearPreview(){
-    for(EntityListIt i = objects.begin(); i != objects.end(); i++){
+void EditorSystem::clearPreview() {
+    for(EntityListIt i = objects.begin(); i != objects.end(); i++) {
         Entity* e = *i;
         eManager->removeEntity(e);
     }
     objects.clear();
 }
 
-void EditorSystem::onBtEditorSave(Entity* e){
+void EditorSystem::onBtEditorSave(Entity* e) {
     createSaveInputBox();
 }
 
-void EditorSystem::onLoadScenarioPreview(Entity*e){
+void EditorSystem::onLoadScenarioPreview(Entity*e) {
     string name = eLoadInput->get<CTextbox2>()->content.getString();
     loadScenario(name);
     notify(REMOVE_PANEL, eLoadPanel);
 }
 
-void EditorSystem::onBtEditorClear(Entity* e){
+void EditorSystem::onBtEditorClear(Entity* e) {
     clearPreview();
 }
 
-void EditorSystem::onSaveScenario(Entity* e){
+void EditorSystem::onSaveScenario(Entity* e) {
     string name = eSaveInput->get<CTextbox2>()->content.getString();
     saveScenario(name);
     notify(REMOVE_PANEL, eSavePanel);
 }
 
-void EditorSystem::createSaveInputBox(){
+void EditorSystem::createSaveInputBox() {
 
     eSavePanel = eManager->createEntity();
     eSavePanel->add(new CPosition(xc, yc));
@@ -521,7 +536,7 @@ void EditorSystem::createSaveInputBox(){
     notify(END_PANEL);
 }
 
-void EditorSystem::onEndScenarioTest(Entity* e){
+void EditorSystem::onEndScenarioTest(Entity* e) {
     Entity* eFade = eManager->createEntity();
     eFade->add(new CFadeTransition());
     eFade->get<CFadeTransition>()->color = sf::Color::Black;

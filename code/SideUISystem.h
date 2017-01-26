@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Standard.h"
 
-class SideUISystem : public System{
+class SideUISystem : public System {
     public:
         SideUISystem();
         ~SideUISystem();

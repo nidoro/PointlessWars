@@ -1,6 +1,6 @@
 #include "SideUISystem.h"
 
-SideUISystem::SideUISystem(){
+SideUISystem::SideUISystem() {
     addSubscription(BUTTON_GAINED_FOCUS);
     addSubscription(BUTTON_LOST_FOCUS);
     addSubscription(END_MATCH);
@@ -17,13 +17,13 @@ SideUISystem::SideUISystem(){
     active = false;
 }
 
-SideUISystem::~SideUISystem(){
+SideUISystem::~SideUISystem() {
     //dtor
 }
 
-void SideUISystem::update(){
-    if (active){
-        for (Entity* e : entities){
+void SideUISystem::update() {
+    if (active) {
+        for (Entity* e : entities) {
             //printf("%d\n", entities.size());
             CPlayer::Side side = e->get<CPlayer>()->side;
             if (side == CPlayer::LEFT && eLeft == nullptr) createUI(e);
@@ -35,7 +35,7 @@ void SideUISystem::update(){
     }
 }
 
-void SideUISystem::createUI(Entity* ePlayer){
+void SideUISystem::createUI(Entity* ePlayer) {
     int sign = ePlayer->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     Entity* eArea = eManager->createEntity();
     //printf("Side UI created\n");
@@ -59,28 +59,28 @@ void SideUISystem::createUI(Entity* ePlayer){
     if (ePlayer->get<CPlayer>()->side == CPlayer::RIGHT) eRight = eArea;
 }
 
-void SideUISystem::updateUI(Entity* e){
+void SideUISystem::updateUI(Entity* e) {
     Entity* ePlayer = e->getObservedEntity("Player");
 
     list<CCaptain::ID> heroesInUI = getHeroesInUI(e);
 
-    for (auto heroID : ePlayer->get<CPlayer>()->heroDeck){
-        if (!contains(heroesInUI, heroID)){
+    for (auto heroID : ePlayer->get<CPlayer>()->heroDeck) {
+        if (!contains(heroesInUI, heroID)) {
             addHero(e, heroID);
         }
     }
-    for (auto heroID : heroesInUI){
-        if (!contains(ePlayer->get<CPlayer>()->heroDeck, heroID)){
+    for (auto heroID : heroesInUI) {
+        if (!contains(ePlayer->get<CPlayer>()->heroDeck, heroID)) {
             removeHero(e, heroID);
         }
     }
 
-    for (auto& p : ePlayer->get<CArmy>()->captains){
+    for (auto& p : ePlayer->get<CArmy>()->captains) {
         Entity* eHero = p.second;
-        if (eHero->get<CCaptain>()->isConfined){
+        if (eHero->get<CCaptain>()->isConfined) {
             Entity* eDisplayer = getHeroInUI(e, eHero->get<CCaptain>()->id);
             Entity* eJailBars = eDisplayer->getObservedEntity("JailBars");
-            if (!eJailBars){
+            if (!eJailBars) {
                 eJailBars = eManager->createEntity();
                 eJailBars->add(new CPosition(*eDisplayer->get<CPosition>()));
                 eJailBars->add(new CDraw(CDraw::GUI_02));
@@ -96,24 +96,24 @@ void SideUISystem::updateUI(Entity* e){
     }
 }
 
-list<CCaptain::ID> SideUISystem::getHeroesInUI(Entity* e){
+list<CCaptain::ID> SideUISystem::getHeroesInUI(Entity* e) {
     list<CCaptain::ID> l;
     EntityList eList = e->getObservedEntity("Heroes")->getObservedEntities();
-    for (Entity* i : eList){
+    for (Entity* i : eList) {
         l.push_back(i->get<CCaptain>()->id);
     }
     return l;
 }
 
-Entity* getHeroInUI(Entity* e, CCaptain::ID idHero){
+Entity* getHeroInUI(Entity* e, CCaptain::ID idHero) {
     EntityList eList = e->getObservedEntity("Heroes")->getObservedEntities();
-    for (Entity* i : eList){
+    for (Entity* i : eList) {
         if (i->get<CCaptain>()->id == idHero) return i;
     }
     return nullptr;
 }
 
-void SideUISystem::addHero(Entity* e, CCaptain::ID heroID){
+void SideUISystem::addHero(Entity* e, CCaptain::ID heroID) {
     int sign = e->getObservedEntity("Player")->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     Entity* eHeroes = e->getObservedEntity("Heroes");
     Entity* eHero = eManager->createEntity();
@@ -135,35 +135,35 @@ void SideUISystem::addHero(Entity* e, CCaptain::ID heroID){
     eHero->attachEmployer(eHeroes);
     eHeroes->addObservedEntity(int2str(nHeroes+1), eHero);
 }
-void SideUISystem::removeHero(Entity* e, CCaptain::ID heroID){
+void SideUISystem::removeHero(Entity* e, CCaptain::ID heroID) {
     Entity* eHeroes = e->getObservedEntity("Heroes");
     Entity* eHero = getHeroInUI(e, heroID);
     eManager->removeEntity(eHero);
     eHeroes->removeObservedEntity(eHero);
 }
-void SideUISystem::rearrangeHeroes(Entity* e){
+void SideUISystem::rearrangeHeroes(Entity* e) {
     EntityList eHeroes = e->getObservedEntity("Heroes")->getObservedEntities();
     sf::Vector2f pos = getHeroesOrigin(e);
-    for (Entity* eHero : eHeroes){
+    for (Entity* eHero : eHeroes) {
         eHero->get<CActor>()->addNode(new ATeleport(0.0, pos.x, pos.y));
         pos.y += hHeroButton + buttonsSpacing;
     }
 }
 
-int SideUISystem::getHeroCountInUI(Entity* e){
+int SideUISystem::getHeroCountInUI(Entity* e) {
     EntityList eList = e->getObservedEntity("Heroes")->getObservedEntities();
     return eList.size();
 }
 
-Entity* SideUISystem::getHeroInUI(Entity* e, CCaptain::ID id){
+Entity* SideUISystem::getHeroInUI(Entity* e, CCaptain::ID id) {
     EntityList eList = e->getObservedEntity("Heroes")->getObservedEntities();
-    for (Entity* eHero : eList){
+    for (Entity* eHero : eList) {
         if (eHero->get<CCaptain>()->id == id) return eHero;
     }
     return nullptr;
 }
 
-sf::Vector2f SideUISystem::getHeroesOrigin(Entity* e){
+sf::Vector2f SideUISystem::getHeroesOrigin(Entity* e) {
     sf::Vector2f position;
     int nHeroes = getHeroCountInUI(e);
     position.x = e->get<CPosition>()->x;
@@ -171,46 +171,46 @@ sf::Vector2f SideUISystem::getHeroesOrigin(Entity* e){
     return position;
 }
 
-void SideUISystem::showUI(Entity* e){
+void SideUISystem::showUI(Entity* e) {
     EntityList eHeroes = e->getObservedEntity("Heroes")->getObservedEntities();
     sf::Vector2f pos = getHeroesOrigin(e);
-    for (Entity* eHero : eHeroes){
+    for (Entity* eHero : eHeroes) {
         eHero->get<CActor>()->addNode(new AMove(0.0, pos.x, pos.y, buttonsSpeed));
         pos.y += hHeroButton + buttonsSpacing;
     }
 }
-void SideUISystem::hideUI(Entity* e){
+void SideUISystem::hideUI(Entity* e) {
     int sign = e->getObservedEntity("Player")->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     EntityList eHeroes = e->getObservedEntity("Heroes")->getObservedEntities();
     sf::Vector2f pos = getHeroesOrigin(e);
-    for (Entity* eHero : eHeroes){
+    for (Entity* eHero : eHeroes) {
         eHero->get<CActor>()->addNode(new AMove(0.0, pos.x + sign*xOffWhenHidden, pos.y, buttonsSpeed));
         pos.y += hHeroButton + buttonsSpacing;
     }
 }
 
-void SideUISystem::onButtonGainedFocus(Entity* e){
+void SideUISystem::onButtonGainedFocus(Entity* e) {
     Entity* eUI = nullptr;
     if (e == eLeft) eUI = eLeft;
     if (e == eRight)  eUI = eRight;
     if (nullptr != eUI) showUI(eUI);
 }
 
-void SideUISystem::onButtonLostFocus(Entity* e){
+void SideUISystem::onButtonLostFocus(Entity* e) {
     Entity* eUI = nullptr;
     if (e == eLeft) eUI = eLeft;
     if (e == eRight)  eUI = eRight;
     if (nullptr != eUI) hideUI(eUI);
 }
 
-void SideUISystem::onEndMatch(Entity* e){
+void SideUISystem::onEndMatch(Entity* e) {
     //printf("Ended Match\n");
     eLeft = nullptr;
     eRight = nullptr;
     active = false;
 }
 
-void SideUISystem::onInitializeWar(Entity* e){
+void SideUISystem::onInitializeWar(Entity* e) {
     active = true;
 }
 

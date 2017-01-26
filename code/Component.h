@@ -12,9 +12,9 @@
 #include "Standard.h"
 class Entity;
 
-struct Component{
+struct Component {
     public:
-        enum Type{
+        enum Type {
             NO_COMPONENT,
             BUTTON_STATE,
             BUTTON_HITBOX,
@@ -153,18 +153,18 @@ struct Component{
             NUM_COMPONENTS
         };
 
-        Component(){
+        Component() {
             //componentType = NO_COMPONENT;
         }
-        virtual ~Component(){}
+        virtual ~Component() {}
 
-        Component(Type type){
+        Component(Type type) {
             //componentType = type;
         }
 
 };
 
-enum PlayerColor{
+enum PlayerColor {
     GREY,
     BLACK,
     WHITE,
@@ -175,28 +175,34 @@ enum PlayerColor{
     N_COLORS
 };
 
-struct Player{
-    enum ID{A, B, NONE, BOTH};
+struct Player {
+    enum ID {A, B, NONE, BOTH};
 };
 
-struct CProfile : public Component{
-    static Type getType(){return PROFILE;}
-    CProfile(){}
+struct CProfile : public Component {
+    static Type getType() {
+        return PROFILE;
+    }
+    CProfile() {}
     string name;
     string charName;
 };
 
-struct CChar : public Component{
-    static Type getType(){return CHAR;}
+struct CChar : public Component {
+    static Type getType() {
+        return CHAR;
+    }
     static map<string, CChar> Map;
     string name;
     string aIdle;
     string aWalk;
 };
 
-struct CProfileEditor : public Component{
-    static Type getType(){return PROFILE_EDITOR;}
-    CProfileEditor(Entity* eName, Entity* eChar){
+struct CProfileEditor : public Component {
+    static Type getType() {
+        return PROFILE_EDITOR;
+    }
+    CProfileEditor(Entity* eName, Entity* eChar) {
         this->eName = eName;
         this->eChar = eChar;
     }
@@ -205,12 +211,14 @@ struct CProfileEditor : public Component{
 };
 
 
-struct CPosition : public Component{
-    static Type getType(){return POSITION;};
-    CPosition():Component(POSITION){
+struct CPosition : public Component {
+    static Type getType() {
+        return POSITION;
+    };
+    CPosition():Component(POSITION) {
         x = y = 0;
     }
-    CPosition(double x, double y):Component(POSITION){
+    CPosition(double x, double y):Component(POSITION) {
         this->x = x;
         this->y = y;
     }
@@ -218,13 +226,15 @@ struct CPosition : public Component{
     double y;
 };
 
-struct CTexture : public Component{
-    static Type getType(){return TEXTURE;};
-    CTexture(){
+struct CTexture : public Component {
+    static Type getType() {
+        return TEXTURE;
+    };
+    CTexture() {
         hFlip = false;
         vFlip = false;
     }
-    CTexture(std::string file, bool hFlip = false, bool vFlip = false){
+    CTexture(std::string file, bool hFlip = false, bool vFlip = false) {
         this->file = file;
         this->hFlip = hFlip;
         this->vFlip = vFlip;
@@ -234,35 +244,39 @@ struct CTexture : public Component{
     bool vFlip;
 };
 
-struct CNinePatch : public Component{
-    static Type getType(){return NINE_PATCH;}
-    CNinePatch(string file){
+struct CNinePatch : public Component {
+    static Type getType() {
+        return NINE_PATCH;
+    }
+    CNinePatch(string file) {
         this->file = file;
     }
 
     string file;
 };
 
-struct CButtonHitbox : public Component{
-    static Type getType(){return BUTTON_HITBOX;};
-    enum Shape{
+struct CButtonHitbox : public Component {
+    static Type getType() {
+        return BUTTON_HITBOX;
+    };
+    enum Shape {
         CIRCLE,
         RECT
     };
 
-    CButtonHitbox():Component(BUTTON_HITBOX){
+    CButtonHitbox():Component(BUTTON_HITBOX) {
         shape = RECT;
         width = 0;
         height = 0;
         radius = 0;
     }
-    CButtonHitbox(double w, double h):Component(BUTTON_HITBOX){
+    CButtonHitbox(double w, double h):Component(BUTTON_HITBOX) {
         shape = RECT;
         width = w;
         height = h;
         xOff = yOff = 0;
     }
-    CButtonHitbox(double r):Component(BUTTON_HITBOX){
+    CButtonHitbox(double r):Component(BUTTON_HITBOX) {
         shape = CIRCLE;
         radius = r;
         xOff = yOff = r;
@@ -274,24 +288,28 @@ struct CButtonHitbox : public Component{
     Shape shape;
 };
 
-struct CUILayer : public Component{
-    static Type getType(){return UI_LAYER;};
-    enum Layer{NONE, L1, L2, L3, L4, L5, N_LAYERS};
+struct CUILayer : public Component {
+    static Type getType() {
+        return UI_LAYER;
+    };
+    enum Layer {NONE, L1, L2, L3, L4, L5, N_LAYERS};
 
-    CUILayer(){
+    CUILayer() {
         layer = NONE;
     }
-    CUILayer(Layer l){
+    CUILayer(Layer l) {
         layer = l;
     }
 
     Layer layer;
 };
 
-struct CSimpleButton : public Component{
-    static Type getType(){return SIMPLE_BUTTON;}
+struct CSimpleButton : public Component {
+    static Type getType() {
+        return SIMPLE_BUTTON;
+    }
 
-    CSimpleButton(double w, double h, sf::Color def, sf::Color hov, sf::Color act){
+    CSimpleButton(double w, double h, sf::Color def, sf::Color hov, sf::Color act) {
         shape.setSize(sf::Vector2f(w, h));
         shape.setOutlineColor(sf::Color::Black);
         shape.setOutlineThickness(3);
@@ -307,12 +325,14 @@ struct CSimpleButton : public Component{
 
 };
 
-struct CRectButton : public Component{
-    static Type getType(){return RECT_BUTTON;}
+struct CRectButton : public Component {
+    static Type getType() {
+        return RECT_BUTTON;
+    }
 
-    CRectButton(){}
+    CRectButton() {}
 
-    CRectButton(sf::RectangleShape defRect, sf::RectangleShape hovRect, sf::RectangleShape actRect){
+    CRectButton(sf::RectangleShape defRect, sf::RectangleShape hovRect, sf::RectangleShape actRect) {
         this->defRect = defRect;
         this->hovRect = hovRect;
         this->actRect = actRect;
@@ -323,12 +343,14 @@ struct CRectButton : public Component{
     sf::RectangleShape actRect;
 };
 
-struct CCircleButton : public Component{
-    static Type getType(){return CIRCLE_BUTTON;}
+struct CCircleButton : public Component {
+    static Type getType() {
+        return CIRCLE_BUTTON;
+    }
 
-    CCircleButton(){}
+    CCircleButton() {}
 
-    CCircleButton(sf::CircleShape defCircle, sf::CircleShape hovCircle, sf::CircleShape actCircle){
+    CCircleButton(sf::CircleShape defCircle, sf::CircleShape hovCircle, sf::CircleShape actCircle) {
         this->defCircle = defCircle;
         this->hovCircle = hovCircle;
         this->actCircle = actCircle;
@@ -339,11 +361,13 @@ struct CCircleButton : public Component{
     sf::CircleShape actCircle;
 };
 
-struct CSlider : public Component{
-    static Type getType(){return SLIDER;}
-    enum Direction{HORIZONTAL, VERTICAL};
+struct CSlider : public Component {
+    static Type getType() {
+        return SLIDER;
+    }
+    enum Direction {HORIZONTAL, VERTICAL};
 
-    CSlider(double x, double y, double length, double value, Direction direction = HORIZONTAL, string var = ""){
+    CSlider(double x, double y, double length, double value, Direction direction = HORIZONTAL, string var = "") {
         this->x = x;
         this->y = y;
         this->length = length;
@@ -362,44 +386,55 @@ struct CSlider : public Component{
     string variable;
 };
 
-struct COptionBox : public Component{
-    static Type getType(){return OPTION_BOX;}
-    enum State{
+struct COptionBox : public Component {
+    static Type getType() {
+        return OPTION_BOX;
+    }
+    enum State {
         CHOOSING,
         CHOSEN
     };
-    enum Direction{
+    enum Direction {
         UP,
         DOWN,
         LEFT,
         RIGHT
     };
 
-    enum Data{CAPTAIN, FORMATION, ACTION};
+    enum Data {CAPTAIN, FORMATION, ACTION};
 
-    COptionBox(){
+    COptionBox() {
         state = CHOSEN;
         selected = 0;
         owner = Player::NONE;
     }
-    COptionBox(double d, Direction dir = DOWN){
+    COptionBox(double d, Direction dir = DOWN) {
         state = CHOSEN;
         distance = d;
         direction = dir;
         selected = 0;
         offset.x = 0;
         offset.y = 0;
-        switch (dir){
-            case DOWN: offset.y = d; break;
-            case UP: offset.y = -d; break;
-            case LEFT: offset.x = -d; break;
-            case RIGHT: offset.x = d; break;
-            default: break;
+        switch (dir) {
+        case DOWN:
+            offset.y = d;
+            break;
+        case UP:
+            offset.y = -d;
+            break;
+        case LEFT:
+            offset.x = -d;
+            break;
+        case RIGHT:
+            offset.x = d;
+            break;
+        default:
+            break;
         }
         owner = Player::NONE;
         data = ACTION;
     }
-    void addOption(int op){
+    void addOption(int op) {
         options.push_back(op);
     }
 
@@ -413,13 +448,15 @@ struct COptionBox : public Component{
     Player::ID owner;
     Data data;
 };
-struct CAnchor : public Component{
-    static Type getType(){return ANCHOR;};
-    CAnchor(){
+struct CAnchor : public Component {
+    static Type getType() {
+        return ANCHOR;
+    };
+    CAnchor() {
         xOff = 0.0;
         yOff = 0.0;
     }
-    CAnchor(double xOff, double yOff){
+    CAnchor(double xOff, double yOff) {
         this->xOff = xOff;
         this->yOff = yOff;
     }
@@ -428,10 +465,12 @@ struct CAnchor : public Component{
     double yOff;
 
 };
-struct CButtonTextures : public Component{
-    static Type getType(){return BUTTON_TEXTURES;}
+struct CButtonTextures : public Component {
+    static Type getType() {
+        return BUTTON_TEXTURES;
+    }
 
-    CButtonTextures(string def, string hov = string(), string act = string()){
+    CButtonTextures(string def, string hov = string(), string act = string()) {
         this->def = def;
         this->hov = hov;
         this->act = act;
@@ -439,28 +478,30 @@ struct CButtonTextures : public Component{
         if (act.empty()) this->act = this->hov;
     }
 
-    CButtonTextures(){}
+    CButtonTextures() {}
 
     string def;
     string hov;
     string act;
 };
-struct CButtonState : public Component{
-    static Type getType(){return BUTTON_STATE;};
-    enum State{
+struct CButtonState : public Component {
+    static Type getType() {
+        return BUTTON_STATE;
+    };
+    enum State {
         NON_ACTIVE,
         HOVERED,
         ACTIVE,
         LOCKED
     };
 
-    CButtonState():Component(BUTTON_STATE){
+    CButtonState():Component(BUTTON_STATE) {
         state = NON_ACTIVE;
         gainedFocusMessage = EMPTY_MESSAGE;
         lostFocusMessage = EMPTY_MESSAGE;
         isDependent = false;
     }
-    CButtonState(State s){
+    CButtonState(State s) {
         state = s;
         gainedFocusMessage = EMPTY_MESSAGE;
         lostFocusMessage = EMPTY_MESSAGE;
@@ -474,16 +515,18 @@ struct CButtonState : public Component{
     bool isDependent;
 };
 
-struct CButtonTrigger : public Component{
-    static Type getType(){return BUTTON_TRIGGER;}
+struct CButtonTrigger : public Component {
+    static Type getType() {
+        return BUTTON_TRIGGER;
+    }
 
-    enum Action{ON_PRESS, ON_RELEASE};
+    enum Action {ON_PRESS, ON_RELEASE};
 
-    CButtonTrigger():Component(BUTTON_TRIGGER){
+    CButtonTrigger():Component(BUTTON_TRIGGER) {
         //message = EMPTY_MESSAGE;
         action = ON_RELEASE;
     }
-    CButtonTrigger(Message trigger, Action a = ON_RELEASE, sf::Keyboard::Key hk = sf::Keyboard::Unknown){
+    CButtonTrigger(Message trigger, Action a = ON_RELEASE, sf::Keyboard::Key hk = sf::Keyboard::Unknown) {
         //message = trigger;
         action = a;
         hotkey = hk;
@@ -491,7 +534,7 @@ struct CButtonTrigger : public Component{
         setUniqueTrigger(trigger);
     }
 
-    CButtonTrigger(list<Message> triggers, Action a = ON_RELEASE, sf::Keyboard::Key hk = sf::Keyboard::Unknown){
+    CButtonTrigger(list<Message> triggers, Action a = ON_RELEASE, sf::Keyboard::Key hk = sf::Keyboard::Unknown) {
         //message = trigger;
         action = a;
         hotkey = hk;
@@ -499,7 +542,7 @@ struct CButtonTrigger : public Component{
         msgs = triggers;
     }
 
-    void setUniqueTrigger(Message msg){
+    void setUniqueTrigger(Message msg) {
         msgs.clear();
         msgs.push_back(msg);
     }
@@ -511,44 +554,52 @@ struct CButtonTrigger : public Component{
     sf::Mouse::Button mouseButton;
 };
 
-struct CHoverTexture : public Component{
-    static Type getType(){return HOVER_TEXTURE;};
-    CHoverTexture():Component(HOVER_TEXTURE){}
+struct CHoverTexture : public Component {
+    static Type getType() {
+        return HOVER_TEXTURE;
+    };
+    CHoverTexture():Component(HOVER_TEXTURE) {}
 
-    CHoverTexture(std::string tex):Component(HOVER_TEXTURE){
+    CHoverTexture(std::string tex):Component(HOVER_TEXTURE) {
         this->file = tex;
     }
 
     string file;
 };
 
-struct CDefaultTexture : public Component{
-    static Type getType(){return DEFAULT_TEXTURE;};
-    CDefaultTexture():Component(DEFAULT_TEXTURE){}
+struct CDefaultTexture : public Component {
+    static Type getType() {
+        return DEFAULT_TEXTURE;
+    };
+    CDefaultTexture():Component(DEFAULT_TEXTURE) {}
 
-    CDefaultTexture(std::string tex):Component(DEFAULT_TEXTURE){
+    CDefaultTexture(std::string tex):Component(DEFAULT_TEXTURE) {
         this->file = tex;
     }
     string file;
 };
 
-struct CActiveTexture : public Component{
-    static Type getType(){return ACTIVE_TEXTURE;};
-    CActiveTexture():Component(ACTIVE_TEXTURE){}
+struct CActiveTexture : public Component {
+    static Type getType() {
+        return ACTIVE_TEXTURE;
+    };
+    CActiveTexture():Component(ACTIVE_TEXTURE) {}
 
-    CActiveTexture(std::string tex):Component(ACTIVE_TEXTURE){
+    CActiveTexture(std::string tex):Component(ACTIVE_TEXTURE) {
         this->file = tex;
     }
 
     string file;
 };
 
-struct CButtonSounds : public Component{
-    static Type getType(){return BUTTON_SOUNDS;}
+struct CButtonSounds : public Component {
+    static Type getType() {
+        return BUTTON_SOUNDS;
+    }
 
-    CButtonSounds(){}
+    CButtonSounds() {}
 
-    CButtonSounds(string focused, string pressed = "", string released = ""){
+    CButtonSounds(string focused, string pressed = "", string released = "") {
         this->focused = focused;
         this->pressed = pressed;
         this->released = released;
@@ -559,10 +610,12 @@ struct CButtonSounds : public Component{
     string released;
 };
 
-struct CDimensions : public Component{
-    static Type getType(){return DIMENSIONS;};
-    CDimensions():Component(DIMENSIONS){}
-    CDimensions(double w, double h):Component(DIMENSIONS){
+struct CDimensions : public Component {
+    static Type getType() {
+        return DIMENSIONS;
+    };
+    CDimensions():Component(DIMENSIONS) {}
+    CDimensions(double w, double h):Component(DIMENSIONS) {
         width = w;
         height = h;
     }
@@ -571,10 +624,12 @@ struct CDimensions : public Component{
     double height;
 };
 
-struct CAnimation : public Component{
-    static Type getType(){return ANIMATION;}
+struct CAnimation : public Component {
+    static Type getType() {
+        return ANIMATION;
+    }
 
-    CAnimation(bool hFlip, string aID, bool vFlip = false){
+    CAnimation(bool hFlip, string aID, bool vFlip = false) {
         this->hFlip = hFlip;
         this->vFlip = vFlip;
         current = aID;
@@ -592,17 +647,19 @@ struct CAnimation : public Component{
     bool freeze;
 };
 
-struct CAction : public Component{
-    static Type getType(){return ACTION;}
+struct CAction : public Component {
+    static Type getType() {
+        return ACTION;
+    }
 
-    enum EffectType{NONE, BUFF, DEBUFF};
+    enum EffectType {NONE, BUFF, DEBUFF};
 
     typedef int ID;
 
     static map<CAction::ID, CAction> Map;
 
-    CAction(){}
-    CAction(ID i, EffectType eff = NONE, int dur = 1, bool oneBattle = false, bool oneWar = false){
+    CAction() {}
+    CAction(ID i, EffectType eff = NONE, int dur = 1, bool oneBattle = false, bool oneWar = false) {
         id = i;
         btDefTexture = "button-action-" + int2str(0, 2) + "-default.png";
         btHovTexture = "button-action-" + int2str(0, 2) + "-hovered.png";
@@ -640,28 +697,32 @@ struct CAction : public Component{
     EffectType effectType;
 };
 
-struct COwner : public Component{
-    static Type getType(){return OWNER;}
-    COwner(Entity* e){
+struct COwner : public Component {
+    static Type getType() {
+        return OWNER;
+    }
+    COwner(Entity* e) {
         this->e = e;
     }
     Entity* e;
 };
-struct CUnit : public Component{
-    static Type getType(){return UNIT;}
+struct CUnit : public Component {
+    static Type getType() {
+        return UNIT;
+    }
 
     typedef int ID;
     static map<CUnit::ID, CUnit> Map;
     static int maxResistance;
 
-    enum Role{COMMANDER, AGGRESSIVE, DEFENSIVE_SUPPORT, OFFENSIVE_SUPPORT, N_ROLES};
-    enum DamageType{FIRE, WATER, EARTH, AIR, N_DAMAGE_TYPES};
+    enum Role {COMMANDER, AGGRESSIVE, DEFENSIVE_SUPPORT, OFFENSIVE_SUPPORT, N_ROLES};
+    enum DamageType {FIRE, WATER, EARTH, AIR, N_DAMAGE_TYPES};
 
     ID id;
     Role role;
     string actionDescription;
 
-    CUnit(){
+    CUnit() {
         resistance.resize(N_DAMAGE_TYPES, 0);
         realResist.resize(N_DAMAGE_TYPES, 0);
         displayer = "unit-displayer.png";
@@ -681,7 +742,7 @@ struct CUnit : public Component{
         armyID = 0;
     }
 
-    CUnit(ID i, DamageType d){
+    CUnit(ID i, DamageType d) {
         id = i;
         damage = d;
         resistance.resize(N_DAMAGE_TYPES, 0);
@@ -738,16 +799,18 @@ struct CUnit : public Component{
     int armyID;
 };
 
-struct CCaptain : public Component{
-    static Type getType(){return CAPTAIN;}
+struct CCaptain : public Component {
+    static Type getType() {
+        return CAPTAIN;
+    }
     typedef int ID;
     static map<CCaptain::ID, CCaptain> Map;
 
-    CCaptain(){
+    CCaptain() {
         isConfined = false;
         id = -1;
     }
-    CCaptain(ID i){
+    CCaptain(ID i) {
         id = i;
         btDefTexture = "button-action-00-active.png";
         btHovTexture = "button-action-00-active.png";
@@ -783,25 +846,27 @@ struct CCaptain : public Component{
     int morale;
 };
 
-struct CPlayer : public Component{
-    static Type getType(){return PLAYER;}
+struct CPlayer : public Component {
+    static Type getType() {
+        return PLAYER;
+    }
 
-    enum Side{LEFT, RIGHT};
+    enum Side {LEFT, RIGHT};
     typedef int ID;
 
     Side side;
 
     Entity* enemy;
-    CPlayer(){
+    CPlayer() {
     }
-    CPlayer(Entity* enemy){
+    CPlayer(Entity* enemy) {
         this->enemy = enemy;
     }
 
     list<CCaptain::ID> heroDeck;
     list<CUnit::ID> unitDeck;
     std::list<CCaptain::ID> heroPool;
-    
+
     PlayerColor color;
     string name;
     int maxPicks;
@@ -811,15 +876,17 @@ struct CPlayer : public Component{
     ID id;
 };
 
-struct CArmyView : public Component{
-    static Type getType(){return ARMY_VIEW;}
+struct CArmyView : public Component {
+    static Type getType() {
+        return ARMY_VIEW;
+    }
 
-    CArmyView(){
+    CArmyView() {
         sectors.resize(CUnit::N_ROLES);
         eArmy = nullptr;
     }
 
-    CArmyView(Entity* a){
+    CArmyView(Entity* a) {
         sectors.resize(CUnit::N_ROLES);
         eArmy = a;
     }
@@ -829,14 +896,16 @@ struct CArmyView : public Component{
     Entity* eArmy;
 };
 
-struct CSector : public Component{
-    static Type getType(){return SECTOR;}
+struct CSector : public Component {
+    static Type getType() {
+        return SECTOR;
+    }
 
-    CSector(){
+    CSector() {
         strength = 10;
     }
 
-    CSector(CUnit unit, int stg = 10){
+    CSector(CUnit unit, int stg = 10) {
         this->unit = unit;
         strength = stg;
     }
@@ -845,13 +914,15 @@ struct CSector : public Component{
     int strength;
 };
 
-struct CArmy : public Component{
-    static Type getType(){return ARMY;};
+struct CArmy : public Component {
+    static Type getType() {
+        return ARMY;
+    };
 
 
-    enum Formation{F1, F2, F3, F4, N_FORMATIONS};
+    enum Formation {F1, F2, F3, F4, N_FORMATIONS};
 
-    CArmy(CPlayer::Side side){
+    CArmy(CPlayer::Side side) {
         this->side = side;
         x = 0;
         captain = nullptr;
@@ -897,23 +968,27 @@ struct CArmy : public Component{
     int nextUnitID;
 };
 
-struct CFaction : public Component{
-    static Type getType(){return FACTION;};
-    enum Faction{A, B};
-    CFaction(){
+struct CFaction : public Component {
+    static Type getType() {
+        return FACTION;
+    };
+    enum Faction {A, B};
+    CFaction() {
 
     }
-    CFaction(Faction f){
+    CFaction(Faction f) {
         faction = f;
     }
     Faction faction;
 };
 
-struct COptionCell : public Component{
-    static Type getType(){return OPTION_CELL;};
-    COptionCell():Component(OPTION_CELL){}
+struct COptionCell : public Component {
+    static Type getType() {
+        return OPTION_CELL;
+    };
+    COptionCell():Component(OPTION_CELL) {}
 
-    COptionCell(Entity* box, int v):Component(OPTION_CELL){
+    COptionCell(Entity* box, int v):Component(OPTION_CELL) {
         optionBox = box;
         value = v;
     }
@@ -922,14 +997,16 @@ struct COptionCell : public Component{
     int value;
 };
 
-struct CRotation : public Component{
-    static Type getType(){return ROTATION;}
-    CRotation(double angle){
+struct CRotation : public Component {
+    static Type getType() {
+        return ROTATION;
+    }
+    CRotation(double angle) {
         this->angle = angle;
         followVelocity = false;
         this->velocity = 0;
     }
-    CRotation(bool vel){
+    CRotation(bool vel) {
         this->angle = 0;
         this->followVelocity = vel;
         this->velocity = 0;
@@ -940,15 +1017,17 @@ struct CRotation : public Component{
     bool followVelocity;
 };
 
-struct CVelocity : public Component{
-    static Type getType(){return VELOCITY;}
-    CVelocity():Component(VELOCITY){}
+struct CVelocity : public Component {
+    static Type getType() {
+        return VELOCITY;
+    }
+    CVelocity():Component(VELOCITY) {}
 
-    CVelocity(double sp){
+    CVelocity(double sp) {
         speed = sp;
     }
 
-    CVelocity(double xMax, double yMax, double x = 0, double y = 0):Component(VELOCITY){
+    CVelocity(double xMax, double yMax, double x = 0, double y = 0):Component(VELOCITY) {
         this->xMax = xMax;
         this->yMax = yMax;
         this->x = x;
@@ -962,11 +1041,13 @@ struct CVelocity : public Component{
     double speed;
 };
 
-struct CElipsoidalMovement : public Component{
-    static Type getType(){return ELIPSOIDAL_MOVEMENT;}
-    CElipsoidalMovement(){};
+struct CElipsoidalMovement : public Component {
+    static Type getType() {
+        return ELIPSOIDAL_MOVEMENT;
+    }
+    CElipsoidalMovement() {};
     CElipsoidalMovement(double cx, double cy, double xAmp, double yAmp, double angularSpeed,
-                        double startingAngle = 0, bool setX = true, bool setY = true){
+                        double startingAngle = 0, bool setX = true, bool setY = true) {
         this->cx = cx;
         this->cy = cy;
         this->xAmp = xAmp;
@@ -983,9 +1064,11 @@ struct CElipsoidalMovement : public Component{
     double angle;
 };
 
-struct CTilt : Component{
-    static Type getType(){return TILT;}
-    CTilt(double amplitude, double tiltSpeed = 360, double centralAngle = 0, double initialAngle = 0){
+struct CTilt : Component {
+    static Type getType() {
+        return TILT;
+    }
+    CTilt(double amplitude, double tiltSpeed = 360, double centralAngle = 0, double initialAngle = 0) {
         this->amplitude = amplitude;
         this->tiltSpeed = tiltSpeed;
         this->centralAngle = centralAngle;
@@ -998,15 +1081,19 @@ struct CTilt : Component{
 };
 
 
-struct CAutoPilot : public Component{
-    static Type getType(){return AUTO_PILOT;}
-    CAutoPilot(){}
+struct CAutoPilot : public Component {
+    static Type getType() {
+        return AUTO_PILOT;
+    }
+    CAutoPilot() {}
 };
 
-struct CAcceleration : public Component{
-    static Type getType(){return ACCELERATION;}
-    CAcceleration():Component(ACCELERATION){}
-    CAcceleration(double xMax, double yMax, double x = 0, double y = 0):Component(ACCELERATION){
+struct CAcceleration : public Component {
+    static Type getType() {
+        return ACCELERATION;
+    }
+    CAcceleration():Component(ACCELERATION) {}
+    CAcceleration(double xMax, double yMax, double x = 0, double y = 0):Component(ACCELERATION) {
         this->xMax = xMax;
         this->yMax = yMax;
         this->x = x;
@@ -1018,13 +1105,17 @@ struct CAcceleration : public Component{
     double xMax, yMax;
 };
 
-struct CGravity : public Component{
-    static Type getType(){return GRAVITY;}
+struct CGravity : public Component {
+    static Type getType() {
+        return GRAVITY;
+    }
 };
 
-struct CTargetVelocity : public Component{
-    static Type getType(){return TARGET_VELOCITY;}
-    CTargetVelocity(double x, double y){
+struct CTargetVelocity : public Component {
+    static Type getType() {
+        return TARGET_VELOCITY;
+    }
+    CTargetVelocity(double x, double y) {
         this->x = x;
         this->y = y;
         xOK = false;
@@ -1034,10 +1125,12 @@ struct CTargetVelocity : public Component{
     bool xOK, yOK;
 };
 
-struct CTargetPosition : public Component{
-    static Type getType(){return TARGET_POSITION;};
-    CTargetPosition():Component(TARGET_POSITION){}
-    CTargetPosition(double x, double y):Component(TARGET_POSITION){
+struct CTargetPosition : public Component {
+    static Type getType() {
+        return TARGET_POSITION;
+    };
+    CTargetPosition():Component(TARGET_POSITION) {}
+    CTargetPosition(double x, double y):Component(TARGET_POSITION) {
         this->x = x;
         this->y = y;
         xOK = false;
@@ -1049,10 +1142,12 @@ struct CTargetPosition : public Component{
     bool xOK, yOK;
 };
 
-struct CTextBox : public Component{
-    static Type getType(){return TEXT_BOX;};
-    CTextBox():Component(TEXT_BOX){}
-    CTextBox(string text, string font, sf::Color color, int size, double wMax = INFINITY, double hMax = INFINITY, int spacing = 0):Component(TEXT_BOX){
+struct CTextBox : public Component {
+    static Type getType() {
+        return TEXT_BOX;
+    };
+    CTextBox():Component(TEXT_BOX) {}
+    CTextBox(string text, string font, sf::Color color, int size, double wMax = INFINITY, double hMax = INFINITY, int spacing = 0):Component(TEXT_BOX) {
         this->spacing = spacing;
         this->hMax = hMax;
         this->wMax = wMax;
@@ -1060,11 +1155,12 @@ struct CTextBox : public Component{
         this->font = font;
         this->color = color;
     }
-    void updateDimensions(){
-        width = 0; height = 0;
-        for (unsigned int i = 0; i < lines.size(); i++){
+    void updateDimensions() {
+        width = 0;
+        height = 0;
+        for (unsigned int i = 0; i < lines.size(); i++) {
             height += lines[i].getLocalBounds().height;
-            if (lines[i].getLocalBounds().width > width){
+            if (lines[i].getLocalBounds().width > width) {
                 width = lines[i].getLocalBounds().width;
             }
         }
@@ -1080,13 +1176,15 @@ struct CTextBox : public Component{
     int spacing;
 };
 
-struct CBarHUD : public Component{
-    static Type getType(){return BAR_HUD;};
-    enum GrowDirection{LEFT, RIGHT, UP, DOWN};
-    CBarHUD():Component(BAR_HUD){}
+struct CBarHUD : public Component {
+    static Type getType() {
+        return BAR_HUD;
+    };
+    enum GrowDirection {LEFT, RIGHT, UP, DOWN};
+    CBarHUD():Component(BAR_HUD) {}
     CBarHUD(GrowDirection grow, double w0, double h0, double speed = 40,
             sf::Color fillColor = sf::Color::Black, sf::Color outlineColor = sf::Color::White,
-            double outlineThickness = 0, double sizeUnit = 1, Entity* label = nullptr):Component(BAR_HUD){
+            double outlineThickness = 0, double sizeUnit = 1, Entity* label = nullptr):Component(BAR_HUD) {
         this->grow = grow;
         this->w0 = w0;
         this->h0 = h0;
@@ -1112,35 +1210,42 @@ struct CBarHUD : public Component{
     Entity* label;
 };
 
-struct CCursor : public Component{
-    static Type getType(){return CURSOR;}
+struct CCursor : public Component {
+    static Type getType() {
+        return CURSOR;
+    }
 };
 
-struct CTargetValue : public Component{
-    static Type getType(){return TARGET_VALUE;};
-    CTargetValue(double value):Component(TARGET_VALUE){
+struct CTargetValue : public Component {
+    static Type getType() {
+        return TARGET_VALUE;
+    };
+    CTargetValue(double value):Component(TARGET_VALUE) {
         this->target = value;
     }
     double target;
 };
 
-struct CDraw : public Component{
-    static Type getType(){return DRAW;};
-    enum Tag{BACKGROUND, NONE, WORLD, WORLD_0, WORLD_1, WORLD_2, WORLD_3, SKY, HUD1, HUD2, HUD3, HUD4, HUD5,
-            GUI, GUI1, GUI2, GUI3, GUI4, GUI5,
-            GUI_00, GUI_01, GUI_02, GUI_03, GUI_04, GUI_05,
-            PARTICLES, CLOUDS, BLINDFOLD, SCREEN_TRANSITION, CURSOR, N_TAGS};
-    CDraw(){
+struct CDraw : public Component {
+    static Type getType() {
+        return DRAW;
+    };
+    enum Tag {BACKGROUND, NONE, WORLD, WORLD_0, WORLD_1, WORLD_2, WORLD_3, SKY, HUD1, HUD2, HUD3, HUD4, HUD5,
+              GUI, GUI1, GUI2, GUI3, GUI4, GUI5,
+              GUI_00, GUI_01, GUI_02, GUI_03, GUI_04, GUI_05,
+              PARTICLES, CLOUDS, BLINDFOLD, SCREEN_TRANSITION, CURSOR, N_TAGS
+             };
+    CDraw() {
         tag = NONE;
         isHidden = false;
         alpha = 255;
     }
-    CDraw(Tag tag, double a = 255){
+    CDraw(Tag tag, double a = 255) {
         this->tag = tag;
         isHidden = false;
         alpha = a;
     }
-    CDraw(Tag tag, bool hidden, double a){
+    CDraw(Tag tag, bool hidden, double a) {
         this->tag = tag;
         isHidden = hidden;
         alpha = a;
@@ -1150,10 +1255,12 @@ struct CDraw : public Component{
     double alpha;
 };
 
-struct CGUIGroup : public Component{
-    static Type getType(){return GUI_GROUP;}
+struct CGUIGroup : public Component {
+    static Type getType() {
+        return GUI_GROUP;
+    }
 
-    CGUIGroup(string groupType, string groupID, Message msgOnCreate = EMPTY_MESSAGE){
+    CGUIGroup(string groupType, string groupID, Message msgOnCreate = EMPTY_MESSAGE) {
         this->groupType = groupType;
         this->groupID = groupID;
         this->msgOnCreate = msgOnCreate;
@@ -1164,18 +1271,20 @@ struct CGUIGroup : public Component{
     Message msgOnCreate;
 };
 
-struct CPath : public Component{
-    static Type getType(){return PATH;};
+struct CPath : public Component {
+    static Type getType() {
+        return PATH;
+    };
 
-    CPath(){
+    CPath() {
         firstInsertion = true;
     }
 
-    void addNode(double x, double y){
-        if (firstInsertion){
+    void addNode(double x, double y) {
+        if (firstInsertion) {
             target = sf::Vector2f(x,y);
             firstInsertion = false;
-        }else{
+        } else {
             nodes.push_back(sf::Vector2f(x, y));
         }
     }
@@ -1186,9 +1295,11 @@ struct CPath : public Component{
     list<sf::Vector2f> nodes;
 };
 
-struct CTimer : public Component{
-    static Type getType(){return TIMER;}
-    CTimer(double t, Message m, bool rem = false){
+struct CTimer : public Component {
+    static Type getType() {
+        return TIMER;
+    }
+    CTimer(double t, Message m, bool rem = false) {
         message = m;
         target = t;
         removeEntity = rem;
@@ -1199,13 +1310,14 @@ struct CTimer : public Component{
     bool removeEntity;
 };
 
-struct BattlePhase{
-    enum ID{NONE, PRE_BATTLE, FORMATION_PLANNING, ACTION_PLANNING, BATTLE_SOLVING_PLANNING, FORMATION_EXECUTION,
-            ACTION_EXECUTION, BATTLE_SOLVING_EXECUTION, ARMY_ASSEMBLE, RESTART};
-    BattlePhase(){
+struct BattlePhase {
+    enum ID {NONE, PRE_BATTLE, FORMATION_PLANNING, ACTION_PLANNING, BATTLE_SOLVING_PLANNING, FORMATION_EXECUTION,
+             ACTION_EXECUTION, BATTLE_SOLVING_EXECUTION, ARMY_ASSEMBLE, RESTART
+            };
+    BattlePhase() {
         id = NONE;
     }
-    BattlePhase(Player::ID p, ID i, double x = 0){
+    BattlePhase(Player::ID p, ID i, double x = 0) {
         player = p;
         id = i;
     }
@@ -1213,32 +1325,38 @@ struct BattlePhase{
     ID id;
 };
 
-struct CBattlePhase : public Component{
-    static Type getType(){return BATTLE_PHASE;}
-    CBattlePhase(){}
-    CBattlePhase(BattlePhase phase){
+struct CBattlePhase : public Component {
+    static Type getType() {
+        return BATTLE_PHASE;
+    }
+    CBattlePhase() {}
+    CBattlePhase(BattlePhase phase) {
         this->phase = phase;
     }
     BattlePhase phase;
 };
 
-struct CTemporary : public Component{
-    static Type getType(){return TEMPORARY;}
+struct CTemporary : public Component {
+    static Type getType() {
+        return TEMPORARY;
+    }
 };
 
-struct CTextbox2 : public Component{
-    static Type getType(){return TEXT_BOX_2;}
+struct CTextbox2 : public Component {
+    static Type getType() {
+        return TEXT_BOX_2;
+    }
 
-    enum Align{NORMAL, CENTRALIZED};
+    enum Align {NORMAL, CENTRALIZED};
 
-    CTextbox2(){
+    CTextbox2() {
         xOff = 0;
         yOff = 0;
         align = NORMAL;
         wMax = INFINITY;
     }
 
-    CTextbox2(sf::Text t, double xOff = 0, double yOff = 0, Align a = NORMAL, double w = INFINITY){
+    CTextbox2(sf::Text t, double xOff = 0, double yOff = 0, Align a = NORMAL, double w = INFINITY) {
         content = t;
         this->xOff = xOff;
         this->yOff = yOff;
@@ -1246,7 +1364,7 @@ struct CTextbox2 : public Component{
         this->wMax = w;
     }
 
-    CTextbox2(string str, sf::Font& font, int size, sf::Color color = sf::Color::Black, double xOff = 0, double yOff = 0, Align a = CENTRALIZED, double w = INFINITY){
+    CTextbox2(string str, sf::Font& font, int size, sf::Color color = sf::Color::Black, double xOff = 0, double yOff = 0, Align a = CENTRALIZED, double w = INFINITY) {
         content.setString(str);
         content.setFont(font);
         content.setCharacterSize(size);
@@ -1264,13 +1382,15 @@ struct CTextbox2 : public Component{
     double wMax;
 };
 
-struct CTooltip : public Component{
-    static Type getType(){return TOOLTIP;}
-    enum Style{STYLE_1, STYLE_2, N_STYLES};
-    enum Position{TL, TC, TR, ML, MC, MR, BL, BC, BR};
-    enum Info{SECTOR, UNIT_GROUP, UNIT, ACTION, EFFECT, CAPTAIN, HERO_LEFT, HERO_RIGHT, HERO_BOTTOM, TEXT_1, ARMY_COMPOSITION_STATUS};
+struct CTooltip : public Component {
+    static Type getType() {
+        return TOOLTIP;
+    }
+    enum Style {STYLE_1, STYLE_2, N_STYLES};
+    enum Position {TL, TC, TR, ML, MC, MR, BL, BC, BR};
+    enum Info {SECTOR, UNIT_GROUP, UNIT, ACTION, EFFECT, CAPTAIN, HERO_LEFT, HERO_RIGHT, HERO_BOTTOM, TEXT_1, ARMY_COMPOSITION_STATUS};
 
-    CTooltip(Info i){
+    CTooltip(Info i) {
         info = i;
         showAfter = 0;
         xOff = 0;
@@ -1279,7 +1399,7 @@ struct CTooltip : public Component{
     }
 
     CTooltip(string text, string title = string(), double xOff = 0, double yOff = 0,
-             double showAfter = 0.f, Style style = STYLE_1, Position position = MR){
+             double showAfter = 0.f, Style style = STYLE_1, Position position = MR) {
         this->text = text;
         this->title = title;
         this->showAfter = showAfter;
@@ -1302,12 +1422,14 @@ struct CTooltip : public Component{
     Position position;
 };
 
-struct CCircleShape : public Component{
-    static Type getType(){return CIRCLE_SHAPE;}
-    CCircleShape(sf::CircleShape circle){
+struct CCircleShape : public Component {
+    static Type getType() {
+        return CIRCLE_SHAPE;
+    }
+    CCircleShape(sf::CircleShape circle) {
         shape = circle;
     }
-    CCircleShape(double r, sf::Color fillColor = sf::Color::White, double outThick = 0, sf::Color outColor = sf::Color::Black){
+    CCircleShape(double r, sf::Color fillColor = sf::Color::White, double outThick = 0, sf::Color outColor = sf::Color::Black) {
         shape.setRadius(r);
         shape.setFillColor(fillColor);
         shape.setOutlineThickness(outThick);
@@ -1316,12 +1438,14 @@ struct CCircleShape : public Component{
     sf::CircleShape shape;
 };
 
-struct CRectShape : public Component{
-    static Type getType(){return RECT_SHAPE;}
-    CRectShape(sf::RectangleShape rect){
+struct CRectShape : public Component {
+    static Type getType() {
+        return RECT_SHAPE;
+    }
+    CRectShape(sf::RectangleShape rect) {
         shape = rect;
     }
-    CRectShape(double w, double h, sf::Color fillColor = sf::Color::White, double outThick = 0, sf::Color outColor = sf::Color::Black){
+    CRectShape(double w, double h, sf::Color fillColor = sf::Color::White, double outThick = 0, sf::Color outColor = sf::Color::Black) {
         shape.setSize(sf::Vector2f(w, h));
         shape.setFillColor(fillColor);
         shape.setOutlineThickness(outThick);
@@ -1330,9 +1454,11 @@ struct CRectShape : public Component{
     sf::RectangleShape shape;
 };
 
-struct CFadeTransition : public Component{
-    static Type getType(){return FADE_TRANSITION;}
-    CFadeTransition(){
+struct CFadeTransition : public Component {
+    static Type getType() {
+        return FADE_TRANSITION;
+    }
+    CFadeTransition() {
         color = sf::Color::White;
         holdTime = 0;
         endMessage = EMPTY_MESSAGE;
@@ -1342,13 +1468,15 @@ struct CFadeTransition : public Component{
     double holdTime;
 };
 
-struct CFade : public Component{
-    static Type getType(){return FADE;}
-    CFade(){
+struct CFade : public Component {
+    static Type getType() {
+        return FADE;
+    }
+    CFade() {
         alphaSpeed = 255;
         endMessage = EMPTY_MESSAGE;
     }
-    CFade(double speed, double target, Message m = EMPTY_MESSAGE){
+    CFade(double speed, double target, Message m = EMPTY_MESSAGE) {
         active = false;
         alphaSpeed = speed;
         endMessage = m;
@@ -1361,18 +1489,20 @@ struct CFade : public Component{
     double alphaTarget;
 };
 
-struct CSpinButton : public Component{
-    static Type getType(){return SPIN_BUTTON;}
+struct CSpinButton : public Component {
+    static Type getType() {
+        return SPIN_BUTTON;
+    }
 
-    enum Style{STYLE_1, STYLE_2, N_STYLES};
+    enum Style {STYLE_1, STYLE_2, N_STYLES};
 
-    CSpinButton(){
+    CSpinButton() {
         step = 1;
         min = 0;
         max = 10;
     }
 
-    CSpinButton(int value, int step, int min, int max){
+    CSpinButton(int value, int step, int min, int max) {
         this->value = value;
         this->step = step;
         this->min = min;
@@ -1394,18 +1524,20 @@ struct CSpinButton : public Component{
     */
 };
 
-struct CPanel : public Component{
-    static Type getType(){return PANEL;}
-
-    enum PanelType{TOOLTIP, WINDOW};
-
-    CPanel(){
+struct CPanel : public Component {
+    static Type getType() {
+        return PANEL;
     }
 
-    void remove(Entity* e){
+    enum PanelType {TOOLTIP, WINDOW};
+
+    CPanel() {
+    }
+
+    void remove(Entity* e) {
         objects.remove(e);
     }
-    void add(Entity* e){
+    void add(Entity* e) {
         objects.push_back(e);
     }
 
@@ -1417,36 +1549,38 @@ struct CPanel : public Component{
     Entity* toolButton;
 };
 
-struct CUnitTooltip : public Component{
-    static Type getType(){return UNIT_TOOLTIP;}
-
-/*
-    CUnitTooltip(){
-        showAfter = 0;
-        isShowing = false;
-        eTooltip = nullptr;
-    }
-    CUnitTooltip(Unit::ID id, double delay){
-        unit = id;
-        showAfter = delay;
-        isShowing = false;
-        eTooltip = nullptr;
+struct CUnitTooltip : public Component {
+    static Type getType() {
+        return UNIT_TOOLTIP;
     }
 
-    Unit::ID unit;
-    sf::Clock timeOnHover;
-    double showAfter;
-    bool isShowing;
-    Entity* eTooltip;
-*/
+    /*
+        CUnitTooltip(){
+            showAfter = 0;
+            isShowing = false;
+            eTooltip = nullptr;
+        }
+        CUnitTooltip(Unit::ID id, double delay){
+            unit = id;
+            showAfter = delay;
+            isShowing = false;
+            eTooltip = nullptr;
+        }
+
+        Unit::ID unit;
+        sf::Clock timeOnHover;
+        double showAfter;
+        bool isShowing;
+        Entity* eTooltip;
+    */
 };
 
-struct IconDisplayerPair{
-    IconDisplayerPair(){
+struct IconDisplayerPair {
+    IconDisplayerPair() {
         eIcon = nullptr;
         eDisplayer = nullptr;
     }
-    IconDisplayerPair(Entity* eIcon, Entity* eDisplayer){
+    IconDisplayerPair(Entity* eIcon, Entity* eDisplayer) {
         this->eIcon = eIcon;
         this->eDisplayer = eDisplayer;
     }
@@ -1454,10 +1588,12 @@ struct IconDisplayerPair{
     Entity* eDisplayer;
 };
 
-struct CArmyHUD : public Component{
-    static Type getType(){return ARMY_HUD;}
+struct CArmyHUD : public Component {
+    static Type getType() {
+        return ARMY_HUD;
+    }
 
-    CArmyHUD(){
+    CArmyHUD() {
         captain = nullptr;
         eNAlive = nullptr;
         eCoin = nullptr;
@@ -1474,14 +1610,17 @@ struct CArmyHUD : public Component{
     Entity* eCoin;
 };
 
-struct CDisplayer : public Component{
-    static Type getType(){return DISPLAYER;}
+struct CDisplayer : public Component {
+    static Type getType() {
+        return DISPLAYER;
+    }
 
-    enum ValueType{INPUT_TEXT, SECTOR_STRENGTH, ARMY_MORAL, ARMY_MELEE_POWER, ARMY_ARMOR, SPIN_BUTTON, UNIT_COUNT,
+    enum ValueType {INPUT_TEXT, SECTOR_STRENGTH, ARMY_MORAL, ARMY_MELEE_POWER, ARMY_ARMOR, SPIN_BUTTON, UNIT_COUNT,
                     RESISTANCE_NEUTRAL, RESISTANCE_FIRE, RESISTANCE_WATER, RESISTANCE_ELECTRIC, BATTLE_STATE_DESCRIPTION,
-                    DROP_LIST_VALUE, ALIVE_COUNT, STR_TOGGLE_BUTTON, GAME_STATE};
+                    DROP_LIST_VALUE, ALIVE_COUNT, STR_TOGGLE_BUTTON, GAME_STATE
+                   };
 
-    CDisplayer(ValueType vType, Entity* e){
+    CDisplayer(ValueType vType, Entity* e) {
         valueType = vType;
         eValue = e;
     }
@@ -1490,12 +1629,14 @@ struct CDisplayer : public Component{
     Entity* eValue;
 };
 
-struct CUnitHighlight : public Component{
-    static Type getType(){return UNIT_HIGHLIGHT;}
+struct CUnitHighlight : public Component {
+    static Type getType() {
+        return UNIT_HIGHLIGHT;
+    }
 
-    enum State{DEFAULT, ACTOR, TARGET, N_STATES};
+    enum State {DEFAULT, ACTOR, TARGET, N_STATES};
 
-    CUnitHighlight(){
+    CUnitHighlight() {
         colors.resize(N_STATES);
         colors[DEFAULT] = sf::Color::Transparent;
         colors[ACTOR] = sf::Color::White;
@@ -1505,7 +1646,7 @@ struct CUnitHighlight : public Component{
         state = DEFAULT;
     }
 
-    CUnitHighlight(sf::Color color){
+    CUnitHighlight(sf::Color color) {
         colors.resize(N_STATES);
         colors[DEFAULT] = color;
         colors[ACTOR] = sf::Color::White;
@@ -1520,20 +1661,22 @@ struct CUnitHighlight : public Component{
     double xOff, yOff;
 };
 
-struct CUnitHighlight2 : public Component{
-    static Type getType(){return UNIT_HIGHLIGHT_2;}
+struct CUnitHighlight2 : public Component {
+    static Type getType() {
+        return UNIT_HIGHLIGHT_2;
+    }
 
-    enum State{ON, OFF};
-    enum Info{NONE, EFFECT, RESISTANCE, UNIT, ATTACK, ACTING};
+    enum State {ON, OFF};
+    enum Info {NONE, EFFECT, RESISTANCE, UNIT, ATTACK, ACTING};
 
-    CUnitHighlight2(){
+    CUnitHighlight2() {
         this->color = sf::Color::White;
         xOff = 0;
         yOff = 16;
         state = OFF;
     }
 
-    CUnitHighlight2(sf::Color color){
+    CUnitHighlight2(sf::Color color) {
         this->color = color;
         xOff = 0;
         yOff = 16;
@@ -1548,20 +1691,23 @@ struct CUnitHighlight2 : public Component{
     double xOff, yOff;
 };
 
-struct CArmyPolygon : public Component{
-    static Type getType(){return ARMY_POLYGON;}
+struct CArmyPolygon : public Component {
+    static Type getType() {
+        return ARMY_POLYGON;
+    }
 
     sf::ConvexShape shape;
 };
 
-struct BattleState{
-    enum ID{NONE, COIN, ASK_FORMATION, PLAY_FORMATION, ADVANCE_ARMY,
-                ASK_CAPTAIN_ACTION, PLAY_ACTION, BETWEEN_ROUNDS,
-                ASK_ARMY_ACTION, ASK_BATTLE_CLOSURE, ASK_ARMY_ASSEMBLE,
-                ASK_CAPTAIN_SELECTION, PLAY_MELEE_BATTLE, PRESENT_ARMY,
-                FIELD_CLEANUP, BETWEEN_TURNS, ENDING, BEGINING, UPDATE_SCORE};
-    BattleState(){}
-    BattleState(ID id, Entity* a1 = nullptr, Entity* a2 = nullptr, Message m = EMPTY_MESSAGE){
+struct BattleState {
+    enum ID {NONE, COIN, ASK_FORMATION, PLAY_FORMATION, ADVANCE_ARMY,
+             ASK_CAPTAIN_ACTION, PLAY_ACTION, BETWEEN_ROUNDS,
+             ASK_ARMY_ACTION, ASK_BATTLE_CLOSURE, ASK_ARMY_ASSEMBLE,
+             ASK_CAPTAIN_SELECTION, PLAY_MELEE_BATTLE, PRESENT_ARMY,
+             FIELD_CLEANUP, BETWEEN_TURNS, ENDING, BEGINING, UPDATE_SCORE
+            };
+    BattleState() {}
+    BattleState(ID id, Entity* a1 = nullptr, Entity* a2 = nullptr, Message m = EMPTY_MESSAGE) {
         this->id = id;
         if (a1 != nullptr) this->actors.push_back(a1);
         if (a2 != nullptr) this->actors.push_back(a2);
@@ -1572,10 +1718,12 @@ struct BattleState{
     list<Entity*> actors;
 };
 
-struct CBattle : public Component{
-    static Type getType(){return BATTLE;}
+struct CBattle : public Component {
+    static Type getType() {
+        return BATTLE;
+    }
 
-    CBattle(Entity* P1, Entity* P2, Entity* eFirst){
+    CBattle(Entity* P1, Entity* P2, Entity* eFirst) {
         this->P1 = P1;
         this->P2 = P2;
         P1ready = false;
@@ -1605,27 +1753,33 @@ struct CBattle : public Component{
     string stateDescription;
 };
 
-struct CActionButton : public Component{
-    static Type getType(){return ACTION_BUTTON;}
-    CActionButton(Entity* e){
+struct CActionButton : public Component {
+    static Type getType() {
+        return ACTION_BUTTON;
+    }
+    CActionButton(Entity* e) {
         army = e;
     }
     Entity* army;
 };
 
-struct CCommandOption : public Component{
-    static Type getType(){return COMMAND_OPTION;}
+struct CCommandOption : public Component {
+    static Type getType() {
+        return COMMAND_OPTION;
+    }
 
-    CCommandOption(Entity* e){
+    CCommandOption(Entity* e) {
         eArmy = e;
     }
 
     Entity* eArmy;
 };
 
-struct CArmyComposition : public Component{
-    static Type getType(){return ARMY_COMPOSITION;}
-    CArmyComposition(list<Entity*> eOptions){
+struct CArmyComposition : public Component {
+    static Type getType() {
+        return ARMY_COMPOSITION;
+    }
+    CArmyComposition(list<Entity*> eOptions) {
         this->eOptions = eOptions;
         composed = false;
     }
@@ -1634,10 +1788,10 @@ struct CArmyComposition : public Component{
     Entity* eArmy;
 };
 
-struct TargetOutcome{
-    enum ID{BLOCKED, DIED};
-    TargetOutcome(){}
-    TargetOutcome(Entity* eCauser, ID id){
+struct TargetOutcome {
+    enum ID {BLOCKED, DIED};
+    TargetOutcome() {}
+    TargetOutcome(Entity* eCauser, ID id) {
         this->eCauser = eCauser;
         this->id = id;
     }
@@ -1648,12 +1802,14 @@ struct TargetOutcome{
     ID id;
 };
 
-struct CActionOutcome : public Component{
-    static Type getType(){return ACTION_OUTCOME;}
+struct CActionOutcome : public Component {
+    static Type getType() {
+        return ACTION_OUTCOME;
+    }
 
     CAction::ID action;
 
-    CActionOutcome(CAction::ID id, Entity* actor = nullptr, Entity* enemy = nullptr){
+    CActionOutcome(CAction::ID id, Entity* actor = nullptr, Entity* enemy = nullptr) {
         action = id;
         actorArmy = actor;
         enemyArmy =  enemy;
@@ -1687,20 +1843,24 @@ struct CActionOutcome : public Component{
     double animDuration;
 };
 
-struct CScene : public Component{
-    static Type getType(){return SCENE;}
+struct CScene : public Component {
+    static Type getType() {
+        return SCENE;
+    }
 
-    void addActor(Entity* e){
+    void addActor(Entity* e) {
         actors.push_back(e);
     }
 
     list<Entity*> actors;
 };
 
-struct CZoom : public Component{
-    static Type getType(){return ZOOM;}
+struct CZoom : public Component {
+    static Type getType() {
+        return ZOOM;
+    }
 
-    CZoom(double dx, double dy = 0, double wt = -1, double ht = -1){
+    CZoom(double dx, double dy = 0, double wt = -1, double ht = -1) {
         this->dx = dx;
         this->dy = dy;
         this->wTarget = wt;
@@ -1713,16 +1873,18 @@ struct CZoom : public Component{
     double hTarget;
 };
 
-struct CSound : public Component{
-    static Type getType(){return SOUND;}
-    enum EndTrigger{REMOVE_COMPONENT, REMOVE_ENTITY, LOOP, LOOP_THEN_REMOVE, STOP};
-    CSound(){
+struct CSound : public Component {
+    static Type getType() {
+        return SOUND;
+    }
+    enum EndTrigger {REMOVE_COMPONENT, REMOVE_ENTITY, LOOP, LOOP_THEN_REMOVE, STOP};
+    CSound() {
         endTrigger = STOP;
     }
-    CSound(string n, EndTrigger endTrigger = STOP, double fadeInLength = 0.f, double fadeOutLength = 0.f, double duration = 1000){
+    CSound(string n, EndTrigger endTrigger = STOP, double fadeInLength = 0.f, double fadeOutLength = 0.f, double duration = 1000) {
         name = n;
         this->endTrigger = endTrigger;
-        if (endTrigger == LOOP || endTrigger == LOOP_THEN_REMOVE){
+        if (endTrigger == LOOP || endTrigger == LOOP_THEN_REMOVE) {
             sound.setLoop(true);
         }
         maxVolumn = 100;
@@ -1743,18 +1905,19 @@ struct CSound : public Component{
 };
 
 
-struct AnimationNode{
-    enum Type{A_SPRITE_ANIMATION, A_FADE, A_DESTROY, A_MOVE, A_TELEPORT,
-                A_VARIABLE, A_SPEAK, A_SHOOT, A_SOUND, A_ZOOM, A_NOTHING,
-                A_ADD_COMPONENT, A_REMOVE_COMPONENT};
-    AnimationNode(){}
-    virtual ~AnimationNode(){}
+struct AnimationNode {
+    enum Type {A_SPRITE_ANIMATION, A_FADE, A_DESTROY, A_MOVE, A_TELEPORT,
+               A_VARIABLE, A_SPEAK, A_SHOOT, A_SOUND, A_ZOOM, A_NOTHING,
+               A_ADD_COMPONENT, A_REMOVE_COMPONENT
+              };
+    AnimationNode() {}
+    virtual ~AnimationNode() {}
     double triggerTime;
     Type type;
 };
 
-struct ASpriteAnimation : public AnimationNode{
-    ASpriteAnimation(double trigger, string a, string s = ""){
+struct ASpriteAnimation : public AnimationNode {
+    ASpriteAnimation(double trigger, string a, string s = "") {
         type = A_SPRITE_ANIMATION;
         triggerTime = trigger;
         animation = a;
@@ -1765,8 +1928,8 @@ struct ASpriteAnimation : public AnimationNode{
     string sound;
 };
 
-struct ASpeak : public AnimationNode{
-    ASpeak(double trigger, string what, double duration){
+struct ASpeak : public AnimationNode {
+    ASpeak(double trigger, string what, double duration) {
         type = A_SPEAK;
         triggerTime = trigger;
         text = what;
@@ -1776,8 +1939,8 @@ struct ASpeak : public AnimationNode{
     double duration;
 };
 
-struct AMove : public AnimationNode{
-    AMove(double trigger, double x, double y, double s = 0){
+struct AMove : public AnimationNode {
+    AMove(double trigger, double x, double y, double s = 0) {
         type = A_MOVE;
         triggerTime = trigger;
         this->x = x;
@@ -1789,8 +1952,8 @@ struct AMove : public AnimationNode{
     double speed;
 };
 
-struct AAddComponent : public AnimationNode{
-    AAddComponent(double trigger, Component* c, Component::Type cType){
+struct AAddComponent : public AnimationNode {
+    AAddComponent(double trigger, Component* c, Component::Type cType) {
         type = A_ADD_COMPONENT;
         triggerTime = trigger;
         this->c = c;
@@ -1800,8 +1963,8 @@ struct AAddComponent : public AnimationNode{
     Component::Type cType;
 };
 
-struct ARemoveComponent : public AnimationNode{
-    ARemoveComponent(double trigger, Component::Type c){
+struct ARemoveComponent : public AnimationNode {
+    ARemoveComponent(double trigger, Component::Type c) {
         type = A_REMOVE_COMPONENT;
         triggerTime = trigger;
         this->c = c;
@@ -1810,8 +1973,8 @@ struct ARemoveComponent : public AnimationNode{
     Component::Type c;
 };
 
-struct AFade : public AnimationNode{
-    AFade(double trigger, double s, double alphaTarget){
+struct AFade : public AnimationNode {
+    AFade(double trigger, double s, double alphaTarget) {
         type = A_FADE;
         triggerTime = trigger;
         speed = s;
@@ -1822,8 +1985,8 @@ struct AFade : public AnimationNode{
     double alphaTarget;
 };
 
-struct ATeleport : public AnimationNode{
-    ATeleport(double trigger, double x, double y){
+struct ATeleport : public AnimationNode {
+    ATeleport(double trigger, double x, double y) {
         type = A_TELEPORT;
         triggerTime = trigger;
         this->x = x;
@@ -1833,15 +1996,15 @@ struct ATeleport : public AnimationNode{
     double x, y;
 };
 
-struct ADestroy : public AnimationNode{
-    ADestroy(double trigger){
+struct ADestroy : public AnimationNode {
+    ADestroy(double trigger) {
         type = A_DESTROY;
         triggerTime = trigger;
     }
 };
 
-struct AFlip : public AnimationNode{
-    AFlip(double trigger, int hFlip, int vFlip){
+struct AFlip : public AnimationNode {
+    AFlip(double trigger, int hFlip, int vFlip) {
         this->hFlip = hFlip;
         this->vFlip = vFlip;
     }
@@ -1849,15 +2012,35 @@ struct AFlip : public AnimationNode{
     int hFlip, vFlip;
 };
 
-struct AVariable : public AnimationNode{
-    enum Var{DEAD, ALPHA, H_FLIP, V_FLIP, ADD_EFFECT, REMOVE_FROM_ARMY, REMOVE_EFFECT, WIN, PARTICLE_EFFECT,
-            BUT_LOCKED, HIDDEN, AUTO_P, FREEZE, X_VEL, Y_VEL, X_ACC, Y_ACC, ANGLE, ROTATION_VEL,
-            DRAW_TAG, REPLACE_HERO, COIN, HERO_CONFINED};
+struct AVariable : public AnimationNode {
+    enum Var {DEAD, ALPHA, H_FLIP, V_FLIP, ADD_EFFECT, REMOVE_FROM_ARMY, REMOVE_EFFECT, WIN, PARTICLE_EFFECT,
+              BUT_LOCKED, HIDDEN, AUTO_P, FREEZE, X_VEL, Y_VEL, X_ACC, Y_ACC, ANGLE, ROTATION_VEL,
+              DRAW_TAG, REPLACE_HERO, COIN, HERO_CONFINED
+             };
 
-    AVariable(double trigger, Var var, bool value){triggerTime = trigger; type = A_VARIABLE; this->var = var; bValue = value;}
-    AVariable(double trigger, Var var, double value){triggerTime = trigger; type = A_VARIABLE; this->var = var; dValue = value;}
-    AVariable(double trigger, Var var, int value){triggerTime = trigger; type = A_VARIABLE; this->var = var; iValue = value;}
-    AVariable(double trigger, Var var){triggerTime = trigger; type = A_VARIABLE; this->var = var;}
+    AVariable(double trigger, Var var, bool value) {
+        triggerTime = trigger;
+        type = A_VARIABLE;
+        this->var = var;
+        bValue = value;
+    }
+    AVariable(double trigger, Var var, double value) {
+        triggerTime = trigger;
+        type = A_VARIABLE;
+        this->var = var;
+        dValue = value;
+    }
+    AVariable(double trigger, Var var, int value) {
+        triggerTime = trigger;
+        type = A_VARIABLE;
+        this->var = var;
+        iValue = value;
+    }
+    AVariable(double trigger, Var var) {
+        triggerTime = trigger;
+        type = A_VARIABLE;
+        this->var = var;
+    }
 
     Var var;
     bool bValue;
@@ -1865,9 +2048,9 @@ struct AVariable : public AnimationNode{
     int iValue;
 };
 
-struct AShoot : public AnimationNode{
-    enum Object{ARROW, BOMB, SCIMITAR, ROCK, ARROW_2, DART, SPEAR, ERIDU_BLADE};
-    AShoot(double trigger, double x, double y, Object obj = ARROW){
+struct AShoot : public AnimationNode {
+    enum Object {ARROW, BOMB, SCIMITAR, ROCK, ARROW_2, DART, SPEAR, ERIDU_BLADE};
+    AShoot(double trigger, double x, double y, Object obj = ARROW) {
         triggerTime = trigger;
         type = A_SHOOT;
         xTarget = x;
@@ -1879,8 +2062,8 @@ struct AShoot : public AnimationNode{
     double yTarget;
 };
 
-struct ASound : public AnimationNode{
-    ASound(double trigger, string snd, CSound::EndTrigger endTrigger = CSound::REMOVE_ENTITY){
+struct ASound : public AnimationNode {
+    ASound(double trigger, string snd, CSound::EndTrigger endTrigger = CSound::REMOVE_ENTITY) {
         type = A_SOUND;
         triggerTime = trigger;
         name = snd;
@@ -1890,8 +2073,8 @@ struct ASound : public AnimationNode{
     CSound::EndTrigger trigger;
 };
 
-struct AZoom : public AnimationNode{
-    AZoom(double trigger, double dx, double dy, double wTarget, double hTarget){
+struct AZoom : public AnimationNode {
+    AZoom(double trigger, double dx, double dy, double wTarget, double hTarget) {
         type = A_ZOOM;
         triggerTime = trigger;
         this->dx = dx;
@@ -1905,19 +2088,21 @@ struct AZoom : public AnimationNode{
     double hTarget;
 };
 
-struct CActor : public Component{
-    static Type getType(){return ACTOR;}
+struct CActor : public Component {
+    static Type getType() {
+        return ACTOR;
+    }
 
-    CActor(){
+    CActor() {
         acting = false;
     }
 
-    void addNode(AnimationNode* node){
+    void addNode(AnimationNode* node) {
         timeline.push_back(node);
     }
 
-    void clearTimeline(){
-        for (auto& i : timeline){
+    void clearTimeline() {
+        for (auto& i : timeline) {
             delete i;
         }
         timeline.clear();
@@ -1928,12 +2113,14 @@ struct CActor : public Component{
     sf::Clock timer;
     bool acting;
 };
-struct CScrollList : public Component{
-    static Type getType(){return SCROLL_LIST;}
+struct CScrollList : public Component {
+    static Type getType() {
+        return SCROLL_LIST;
+    }
 
-    enum Orientation{HORIZONTAL, VERTICAL};
+    enum Orientation {HORIZONTAL, VERTICAL};
 
-    CScrollList(){
+    CScrollList() {
         size = 100;
         front = 0;
         spacing = 0;
@@ -1941,8 +2128,8 @@ struct CScrollList : public Component{
         step = 1;
     }
 
-    CScrollList(list<Entity*> l, int sz = 5, Orientation ori = HORIZONTAL, int spc = 0, int stp = 1){
-        for(list<Entity*>::iterator i = l.begin(); i != l.end(); i++){
+    CScrollList(list<Entity*> l, int sz = 5, Orientation ori = HORIZONTAL, int spc = 0, int stp = 1) {
+        for(list<Entity*>::iterator i = l.begin(); i != l.end(); i++) {
             cells.push_back(*i);
         }
         front = 0;
@@ -1963,12 +2150,14 @@ struct CScrollList : public Component{
     Orientation orientation;
 };
 
-struct CScrollButton : public Component{
-    static Type getType(){return SCROLL_BUTTON;}
+struct CScrollButton : public Component {
+    static Type getType() {
+        return SCROLL_BUTTON;
+    }
 
-    enum Move{BACKWARD, FORWARD};
+    enum Move {BACKWARD, FORWARD};
 
-    CScrollButton(Entity* e, Move m){
+    CScrollButton(Entity* e, Move m) {
         eList = e;
         move = m;
     }
@@ -1978,17 +2167,19 @@ struct CScrollButton : public Component{
 
 };
 
-struct CScenarioObject : public Component{
-    static Type getType(){return SCENARIO_OBJECT;}
+struct CScenarioObject : public Component {
+    static Type getType() {
+        return SCENARIO_OBJECT;
+    }
 
     typedef string ID;
     ID id;
     static map<ID, CScenarioObject> Map;
-    CScenarioObject(){
+    CScenarioObject() {
         bindedAnimationID = 0;
     }
 
-    CScenarioObject(string def, string click, string sound){
+    CScenarioObject(string def, string click, string sound) {
         aDefault = def;
         aClick = click;
         clickSound = sound;
@@ -2011,19 +2202,21 @@ struct CScenarioObject : public Component{
 
 };
 
-struct CScenario : public Component{
-    static Type getType(){return SCENARIO;}
+struct CScenario : public Component {
+    static Type getType() {
+        return SCENARIO;
+    }
 
     static map<string, CScenario> Map;
 
-    CScenario(){
+    CScenario() {
     }
-    CScenario(string n){
+    CScenario(string n) {
         name = n;
         xOff = 0;
         yOff = 0;
     }
-    CScenario(string n, double xOff, double yOff){
+    CScenario(string n, double xOff, double yOff) {
         name = n;
         this->xOff = xOff;
         this->yOff = yOff;
@@ -2036,24 +2229,28 @@ struct CScenario : public Component{
     double xOff, yOff;
 };
 
-struct CScenarioPreview : public Component{
-    static Type getType(){return SCENARIO_PREVIEW;}
+struct CScenarioPreview : public Component {
+    static Type getType() {
+        return SCENARIO_PREVIEW;
+    }
 
     list<Entity*> objects;
 };
 
-struct CInputTextBox : public Component{
-    static Type getType(){return INPUT_TEXT_BOX;}
+struct CInputTextBox : public Component {
+    static Type getType() {
+        return INPUT_TEXT_BOX;
+    }
 
-    enum State{
+    enum State {
         ACTIVE, INACTIVE
     };
 
-    CInputTextBox(){
+    CInputTextBox() {
         state = INACTIVE;
         msgOnUpdate = EMPTY_MESSAGE;
     }
-    CInputTextBox(bool ignoreEnter, Message msgOnUpdate = EMPTY_MESSAGE, State st = INACTIVE, int max = 500, bool numOnly = false){
+    CInputTextBox(bool ignoreEnter, Message msgOnUpdate = EMPTY_MESSAGE, State st = INACTIVE, int max = 500, bool numOnly = false) {
         this->ignoreEnter = ignoreEnter;
         this->msgOnUpdate = msgOnUpdate;
         state = st;
@@ -2081,22 +2278,28 @@ struct CInputTextBox : public Component{
     sf::Color blinkColor;
 };
 
-struct CTextInput : public Component{
-    static Type getType(){return TEXT_INPUT;}
+struct CTextInput : public Component {
+    static Type getType() {
+        return TEXT_INPUT;
+    }
 
     char value;
 };
 
-struct CMouseInput : public Component{
-    static Type getType(){return MOUSE_INPUT;}
+struct CMouseInput : public Component {
+    static Type getType() {
+        return MOUSE_INPUT;
+    }
 
     sf::Mouse::Button buttonPressed;
     sf::Mouse::Button buttonReleased;
 };
 
-struct CKeyboardInput : public Component{
-    static Type getType(){return KEYBOARD_INPUT;}
-    void setInput(const sf::Event& ev){
+struct CKeyboardInput : public Component {
+    static Type getType() {
+        return KEYBOARD_INPUT;
+    }
+    void setInput(const sf::Event& ev) {
         code = ev.key.code;
         alt = ev.key.alt;
         control = ev.key.control;
@@ -2108,30 +2311,36 @@ struct CKeyboardInput : public Component{
     bool alt, control, shift, system;
 };
 
-struct CDragDrop : public Component{
-    static Type getType(){return DRAG_DROP;}
-    CDragDrop(){
+struct CDragDrop : public Component {
+    static Type getType() {
+        return DRAG_DROP;
+    }
+    CDragDrop() {
         active = false;
     }
-    CDragDrop(bool ac){
+    CDragDrop(bool ac) {
         active = ac;
     }
 
     bool active;
 };
 
-struct CParentPanel : public Component{
-    static Type getType(){return PARENT_PANEL;}
-    CParentPanel(Entity* e){
+struct CParentPanel : public Component {
+    static Type getType() {
+        return PARENT_PANEL;
+    }
+    CParentPanel(Entity* e) {
         this->e = e;
     }
     Entity* e;
 };
 
-struct CHighlightTrigger : public Component{
-    static Type getType(){return HIGHLIGHT_TRIGGER;}
+struct CHighlightTrigger : public Component {
+    static Type getType() {
+        return HIGHLIGHT_TRIGGER;
+    }
 
-    CHighlightTrigger(CUnitHighlight2::Info i, int v){
+    CHighlightTrigger(CUnitHighlight2::Info i, int v) {
         info = i;
         value = v;
     }
@@ -2140,17 +2349,21 @@ struct CHighlightTrigger : public Component{
     int value;
 };
 
-struct CCallout : public Component{
-    static Type getType(){return CALLOUT;}
+struct CCallout : public Component {
+    static Type getType() {
+        return CALLOUT;
+    }
 };
 
-struct CBarDisplayer : public Component{
-    static Type getType(){return BAR_DISPLAYER;}
+struct CBarDisplayer : public Component {
+    static Type getType() {
+        return BAR_DISPLAYER;
+    }
 
-    enum ValueType{FIRE_RESISTANCE, WATER_RESISTANCE, EARTH_RESISTANCE, AIR_RESISTANCE};
-    enum GrowDirection{LEFT, RIGHT, TOP, DOWN};
+    enum ValueType {FIRE_RESISTANCE, WATER_RESISTANCE, EARTH_RESISTANCE, AIR_RESISTANCE};
+    enum GrowDirection {LEFT, RIGHT, TOP, DOWN};
 
-    CBarDisplayer(ValueType vType, Entity* e, GrowDirection grow = RIGHT, double unit = 1.f, double minSize = 0){
+    CBarDisplayer(ValueType vType, Entity* e, GrowDirection grow = RIGHT, double unit = 1.f, double minSize = 0) {
         valueType = vType;
         this->growDirection = grow;
         this->unit = unit;
@@ -2165,20 +2378,24 @@ struct CBarDisplayer : public Component{
     double minSize;
 };
 
-struct CAverageUnit : public Component{
-    static Type getType(){return AVERAGE_UNIT;}
+struct CAverageUnit : public Component {
+    static Type getType() {
+        return AVERAGE_UNIT;
+    }
     vector<int> resistance;
-    CAverageUnit(){
+    CAverageUnit() {
         resistance.resize(CUnit::N_DAMAGE_TYPES, 0);
     }
 };
 
-struct CScreen : public Component{
-    static Type getType(){return SCREEN;}
-    enum ID{MAIN_MENU, MAIN_MENU_NO_ANIMATION, SPLASH_1, SPLASH_2, SPLASH_3, MATCH, CUSTOM_MATCH, FORMATION_EDITOR, LANGUAGE_MENU};
-    enum Transition{FADE_BLACK};
+struct CScreen : public Component {
+    static Type getType() {
+        return SCREEN;
+    }
+    enum ID {MAIN_MENU, MAIN_MENU_NO_ANIMATION, SPLASH_1, SPLASH_2, SPLASH_3, MATCH, CUSTOM_MATCH, FORMATION_EDITOR, LANGUAGE_MENU};
+    enum Transition {FADE_BLACK};
 
-    CScreen(ID id, Transition t){
+    CScreen(ID id, Transition t) {
         this->id = id;
         this->transition = t;
     }
@@ -2187,28 +2404,34 @@ struct CScreen : public Component{
     Transition transition;
 };
 
-struct CSystem : public Component{
-    static Type getType(){return SYSTEM;}
-    CSystem(){}
+struct CSystem : public Component {
+    static Type getType() {
+        return SYSTEM;
+    }
+    CSystem() {}
 };
 
-struct CParticleEffect : public Component{
-    static Type getType(){return PARTICLE_EFFECT;}
-    CParticleEffect(){}
+struct CParticleEffect : public Component {
+    static Type getType() {
+        return PARTICLE_EFFECT;
+    }
+    CParticleEffect() {}
     list<Entity*> emmiters;
 };
 
-struct CParticleEmmiter : public Component{
-    static Type getType(){return PARTICLE_EMMITER;}
+struct CParticleEmmiter : public Component {
+    static Type getType() {
+        return PARTICLE_EMMITER;
+    }
 
-    enum Drawable{TEXTURE, RECTANGLE, CIRCLE, ANIMATION};
+    enum Drawable {TEXTURE, RECTANGLE, CIRCLE, ANIMATION};
 
-    CParticleEmmiter(){
+    CParticleEmmiter() {
         hasElipsoidalMovement = false;
         drawTag = CDraw::PARTICLES;
     }
     CParticleEmmiter(double rate, sf::RectangleShape shape, double lifeSpan, double minSpeed, double maxSpeed,
-                     double angle, double angleGap, int nParticles = 1){
+                     double angle, double angleGap, int nParticles = 1) {
         this->rate = rate;
         this->rectShape = shape;
         this->lifeSpan = lifeSpan;
@@ -2225,7 +2448,7 @@ struct CParticleEmmiter : public Component{
         drawTag = CDraw::PARTICLES;
     }
     CParticleEmmiter(double rate, sf::CircleShape shape, double lifeSpan, double minSpeed, double maxSpeed,
-                     double angle, double angleGap, int nParticles = 1){
+                     double angle, double angleGap, int nParticles = 1) {
         this->rate = rate;
         this->circleShape = shape;
         this->lifeSpan = lifeSpan;
@@ -2242,7 +2465,7 @@ struct CParticleEmmiter : public Component{
         drawTag = CDraw::PARTICLES;
     }
     CParticleEmmiter(double rate, string texture, double lifeSpan, double minSpeed, double maxSpeed,
-                     double angle, double angleGap, int nParticles = 1){
+                     double angle, double angleGap, int nParticles = 1) {
         this->rate = rate;
         this->texture = texture;
         this->lifeSpan = lifeSpan;
@@ -2259,7 +2482,7 @@ struct CParticleEmmiter : public Component{
         drawTag = CDraw::PARTICLES;
     }
 
-    void addElipsoidalMovement(CElipsoidalMovement c){
+    void addElipsoidalMovement(CElipsoidalMovement c) {
         hasElipsoidalMovement = true;
         elipsoidalMovement = c;
     }
@@ -2287,9 +2510,11 @@ struct CParticleEmmiter : public Component{
     bool on;
 };
 
-struct CTypingEffect : public Component{
-    static Type getType(){return TYPING_EFFECT;}
-    CTypingEffect(string t, double r = 5){
+struct CTypingEffect : public Component {
+    static Type getType() {
+        return TYPING_EFFECT;
+    }
+    CTypingEffect(string t, double r = 5) {
         fullText = t;
         rate = r;
         iNextChar = 0;
@@ -2301,9 +2526,11 @@ struct CTypingEffect : public Component{
     sf::Clock clock;
 };
 
-struct CToggleButton : public Component{
-    static Type getType(){return TOGGLE_BUTTON;}
-    CToggleButton(bool on){
+struct CToggleButton : public Component {
+    static Type getType() {
+        return TOGGLE_BUTTON;
+    }
+    CToggleButton(bool on) {
         this->on = on;
     }
     bool on;
@@ -2311,15 +2538,17 @@ struct CToggleButton : public Component{
     string offTexture;
 };
 
-struct CStringToggleButton : public Component{
-    static Type getType(){return STRING_TOGGLE_BUTTON;}
-    CStringToggleButton(string v1, string v2, int value = 0, Message msgOnToggle = HAS_BEEN_TOGGLED){
+struct CStringToggleButton : public Component {
+    static Type getType() {
+        return STRING_TOGGLE_BUTTON;
+    }
+    CStringToggleButton(string v1, string v2, int value = 0, Message msgOnToggle = HAS_BEEN_TOGGLED) {
         valueIndex = value;
         values.push_back(v1);
         values.push_back(v2);
         this->msgOnToggle = msgOnToggle;
     }
-    void toggle(){
+    void toggle() {
         valueIndex = (valueIndex + 1) % values.size();
     }
     int valueIndex;
@@ -2327,17 +2556,19 @@ struct CStringToggleButton : public Component{
     Message msgOnToggle;
 };
 
-struct CDropList : public Component{
-    static Type getType(){return DROP_LIST;}
-    enum Direction{UP, DOWN, LEFT, RIGHT};
+struct CDropList : public Component {
+    static Type getType() {
+        return DROP_LIST;
+    }
+    enum Direction {UP, DOWN, LEFT, RIGHT};
 
-    CDropList(list<string> l, string init = "", Direction d = DOWN, Message msgOnUpdate = HAS_CHANGED_VALUE){
+    CDropList(list<string> l, string init = "", Direction d = DOWN, Message msgOnUpdate = HAS_CHANGED_VALUE) {
         values = l;
         value = init;
         direction = d;
         this->msgOnUpdate = msgOnUpdate;
     }
-    void setStyle(sf::RectangleShape def, sf::RectangleShape hov, sf::RectangleShape act){
+    void setStyle(sf::RectangleShape def, sf::RectangleShape hov, sf::RectangleShape act) {
         defRect = def;
         hovRect = hov;
         actRect = act;
@@ -2354,10 +2585,12 @@ struct CDropList : public Component{
     sf::RectangleShape actRect;
 };
 
-struct CCheckBox : public Component{
-    static Type getType(){return CHECK_BOX;}
+struct CCheckBox : public Component {
+    static Type getType() {
+        return CHECK_BOX;
+    }
 
-    CCheckBox(string onTexture, string offTexture, bool on = true){
+    CCheckBox(string onTexture, string offTexture, bool on = true) {
         this->on = on;
         this->onTexture = onTexture;
         this->offTexture = offTexture;
@@ -2368,57 +2601,69 @@ struct CCheckBox : public Component{
     string offTexture;
 };
 
-struct CMainMenuPage : public Component{
-    static Type getType(){return MAIN_MENU_PAGE;}
-    enum ID{SELECT_PLAYER, MAIN_SCREEN, OPTIONS, FIGHT, QUICK_GAME, LAN, ONLINE, ACHIEVEMENTS, FORMATIONS, N_PAGES};
+struct CMainMenuPage : public Component {
+    static Type getType() {
+        return MAIN_MENU_PAGE;
+    }
+    enum ID {SELECT_PLAYER, MAIN_SCREEN, OPTIONS, FIGHT, QUICK_GAME, LAN, ONLINE, ACHIEVEMENTS, FORMATIONS, N_PAGES};
     ID id;
-    CMainMenuPage(ID id){
+    CMainMenuPage(ID id) {
         this->id = id;
     }
 };
 
-struct CInGameMenuPage : public Component{
-    static Type getType(){return IN_GAME_MENU_PAGE;}
-    enum ID{FIRST, OPTIONS, N_PAGES};
+struct CInGameMenuPage : public Component {
+    static Type getType() {
+        return IN_GAME_MENU_PAGE;
+    }
+    enum ID {FIRST, OPTIONS, N_PAGES};
     ID id;
-    CInGameMenuPage(ID id){
+    CInGameMenuPage(ID id) {
         this->id = id;
     }
 };
 
-struct COriginalHero : public Component{
-    static Type getType(){return ORIGINAL_HERO;}
+struct COriginalHero : public Component {
+    static Type getType() {
+        return ORIGINAL_HERO;
+    }
 
-    COriginalHero(CCaptain hero){
+    COriginalHero(CCaptain hero) {
         this->hero = hero;
     }
 
     CCaptain hero;
 };
-struct CAInt : public Component{
-    static Type getType(){return AI;}
+struct CAInt : public Component {
+    static Type getType() {
+        return AI;
+    }
 
-    CAInt(){
+    CAInt() {
         actionSelected = false;
         waitingOnBrain = false;
         brainDelay = 0.f;
     }
-    
+
     bool waitingOnBrain;
     double brainDelay;
     sf::Clock brainClock;
     bool actionSelected;
 };
-struct CFormation : public Component{
-    static Type getType(){return FORMATION;}
+struct CFormation : public Component {
+    static Type getType() {
+        return FORMATION;
+    }
 
     int positions[23][15];
     string name;
 };
 
-struct CCameraShake : public Component{
-    static Type getType(){return CAMERA_SHAKE;}
-    CCameraShake(double dur, double intens = 8){
+struct CCameraShake : public Component {
+    static Type getType() {
+        return CAMERA_SHAKE;
+    }
+    CCameraShake(double dur, double intens = 8) {
         duration = dur;
         intensity = intens;
     }
@@ -2426,28 +2671,36 @@ struct CCameraShake : public Component{
     double duration;
 };
 
-struct CRemoteControler : public Component{
-    static Type getType(){return REMOTE_CONTROLER;}
+struct CRemoteControler : public Component {
+    static Type getType() {
+        return REMOTE_CONTROLER;
+    }
 };
 
-struct CRemotelyControled : public Component{
-    static Type getType(){return REMOTELY_CONTROLED;}
+struct CRemotelyControled : public Component {
+    static Type getType() {
+        return REMOTELY_CONTROLED;
+    }
 };
 
-struct CPacket : public Component{
-    static Type getType(){return PACKET;}
-    CPacket(){}
-    CPacket(sf::Packet pkt){
+struct CPacket : public Component {
+    static Type getType() {
+        return PACKET;
+    }
+    CPacket() {}
+    CPacket(sf::Packet pkt) {
         packet = pkt;
     }
     sf::Packet packet;
 };
 
-struct CMusic : public Component{
-    static Type getType(){return MUSIC;}
-    enum EndTrigger{LOOP, STOP, NEXT, NEXT_RANDOM};
-    CMusic(){}
-    CMusic(string name, EndTrigger trigger = LOOP){
+struct CMusic : public Component {
+    static Type getType() {
+        return MUSIC;
+    }
+    enum EndTrigger {LOOP, STOP, NEXT, NEXT_RANDOM};
+    CMusic() {}
+    CMusic(string name, EndTrigger trigger = LOOP) {
         this->name = name;
         this->endTrigger = trigger;
         duration = 0.f;
@@ -2460,31 +2713,39 @@ struct CMusic : public Component{
     sf::Clock clock;
 };
 
-struct CCommandLine : public Component{
-    static Type getType(){return COMMAND_LINE;}
+struct CCommandLine : public Component {
+    static Type getType() {
+        return COMMAND_LINE;
+    }
     string command;
     map<string, string> params;
-    bool hasParam(string param){
+    bool hasParam(string param) {
         return params.find(param) != params.end();
     }
 };
 
-struct CCameraMan : public Component{
-    static Type getType(){return CAMERA_MAN;}
+struct CCameraMan : public Component {
+    static Type getType() {
+        return CAMERA_MAN;
+    }
 };
 
-struct CStringMessage : public Component{
-    static Type getType(){return STRING_MESSAGE;}
+struct CStringMessage : public Component {
+    static Type getType() {
+        return STRING_MESSAGE;
+    }
 
-    CStringMessage(std::string value){
+    CStringMessage(std::string value) {
         this->value = value;
     }
 
     std::string value;
 };
 
-struct CCompoundButton : public Component{
-    static Type getType(){return COMPOUND_BUTTON;}
+struct CCompoundButton : public Component {
+    static Type getType() {
+        return COMPOUND_BUTTON;
+    }
 };
 
 #endif // COMPONENT_H

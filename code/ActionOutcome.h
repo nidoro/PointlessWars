@@ -4,10 +4,10 @@
 #include "Component.h"
 #include <SFML/Network.hpp>
 
-struct UnitActionOutcome{
-    enum Outcome{BLOCKED, DIED, SUCESS, FAIL};
-    UnitActionOutcome(){}
-    UnitActionOutcome(int idCauser, Outcome id){
+struct UnitActionOutcome {
+    enum Outcome {BLOCKED, DIED, SUCESS, FAIL};
+    UnitActionOutcome() {}
+    UnitActionOutcome(int idCauser, Outcome id) {
         this->idCauser = idCauser;
         this->id = id;
     }
@@ -16,12 +16,12 @@ struct UnitActionOutcome{
     int idTarget;
 };
 
-class ActionOutcome{
+class ActionOutcome {
     public:
         CAction::ID action;
 
         ActionOutcome();
-        ActionOutcome(CAction::ID id, CPlayer::ID idActor, CPlayer::ID idEnemy){
+        ActionOutcome(CAction::ID id, CPlayer::ID idActor, CPlayer::ID idEnemy) {
             action = id;
             this->idActor = idActor;
             this->idEnemy = idEnemy;
@@ -44,7 +44,7 @@ class ActionOutcome{
         ///POOLS
         list<CCaptain::ID> heroes;
         list<CUnit::ID> units;
-        
+
         CCaptain::ID hero;
         CUnit::ID unit;
 

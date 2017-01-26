@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class PanelSystem : public System{
+class PanelSystem : public System {
     public:
         PanelSystem();
         ~PanelSystem();

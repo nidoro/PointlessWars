@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class AnimationSystem : public System{
+class AnimationSystem : public System {
     public:
         AnimationSystem();
         ~AnimationSystem();

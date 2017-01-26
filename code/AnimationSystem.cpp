@@ -1,6 +1,6 @@
 #include "AnimationSystem.h"
 
-AnimationSystem::AnimationSystem(){
+AnimationSystem::AnimationSystem() {
     addRequirement(Component::ANIMATION);
     addSubscription(START_ANIMATION_ACTION);
     addSubscription(START_ANIMATION_DEATH);
@@ -10,27 +10,27 @@ AnimationSystem::AnimationSystem(){
     addSubscription(SWITCH_CHAR_ANIMATION);
 }
 
-AnimationSystem::~AnimationSystem(){
+AnimationSystem::~AnimationSystem() {
     //dtor
 }
 
-void AnimationSystem::update(){
-    for (EntityListIt i = entities.begin(); i != entities.end(); i++){
+void AnimationSystem::update() {
+    for (EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
         if (eManager->isDead(e)) continue;
-        if (Entity* p = e->getObservedEntity("TiedAnimation")){
+        if (Entity* p = e->getObservedEntity("TiedAnimation")) {
             *e->get<CAnimation>() = *p->get<CAnimation>();
-        }else if (!e->get<CAnimation>()->freeze && !e->get<CAnimation>()->current.empty()){
+        } else if (!e->get<CAnimation>()->freeze && !e->get<CAnimation>()->current.empty()) {
             updateFrame(e);
         }
     }
 }
-void AnimationSystem::updateFrame(Entity* e){
+void AnimationSystem::updateFrame(Entity* e) {
     Animation animation = Assets::getAnimation(e->get<CAnimation>()->current);
     if (e->get<CAnimation>()->clock.getElapsedTime().asSeconds() >= animation.rate || e->get<CAnimation>()->update) {
-        if (!e->get<CAnimation>()->update){
+        if (!e->get<CAnimation>()->update) {
             e->get<CAnimation>()->frame = (e->get<CAnimation>()->frame+1) % animation.nFrames;
-        }else{
+        } else {
             e->get<CAnimation>()->frame = 0;
         }
         e->get<CAnimation>()->sprite = animation.frames[e->get<CAnimation>()->frame];
@@ -39,11 +39,11 @@ void AnimationSystem::updateFrame(Entity* e){
     }
 }
 
-void AnimationSystem::onSwitchCharAnimation(Entity* e){
+void AnimationSystem::onSwitchCharAnimation(Entity* e) {
     string anim;
-    if (e->get<CAnimation>()->current == e->get<CChar>()->aIdle){
+    if (e->get<CAnimation>()->current == e->get<CChar>()->aIdle) {
         anim = e->get<CChar>()->aWalk;
-    }else{
+    } else {
         anim = e->get<CChar>()->aIdle;
     }
     e->get<CAnimation>()->current = anim;

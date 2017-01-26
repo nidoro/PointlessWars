@@ -1,6 +1,6 @@
 #include "DropListSystem.h"
 
-DropListSystem::DropListSystem(){
+DropListSystem::DropListSystem() {
     addSubscription(EXPAND_DROP_LIST);
     addSubscription(COLLAPSE_DROP_LIST);
     addSubscription(UPDATE_DROP_LIST);
@@ -9,15 +9,15 @@ DropListSystem::DropListSystem(){
     active = false;
 }
 
-DropListSystem::~DropListSystem(){
+DropListSystem::~DropListSystem() {
 
 }
 
-void DropListSystem::update(){
+void DropListSystem::update() {
 
 }
 
-void DropListSystem::onExpandDropList(Entity* e){
+void DropListSystem::onExpandDropList(Entity* e) {
     //notify(LOCK_ALL_BUTTONS);
 
     CUILayer::Layer uiLayer = (CUILayer::Layer) ((int)e->get<CUILayer>()->layer + 1);
@@ -31,18 +31,33 @@ void DropListSystem::onExpandDropList(Entity* e){
     double y = e->get<CPosition>()->y;
 
     double dx, dy;
-    switch(e->get<CDropList>()->direction){
-        case CDropList::DOWN:   dx = 0; dy = h+2; break;
-        case CDropList::UP:     dx = 0; dy = -h; break;
-        case CDropList::LEFT:   dx = -w; dy = 0; break;
-        case CDropList::RIGHT:  dx = w; dy = 0; break;
-        default:                dx = 0; dy = h; break;
+    switch(e->get<CDropList>()->direction) {
+    case CDropList::DOWN:
+        dx = 0;
+        dy = h+2;
+        break;
+    case CDropList::UP:
+        dx = 0;
+        dy = -h;
+        break;
+    case CDropList::LEFT:
+        dx = -w;
+        dy = 0;
+        break;
+    case CDropList::RIGHT:
+        dx = w;
+        dy = 0;
+        break;
+    default:
+        dx = 0;
+        dy = h;
+        break;
     }
 
     double hTotal = e->get<CDropList>()->values.size() * dy;
     //double wTotal = e->get<CDropList>()->values.size() * dx;
 
-    if (e->get<CDropList>()->direction == CDropList::DOWN){
+    if (e->get<CDropList>()->direction == CDropList::DOWN) {
         hTotal = e->get<CDropList>()->values.size() * dy;
         double yLastItem = y + hTotal;
         double hHidden = yLastItem - (window->getView().getCenter().y + window->getView().getSize().y/2);
@@ -50,7 +65,7 @@ void DropListSystem::onExpandDropList(Entity* e){
         y = yLastItem - hTotal;
     }
 
-    for(list<string>::iterator i = e->get<CDropList>()->values.begin(); i != e->get<CDropList>()->values.end(); i++){
+    for(list<string>::iterator i = e->get<CDropList>()->values.begin(); i != e->get<CDropList>()->values.end(); i++) {
         string value = *i;
         Entity* eCell = eManager->createEntity();
         eCell->add(new CPosition(x, y));
@@ -79,9 +94,9 @@ void DropListSystem::onExpandDropList(Entity* e){
     notify(BRING_UI_LAYER_FORWARD, e->get<CDropList>()->cells.begin()->first);
 }
 
-void DropListSystem::onCollapseDropList(Entity* e){
+void DropListSystem::onCollapseDropList(Entity* e) {
     //notify(UNLOCK_ALL_BUTTONS);
-    for(auto& p : e->get<CDropList>()->cells){
+    for(auto& p : e->get<CDropList>()->cells) {
         eManager->removeEntity(p.first);
     }
     e->get<CDropList>()->cells.clear();
@@ -92,7 +107,7 @@ void DropListSystem::onCollapseDropList(Entity* e){
     notify(BRING_UI_LAYER_FORWARD);
 }
 
-void DropListSystem::onUpdateDropList(Entity* e){
+void DropListSystem::onUpdateDropList(Entity* e) {
     Entity* eHead = e->getObservedEntity("DropListHead");
     eHead->get<CDropList>()->value = eHead->get<CDropList>()->cells[e];
     eHead->get<CTextbox2>()->content.setString(eHead->get<CDropList>()->value);
@@ -100,8 +115,8 @@ void DropListSystem::onUpdateDropList(Entity* e){
     notify(COLLAPSE_DROP_LIST, eHead);
 }
 
-void DropListSystem::onMouseButtonReleased(Entity* e){
-    if (active){
+void DropListSystem::onMouseButtonReleased(Entity* e) {
+    if (active) {
         bool out = true;
         double x = eDropOn->get<CPosition>()->x;
         double y = eDropOn->get<CPosition>()->y;
@@ -110,11 +125,11 @@ void DropListSystem::onMouseButtonReleased(Entity* e){
         sf::FloatRect rect(x - w/2, y - h/2, w, h);
         sf::Vector2i mousePosition(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
         sf::Vector2f mp = window->mapPixelToCoords(mousePosition);
-        if (rect.contains(mp)){
+        if (rect.contains(mp)) {
             out = false;
         }
 
-        for(auto& p : eDropOn->get<CDropList>()->cells){
+        for(auto& p : eDropOn->get<CDropList>()->cells) {
             Entity* eCell = p.first;
             x = eCell->get<CPosition>()->x;
             y = eCell->get<CPosition>()->y;
@@ -123,11 +138,11 @@ void DropListSystem::onMouseButtonReleased(Entity* e){
             rect = sf::FloatRect(x - w/2, y - h/2, w, h);
             mousePosition = sf::Vector2i(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
             mp = sf::Vector2f(window->mapPixelToCoords(mousePosition));
-            if (rect.contains(mp)){
+            if (rect.contains(mp)) {
                 out = false;
             }
         }
-        if (out){
+        if (out) {
             notify(COLLAPSE_DROP_LIST, eDropOn);
         }
     }

@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class AnchorSystem : public System{
+class AnchorSystem : public System {
     public:
         AnchorSystem();
         ~AnchorSystem();

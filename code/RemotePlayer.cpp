@@ -1,14 +1,14 @@
 #include "RemotePlayer.h"
 
-RemotePlayer::RemotePlayer(){
+RemotePlayer::RemotePlayer() {
     //ctor
 }
 
-RemotePlayer::~RemotePlayer(){
+RemotePlayer::~RemotePlayer() {
     //dtor
 }
 
-void RemotePlayer::update(){
+void RemotePlayer::update() {
     //for (Entity* e : entities){
 
     //}

@@ -1,6 +1,6 @@
 #include "ScenarioSystem.h"
 
-ScenarioSystem::ScenarioSystem(){
+ScenarioSystem::ScenarioSystem() {
     addRequirement(Component::SCENARIO_OBJECT);
     addSubscription(INITIALIZE_WAR);
     addSubscription(LOAD_SCENARIO);
@@ -8,16 +8,16 @@ ScenarioSystem::ScenarioSystem(){
     regularScenarios = {"desert.sce", "snow.sce", "woods.sce", "beach.sce"};
 }
 
-ScenarioSystem::~ScenarioSystem(){
+ScenarioSystem::~ScenarioSystem() {
 
 }
 
-void ScenarioSystem::update(){
+void ScenarioSystem::update() {
     //for(EntityListIt i = entities.begin(); i != entities.end(); i++){
-        //Entity* e = *i;
+    //Entity* e = *i;
     //}
 }
-void ScenarioSystem::load(string name, double xOff, double yOff){
+void ScenarioSystem::load(string name, double xOff, double yOff) {
     if (toUpper(name) == "RANDOM") name = getRandom(current);
 
     CScenario scenario = CScenario::Map[name];
@@ -34,13 +34,13 @@ void ScenarioSystem::load(string name, double xOff, double yOff){
     notify(PLAY_MUSIC, eMusic);
 
     EntityList objectsWithBindedAnim;
-    for(list<CScenarioObject>::iterator i = scenario.objects.begin(); i != scenario.objects.end(); i++){
+    for(list<CScenarioObject>::iterator i = scenario.objects.begin(); i != scenario.objects.end(); i++) {
         Entity* eObj = eManager->createEntity();
         eObj->add(new CAnimation(false, CScenarioObject::Map[i->id].aDefault));
         //eObj->add(new CTexture(CScenarioObject::Map[i->id].aDefault));
         eObj->add(new CDraw(CDraw::WORLD));
         eObj->add(new CPosition(i->xRelative*1280 + xOff, i->yRelative*720 + yOff));
-        if (CScenarioObject::Map[i->id].aDefault != CScenarioObject::Map[i->id].aClick){
+        if (CScenarioObject::Map[i->id].aDefault != CScenarioObject::Map[i->id].aClick) {
             eObj->add(new CButtonTrigger(TRIGGER_OBJECT_ANIMATION));
             eObj->add(new CButtonHitbox(CScenarioObject::Map[i->id].width, CScenarioObject::Map[i->id].height));
             eObj->add(new CButtonState());
@@ -50,21 +50,21 @@ void ScenarioSystem::load(string name, double xOff, double yOff){
         eObj->get<CAnimation>()->frame = randomInt(0, Assets::getAnimation(eObj->get<CAnimation>()->current).nFrames - 1);
         eObj->get<CAnimation>()->sprite = Assets::getAnimation(eObj->get<CAnimation>()->current).frames[eObj->get<CAnimation>()->frame];
         eObj->get<CAnimation>()->update = false;
-        if (eObj->get<CScenarioObject>()->bindedAnimationID != 0){
+        if (eObj->get<CScenarioObject>()->bindedAnimationID != 0) {
             objectsWithBindedAnim.push_back(eObj);
         }
     }
 
     std::map<int, Entity*> bindedAnimationsMap;
-    for (Entity* eObj : objectsWithBindedAnim){
-        if (bindedAnimationsMap.find(eObj->get<CScenarioObject>()->bindedAnimationID) == bindedAnimationsMap.end()){
+    for (Entity* eObj : objectsWithBindedAnim) {
+        if (bindedAnimationsMap.find(eObj->get<CScenarioObject>()->bindedAnimationID) == bindedAnimationsMap.end()) {
             bindedAnimationsMap.insert(std::make_pair(eObj->get<CScenarioObject>()->bindedAnimationID, eObj));
         }
     }
 
-    for (auto& p : bindedAnimationsMap){
-        for (Entity* eObj : objectsWithBindedAnim){
-            if (eObj != bindedAnimationsMap[p.first]){
+    for (auto& p : bindedAnimationsMap) {
+        for (Entity* eObj : objectsWithBindedAnim) {
+            if (eObj != bindedAnimationsMap[p.first]) {
                 eObj->addObservedEntity("TiedAnimation", bindedAnimationsMap[p.first]);
             }
         }
@@ -73,42 +73,42 @@ void ScenarioSystem::load(string name, double xOff, double yOff){
     current = name;
 }
 
-void ScenarioSystem::onLoadScenario(Entity* e){
+void ScenarioSystem::onLoadScenario(Entity* e) {
     clear();
     load(e->get<CScenario>()->name, e->get<CScenario>()->xOff, e->get<CScenario>()->yOff);
 }
 
-void ScenarioSystem::onInitializeWar(Entity* e){
+void ScenarioSystem::onInitializeWar(Entity* e) {
     clear();
     load(war.getMatchConfig().scenario);
 }
 
-void ScenarioSystem::clear(){
+void ScenarioSystem::clear() {
     current.clear();
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
-        if (!eManager->isDead(*i)){
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
+        if (!eManager->isDead(*i)) {
             eManager->removeEntity(*i);
         }
     }
 }
 
-string ScenarioSystem::getRandom(string except){
-  std::list<std::string> candidates = regularScenarios;
-  candidates.remove(except);
-  if (candidates.empty()) return "";
-  std::list<std::string>::iterator it = candidates.begin();
-  int i = randomInt(0, candidates.size()-1);
-  std::advance(it, i);
-  return *it;
+string ScenarioSystem::getRandom(string except) {
+    std::list<std::string> candidates = regularScenarios;
+    candidates.remove(except);
+    if (candidates.empty()) return "";
+    std::list<std::string>::iterator it = candidates.begin();
+    int i = randomInt(0, candidates.size()-1);
+    std::advance(it, i);
+    return *it;
 }
 
-void ScenarioSystem::onNewCommandLine(Entity* e){
-    if (e->get<CCommandLine>()->command == "load-scenario"){
-        if (e->get<CCommandLine>()->hasParam("name")){
+void ScenarioSystem::onNewCommandLine(Entity* e) {
+    if (e->get<CCommandLine>()->command == "load-scenario") {
+        if (e->get<CCommandLine>()->hasParam("name")) {
             string name = e->get<CCommandLine>()->params["name"] + ".sce";
             clear();
             load(name);
-        }else{
+        } else {
             printf("Command play-music help:\n");
             printf("load-scenario -name <NAME>\n");
         }

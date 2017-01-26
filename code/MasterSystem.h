@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class MasterSystem : public System{
+class MasterSystem : public System {
     public:
         MasterSystem();
         ~MasterSystem();

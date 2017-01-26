@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class OptionBoxSystem : public System{
+class OptionBoxSystem : public System {
     public:
         OptionBoxSystem();
         ~OptionBoxSystem();

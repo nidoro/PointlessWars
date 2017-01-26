@@ -1,6 +1,6 @@
 #include "AnnouncerSystem.h"
 
-AnnouncerSystem::AnnouncerSystem(){
+AnnouncerSystem::AnnouncerSystem() {
     addSubscription(INITIALIZE_WAR);
     addSubscription(END_MATCH);
     addSubscription(KEY_PRESSED);
@@ -8,24 +8,25 @@ AnnouncerSystem::AnnouncerSystem(){
     eText = nullptr;
     eBanner = nullptr;
     active = false;
-    currentString = "";}
+    currentString = "";
+}
 
 
-AnnouncerSystem::~AnnouncerSystem(){
+AnnouncerSystem::~AnnouncerSystem() {
     //dtor
 }
 
-void AnnouncerSystem::update(){
-    if (active){
+void AnnouncerSystem::update() {
+    if (active) {
         if (eBanner == nullptr) createAnnouncer();
         nextString = getGameStateString();
-        if (nextString != currentString){
+        if (nextString != currentString) {
             startTextTransition();
         }
     }
 }
 
-void AnnouncerSystem::createAnnouncer(){
+void AnnouncerSystem::createAnnouncer() {
     eBanner = eManager->createEntity();
     eBanner->add(new CPosition(cxWindow, 20));
     eBanner->add(new CTexture("9p-banner.png"));
@@ -44,7 +45,7 @@ void AnnouncerSystem::createAnnouncer(){
     eText->add(new CActor());
 }
 
-void AnnouncerSystem::startTextTransition(){
+void AnnouncerSystem::startTextTransition() {
     //unused:
     //double tAux = 0;
     //eText->get<CActor>()->addNode(new AFade(0.0, -255, 0));
@@ -65,7 +66,7 @@ void AnnouncerSystem::startTextTransition(){
     double wTarget = tb.content.getLocalBounds().width + 60;
     double stretchSpeed = wTarget > eBanner->get<CDimensions>()->width ? 350 : -350;
 
-    for (list<AnimationNode*>::iterator it = eBanner->get<CActor>()->timeline.begin(); it != eBanner->get<CActor>()->timeline.end(); it++){
+    for (list<AnimationNode*>::iterator it = eBanner->get<CActor>()->timeline.begin(); it != eBanner->get<CActor>()->timeline.end(); it++) {
         delete *it;
     }
     eBanner->get<CActor>()->timeline.clear();
@@ -77,18 +78,18 @@ void AnnouncerSystem::startTextTransition(){
     currentString = nextString;
 }
 
-void AnnouncerSystem::onInitializeWar(Entity* e){
+void AnnouncerSystem::onInitializeWar(Entity* e) {
     active = true;
 }
 
-void AnnouncerSystem::onEndMatch(Entity* e){
+void AnnouncerSystem::onEndMatch(Entity* e) {
     eText = nullptr;
     eBanner = nullptr;
     active = false;
     currentString = "";
 }
 
-string AnnouncerSystem::getGameStateString(){
+string AnnouncerSystem::getGameStateString() {
     Entity* ePlayer = war.getActor();
     CAction::ID actionID = -1;
     string playerName;
@@ -96,34 +97,34 @@ string AnnouncerSystem::getGameStateString(){
     if (ePlayer) playerName = ePlayer->get<CPlayer>()->name;
     if (ePlayer) actionID = war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action;
 
-    if (war.getSystemAction() == war.NONE){
+    if (war.getSystemAction() == war.NONE) {
         return "";
-    }else if (war.getSystemAction() == war.COIN){
+    } else if (war.getSystemAction() == war.COIN) {
         return getString("BANNER-COIN");
-    }else if (war.getSystemAction() == war.ASK_HERO_PICK){
+    } else if (war.getSystemAction() == war.ASK_HERO_PICK) {
         return playerName + getString("BANNER-PLAYER-PICKING-HERO");
-    }else if (war.getSystemAction() == war.ASK_FORMATION){
+    } else if (war.getSystemAction() == war.ASK_FORMATION) {
         return playerName + getString("BANNER-PLAYER-SELECTING-FORMATION");
-    }else if (war.getSystemAction() == war.PLAY_FORMATION){
+    } else if (war.getSystemAction() == war.PLAY_FORMATION) {
         return playerName + getString("BANNER-PLAYER-SELECTING-FORMATION");
-    }else if (war.getSystemAction() == war.ADVANCE_ARMY){
+    } else if (war.getSystemAction() == war.ADVANCE_ARMY) {
         return "";
-    }else if (war.getSystemAction() == war.PLAY_ACTION){
-    }else if (war.getSystemAction() == war.BETWEEN_ROUNDS){
-    }else if (war.getSystemAction() == war.ASK_CAPTAIN_ACTION){
-        if (war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action == -1){
+    } else if (war.getSystemAction() == war.PLAY_ACTION) {
+    } else if (war.getSystemAction() == war.BETWEEN_ROUNDS) {
+    } else if (war.getSystemAction() == war.ASK_CAPTAIN_ACTION) {
+        if (war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action == -1) {
             return playerName + getString("BANNER-PLAYER-SELECTING-HERO-ACTION");
-        }else{
+        } else {
             return playerName + getString("BANNER-PLAYER-USED-HERO-ACTION")+ Assets::getString("NAME-ACTION-" + int2str(actionID)) + "!";
         }
-    }else if (war.getSystemAction() == war.ASK_ARMY_ACTION){
-        if (war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action == -1){
+    } else if (war.getSystemAction() == war.ASK_ARMY_ACTION) {
+        if (war.getNextActionOutcome(ePlayer->get<CPlayer>()->id).action == -1) {
             return playerName + getString("BANNER-PLAYER-SELECTING-ATTACK");
-        }else{
+        } else {
             return playerName + getString("BANNER-PLAYER-ATTACKING");
         }
-    }else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE){
-        if (war.getPlayingAnimation()){
+    } else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
+        if (war.getPlayingAnimation()) {
             std::string winnerName = war.getPlayer(war.getBattleWinner())->get<CPlayer>()->name;
             std::string loserName = war.getPlayer(war.getBattleLoser())->get<CPlayer>()->name;
             if (war.getBattleClosure() == war.ALL_KILLED) return  getString("BANNER-WHEN-ALL-KILLED");
@@ -131,10 +132,10 @@ string AnnouncerSystem::getGameStateString(){
             if (war.getBattleClosure() == war.MERCY) return winnerName + getString("BANNER-WHEN-MERCY");
             if (war.getBattleClosure() == war.CONFINE) return loserName + getString("BANNER-WHEN-CONFINE");
             if (war.getBattleClosure() == war.MAN_VS_MAN) return getString("BANNER-WHEN-MAN-VS-MAN");
-        }else{
+        } else {
             return playerName + getString("BANNER-PLAYER-SELECTING-BATTLE-CLOSURE");
         }
-    }else if (war.getSystemAction() == war.CLEAR_BATTLE_FIELD){
+    } else if (war.getSystemAction() == war.CLEAR_BATTLE_FIELD) {
         std::string winnerName = war.getPlayer(war.getBattleWinner())->get<CPlayer>()->name;
         std::string loserName = war.getPlayer(war.getBattleLoser())->get<CPlayer>()->name;
         if (war.getBattleClosure() == war.ALL_KILLED) return  getString("BANNER-WHEN-ALL-KILLED");
@@ -143,36 +144,36 @@ string AnnouncerSystem::getGameStateString(){
         if (war.getBattleClosure() == war.CONFINE) return loserName + getString("BANNER-WHEN-CONFINE");
         if (war.getBattleClosure() == war.MAN_VS_MAN) return getString("BANNER-WHEN-MAN-VS-MAN");
 
-    }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
+    } else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE) {
         return playerName + getString("BANNER-PLAYER-RECRUITING");
-    }else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION){
+    } else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION) {
         return playerName + getString("BANNER-PLAYER-SELECTING-HERO");
-    }else if (war.getSystemAction() == war.PRESENT_ARMY){
-    }else if (war.getSystemAction() == war.PRESENT_ARMIES){
+    } else if (war.getSystemAction() == war.PRESENT_ARMY) {
+    } else if (war.getSystemAction() == war.PRESENT_ARMIES) {
         return getString("BANNER-WHEN-PRESENTING-ARMIES");
-    }else if (war.getSystemAction() == war.RECOMPOSE_ARMY){
-    }else if (war.getSystemAction() == war.SHOW_HERO_POOL){
+    } else if (war.getSystemAction() == war.RECOMPOSE_ARMY) {
+    } else if (war.getSystemAction() == war.SHOW_HERO_POOL) {
 
-    }else if (war.getSystemAction() == war.START_FIRST_BATTLE){
-    }else if (war.getSystemAction() == war.START_BATTLE){
-    }else if (war.getSystemAction() == war.FIELD_CLEANUP){
-    }else if (war.getSystemAction() == war.BETWEEN_TURNS){
-    }else if (war.getSystemAction() == war.ENDING){
-    }else if (war.getSystemAction() == war.UPDATE_SCORE){
-    }else if (war.getSystemAction() == war.ANNOUNCE_VICTORY){
+    } else if (war.getSystemAction() == war.START_FIRST_BATTLE) {
+    } else if (war.getSystemAction() == war.START_BATTLE) {
+    } else if (war.getSystemAction() == war.FIELD_CLEANUP) {
+    } else if (war.getSystemAction() == war.BETWEEN_TURNS) {
+    } else if (war.getSystemAction() == war.ENDING) {
+    } else if (war.getSystemAction() == war.UPDATE_SCORE) {
+    } else if (war.getSystemAction() == war.ANNOUNCE_VICTORY) {
         Entity* eWinner = war.getPlayer(war.getBattleWinner());
         return eWinner->get<CPlayer>()->name + getString("BANNER-ANNOUNCE-VICTORY");
     }
     return "";
 }
 
-void AnnouncerSystem::onKeyPressed(Entity* e){
-    if (e->get<CKeyboardInput>()->code == sf::Keyboard::F2){
+void AnnouncerSystem::onKeyPressed(Entity* e) {
+    if (e->get<CKeyboardInput>()->code == sf::Keyboard::F2) {
         if (eText) eText->get<CDraw>()->isHidden = !eText->get<CDraw>()->isHidden;
         if (eBanner) eBanner->get<CDraw>()->isHidden = !eBanner->get<CDraw>()->isHidden;
     }
 }
 
-std::string AnnouncerSystem::getString(std::string id){
+std::string AnnouncerSystem::getString(std::string id) {
     return Assets::getString(id);
 }

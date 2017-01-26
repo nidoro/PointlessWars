@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class TimerSystem : public System{
+class TimerSystem : public System {
     public:
         TimerSystem();
         ~TimerSystem();

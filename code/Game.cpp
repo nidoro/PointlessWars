@@ -1,14 +1,14 @@
 #include "Game.h"
 
-Game::Game(){
+Game::Game() {
 
 }
 
-Game::~Game(){
+Game::~Game() {
 
 }
 
-void Game::start(){
+void Game::start() {
     helper::initializeAppDataDirectory();
 
     srand(time(nullptr));
@@ -26,7 +26,7 @@ void Game::start(){
                   "Pointless Wars", System::config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default,
                   ctx);
 
-    window.setIcon(System::config.getWindowIcon().getSize().x, System::config.getWindowIcon().getSize().y, System::config.getWindowIcon().getPixelsPtr());
+    //window.setIcon(System::config.getWindowIcon().getSize().x, System::config.getWindowIcon().getSize().y, System::config.getWindowIcon().getPixelsPtr());
 
     window.setVerticalSyncEnabled(true);
 
@@ -94,46 +94,46 @@ void Game::start(){
     std::vector<bool> updatedAfterNetwork(systems.size(), false);
 
     bool processInput = true;
-    while(window.isOpen()){
+    while(window.isOpen()) {
 
         sf::Event ev;
-        while(window.pollEvent(ev)){
-			//ImGui::SFML::ProcessEvent(ev);
+        while(window.pollEvent(ev)) {
+            //ImGui::SFML::ProcessEvent(ev);
 
-            if (ev.type == sf::Event::Closed){
+            if (ev.type == sf::Event::Closed) {
                 System::notify(WINDOW_CLOSED);
                 window.close();
                 break;
-            }else if (ev.type == sf::Event::LostFocus){
+            } else if (ev.type == sf::Event::LostFocus) {
                 System::notify(WINDOW_LOST_FOCUS);
                 processInput = false;
-            }else if (ev.type == sf::Event::GainedFocus){
+            } else if (ev.type == sf::Event::GainedFocus) {
                 System::notify(WINDOW_GAINED_FOCUS);
                 processInput = true;
             }
             if (window.hasFocus()) processInput = true;
             else                   processInput = false;
-            if (processInput){
-                if (ev.type == sf::Event::MouseButtonPressed){
+            if (processInput) {
+                if (ev.type == sf::Event::MouseButtonPressed) {
                     eInput->get<CMouseInput>()->buttonPressed = ev.mouseButton.button;
                     System::notify(MOUSE_BUTTON_PRESSED, eInput);
-                }else if (ev.type == sf::Event::MouseButtonReleased){
+                } else if (ev.type == sf::Event::MouseButtonReleased) {
                     eInput->get<CMouseInput>()->buttonReleased = ev.mouseButton.button;
                     System::notify(MOUSE_BUTTON_RELEASED, eInput);
-                }else if (ev.type == sf::Event::TextEntered){
+                } else if (ev.type == sf::Event::TextEntered) {
                     eInput->get<CTextInput>()->value = (char) ev.text.unicode;
                     System::notify(TEXT_ENTERED, eInput);
-                }else if (ev.type == sf::Event::KeyPressed){
+                } else if (ev.type == sf::Event::KeyPressed) {
                     eInput->get<CKeyboardInput>()->setInput(ev);
                     System::notify(KEY_PRESSED, eInput);
-                }else if (ev.type == sf::Event::KeyReleased){
+                } else if (ev.type == sf::Event::KeyReleased) {
                     eInput->get<CKeyboardInput>()->setInput(ev);
                     System::notify(KEY_RELEASED, eInput);
                 }
             }
 
         }
-        
+        /*
         int nSys = 0;
         for (auto sys : systems){
             if (nSys > 0){
@@ -158,14 +158,14 @@ void Game::start(){
             }
             nSys++;
         }
-        
-        /*
+        */
+
         for (auto& sys : systems) {
             sys->checkAndUpdate();
         }
-         */
-        if (eManager.updated()){
-            for (auto sys : systems){
+
+        if (eManager.updated()) {
+            for (auto sys : systems) {
                 sys->updateEntities();
             }
             eManager.updateList();
@@ -180,13 +180,13 @@ void Game::start(){
     eManager.updateList();
     eManager.clearEvents();
 
-    for (auto sys : systems){
+    for (auto sys : systems) {
         delete sys;
     }
-	//ImGui::SFML::Shutdown();
+    //ImGui::SFML::Shutdown();
 }
 
-void Game::initializeSystem(System* sys, double ups){
+void Game::initializeSystem(System* sys, double ups) {
     sys->start(&eManager, &window, ups);
     systems.push_back(sys);
 }

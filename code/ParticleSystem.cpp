@@ -1,19 +1,19 @@
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem(){
+ParticleSystem::ParticleSystem() {
     addRequirement(Component::PARTICLE_EMMITER);
 }
 
-ParticleSystem::~ParticleSystem(){
+ParticleSystem::~ParticleSystem() {
     //dtor
 }
 
-void ParticleSystem::update(){
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+void ParticleSystem::update() {
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
         if (!e->get<CParticleEmmiter>()->on) continue;
-        if (e->get<CParticleEmmiter>()->clock.getElapsedTime().asSeconds() >= 1.f/e->get<CParticleEmmiter>()->rate){
-            for(int c = 0; c < e->get<CParticleEmmiter>()->nParticles; c++){
+        if (e->get<CParticleEmmiter>()->clock.getElapsedTime().asSeconds() >= 1.f/e->get<CParticleEmmiter>()->rate) {
+            for(int c = 0; c < e->get<CParticleEmmiter>()->nParticles; c++) {
                 emmitParticle(e);
             }
             e->get<CParticleEmmiter>()->clock.restart();
@@ -21,7 +21,7 @@ void ParticleSystem::update(){
     }
 }
 
-void ParticleSystem::emmitParticle(Entity* e){
+void ParticleSystem::emmitParticle(Entity* e) {
     Entity* eParticle = eManager->createEntity();
     eParticle->add(new CPosition(e->get<CPosition>()->x, e->get<CPosition>()->y));
     eParticle->add(new CDraw(e->get<CParticleEmmiter>()->drawTag));
@@ -36,14 +36,21 @@ void ParticleSystem::emmitParticle(Entity* e){
     eParticle->add(new CVelocity(0, 0, speed*cos(angle), speed*sin(angle)));
     eParticle->add(new CAcceleration(0, 0, e->get<CParticleEmmiter>()->xAcc, e->get<CParticleEmmiter>()->yAcc));
 
-    switch(e->get<CParticleEmmiter>()->drawable){
-        case CParticleEmmiter::RECTANGLE: eParticle->add(new CRectShape(e->get<CParticleEmmiter>()->rectShape)); break;
-        case CParticleEmmiter::CIRCLE: eParticle->add(new CCircleShape(e->get<CParticleEmmiter>()->circleShape)); break;
-        case CParticleEmmiter::TEXTURE: eParticle->add(new CTexture(e->get<CParticleEmmiter>()->texture)); break;
-        default: break;
+    switch(e->get<CParticleEmmiter>()->drawable) {
+    case CParticleEmmiter::RECTANGLE:
+        eParticle->add(new CRectShape(e->get<CParticleEmmiter>()->rectShape));
+        break;
+    case CParticleEmmiter::CIRCLE:
+        eParticle->add(new CCircleShape(e->get<CParticleEmmiter>()->circleShape));
+        break;
+    case CParticleEmmiter::TEXTURE:
+        eParticle->add(new CTexture(e->get<CParticleEmmiter>()->texture));
+        break;
+    default:
+        break;
     }
 
-    if (e->get<CParticleEmmiter>()->hasElipsoidalMovement){
+    if (e->get<CParticleEmmiter>()->hasElipsoidalMovement) {
         eParticle->add(new CElipsoidalMovement(e->get<CParticleEmmiter>()->elipsoidalMovement));
     }
 }

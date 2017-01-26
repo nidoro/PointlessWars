@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Standard.h"
 
-class DisplayerSystem : public System{
+class DisplayerSystem : public System {
     public:
         DisplayerSystem();
         ~DisplayerSystem();

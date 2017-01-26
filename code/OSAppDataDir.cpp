@@ -4,82 +4,82 @@
  * and open the template in the editor.
  */
 #include "OSAppDataDir.h"
-namespace helper{
-    bool initializeAppDataDirectory(){
+namespace helper {
+bool initializeAppDataDirectory() {
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
-        TCHAR path[MAX_PATH];
-        // TODO: handle error and exceptions (inspect HRESULT hr = ...)
-        //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
-        SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
-        std::string appRootDir = std::string(path) + "/Pointless Wars";
-        createDirectory(appRootDir);
-        if (!fileExists(appRootDir + "/animations.dat")){
-            //std::ofstream file(appRootDir + "/animations.dat");
-            //file << getDefaultFileContent("animations.dat");
-            //file.close();
-        }
-        if (!fileExists(appRootDir + "/strings-en.json")){
-            std::ofstream file(appRootDir + "/strings-en.json");
-            file << getDefaultFileContent("strings-en.json");
-            file.close();
-        }
-        if (!fileExists(appRootDir + "/formations.xml")){
-            std::ofstream file(appRootDir + "/formations.xml");
-            file << getDefaultFileContent("formations.xml");
-            file.close();
-        }
-        if (!fileExists(appRootDir + "/match-config.xml")){
-            std::ofstream file(appRootDir + "/match-config.xml");
-            file << getDefaultFileContent("match-config.xml");
-            file.close();
-        }
-        if (!fileExists(appRootDir + "/config.xml")){
-            std::ofstream file(appRootDir + "/config.xml");
-            file << getDefaultFileContent("config.xml");
-            file.close();
-        }
-
-        return true;
-#elif defined(__unix__) || defined(__unix) || defined(__linux__)
-        passwd* pw = getpwuid(getuid());
-        std::string path(pw->pw_dir);
-        path += "/.Pointless Wars";
-#endif
+    TCHAR path[MAX_PATH];
+    // TODO: handle error and exceptions (inspect HRESULT hr = ...)
+    //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+    SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+    std::string appRootDir = std::string(path) + "/Pointless Wars";
+    createDirectory(appRootDir);
+    if (!fileExists(appRootDir + "/animations.dat")) {
+        //std::ofstream file(appRootDir + "/animations.dat");
+        //file << getDefaultFileContent("animations.dat");
+        //file.close();
     }
-    std::string getAppDataDir(){
-#if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
-        TCHAR path[MAX_PATH];
-        //TODO: inspect HRESULT
-        //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
-        SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
-        return std::string(std::string(path) + "/Pointless Wars");
-#elif defined(__unix__) || defined(__unix) || defined(__linux__)
-        passwd* pw = getpwuid(getuid());
-        std::string path(pw->pw_dir);
-        path += "/.Pointless Wars";
-#endif
+    if (!fileExists(appRootDir + "/strings-en.json")) {
+        std::ofstream file(appRootDir + "/strings-en.json");
+        file << getDefaultFileContent("strings-en.json");
+        file.close();
+    }
+    if (!fileExists(appRootDir + "/formations.xml")) {
+        std::ofstream file(appRootDir + "/formations.xml");
+        file << getDefaultFileContent("formations.xml");
+        file.close();
+    }
+    if (!fileExists(appRootDir + "/match-config.xml")) {
+        std::ofstream file(appRootDir + "/match-config.xml");
+        file << getDefaultFileContent("match-config.xml");
+        file.close();
+    }
+    if (!fileExists(appRootDir + "/config.xml")) {
+        std::ofstream file(appRootDir + "/config.xml");
+        file << getDefaultFileContent("config.xml");
+        file.close();
     }
 
-     bool createDirectory(std::string path){
+    return true;
+#elif defined(__unix__) || defined(__unix) || defined(__linux__)
+    passwd* pw = getpwuid(getuid());
+    std::string path(pw->pw_dir);
+    path += "/.Pointless Wars";
+#endif
+}
+std::string getAppDataDir() {
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
-         return CreateDirectory(path.c_str(), nullptr);
+    TCHAR path[MAX_PATH];
+    //TODO: inspect HRESULT
+    //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+    SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+    return std::string(std::string(path) + "/Pointless Wars");
+#elif defined(__unix__) || defined(__unix) || defined(__linux__)
+    passwd* pw = getpwuid(getuid());
+    std::string path(pw->pw_dir);
+    path += "/.Pointless Wars";
+#endif
+}
+
+bool createDirectory(std::string path) {
+#if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
+    return CreateDirectory(path.c_str(), nullptr);
 #elif defined(__unix__) || defined(__unix) || defined(__linux__)
 
 #endif
-     }
+}
 
-     bool fileExists(std::string path){
-         std::ifstream file(path.c_str());
-         return file.good();
-     }
+bool fileExists(std::string path) {
+    std::ifstream file(path.c_str());
+    return file.good();
+}
 
-     std::string getDefaultFileContent(std::string filename){
-         if (filename == "animations.dat"){
-             return
+std::string getDefaultFileContent(std::string filename) {
+    if (filename == "animations.dat") {
+        return
 //=====================================================================================
 // FILE: animations.dat
 //=====================================================================================
-R"(
+            R"(
 %ID							WIDTH	HEIGHT	N_FRAMES	FPS		LOOP
 %================
 % NEW SCENERIES OBJECTS

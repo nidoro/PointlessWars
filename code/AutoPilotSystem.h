@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class AutoPilotSystem : public System{
+class AutoPilotSystem : public System {
     public:
         AutoPilotSystem();
         ~AutoPilotSystem();

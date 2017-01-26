@@ -1,29 +1,34 @@
 #include "CustomMatchSystem.h"
 
-CustomMatchSystem::CustomMatchSystem(){
+CustomMatchSystem::CustomMatchSystem() {
     addSubscription(CREATE_SCREEN);
     addSubscription(START_CUSTOM_MATCH);
     onMenu = false;
 }
 
-CustomMatchSystem::~CustomMatchSystem(){
+CustomMatchSystem::~CustomMatchSystem() {
 
 }
 
-void CustomMatchSystem::update(){
-    if (onMenu){
+void CustomMatchSystem::update() {
+    if (onMenu) {
 
     }
 }
 
-void CustomMatchSystem::onCreateScreen(Entity* e){
-    switch(e->get<CScreen>()->id){
-        case CScreen::CUSTOM_MATCH: eManager->clearSystem(); createMenu(); notify(NEW_SCREEN); break;
-        default: break;
+void CustomMatchSystem::onCreateScreen(Entity* e) {
+    switch(e->get<CScreen>()->id) {
+    case CScreen::CUSTOM_MATCH:
+        eManager->clearSystem();
+        createMenu();
+        notify(NEW_SCREEN);
+        break;
+    default:
+        break;
     }
 }
 
-void CustomMatchSystem::createMenu(){
+void CustomMatchSystem::createMenu() {
 
     //loadMatchConfig("MostRecent", current);
 
@@ -56,7 +61,7 @@ void CustomMatchSystem::createMenu(){
     y0 = 50 + h/2 + 20/2 + 8;
     xAux = x0;
     yAux = y0;
-    for(int i = 0; i < nUnits; i++){
+    for(int i = 0; i < nUnits; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition(xAux, yAux));
         eObj->add(new CUnit(CUnit::Map[(CUnit::ID)i]));
@@ -69,7 +74,7 @@ void CustomMatchSystem::createMenu(){
         eObj->add(new CButtonTrigger(TOGGLE_CHECK_BOX));
         eObj->add(new CTooltip(CTooltip::UNIT));
 
-        if (!contains(current.unitPool, i)){
+        if (!contains(current.unitPool, i)) {
             eObj->get<CCheckBox>()->on = false;
             eObj->get<CTexture>()->file = "unavailable.png";
         }
@@ -91,7 +96,7 @@ void CustomMatchSystem::createMenu(){
     y0 = 150 + h/2 + 20/2 + 8;
     xAux = x0;
     yAux = y0;
-    for(int i = 0; i < nHeroes; i++){
+    for(int i = 0; i < nHeroes; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition(xAux, yAux));
         eObj->add(new CCaptain(CCaptain::Map[(CCaptain::ID)i]));
@@ -104,7 +109,7 @@ void CustomMatchSystem::createMenu(){
         eObj->add(new CButtonTrigger(TOGGLE_CHECK_BOX));
         eObj->add(new CTooltip(CTooltip::CAPTAIN));
 
-        if (!contains(current.heroPool, i)){
+        if (!contains(current.heroPool, i)) {
             eObj->get<CCheckBox>()->on = false;
             eObj->get<CTexture>()->file = "unavailable.png";
         }
@@ -358,7 +363,7 @@ void CustomMatchSystem::createMenu(){
     eObj->add(new CButtonTrigger(START_CUSTOM_MATCH));
 }
 
-void CustomMatchSystem::onStartCustomMatch(Entity* e){
+void CustomMatchSystem::onStartCustomMatch(Entity* e) {
     current.armySize = str2int(eArmySize->get<CTextbox2>()->content.getString());
     current.nTurns = str2int(eTurns->get<CTextbox2>()->content.getString());
     current.nUnitOpt = str2int(eUnitOptions->get<CTextbox2>()->content.getString());
@@ -368,16 +373,16 @@ void CustomMatchSystem::onStartCustomMatch(Entity* e){
     current.heroPool.clear();
     current.unitPool.clear();
 
-    for(EntityListIt i = eUnitPool.begin(); i != eUnitPool.end(); i++){
+    for(EntityListIt i = eUnitPool.begin(); i != eUnitPool.end(); i++) {
         Entity* eUnit = *i;
-        if (eUnit->get<CCheckBox>()->on){
+        if (eUnit->get<CCheckBox>()->on) {
             current.unitPool.push_back(eUnit->get<CUnit>()->id);
         }
     }
 
-    for(EntityListIt i = eHeroPool.begin(); i != eHeroPool.end(); i++){
+    for(EntityListIt i = eHeroPool.begin(); i != eHeroPool.end(); i++) {
         Entity* eHero = *i;
-        if (eHero->get<CCheckBox>()->on){
+        if (eHero->get<CCheckBox>()->on) {
             current.heroPool.push_back(eHero->get<CCaptain>()->id);
         }
     }
@@ -388,18 +393,18 @@ void CustomMatchSystem::onStartCustomMatch(Entity* e){
     notify(START_SCREEN_TRANSITION, e);
 }
 
-void CustomMatchSystem::saveConfiguration(string name){
+void CustomMatchSystem::saveConfiguration(string name) {
     tinyxml2::XMLDocument doc;
     string path = Assets::rscRoot + "match-config.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement(name.c_str());
     tinyxml2::XMLElement* element;
-    if (node == nullptr){
+    if (node == nullptr) {
         element = doc.NewElement(name.c_str());
         doc.InsertEndChild(element);
-    }else{
+    } else {
         element = node->ToElement();
     }
 
@@ -415,14 +420,14 @@ void CustomMatchSystem::saveConfiguration(string name){
     element->SetAttribute("StreakToWin", current.streakToWin);
 
     int nUnits = 17;
-    for(int i = 0; i < nUnits; i++){
+    for(int i = 0; i < nUnits; i++) {
         string att = "Unit" + int2str(i, 2);
         bool available = contains(current.unitPool, i);
         element->SetAttribute(att.c_str(), available);
     }
 
     int nHeroes = 13;
-    for(int i = 0; i < nHeroes; i++){
+    for(int i = 0; i < nHeroes; i++) {
         string att = "Hero" + int2str(i, 2);
         bool available = contains(current.heroPool, i);
         element->SetAttribute(att.c_str(), available);

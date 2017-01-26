@@ -1,6 +1,6 @@
 #include "TooltipSystem.h"
 
-TooltipSystem::TooltipSystem(){
+TooltipSystem::TooltipSystem() {
     addRequirement(Component::TOOLTIP);
 
     addSubscription(BUTTON_GAINED_FOCUS);
@@ -8,12 +8,12 @@ TooltipSystem::TooltipSystem(){
     addSubscription(UPDATE_TOOLTIP);
 }
 
-TooltipSystem::~TooltipSystem(){
+TooltipSystem::~TooltipSystem() {
     //dtor
 }
 
-void TooltipSystem::update(){
-    for (EntityListIt i = entities.begin(); i != entities.end(); i++){
+void TooltipSystem::update() {
+    for (EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
         /*
         if  (  (e->get<CButtonState>()->state == CButtonState::HOVERED || e->get<CButtonState>()->state == CButtonState::ACTIVE)
@@ -25,24 +25,24 @@ void TooltipSystem::update(){
         }
         */
         if  (  (e->get<CButtonState>()->state == CButtonState::HOVERED || e->get<CButtonState>()->state == CButtonState::ACTIVE)
-            && !e->get<CTooltip>()->isShowing
-            &&  e->get<CTooltip>()->timeOnHover.getElapsedTime().asSeconds() >= e->get<CTooltip>()->showAfter
-            && !eManager->isDead(e)){
+                && !e->get<CTooltip>()->isShowing
+                &&  e->get<CTooltip>()->timeOnHover.getElapsedTime().asSeconds() >= e->get<CTooltip>()->showAfter
+                && !eManager->isDead(e)) {
             createTooltip(e);
             e->get<CTooltip>()->isShowing = true;
         }
     }
 }
 
-void TooltipSystem::onButtonGainedFocus(Entity* e){
-    if (e->has(Component::TOOLTIP)){
+void TooltipSystem::onButtonGainedFocus(Entity* e) {
+    if (e->has(Component::TOOLTIP)) {
         e->get<CTooltip>()->timeOnHover.restart();
     }
 }
 
-void TooltipSystem::onButtonLostFocus(Entity* e){
-    if (e->has(Component::TOOLTIP)){
-        if (e->get<CTooltip>()->isShowing){
+void TooltipSystem::onButtonLostFocus(Entity* e) {
+    if (e->has(Component::TOOLTIP)) {
+        if (e->get<CTooltip>()->isShowing) {
             Entity* eTip = e->getObservedEntity("Tooltip");
 
             eManager->removeEntity(eTip);
@@ -53,23 +53,44 @@ void TooltipSystem::onButtonLostFocus(Entity* e){
     }
 }
 
-void TooltipSystem::createTooltip(Entity* e){
-    switch(e->get<CTooltip>()->info){
-        case CTooltip::SECTOR: createSectorTooltip(e); break;
-        case CTooltip::UNIT_GROUP: createUnitGroupTooltip(e); break;
-        case CTooltip::UNIT: createUnitTooltip(e); break;
-        case CTooltip::ACTION: createActionTooltip(e); break;
-        case CTooltip::EFFECT: createEffectTooltip(e); break;
-        case CTooltip::CAPTAIN: createCaptainTooltip2(e, 0.f, 40.f); break;
-        case CTooltip::HERO_RIGHT: createCaptainTooltip2(e, 40.f, 0.f); break;
-        case CTooltip::HERO_LEFT: createCaptainTooltip2(e, -40.f, 0.f); break;
-        case CTooltip::TEXT_1: createTextTooltip1(e); break;
-        case CTooltip::ARMY_COMPOSITION_STATUS: createArmyCompositionStatusTooltip(e); break;
-        default: break;
+void TooltipSystem::createTooltip(Entity* e) {
+    switch(e->get<CTooltip>()->info) {
+    case CTooltip::SECTOR:
+        createSectorTooltip(e);
+        break;
+    case CTooltip::UNIT_GROUP:
+        createUnitGroupTooltip(e);
+        break;
+    case CTooltip::UNIT:
+        createUnitTooltip(e);
+        break;
+    case CTooltip::ACTION:
+        createActionTooltip(e);
+        break;
+    case CTooltip::EFFECT:
+        createEffectTooltip(e);
+        break;
+    case CTooltip::CAPTAIN:
+        createCaptainTooltip2(e, 0.f, 40.f);
+        break;
+    case CTooltip::HERO_RIGHT:
+        createCaptainTooltip2(e, 40.f, 0.f);
+        break;
+    case CTooltip::HERO_LEFT:
+        createCaptainTooltip2(e, -40.f, 0.f);
+        break;
+    case CTooltip::TEXT_1:
+        createTextTooltip1(e);
+        break;
+    case CTooltip::ARMY_COMPOSITION_STATUS:
+        createArmyCompositionStatusTooltip(e);
+        break;
+    default:
+        break;
     }
 }
 
-void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e){
+void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e) {
 
     double yOff = 30;
     double marginWidth = 10;
@@ -77,11 +98,11 @@ void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e){
     string text;
     int armySize = getCurrentArmyCompositionSize(e);
     int maxArmySize = getMaxArmySize(e);
-    if (armySize > maxArmySize){
+    if (armySize > maxArmySize) {
         text = "You can not recruit more than " + int2str(maxArmySize) + " units!";
-    }else if (armySize < maxArmySize){
+    } else if (armySize < maxArmySize) {
         text = "If you do not recruit x, the missing units will be chosen randomly.";
-    }else{
+    } else {
         return;
     }
     Entity* eTip = eManager->createEntity();
@@ -102,7 +123,7 @@ void TooltipSystem::createArmyCompositionStatusTooltip(Entity* e){
     e->addObservedEntity("Tooltip", eTip);
     e->attachEmployee(eTip);
 }
-void TooltipSystem::createSectorTooltip(Entity* e){
+void TooltipSystem::createSectorTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CSector sector = *e->get<CSector>();
 
@@ -128,7 +149,7 @@ void TooltipSystem::createSectorTooltip(Entity* e){
     //e->get<CTooltip>()->eTooltip = eTip;
 }
 
-void TooltipSystem::createUnitGroupTooltip(Entity* e){
+void TooltipSystem::createUnitGroupTooltip(Entity* e) {
     /*
     Entity* eTip = eManager->createEntity();
     CUnitGroup sector = *e->get<CUnitGroup>();
@@ -156,7 +177,7 @@ void TooltipSystem::createUnitGroupTooltip(Entity* e){
     */
 }
 
-void TooltipSystem::createUnitTooltip(Entity* e){
+void TooltipSystem::createUnitTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     Entity* eObj;
     CUnit cunit = CUnit::Map[e->get<CUnit>()->id];
@@ -197,7 +218,7 @@ void TooltipSystem::createUnitTooltip(Entity* e){
     w = wAux + 10;
     xAux = x - w/2 + 30/2 + 10;
     y = y - h/2 + 30/2 + 20;
-    if (cunit.action != -1){
+    if (cunit.action != -1) {
         Entity* eDamIcon = eManager->createEntity();
         eDamIcon->add(new CDraw(CDraw::GUI5));
         eDamIcon->add(new CPosition(xAux, y));
@@ -222,7 +243,7 @@ void TooltipSystem::createUnitTooltip(Entity* e){
     //double wBarUnit = wBarFull/3;
     xAux = x - wBarFull/2 + 30/2 + 10;
 
-    for(int i = 0; i < CUnit::N_DAMAGE_TYPES; i++){
+    for(int i = 0; i < CUnit::N_DAMAGE_TYPES; i++) {
         /// ICON
         resIcons[i] = eManager->createEntity();
         resIcons[i]->add(new CDraw(CDraw::GUI5));
@@ -232,7 +253,7 @@ void TooltipSystem::createUnitTooltip(Entity* e){
         /// BAR
         int res = CUnit::Map[e->get<CUnit>()->id].resistance[i];
         double xUnit = xAux + 30/2 + 15/2;
-        for (int j = 0; j < res; j++){
+        for (int j = 0; j < res; j++) {
             Entity* eUnit = eManager->createEntity();
             eUnit->add(new CPosition(xUnit, y));
             eUnit->add(new CTexture("type-" + int2str(i, 2) + "-gem.png"));
@@ -252,23 +273,23 @@ void TooltipSystem::createUnitTooltip(Entity* e){
     eTip->get<CDimensions>()->width = w;
 }
 
-void TooltipSystem::createActionTooltip(Entity* e){
+void TooltipSystem::createActionTooltip(Entity* e) {
     CAction act = CAction::Map[e->get<CAction>()->id];
 
-    if (act.id >= 0 && act.id <= 99){
+    if (act.id >= 0 && act.id <= 99) {
         createUnitActionTooltip(e);
-    }else if (act.id >= 100 && act.id <= 199){
+    } else if (act.id >= 100 && act.id <= 199) {
         createCaptainTooltip2(e, 40.f, 0.f);
-    }else if (act.id >= 200 && act.id <= 299){
+    } else if (act.id >= 200 && act.id <= 299) {
         createCaptainActionTooltip(e);
-    }else if (act.id >= 300 && act.id <= 399){
+    } else if (act.id >= 300 && act.id <= 399) {
         createFormationTooltip(e);
-    }else if (act.id >= 400 && act.id <= 499){
+    } else if (act.id >= 400 && act.id <= 499) {
         createBattleClosureTooltip(e);
     }
 }
 
-void TooltipSystem::createUnitActionTooltip(Entity* e){
+void TooltipSystem::createUnitActionTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
@@ -302,7 +323,7 @@ void TooltipSystem::createUnitActionTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createCaptainActionTooltip(Entity* e){
+void TooltipSystem::createCaptainActionTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CAction::ID id = e->get<CAction>()->id;
 
@@ -330,7 +351,7 @@ void TooltipSystem::createCaptainActionTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createFormationTooltip(Entity* e){
+void TooltipSystem::createFormationTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
@@ -356,7 +377,7 @@ void TooltipSystem::createFormationTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createBattleClosureTooltip(Entity* e){
+void TooltipSystem::createBattleClosureTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
@@ -382,7 +403,7 @@ void TooltipSystem::createBattleClosureTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createEffectTooltip(Entity* e){
+void TooltipSystem::createEffectTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CAction act = CAction::Map[e->get<CAction>()->id];
 
@@ -408,7 +429,7 @@ void TooltipSystem::createEffectTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createCaptainTooltip(Entity* e){
+void TooltipSystem::createCaptainTooltip(Entity* e) {
     Entity* eTip = eManager->createEntity();
     CCaptain cap = CCaptain::Map[e->get<CCaptain>()->id];
 
@@ -419,7 +440,7 @@ void TooltipSystem::createCaptainTooltip(Entity* e){
 
     string str;
     bool firstOne = true;
-    for(list<CAction::ID>::iterator i = cap.actions.begin(); i != cap.actions.end(); i++){
+    for(list<CAction::ID>::iterator i = cap.actions.begin(); i != cap.actions.end(); i++) {
         if (!firstOne) str += "\n\n";
         string strName = CAction::Map[*i].strName;
         string strDesc = CAction::Map[*i].strDescription;
@@ -443,7 +464,7 @@ void TooltipSystem::createCaptainTooltip(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yOffPanel){
+void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yOffPanel) {
     Entity* eTip = eManager->createEntity();
     CCaptain cap = *e->get<CCaptain>();
 
@@ -465,7 +486,7 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     txtBoxCaptainName.align = CTextbox2::CENTRALIZED;
 
     std::list<CTextbox2> txtBoxActions;
-    for (auto& i : cap.actions){
+    for (auto& i : cap.actions) {
         if (i == 202) continue;
         std::string txt;
         txt += toUpper(Assets::getString(CAction::Map[i].strName)) + ": ";
@@ -489,7 +510,7 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     txtBoxCaptainName.xOff = 0.f;
     txtBoxCaptainName.yOff = yOffItem;
 
-    for (auto& box : txtBoxActions){
+    for (auto& box : txtBoxActions) {
         yOffItem += itemSpacing;
         box.xOff = -wPanel/2.f + leftMargin;
         box.yOff = yOffItem;
@@ -518,7 +539,7 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     eTip->attachEmployee(eItem);
 
     //Actions
-    for (auto& box : txtBoxActions){
+    for (auto& box : txtBoxActions) {
         eItem = eManager->createEntity();
         eItem->add(new CPosition(xPanel, yPanel));
         eItem->add(new CDraw(CDraw::GUI2));
@@ -559,7 +580,7 @@ void TooltipSystem::createCaptainTooltip2(Entity* e, double xOffPanel, double yO
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::createTextTooltip1(Entity* e){
+void TooltipSystem::createTextTooltip1(Entity* e) {
     Entity* eTip = eManager->createEntity();
 
     double yOff = 30;
@@ -581,9 +602,9 @@ void TooltipSystem::createTextTooltip1(Entity* e){
     e->attachEmployee(eTip);
 }
 
-void TooltipSystem::onUpdateTooltip(Entity* e){
-    if (e->has(Component::TOOLTIP)){
-        if (e->get<CTooltip>()->isShowing){
+void TooltipSystem::onUpdateTooltip(Entity* e) {
+    if (e->has(Component::TOOLTIP)) {
+        if (e->get<CTooltip>()->isShowing) {
             Entity* eTip = e->getObservedEntity("Tooltip");
 
             eManager->removeEntity(eTip);
@@ -595,17 +616,17 @@ void TooltipSystem::onUpdateTooltip(Entity* e){
     }
 }
 
-int TooltipSystem::getCurrentArmyCompositionSize(Entity* e){
+int TooltipSystem::getCurrentArmyCompositionSize(Entity* e) {
     Entity* eOptions = e->getObservedEntity("UnitOptions");
     EntityList options = eOptions->getObservedEntities();
     int sum = 0;
-    for (Entity* i : options){
+    for (Entity* i : options) {
         sum += i->get<CSpinButton>()->value;
     }
     return sum;
 }
 
-int TooltipSystem::getMaxArmySize(Entity* e){
+int TooltipSystem::getMaxArmySize(Entity* e) {
     Entity* eOptions = e->getObservedEntity("UnitOptions");
     EntityList options = eOptions->getObservedEntities();
     return options.front()->get<CSpinButton>()->max;

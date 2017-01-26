@@ -5,7 +5,7 @@
 #include "Standard.h"
 #include "Assets.h"
 
-class CommandListener : public System{
+class CommandListener : public System {
     public:
         CommandListener();
         ~CommandListener();
@@ -50,7 +50,7 @@ class CommandListener : public System{
         void animateUnitOptionOut(Entity* e, bool sound);
 
         int getArmyCompositionSize(Entity* e);
-        
+
         Entity* eListener;
         bool listening;
 };

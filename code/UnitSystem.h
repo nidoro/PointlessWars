@@ -5,7 +5,7 @@
 #include "Standard.h"
 
 
-class UnitSystem : public System{
+class UnitSystem : public System {
     public:
         UnitSystem();
         ~UnitSystem();

@@ -4,7 +4,7 @@
 #include "System.h"
 
 
-class TiltSystem : public System{
+class TiltSystem : public System {
     public:
         TiltSystem();
 

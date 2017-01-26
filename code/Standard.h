@@ -77,7 +77,7 @@ bool hasBegining(std::string &fullString, std::string begining);
 double getTravelTime(double xa, double ya, double xb, double yb, double speed);
 
 template<typename T>
-inline T popFront(list<T>& L){
+inline T popFront(list<T>& L) {
     if (L.empty()) return T();
     T obj = L.front();
     L.pop_front();
@@ -101,12 +101,12 @@ string toUpper(string str);
 void clearBuff(char* buff, int size);
 
 template<typename T>
-bool isWithinClosedRange(T value, T rangeMin, T rangeMax){
+bool isWithinClosedRange(T value, T rangeMin, T rangeMax) {
     return value >= rangeMin && value <= rangeMax;
 }
 
 template<typename T>
-bool isWithinOpenRange(T value, T rangeMin, T rangeMax){
+bool isWithinOpenRange(T value, T rangeMin, T rangeMax) {
     return value > rangeMin && value < rangeMax;
 }
 

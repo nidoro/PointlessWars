@@ -8,31 +8,31 @@
 typedef std::list<Entity*> EntityList;
 typedef std::list<Entity*>::iterator EntityListIt;
 
-class Entity{
+class Entity {
     public:
         Entity();
         ~Entity();
-        enum Status{UNKNOWN, ALIVE, DEAD};
+        enum Status {UNKNOWN, ALIVE, DEAD};
 
         bool has(Component::Type component);
 
         template <typename T>
-        T* get(){
+        T* get() {
             Component::Type c = T::getType();
-            if (has(c)){
+            if (has(c)) {
                 return static_cast<T*> (components[c]);
-            }else{
+            } else {
                 return nullptr;
             }
         }
 
         template <typename T>
-        void add(T* component){
+        void add(T* component) {
             if (has(component->getType())) remove(component->getType());
             components[component->getType()] = component;
         }
 
-        void add(Component* component, Component::Type type){
+        void add(Component* component, Component::Type type) {
             if (has(type)) remove(type);
             components[type] = component;
         }

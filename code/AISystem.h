@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class AISystem : public System{
+class AISystem : public System {
     public:
         AISystem();
         ~AISystem();
@@ -21,7 +21,7 @@ class AISystem : public System{
         void pickHeroFromPool(Entity* e);
         void assembleArmy(Entity* e);
         void selectRandomUnits(list<CUnit::ID>& output, list<CUnit::ID>& input, int n);
-        
+
         EntityList getAliveUnits(Entity* e);
         EntityList getDeadUnits(Entity* e);
 };

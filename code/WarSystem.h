@@ -6,7 +6,7 @@
 
 using namespace std;
 
-struct GameObserver{
+struct GameObserver {
     int nHeroesP1;
     int nHeroesP2;
     bool isPlayingAnimation;
@@ -14,7 +14,7 @@ struct GameObserver{
     CArmy::Formation formation;
 };
 
-class WarSystem : public System{
+class WarSystem : public System {
     public:
         WarSystem();
         ~WarSystem();

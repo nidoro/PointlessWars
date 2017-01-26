@@ -48,7 +48,7 @@
 #define DEBUG_MESSAGE(message) DBG_SERVICES.pushMessage(message, "Message", DBG_SERVICES.getFileName(__FILE__), __LINE__, __FUNCTION__)
 
 
-struct MessageRecord{
+struct MessageRecord {
     std::string fileName;
     int lineNumber;
     std::string functionName;
@@ -59,7 +59,7 @@ struct MessageRecord{
     std::string message;
 };
 
-struct WatchedVariableRecord{
+struct WatchedVariableRecord {
     std::string fileName;
     int lineNumber;
     std::string functionName;
@@ -71,7 +71,7 @@ struct WatchedVariableRecord{
     std::string value;
 };
 
-struct TimedBlockRecord{
+struct TimedBlockRecord {
     std::string fileName;
     int lineNumber;
     std::string functionName;
@@ -83,8 +83,8 @@ struct TimedBlockRecord{
     double stopTimeStamp;
 };
 
-struct TimedBlockOvertimeInfo{
-    TimedBlockOvertimeInfo(){
+struct TimedBlockOvertimeInfo {
+    TimedBlockOvertimeInfo() {
         sum = 0;
         records = 0;
     }
@@ -100,8 +100,8 @@ struct TimedBlockOvertimeInfo{
     int records;
 };
 
-struct DebugRecordFilters{
-    DebugRecordFilters(){
+struct DebugRecordFilters {
+    DebugRecordFilters() {
         matchRecordEntry = -1;
         minRecordEntry = -1;
         maxRecordEntry = std::numeric_limits<int>::max();
@@ -118,7 +118,7 @@ struct DebugRecordFilters{
 };
 
 // Auxiliary structure for TIMED_BLOCK macro, do not use.
-struct _TimedBlock{
+struct _TimedBlock {
     _TimedBlock(std::string fileName, int lineNumber, std::string functionName);
     ~_TimedBlock();
 
@@ -129,7 +129,7 @@ struct _TimedBlock{
     std::clock_t start;
 };
 
-class DebugServices{
+class DebugServices {
     public:
         static DebugServices& get();
 
@@ -153,7 +153,7 @@ class DebugServices{
 
         // Do not use this, use macro WATCH_VARIABLE
         template <typename T>
-        void _watchVariable(T value, std::string variableName, std::string fileName, int lineNumber, std::string functionName, int count = std::numeric_limits<int>::max()){
+        void _watchVariable(T value, std::string variableName, std::string fileName, int lineNumber, std::string functionName, int count = std::numeric_limits<int>::max()) {
             std::string fullAddress = getFormatedAdress(fileName, lineNumber, functionName);
             std::string varAddress = fullAddress + " -- " + variableName;
             if (watchedVariableRecords[varAddress].size() >= count) return;
@@ -170,7 +170,7 @@ class DebugServices{
             record.name = variableName;
             //record.recordEntry = mapWatchedVariableRecords[fileName][functionName].size() + 1;
             watchedVariableRecords[record.variableAddress].push_back(record);
-            if (watchedVariableRecords[varAddress].size() >= maxStoredWatchedVariableEntries){
+            if (watchedVariableRecords[varAddress].size() >= maxStoredWatchedVariableEntries) {
                 watchedVariableRecords[record.variableAddress].pop_front();
             };
 

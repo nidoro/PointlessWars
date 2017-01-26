@@ -8,7 +8,7 @@
 #include "Component.h"
 #include "OSAppDataDir.h"
 
-class MatchConfig{
+class MatchConfig {
     public:
         MatchConfig();
 

@@ -24,12 +24,12 @@ namespace fs = boost::filesystem;
 const int wWorld = 1280;
 const int hWorld = 720;
 
-struct Animation{
-    Animation(){
+struct Animation {
+    Animation() {
         loop = true;
     }
 
-    Animation(string id, double w, double h, int n, double rate){
+    Animation(string id, double w, double h, int n, double rate) {
         this->id = id;
         this->wSprite = w;
         this->hSprite = h;
@@ -50,14 +50,14 @@ struct Animation{
 };
 
 struct Buff {
-    enum ID{
+    enum ID {
         NONE,
         FORMATION_SQUARE,
         FORMATION_OVAL,
         FORMATION_SPEAR,
         FORMATION_OPEN
     };
-    enum Type{FORMATION = 1, POSITIVE, NEGATIVE};
+    enum Type {FORMATION = 1, POSITIVE, NEGATIVE};
     Type type;
     ID id;
     double rangedBonus;
@@ -68,8 +68,8 @@ struct Buff {
     string description;
 };
 
-struct Action{
-    enum ID{
+struct Action {
+    enum ID {
         NONE,
         RANGED_ATK,
         MELEE_DEF,
@@ -86,9 +86,9 @@ struct Action{
     Buff::ID buff;
 };
 
-struct Item{
-    enum ID{BOW, SWORD, SHIELD, LIGHT_ARMOR, HEAVY_ARMOR, N_ITEMS};
-    Item(double v, Action::ID a = Action::NONE){
+struct Item {
+    enum ID {BOW, SWORD, SHIELD, LIGHT_ARMOR, HEAVY_ARMOR, N_ITEMS};
+    Item(double v, Action::ID a = Action::NONE) {
         value = v;
         action = a;
     }
@@ -96,17 +96,17 @@ struct Item{
     Action::ID action;
 };
 
-struct Unit{
+struct Unit {
     typedef int ID;
 
-    enum Type{MELEE = 1, RANGED, MAGIC, N_UTYPES};
+    enum Type {MELEE = 1, RANGED, MAGIC, N_UTYPES};
 
-    Unit(){
+    Unit() {
         animations.resize(N_ANIMATIONS);
         items.resize(Item::N_ITEMS, false);
     }
 
-    enum Animation{IDLE, WALK, DEATH, DEAD, ACTION, RAISE_SHIELD, SHIELD,  N_ANIMATIONS};
+    enum Animation {IDLE, WALK, DEATH, DEAD, ACTION, RAISE_SHIELD, SHIELD,  N_ANIMATIONS};
 
     ID id;
     string strName;
@@ -137,11 +137,11 @@ struct Unit{
     vector<bool> items;
 };
 
-struct GridCoord{
-    GridCoord(){
+struct GridCoord {
+    GridCoord() {
         x = y = 0;
     };
-    GridCoord(int x, int y){
+    GridCoord(int x, int y) {
         this->x = x;
         this->y = y;
     }
@@ -149,8 +149,8 @@ struct GridCoord{
     int y;
 };
 
-struct Formation{
-    enum ID{
+struct Formation {
+    enum ID {
         SQUARE,
         OPEN,
         SPEAR,
@@ -169,8 +169,8 @@ struct Formation{
     Buff::ID buff;
 };
 
-struct Projectile{
-    enum ID{
+struct Projectile {
+    enum ID {
         ARROW=1
     };
     ID id;
@@ -179,8 +179,8 @@ struct Projectile{
     double width, height;
 };
 
-struct BattleSolving{
-    enum ID{MELEE_BATTLE, MAN_VS_MAN, CHAMPIONS_DUEL, DRAW, N_SOLVINGS};
+struct BattleSolving {
+    enum ID {MELEE_BATTLE, MAN_VS_MAN, CHAMPIONS_DUEL, DRAW, N_SOLVINGS};
     ID id;
     string btDefTexture;
     string btHovTexture;
@@ -188,8 +188,8 @@ struct BattleSolving{
     string strText, strTitle;
 };
 
-struct NinePatch{
-    NinePatch(){
+struct NinePatch {
+    NinePatch() {
         parts = vector< vector<sf::Sprite> >(3, vector<sf::Sprite>(3));
         wMin = 0;
         hMin = 0;
@@ -202,7 +202,7 @@ struct NinePatch{
 
 char* mallocFile(string filename, int& length);
 
-class Assets{
+class Assets {
     public:
         Assets();
         ~Assets();
@@ -300,7 +300,7 @@ class Assets{
 
         static map<string, char*> musicBuffers;
         static map<string, char*> fontBuffers;
-          
+
         static std::string appDataDir;
 };
 

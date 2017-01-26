@@ -7,7 +7,7 @@
 #include "Assets.h"
 #include "DebugServices.h"
 
-class RenderSystem : public System{
+class RenderSystem : public System {
     public:
         RenderSystem();
         ~RenderSystem();

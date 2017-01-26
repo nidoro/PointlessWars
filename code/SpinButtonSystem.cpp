@@ -1,6 +1,6 @@
 #include "SpinButtonSystem.h"
 
-SpinButtonSystem::SpinButtonSystem(){
+SpinButtonSystem::SpinButtonSystem() {
     addRequirement(Component::SPIN_BUTTON);
 
     addSubscription(CREATE_SPIN_BUTTONS);
@@ -37,11 +37,11 @@ SpinButtonSystem::SpinButtonSystem(){
     styles[CSpinButton::STYLE_2].btIncreaseAct = "button-right-more-hovered.png";
 }
 
-SpinButtonSystem::~SpinButtonSystem(){
+SpinButtonSystem::~SpinButtonSystem() {
 
 }
 
-void SpinButtonSystem::update(){
+void SpinButtonSystem::update() {
     /*
     for(EntityListIt i = entities.begin(); i != entities.end(); i++){
         Entity* e = *i;
@@ -57,8 +57,8 @@ void SpinButtonSystem::update(){
     */
 }
 
-void SpinButtonSystem::onCreateSpinButtons(Entity* e){
-    if (!e->has(Component::SPIN_BUTTON)){
+void SpinButtonSystem::onCreateSpinButtons(Entity* e) {
+    if (!e->has(Component::SPIN_BUTTON)) {
         printf("CSpinButtonValue expected!\n");
         return;
     }
@@ -109,7 +109,7 @@ void SpinButtonSystem::onCreateSpinButtons(Entity* e){
     e->addObservedEntity("SpinButtonDecrease", eDecrease);
 }
 
-void SpinButtonSystem::onChangeSpinValue(Entity* e){
+void SpinButtonSystem::onChangeSpinValue(Entity* e) {
     /*
     Entity* eValue = e->get<CSpinButton>()->eValue;
     int value = eValue->get<CSpinButtonValue>()->value;
@@ -121,7 +121,7 @@ void SpinButtonSystem::onChangeSpinValue(Entity* e){
     */
 }
 
-void SpinButtonSystem::onIncreaseSpinButtonValue(Entity* e){
+void SpinButtonSystem::onIncreaseSpinButtonValue(Entity* e) {
     Entity* eButton = e->getObservedEntity("SpinButton");
     int value = eButton->get<CSpinButton>()->value;
     value += eButton->get<CSpinButton>()->step;
@@ -129,7 +129,7 @@ void SpinButtonSystem::onIncreaseSpinButtonValue(Entity* e){
     value = max(value, eButton->get<CSpinButton>()->min);
     eButton->get<CSpinButton>()->value = value;
 }
-void SpinButtonSystem::onDecreaseSpinButtonValue(Entity* e){
+void SpinButtonSystem::onDecreaseSpinButtonValue(Entity* e) {
     Entity* eButton = e->getObservedEntity("SpinButton");
     int value = eButton->get<CSpinButton>()->value;
     value -= eButton->get<CSpinButton>()->step;

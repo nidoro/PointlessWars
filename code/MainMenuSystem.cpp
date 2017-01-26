@@ -13,23 +13,32 @@ MainMenuSystem::MainMenuSystem() {
     addSubscription(SELECT_PROFILE);
 }
 
-MainMenuSystem::~MainMenuSystem(){
+MainMenuSystem::~MainMenuSystem() {
     //dtor
 }
 
-void MainMenuSystem::update(){
+void MainMenuSystem::update() {
     //updatePlayers();
 }
 
-void MainMenuSystem::onCreateScreen(Entity* e){
-    switch(e->get<CScreen>()->id){
-        case CScreen::MAIN_MENU: eManager->clearSystem(); createMenu(true); notify(NEW_SCREEN); break;
-        case CScreen::MAIN_MENU_NO_ANIMATION: eManager->clearSystem(); createMenu(false); notify(NEW_SCREEN); break;
-        default: break;
+void MainMenuSystem::onCreateScreen(Entity* e) {
+    switch(e->get<CScreen>()->id) {
+    case CScreen::MAIN_MENU:
+        eManager->clearSystem();
+        createMenu(true);
+        notify(NEW_SCREEN);
+        break;
+    case CScreen::MAIN_MENU_NO_ANIMATION:
+        eManager->clearSystem();
+        createMenu(false);
+        notify(NEW_SCREEN);
+        break;
+    default:
+        break;
     }
 }
 
-void MainMenuSystem::create(){
+void MainMenuSystem::create() {
     pages.clear();
     pages.resize(CMainMenuPage::N_PAGES);
 
@@ -251,7 +260,7 @@ void MainMenuSystem::create(){
     showPage(CMainMenuPage::MAIN_SCREEN);
 }
 
-void MainMenuSystem::createMenu(bool animated){
+void MainMenuSystem::createMenu(bool animated) {
     Entity* eObj;
     ///BACKGROUND 1
     /*
@@ -274,7 +283,7 @@ void MainMenuSystem::createMenu(bool animated){
     eScenario->add(new CScenario("town-east.sce"));
     notify(LOAD_SCENARIO, eScenario);
 
-    if (animated){
+    if (animated) {
         ///CAMERA MAN
         eObj = eManager->createEntity();
         eObj->add(new CPosition(-wWindow/4, cyWindow));
@@ -293,20 +302,23 @@ void MainMenuSystem::createMenu(bool animated){
         eObj->get<CActor>()->addNode(new AFade(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)-0.5, 255, 255));
         Entity* eLogo = eObj;
         ///VERSION BOX
-        CTextbox2 txtBox(appVersion, Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::Black);
+        CTextbox2 txtBox(appVersion, Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::White);
         sf::RectangleShape rectShape;
-        rectShape.setSize(sf::Vector2f(txtBox.content.getLocalBounds().width, txtBox.content.getLocalBounds().height));
-        rectShape.setFillColor(sf::Color::Red);
+        rectShape.setSize(sf::Vector2f(txtBox.content.getLocalBounds().width + 20, txtBox.content.getLocalBounds().height + 8));
+        rectShape.setFillColor(sf::Color(190,0,0));
         rectShape.setOutlineColor(sf::Color::Black);
+        rectShape.setOutlineThickness(2.f);
         eObj = eManager->createEntity();
         eObj->add(new CPosition(-100, -100));
-        eObj->add(new CAnchor(0.f, 200));
+        eObj->add(new CAnchor(140, 86));
         eObj->add(new CRectShape(rectShape));
         eObj->add(new CTextbox2(txtBox));
-        eObj->add(new CDraw(CDraw::GUI));
+        eObj->add(new CDraw(CDraw::GUI, 0.0f));
+        eObj->add(new CActor());
         eObj->addObservedEntity("Anchor", eLogo);
         eObj->attachEmployer(eLogo);
-    }else{
+        eObj->get<CActor>()->addNode(new AFade(getTravelTime(-wWindow/4, cyWindow, cxWindow, cyWindow, 150)-0.5, 255, 255));
+    } else {
         ///TITLE
         eObj = eManager->createEntity();
         eObj->add(new CPosition(cxWindow, 80));
@@ -422,7 +434,7 @@ void MainMenuSystem::createMenu(bool animated){
 
 }
 
-Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m){
+Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m) {
     Entity* e = eManager->createEntity();
     e->add(new CTexture());
     e->add(new CPosition(x, y));
@@ -440,55 +452,55 @@ Entity* MainMenuSystem::createButton(string label, double w, double h, double x,
     return e;
 }
 
-void MainMenuSystem::addToPage(Entity* e, CMainMenuPage::ID id){
+void MainMenuSystem::addToPage(Entity* e, CMainMenuPage::ID id) {
     pages[id].push_back(e);
 }
 
-void MainMenuSystem::showPage(CMainMenuPage::ID id){
-    for(unsigned i = 0; i < pages.size(); i++){
-        for(EntityListIt it = pages[i].begin(); it != pages[i].end(); it++){
+void MainMenuSystem::showPage(CMainMenuPage::ID id) {
+    for(unsigned i = 0; i < pages.size(); i++) {
+        for(EntityListIt it = pages[i].begin(); it != pages[i].end(); it++) {
             Entity* eObj = *it;
             eObj->get<CButtonState>()->state = CButtonState::LOCKED;
             eObj->get<CDraw>()->isHidden = true;
         }
     }
 
-    for(EntityListIt it = pages[id].begin(); it != pages[id].end(); it++){
+    for(EntityListIt it = pages[id].begin(); it != pages[id].end(); it++) {
         Entity* eObj = *it;
         eObj->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
         eObj->get<CDraw>()->isHidden = false;
     }
 }
 
-void MainMenuSystem::onChangeMenuPage(Entity* e){
-    if (e->has(Component::MAIN_MENU_PAGE)){
+void MainMenuSystem::onChangeMenuPage(Entity* e) {
+    if (e->has(Component::MAIN_MENU_PAGE)) {
         showPage(e->get<CMainMenuPage>()->id);
     }
 }
 
-void MainMenuSystem::updatePlayers(){
+void MainMenuSystem::updatePlayers() {
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Could not open profiles.xml!\n");
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement();
 
     CProfile profile;
-    for (    ; element != nullptr; element = element->NextSiblingElement()){
+    for (    ; element != nullptr; element = element->NextSiblingElement()) {
         profile.name = element->Value();
     }
 }
 
-void MainMenuSystem::clearPage(CMainMenuPage::ID id){
-    for(EntityListIt i = pages[id].begin(); i != pages[id].end(); i++){
+void MainMenuSystem::clearPage(CMainMenuPage::ID id) {
+    for(EntityListIt i = pages[id].begin(); i != pages[id].end(); i++) {
         Entity* e = *i;
         eManager->removeEntity(e);
     }
     pages[id].clear();
 }
 
-void MainMenuSystem::createPlayerSelect(){
+void MainMenuSystem::createPlayerSelect() {
     loadProfiles();
     clearPage(CMainMenuPage::SELECT_PLAYER);
 
@@ -507,7 +519,7 @@ void MainMenuSystem::createPlayerSelect(){
     //double w = 60;
     //double h = 60;
 
-    for(list<CProfile>::iterator i = profiles.begin(); i != profiles.end(); i++){
+    for(list<CProfile>::iterator i = profiles.begin(); i != profiles.end(); i++) {
         CProfile profile = *i;
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x, y));
@@ -545,17 +557,17 @@ void MainMenuSystem::createPlayerSelect(){
     addToPage(eObj, CMainMenuPage::SELECT_PLAYER);
 }
 
-void MainMenuSystem::loadProfiles(){
+void MainMenuSystem::loadProfiles() {
     profiles.clear();
 
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Could not open profiles.xml!\n");
     }
     tinyxml2::XMLElement* element = doc.FirstChildElement("Profile");
 
-    for (    ; element != nullptr; element = element->NextSiblingElement("Profile")){
+    for (    ; element != nullptr; element = element->NextSiblingElement("Profile")) {
         CProfile profile;
         profile.name = string(element->FirstChildElement("Name")->GetText());
         profile.charName = element->FirstChildElement("Char")->GetText();
@@ -563,7 +575,7 @@ void MainMenuSystem::loadProfiles(){
     }
 }
 
-void MainMenuSystem::onCreatePlayerEditor(Entity* e){
+void MainMenuSystem::onCreatePlayerEditor(Entity* e) {
     notify(LOCK_ALL_BUTTONS);
     if (!e->has(Component::PROFILE)) notify(REMOVE_NEPHEWS, e);
 
@@ -582,9 +594,9 @@ void MainMenuSystem::onCreatePlayerEditor(Entity* e){
     Entity* eChar;
 
     CProfile profile;
-    if (e->has(Component::PROFILE)){
+    if (e->has(Component::PROFILE)) {
         profile = *e->get<CProfile>();
-    }else{
+    } else {
         profile.name = "";
         profile.charName = CChar::Map.begin()->second.name;
     }
@@ -625,7 +637,7 @@ void MainMenuSystem::onCreatePlayerEditor(Entity* e){
     eObj->get<CButtonState>()->gainedFocusMessage = SWITCH_CHAR_ANIMATION;
 
     /// CHARACTER OPTIONS
-    for (map<string, CChar>::iterator i = CChar::Map.begin(); i != CChar::Map.end(); i++){
+    for (map<string, CChar>::iterator i = CChar::Map.begin(); i != CChar::Map.end(); i++) {
         CChar c = i->second;
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x, y));
@@ -668,13 +680,13 @@ void MainMenuSystem::onCreatePlayerEditor(Entity* e){
     eObj->add(new CParentPanel(ePanel));
     eObj->add(new CDraw(CDraw::GUI3));
     eObj->add(new CProfileEditor(eInput, eChar));
-    if (e->has(Component::PROFILE)){
+    if (e->has(Component::PROFILE)) {
         eObj->add(new CProfile(*e->get<CProfile>()));
     }
 
 }
 
-void MainMenuSystem::onCreateProfile(Entity* e){
+void MainMenuSystem::onCreateProfile(Entity* e) {
     saveProfile(e);
 
     notify(CLOSE_PANEL, e);
@@ -682,7 +694,7 @@ void MainMenuSystem::onCreateProfile(Entity* e){
     createPlayerSelect();
 }
 
-void MainMenuSystem::saveProfile(Entity* e){
+void MainMenuSystem::saveProfile(Entity* e) {
     Entity* eName = e->get<CProfileEditor>()->eName;
     Entity* eChar = e->get<CProfileEditor>()->eChar;
     string prvName;
@@ -691,25 +703,25 @@ void MainMenuSystem::saveProfile(Entity* e){
 
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement("Profile");
-    for(    ; node != nullptr; node = node->NextSibling()){
+    for(    ; node != nullptr; node = node->NextSibling()) {
         tinyxml2::XMLElement* elm = node->ToElement();
         if (string(elm->FirstChildElement("Name")->GetText()) == prvName) break;
     }
     tinyxml2::XMLElement* element;
     tinyxml2::XMLElement* elChar;
     tinyxml2::XMLElement* elName;
-    if (node == nullptr){
+    if (node == nullptr) {
         element = doc.NewElement(name.c_str());
         elChar = doc.NewElement("Char");
         elName = doc.NewElement("Name");
         doc.InsertEndChild(element);
         element->InsertEndChild(elChar);
         element->InsertEndChild(elName);
-    }else{
+    } else {
         element = node->ToElement();
         elChar = element->FirstChildElement("Char");
         elName = element->FirstChildElement("Name");
@@ -722,14 +734,14 @@ void MainMenuSystem::saveProfile(Entity* e){
     doc.SaveFile(path.c_str());
 }
 
-void MainMenuSystem::onSelectCharacter(Entity* e){
+void MainMenuSystem::onSelectCharacter(Entity* e) {
     Entity* eChar = e->get<COwner>()->e;
     *eChar->get<CChar>() = *e->get<CChar>();
     *eChar->get<CAnimation>() = CAnimation(false, e->get<CChar>()->aIdle);
     eChar->get<CAnimation>()->sprite = Assets::getAnimation(e->get<CChar>()->aIdle).frames[0];
 }
 
-void MainMenuSystem::onCreateProfileMenu(Entity* e){
+void MainMenuSystem::onCreateProfileMenu(Entity* e) {
     notify(REMOVE_NEPHEWS, e);
     notify(REMOVE_CHILDREN, e);
 
@@ -762,14 +774,14 @@ void MainMenuSystem::onCreateProfileMenu(Entity* e){
     e->get<CPanel>()->objects.push_back(eObj);
     e->attachEmployee(eObj);
 }
-void MainMenuSystem::onEditProfile(Entity* e){
+void MainMenuSystem::onEditProfile(Entity* e) {
     notify(CREATE_PLAYER_EDITOR, e);
 }
-void MainMenuSystem::onDeleteProfile(Entity* e){
+void MainMenuSystem::onDeleteProfile(Entity* e) {
     deleteProfile(e);
     createPlayerSelect();
 }
-void MainMenuSystem::onSelectProfile(Entity* e){
+void MainMenuSystem::onSelectProfile(Entity* e) {
     System::profile = *e->get<CProfile>();
     Entity* ePage = eManager->createEntity();
     ePage->add(new CMainMenuPage(CMainMenuPage::MAIN_SCREEN));
@@ -777,30 +789,30 @@ void MainMenuSystem::onSelectProfile(Entity* e){
     notify(REMOVE_CHILDREN, e->get<CParentPanel>()->e);
 }
 
-void MainMenuSystem::deleteProfile(Entity* e){
+void MainMenuSystem::deleteProfile(Entity* e) {
     string name = e->get<CProfile>()->name;
 
     tinyxml2::XMLDocument doc;
     string path = "../rsc-0.1/profiles.xml";
-    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR){
+    if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
     tinyxml2::XMLNode* node = doc.FirstChildElement("Profile");
-    for(    ; node != nullptr; node = node->NextSibling()){
+    for(    ; node != nullptr; node = node->NextSibling()) {
         tinyxml2::XMLElement* elm = node->ToElement();
         if (string(elm->FirstChildElement("Name")->GetText()) == name) break;
     }
     tinyxml2::XMLElement* element;
     tinyxml2::XMLElement* elChar;
     tinyxml2::XMLElement* elName;
-    if (node == nullptr){
+    if (node == nullptr) {
         element = doc.NewElement(name.c_str());
         elChar = doc.NewElement("Char");
         elName = doc.NewElement("Name");
         doc.InsertEndChild(element);
         element->InsertEndChild(elChar);
         element->InsertEndChild(elName);
-    }else{
+    } else {
         element = node->ToElement();
         elChar = element->FirstChildElement("Char");
         elName = element->FirstChildElement("Name");

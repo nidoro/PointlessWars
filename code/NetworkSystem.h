@@ -6,7 +6,7 @@
 #include "Assets.h"
 #include "imgui.h"
 
-class NetworkSystem : public System{
+class NetworkSystem : public System {
     public:
         NetworkSystem();
         ~NetworkSystem();
@@ -16,7 +16,7 @@ class NetworkSystem : public System{
         void stop();
 
     private:
-        enum State{FINDING_MATCH, SEARCHING_QUICK_MATCH, PLAYING_MATCH, JUST_ONLINE, OFFLINE, CONNECTING};
+        enum State {FINDING_MATCH, SEARCHING_QUICK_MATCH, PLAYING_MATCH, JUST_ONLINE, OFFLINE, CONNECTING};
 
         /// EVENT HANDLERS
         void onTryAndConnect(Entity* e);

@@ -5,7 +5,7 @@
 #include "Standard.h"
 #include "Assets.h"
 
-class ArmySystem : public System{
+class ArmySystem : public System {
     public:
         ArmySystem();
         ~ArmySystem();

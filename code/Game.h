@@ -57,7 +57,7 @@
 #include "imgui.h"
 #include "OSAppDataDir.h"
 
-class Game{
+class Game {
     public:
         Game();
         ~Game();

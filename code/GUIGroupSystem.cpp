@@ -1,6 +1,6 @@
 #include "GUIGroupSystem.h"
 
-GUIGroupSystem::GUIGroupSystem(){
+GUIGroupSystem::GUIGroupSystem() {
     addSubscription(CREATE_GUI_GROUP);
     addSubscription(REMOVE_GUI_GROUP);
     addSubscription(CHANGE_WINDOW_PAGE);
@@ -13,36 +13,36 @@ GUIGroupSystem::GUIGroupSystem(){
     addRequirement(Component::UI_LAYER);
 }
 
-void GUIGroupSystem::update(){
+void GUIGroupSystem::update() {
 
 }
 
-void GUIGroupSystem::onCreateGUIGroup(Entity* e){
+void GUIGroupSystem::onCreateGUIGroup(Entity* e) {
     Entity* eGUI = e->getObservedEntity("create-gui-group");
 
-    if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "single-player"){
+    if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "single-player") {
         createWindowSinglePlayer(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
-    }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "game-options"){
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "game-options") {
         createWindowGameOptions(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
-    }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "multiplayer"){
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "multiplayer") {
         Entity* eWin = createWindowMultiplayer(eGUI);
         showPage(eWin->getObservedEntity("page-connect"));
         notify(BRING_UI_LAYER_FORWARD, eWin);
-    }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "in-game-menu"){
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "in-game-menu") {
         Entity* eWin = createWindowInGameMenu(eGUI);
         showPage(eWin->getObservedEntity("page-first"));
         notify(BRING_UI_LAYER_FORWARD, eWin);
-    }else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "leave-match-confirmation"){
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "leave-match-confirmation") {
         createLeaveMatchConfirmationWindow(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
-    }else if (eGUI->get<CGUIGroup>()->groupType == "window-page"){
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window-page") {
 
     }
 }
 
-void GUIGroupSystem::createWindowGameOptions(Entity* e){
+void GUIGroupSystem::createWindowGameOptions(Entity* e) {
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
     Entity* eGUI = eManager->createEntity();
@@ -88,7 +88,7 @@ void GUIGroupSystem::createWindowGameOptions(Entity* e){
 
     initializeGameOptionsPage(eGUI, true);
 }
-void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
+void GUIGroupSystem::createWindowSinglePlayer(Entity* e) {
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
     Entity* eGUI = eManager->createEntity();
@@ -194,7 +194,7 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e){
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
     eObj->addObservedEntity("remove-gui-group", eGUI);
 }
-Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
+Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e) {
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
     Entity* eGUI = eManager->createEntity();
@@ -295,7 +295,7 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e){
 
     return eGUI;
 }
-void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
+void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc) {
     /// Assumes that e has a CGUIGroup, a page of name game-options and a CUILayer
 
     //double wButton = 180;
@@ -419,7 +419,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
     /// RESOLUTION DROP LIST
     list<string> resStrings;
     unsigned int bbp = sf::VideoMode::getFullscreenModes()[0].bitsPerPixel;
-    for (unsigned int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
+    for (unsigned int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++) {
         if (sf::VideoMode::getFullscreenModes()[i].bitsPerPixel != bbp) continue;
         resStrings.push_back(int2str(sf::VideoMode::getFullscreenModes()[i].width) + " x " + int2str(sf::VideoMode::getFullscreenModes()[i].height));
     }
@@ -488,14 +488,14 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
     eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
 
     /// Button Back (hidden)
-    if (closeOnEsc){
+    if (closeOnEsc) {
         y += spcButton;
         eObj = createRectButton("", 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, REMOVE_GUI_GROUP, eGUI->get<CUILayer>()->layer);
         eObj->add(new CButtonHitbox(0,0));
         eObj->get<CButtonTrigger>()->hotkey = sf::Keyboard::Escape;
         eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
         eObj->addObservedEntity("remove-gui-group", eGUI);
-    }else{
+    } else {
         y += spcButton;
         eObj = createRectButton("", 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CHANGE_WINDOW_PAGE, eGUI->get<CUILayer>()->layer);
         eObj->add(new CButtonHitbox(0,0));
@@ -504,7 +504,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc){
         eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-first"));
     }
 }
-Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e){
+Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e) {
     string panelTexture = "9p-grey-frame-rounded.png";
     double xPanel = cxWindow;
     double yPanel = cyWindow;
@@ -564,7 +564,7 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e){
 
     return eInfoWin;
 }
-Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
+Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e) {
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
     Entity* eGUI = eManager->createEntity();
@@ -740,25 +740,25 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e){
     return eGUI;
 }
 
-void GUIGroupSystem::onMouseButtonPressed(Entity* e){
-    for (Entity* eGUI : entities){
+void GUIGroupSystem::onMouseButtonPressed(Entity* e) {
+    for (Entity* eGUI : entities) {
         //if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->has(Component::BUTTON_STATE) && eGUI->get<CUILayer>()->layer == topUILayer){
-        if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->has(Component::BUTTON_STATE) && eGUI->get<CUILayer>()->layer == uiLayers.top()){
-            if (eGUI->get<CButtonState>()->state == CButtonState::NON_ACTIVE && eGUI->get<CButtonState>()->state != CButtonState::LOCKED){
+        if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->has(Component::BUTTON_STATE) && eGUI->get<CUILayer>()->layer == uiLayers.top()) {
+            if (eGUI->get<CButtonState>()->state == CButtonState::NON_ACTIVE && eGUI->get<CButtonState>()->state != CButtonState::LOCKED) {
                 notify(REMOVE_GUI_GROUP, eGUI);
             }
         }
     }
 }
 
-void GUIGroupSystem::onRemoveGUIGroup(Entity* e){
+void GUIGroupSystem::onRemoveGUIGroup(Entity* e) {
     Entity* eGUI = nullptr;
-    if (e->has(Component::GUI_GROUP)){
+    if (e->has(Component::GUI_GROUP)) {
         eGUI = e;
-    }else{
+    } else {
         eGUI = e->getObservedEntity("remove-gui-group");
     }
-    if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "multiplayer"){
+    if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "multiplayer") {
         notify(SET_SERVER_MESSAGE_DISPLAYER_QUICK_MATCH);
         notify(CANCEL_QUICK_MATCH_SEARCH);
     }
@@ -766,45 +766,45 @@ void GUIGroupSystem::onRemoveGUIGroup(Entity* e){
     notify(BRING_UI_LAYER_FORWARD);
 }
 
-void GUIGroupSystem::onChangeWindowPage(Entity* e){
+void GUIGroupSystem::onChangeWindowPage(Entity* e) {
     Entity* ePage = e->getObservedEntity("change-page");
     showPage(ePage);
 }
 
-void GUIGroupSystem::hidePage(Entity* e){
+void GUIGroupSystem::hidePage(Entity* e) {
     EntityList eObjects = e->getEmployees();
-    for (Entity* eObj : eObjects){
-        if (eObj->has(Component::DRAW)){
+    for (Entity* eObj : eObjects) {
+        if (eObj->has(Component::DRAW)) {
             eObj->get<CDraw>()->isHidden = true;
         }
-        if (eObj->has(Component::BUTTON_STATE)){
+        if (eObj->has(Component::BUTTON_STATE)) {
             eObj->get<CButtonState>()->state = CButtonState::LOCKED;
         }
     }
 }
 
-void GUIGroupSystem::showPage(Entity* e){
+void GUIGroupSystem::showPage(Entity* e) {
     Entity* eWindow = e->getObservedEntity("window");
     EntityList ePages = eWindow->getEmployees();
-    for (Entity* ePage : ePages){
-        if (ePage != e){
+    for (Entity* ePage : ePages) {
+        if (ePage != e) {
             hidePage(ePage);
         }
     }
 
     EntityList eObjects = e->getEmployees();
-    for (Entity* eObj : eObjects){
-        if (eObj->has(Component::DRAW)){
+    for (Entity* eObj : eObjects) {
+        if (eObj->has(Component::DRAW)) {
             eObj->get<CDraw>()->isHidden = false;
         }
-        if (eObj->has(Component::BUTTON_STATE)){
+        if (eObj->has(Component::BUTTON_STATE)) {
             eObj->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
         }
     }
 }
 
 
-Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h, double x, double y, sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer){
+Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h, double x, double y, sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer) {
     sf::RectangleShape rect;
     double w = 0;
     double sideSpacing = 10;
@@ -829,9 +829,9 @@ Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h
     return e;
 }
 
-void GUIGroupSystem::onDisconnectFromServer(Entity* e){
-    for (auto& i : entities){
-        if (i->get<CGUIGroup>()->groupType == "window" && i->get<CGUIGroup>()->groupID == "multiplayer"){
+void GUIGroupSystem::onDisconnectFromServer(Entity* e) {
+    for (auto& i : entities) {
+        if (i->get<CGUIGroup>()->groupType == "window" && i->get<CGUIGroup>()->groupID == "multiplayer") {
             eManager->removeEntity(i);
         }
     }

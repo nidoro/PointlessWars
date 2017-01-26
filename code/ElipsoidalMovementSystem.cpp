@@ -1,16 +1,16 @@
 #include "ElipsoidalMovementSystem.h"
 
-ElipsoidalMovementSystem::ElipsoidalMovementSystem(){
+ElipsoidalMovementSystem::ElipsoidalMovementSystem() {
     addRequirement(Component::ELIPSOIDAL_MOVEMENT);
     addRequirement(Component::POSITION);
 }
 
-ElipsoidalMovementSystem::~ElipsoidalMovementSystem(){
+ElipsoidalMovementSystem::~ElipsoidalMovementSystem() {
     //dtor
 }
 
-void ElipsoidalMovementSystem::update(){
-    for(Entity* e : entities){
+void ElipsoidalMovementSystem::update() {
+    for(Entity* e : entities) {
         if (!hasRequirements(e)) continue;
         e->get<CElipsoidalMovement>()->angle += e->get<CElipsoidalMovement>()->angularSpeed*delay;
         double angle = e->get<CElipsoidalMovement>()->angle;

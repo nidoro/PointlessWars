@@ -6,21 +6,22 @@
 #include "MatchConfig.h"
 #include "ActionOutcome.h"
 
-class War{
+class War {
     public:
-        enum SystemAction{NONE, COIN,
-                        ASK_HERO_PICK, ASK_FORMATION, PLAY_FORMATION, ADVANCE_ARMY,
-                        ASK_CAPTAIN_ACTION, PLAY_ACTION, BETWEEN_ROUNDS,
-                        ASK_ARMY_ACTION, ASK_BATTLE_CLOSURE, ASK_ARMY_ASSEMBLE,
-                        ASK_CAPTAIN_SELECTION, PRESENT_ARMY, RECOMPOSE_ARMY,
-                        SHOW_HERO_POOL, START_FIRST_BATTLE, START_BATTLE,
-                        PRESENT_ARMIES, UPDATE_BATTLE_QUEUE, END_HERO_POOL,
-                        PRESENT_HEROES, PLAY_ACTIONS, ADVANCE_ARMIES,
-                        PLAY_INITIAL_INTIMIDATION, CLEAR_BATTLE_FIELD, START_NEW_BATTLE,
-                        ANNOUNCE_VICTORY, ASSIGN_RANDOM_ARMY, SET_FORMATION_EFFECT,
-                    FIELD_CLEANUP, BETWEEN_TURNS, ENDING, BEGINING, UPDATE_SCORE};
+        enum SystemAction {NONE, COIN,
+                           ASK_HERO_PICK, ASK_FORMATION, PLAY_FORMATION, ADVANCE_ARMY,
+                           ASK_CAPTAIN_ACTION, PLAY_ACTION, BETWEEN_ROUNDS,
+                           ASK_ARMY_ACTION, ASK_BATTLE_CLOSURE, ASK_ARMY_ASSEMBLE,
+                           ASK_CAPTAIN_SELECTION, PRESENT_ARMY, RECOMPOSE_ARMY,
+                           SHOW_HERO_POOL, START_FIRST_BATTLE, START_BATTLE,
+                           PRESENT_ARMIES, UPDATE_BATTLE_QUEUE, END_HERO_POOL,
+                           PRESENT_HEROES, PLAY_ACTIONS, ADVANCE_ARMIES,
+                           PLAY_INITIAL_INTIMIDATION, CLEAR_BATTLE_FIELD, START_NEW_BATTLE,
+                           ANNOUNCE_VICTORY, ASSIGN_RANDOM_ARMY, SET_FORMATION_EFFECT,
+                           FIELD_CLEANUP, BETWEEN_TURNS, ENDING, BEGINING, UPDATE_SCORE
+                          };
 
-        enum BattleClosure{NO_CLOSURE_YET, ALL_KILLED, DRAW, ARMY_VS_ARMY, MAN_VS_MAN, CONFINE, MERCY};
+        enum BattleClosure {NO_CLOSURE_YET, ALL_KILLED, DRAW, ARMY_VS_ARMY, MAN_VS_MAN, CONFINE, MERCY};
 
         War();
         ~War();

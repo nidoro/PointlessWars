@@ -5,7 +5,7 @@
 #include "Standard.h"
 #include "Assets.h"
 
-class TooltipSystem : public System{
+class TooltipSystem : public System {
     public:
         TooltipSystem();
         ~TooltipSystem();
@@ -33,7 +33,7 @@ class TooltipSystem : public System{
         void createArmyCompositionStatusTooltip(Entity* e);
 
         void createTooltip(Entity* e);
-        
+
         int getCurrentArmyCompositionSize(Entity* e);
         int getMaxArmySize(Entity* e);
 };

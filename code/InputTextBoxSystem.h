@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class InputTextBoxSystem : public System{
+class InputTextBoxSystem : public System {
     public:
         InputTextBoxSystem();
         ~InputTextBoxSystem();

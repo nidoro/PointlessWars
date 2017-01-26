@@ -1,6 +1,6 @@
 #include "ScriptedAnimation.h"
 
-ScriptedAnimation::ScriptedAnimation(){
+ScriptedAnimation::ScriptedAnimation() {
     //addSubscription(START_ANIMATION);
     addSubscription(TRIGGER_OBJECT_ANIMATION);
     addSubscription(INITIALIZE_WAR);
@@ -23,11 +23,11 @@ ScriptedAnimation::ScriptedAnimation(){
     hurtDuration = 0.1;
 }
 
-ScriptedAnimation::~ScriptedAnimation(){
+ScriptedAnimation::~ScriptedAnimation() {
     //dtor
 }
 
-void ScriptedAnimation::onTriggerObjectAnimation(Entity* e){
+void ScriptedAnimation::onTriggerObjectAnimation(Entity* e) {
     //scriptGeiser(cxWindow, cyWindow, 0, 3);
     if (e->get<CActor>()->acting) return;
     string a1 = e->get<CScenarioObject>()->aClick;
@@ -37,22 +37,22 @@ void ScriptedAnimation::onTriggerObjectAnimation(Entity* e){
     e->get<CActor>()->timeline.push_back(new ASpriteAnimation(a1Duration, a2));
 }
 
-void ScriptedAnimation::update(){
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+void ScriptedAnimation::update() {
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
-        if (eManager->isDead(e)){
+        if (eManager->isDead(e)) {
             e->get<CActor>()->acting = false;
             continue;
         }
-        if (!e->get<CActor>()->timeline.empty()){
-            if (e->get<CActor>()->acting == false){
+        if (!e->get<CActor>()->timeline.empty()) {
+            if (e->get<CActor>()->acting == false) {
                 e->get<CActor>()->acting = true;
                 e->get<CActor>()->timer.restart();
             }
-            while (e->get<CActor>()->timer.getElapsedTime().asSeconds() >= e->get<CActor>()->timeline.front()->triggerTime){
+            while (e->get<CActor>()->timer.getElapsedTime().asSeconds() >= e->get<CActor>()->timeline.front()->triggerTime) {
                 triggerNode(e, e->get<CActor>()->timeline.front());
                 popFrontAnimationNode(e);
-                if (e->get<CActor>()->timeline.empty()){
+                if (e->get<CActor>()->timeline.empty()) {
                     e->get<CActor>()->acting = false;
                     break;
                 }
@@ -64,20 +64,20 @@ void ScriptedAnimation::update(){
     bool acting = false;
     EntityList act = actors;
     //printf("actors: %d\n", act.size());
-    for(EntityListIt i = act.begin(); i != act.end(); ){
+    for(EntityListIt i = act.begin(); i != act.end(); ) {
         Entity* e = *i;
-        if (!eManager->isDead(e) && e->get<CActor>()->acting){
+        if (!eManager->isDead(e) && e->get<CActor>()->acting) {
             acting = true;
             break;
         }
-        if (eManager->isDead(e)){
+        if (eManager->isDead(e)) {
             actors.remove(e);
-        }else{
+        } else {
             i++;
         }
     }
 
-    if (playingScene && !acting){
+    if (playingScene && !acting) {
         clearScene();
         playingScene = false;
         notify(SCENE_ENDED);
@@ -86,58 +86,58 @@ void ScriptedAnimation::update(){
 
 }
 
-void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node){
-    if (node->type == AnimationNode::A_NOTHING){
+void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node) {
+    if (node->type == AnimationNode::A_NOTHING) {
 
-    }else if (node->type == AnimationNode::A_SPRITE_ANIMATION){
+    } else if (node->type == AnimationNode::A_SPRITE_ANIMATION) {
         ASpriteAnimation* nd = static_cast<ASpriteAnimation*>(node);
         e->get<CAnimation>()->current = nd->animation;
         e->get<CAnimation>()->update = true;
 
-        if (!nd->sound.empty()){
+        if (!nd->sound.empty()) {
             Entity* eSound = eManager->createEntity();
             eSound->add(new CSound(nd->sound, CSound::REMOVE_ENTITY));
             notify(PLAY_SOUND, eSound);
         }
-    }else if (node->type == AnimationNode::A_MOVE){
+    } else if (node->type == AnimationNode::A_MOVE) {
         AMove* nd = static_cast<AMove*>(node);
         e->add(new CPath());
         e->get<CPath>()->addNode(nd->x, nd->y);
         e->get<CVelocity>()->speed = nd->speed;
         eManager->addModified(e);
-    }else if (node->type == AnimationNode::A_ZOOM){
+    } else if (node->type == AnimationNode::A_ZOOM) {
         AZoom* nd = static_cast<AZoom*>(node);
         e->add(new CZoom(nd->dx, nd->dy, nd->wTarget, nd->hTarget));
         eManager->addModified(e);
-    }else if (node->type == AnimationNode::A_FADE){
+    } else if (node->type == AnimationNode::A_FADE) {
         AFade* nd = static_cast<AFade*>(node);
-        if (!e->has(Component::FADE)){
+        if (!e->has(Component::FADE)) {
             e->add(new CFade(nd->speed, nd->alphaTarget));
             eManager->addModified(e);
-        }else{
+        } else {
             e->get<CFade>()->alphaSpeed = nd->speed;
             e->get<CFade>()->alphaTarget = nd->alphaTarget;
         }
-    }else if (node->type == AnimationNode::A_DESTROY){
-        if (e->has(Component::PARENT_PANEL)){
+    } else if (node->type == AnimationNode::A_DESTROY) {
+        if (e->has(Component::PARENT_PANEL)) {
             //Entity* eParent = e->get<CParentPanel>()->e;
             //eParent->get<CPanel>()->objects.remove(e);
         }
         eManager->removeEntity(e);
         if (contains(actors, e)) actors.remove(e);
-    }else if (node->type == AnimationNode::A_ADD_COMPONENT){
+    } else if (node->type == AnimationNode::A_ADD_COMPONENT) {
         AAddComponent* nd = static_cast<AAddComponent*>(node);
         e->add(nd->c, nd->cType);
         eManager->addModified(e);
-    }else if (node->type == AnimationNode::A_REMOVE_COMPONENT){
+    } else if (node->type == AnimationNode::A_REMOVE_COMPONENT) {
         ARemoveComponent* nd = static_cast<ARemoveComponent*>(node);
         e->remove(nd->c);
         eManager->addModified(e);
-    }else if (node->type == AnimationNode::A_TELEPORT){
+    } else if (node->type == AnimationNode::A_TELEPORT) {
         ATeleport* nd = static_cast<ATeleport*>(node);
         e->get<CPosition>()->x = nd->x;
         e->get<CPosition>()->y = nd->y;
-    }else if (node->type == AnimationNode::A_SPEAK){
+    } else if (node->type == AnimationNode::A_SPEAK) {
         ASpeak* nd = static_cast<ASpeak*>(node);
         Entity* eCallout = eManager->createEntity();
         double yOff = e->has(Component::DIMENSIONS) ? -(e->get<CDimensions>()->height/2 + 10) : -35;
@@ -152,61 +152,98 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node){
         eCallout->addObservedEntity("Anchor", e);
         eCallout->attachEmployer(e);
 
-    }else if (node->type == AnimationNode::A_VARIABLE){
+    } else if (node->type == AnimationNode::A_VARIABLE) {
         AVariable* nd = static_cast<AVariable*>(node);
-        switch(nd->var){
-            case AVariable::DEAD: e->get<CUnit>()->dead = nd->bValue; break;
-            case AVariable::ALPHA: e->get<CDraw>()->alpha = nd->iValue; break;
-            case AVariable::AUTO_P:
-                if (nd->bValue){
-                    e->add(new CAutoPilot);
-                }else{
-                    e->remove(Component::AUTO_PILOT);
-                }
-                eManager->addModified(e);
-                break;
-            case AVariable::DRAW_TAG: e->get<CDraw>()->tag = (CDraw::Tag)(nd->iValue); break;
-            case AVariable::ANGLE: e->get<CRotation>()->angle = nd->dValue; break;
-            case AVariable::ROTATION_VEL: e->get<CRotation>()->velocity = nd->dValue; break;
-            case AVariable::X_VEL: e->get<CVelocity>()->x = nd->dValue; break;
-            case AVariable::Y_VEL: e->get<CVelocity>()->y = nd->dValue; break;
-            case AVariable::X_ACC: e->get<CAcceleration>()->x = nd->dValue; break;
-            case AVariable::Y_ACC: e->get<CAcceleration>()->y = nd->dValue; break;
-            case AVariable::H_FLIP: e->get<CAnimation>()->hFlip = nd->bValue; break;
-            case AVariable::V_FLIP: e->get<CAnimation>()->vFlip = nd->bValue; break;
-            case AVariable::FREEZE: e->get<CAnimation>()->freeze = nd->bValue; break;
-            case AVariable::ADD_EFFECT:
-                if (e->has(Component::UNIT)) e->get<CUnit>()->effects.insert(make_pair(nd->iValue, CAction::Map[nd->iValue]));
-                else e->get<COwner>()->e->get<CArmy>()->armyEffects.insert(make_pair(nd->iValue, CAction::Map[nd->iValue]));
-                break;
-            case AVariable::REMOVE_EFFECT:
-                if (e->has(Component::UNIT)) e->get<CUnit>()->effects.erase(e->get<CUnit>()->effects.find(nd->iValue));
-                else e->get<COwner>()->e->get<CArmy>()->armyEffects.erase(e->get<COwner>()->e->get<CArmy>()->armyEffects.find(nd->iValue));
-                break;
-            //case AVariable::WIN: e->get<COwner>()->e->get<CArmy>()->win = nd->bValue; break;
-            case AVariable::REPLACE_HERO: e->get<COwner>()->e->get<CArmy>()->captain = e->getObservedEntity("ReplaceHero"); break;
-            case AVariable::REMOVE_FROM_ARMY: e->get<COwner>()->e->get<CArmy>()->allUnits.remove(e); break;
-            case AVariable::HIDDEN: e->get<CDraw>()->isHidden = nd->bValue; break;
-            case AVariable::COIN: e->get<COwner>()->e->get<CArmy>()->hasCoin = nd->bValue; break;
-            case AVariable::HERO_CONFINED: e->get<CCaptain>()->isConfined = nd->bValue; break;
-            case AVariable::BUT_LOCKED: e->get<CButtonState>()->state = nd->bValue ? CButtonState::LOCKED : CButtonState::NON_ACTIVE; break;
-            case AVariable::PARTICLE_EFFECT:
-                for(EntityListIt i = e->get<CParticleEffect>()->emmiters.begin(); i != e->get<CParticleEffect>()->emmiters.end(); i++){
-                    Entity* eEmmiter = *i;
-                    eEmmiter->get<CParticleEmmiter>()->on = nd->bValue;
-                    eEmmiter->get<CParticleEmmiter>()->clock.restart();
-                }
-                break;
-            default: break;
+        switch(nd->var) {
+        case AVariable::DEAD:
+            e->get<CUnit>()->dead = nd->bValue;
+            break;
+        case AVariable::ALPHA:
+            e->get<CDraw>()->alpha = nd->iValue;
+            break;
+        case AVariable::AUTO_P:
+            if (nd->bValue) {
+                e->add(new CAutoPilot);
+            } else {
+                e->remove(Component::AUTO_PILOT);
+            }
+            eManager->addModified(e);
+            break;
+        case AVariable::DRAW_TAG:
+            e->get<CDraw>()->tag = (CDraw::Tag)(nd->iValue);
+            break;
+        case AVariable::ANGLE:
+            e->get<CRotation>()->angle = nd->dValue;
+            break;
+        case AVariable::ROTATION_VEL:
+            e->get<CRotation>()->velocity = nd->dValue;
+            break;
+        case AVariable::X_VEL:
+            e->get<CVelocity>()->x = nd->dValue;
+            break;
+        case AVariable::Y_VEL:
+            e->get<CVelocity>()->y = nd->dValue;
+            break;
+        case AVariable::X_ACC:
+            e->get<CAcceleration>()->x = nd->dValue;
+            break;
+        case AVariable::Y_ACC:
+            e->get<CAcceleration>()->y = nd->dValue;
+            break;
+        case AVariable::H_FLIP:
+            e->get<CAnimation>()->hFlip = nd->bValue;
+            break;
+        case AVariable::V_FLIP:
+            e->get<CAnimation>()->vFlip = nd->bValue;
+            break;
+        case AVariable::FREEZE:
+            e->get<CAnimation>()->freeze = nd->bValue;
+            break;
+        case AVariable::ADD_EFFECT:
+            if (e->has(Component::UNIT)) e->get<CUnit>()->effects.insert(make_pair(nd->iValue, CAction::Map[nd->iValue]));
+            else e->get<COwner>()->e->get<CArmy>()->armyEffects.insert(make_pair(nd->iValue, CAction::Map[nd->iValue]));
+            break;
+        case AVariable::REMOVE_EFFECT:
+            if (e->has(Component::UNIT)) e->get<CUnit>()->effects.erase(e->get<CUnit>()->effects.find(nd->iValue));
+            else e->get<COwner>()->e->get<CArmy>()->armyEffects.erase(e->get<COwner>()->e->get<CArmy>()->armyEffects.find(nd->iValue));
+            break;
+        //case AVariable::WIN: e->get<COwner>()->e->get<CArmy>()->win = nd->bValue; break;
+        case AVariable::REPLACE_HERO:
+            e->get<COwner>()->e->get<CArmy>()->captain = e->getObservedEntity("ReplaceHero");
+            break;
+        case AVariable::REMOVE_FROM_ARMY:
+            e->get<COwner>()->e->get<CArmy>()->allUnits.remove(e);
+            break;
+        case AVariable::HIDDEN:
+            e->get<CDraw>()->isHidden = nd->bValue;
+            break;
+        case AVariable::COIN:
+            e->get<COwner>()->e->get<CArmy>()->hasCoin = nd->bValue;
+            break;
+        case AVariable::HERO_CONFINED:
+            e->get<CCaptain>()->isConfined = nd->bValue;
+            break;
+        case AVariable::BUT_LOCKED:
+            e->get<CButtonState>()->state = nd->bValue ? CButtonState::LOCKED : CButtonState::NON_ACTIVE;
+            break;
+        case AVariable::PARTICLE_EFFECT:
+            for(EntityListIt i = e->get<CParticleEffect>()->emmiters.begin(); i != e->get<CParticleEffect>()->emmiters.end(); i++) {
+                Entity* eEmmiter = *i;
+                eEmmiter->get<CParticleEmmiter>()->on = nd->bValue;
+                eEmmiter->get<CParticleEmmiter>()->clock.restart();
+            }
+            break;
+        default:
+            break;
         }
-        if (e->has(Component::UNIT) && e->get<CUnit>()->dead){
+        if (e->has(Component::UNIT) && e->get<CUnit>()->dead) {
             e->get<CActor>()->timeline.clear();
         }
 
-    }else if (node->type == AnimationNode::A_SHOOT){
+    } else if (node->type == AnimationNode::A_SHOOT) {
         AShoot* nd = static_cast<AShoot*>(node);
         createProjectile(e, e->get<CPosition>()->x, e->get<CPosition>()->y, nd->xTarget, nd->yTarget, nd->object);
-    }else if (node->type == AnimationNode::A_SOUND){
+    } else if (node->type == AnimationNode::A_SOUND) {
         ASound* nd = static_cast<ASound*>(node);
         Entity* eSound = eManager->createEntity();
         eSound->add(new CSound(nd->name, CSound::REMOVE_ENTITY));
@@ -215,11 +252,11 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node){
 }
 
 
-void ScriptedAnimation::onGameStarted(Entity* e){
+void ScriptedAnimation::onGameStarted(Entity* e) {
     createFormations();
 }
 
-void ScriptedAnimation::onInitializeWar(Entity* e){
+void ScriptedAnimation::onInitializeWar(Entity* e) {
     wFormation = 15;
     hFormation = 23;
     uxFormation = 16;
@@ -234,218 +271,444 @@ void ScriptedAnimation::onInitializeWar(Entity* e){
     //scriptVictoryAnimation(1.0);
 }
 
-void ScriptedAnimation::onSceneStarted(Entity* e){
+void ScriptedAnimation::onSceneStarted(Entity* e) {
     playingScene = true;
     war.setPlayingAnimation(playingScene);
 }
 
-void ScriptedAnimation::onSystemAction(Entity* e){
-    if (war.getSystemAction() == war.PRESENT_HEROES){
+void ScriptedAnimation::onSystemAction(Entity* e) {
+    if (war.getSystemAction() == war.PRESENT_HEROES) {
         scriptPresentCaptain(war.getPlayer1());
         scriptPresentCaptain(war.getPlayer2());
         notify(SCENE_STARTED, e);
 
-    }else if (war.getSystemAction() == war.ADVANCE_ARMIES){
+    } else if (war.getSystemAction() == war.ADVANCE_ARMIES) {
         scriptAdvanceArmy(war.getPlayer1());
         scriptAdvanceArmy(war.getPlayer2());
         notify(SCENE_STARTED, e);
 
-    }else if (war.getSystemAction() == war.PRESENT_ARMIES){
+    } else if (war.getSystemAction() == war.PRESENT_ARMIES) {
         scriptPresentArmy(war.getPlayer1());
         scriptPresentArmy(war.getPlayer2());
         notify(SCENE_STARTED, e);
-    }else if (war.getSystemAction() == war.SET_FORMATION_EFFECT){
+    } else if (war.getSystemAction() == war.SET_FORMATION_EFFECT) {
         scriptGrantFormationBuff(war.getNextActionOutcome(war.getActorID()), war.getActor());
     }
 
 }
 
-void ScriptedAnimation::onThrowCoin(Entity* e){
+void ScriptedAnimation::onThrowCoin(Entity* e) {
     //scriptThrowCoin();
     notify(SCENE_STARTED, e);
 }
 
-void ScriptedAnimation::onPlayAction(Entity* e){
+void ScriptedAnimation::onPlayAction(Entity* e) {
     CPlayer::ID idPlayer;
-    if (!e){
+    if (!e) {
         idPlayer = 0;
-    }else{
+    } else {
         idPlayer = e->get<CPlayer>()->id;
     }
-    if (war.getNextActionOutcome(idPlayer).action < 100){
+    if (war.getNextActionOutcome(idPlayer).action < 100) {
         //scriptPreAttackSpeech(e);
     }
-    if (war.getNextActionOutcome(idPlayer).action < 100){
+    if (war.getNextActionOutcome(idPlayer).action < 100) {
         //scriptGenericUnitAttack(war.getNextActionOutcome(idPlayer), e);
     }
 
-    switch(war.getNextActionOutcome(idPlayer).action){
+    switch(war.getNextActionOutcome(idPlayer).action) {
 
-        case 0: scriptFlamingArrows(war.getNextActionOutcome(idPlayer), e); break;
-        case 1: scriptThrowBomb(war.getNextActionOutcome(idPlayer), e); break;
-        case 2: scriptThrowScimitar(war.getNextActionOutcome(idPlayer), e); break;
-        case 3: scriptMetheore(war.getNextActionOutcome(idPlayer), e); break;
-        case 4: scriptEarthquake(war.getNextActionOutcome(idPlayer), e); break;
-        case 5: scriptSonic(war.getNextActionOutcome(idPlayer), e); break;
-        case 6: scriptStalactite(war.getNextActionOutcome(idPlayer), e); break;
-        case 7: scriptStrongWoman(war.getNextActionOutcome(idPlayer), e); break;
-        case 8: scriptBubbles(war.getNextActionOutcome(idPlayer), e); break;
-        case 9: scriptSamurai(war.getNextActionOutcome(idPlayer), e); break;
-        case 10: scriptMakeItRain(war.getNextActionOutcome(idPlayer), e); break;
-        case 11: scriptIceDragons(war.getNextActionOutcome(idPlayer), e); break;
-        case 12: scriptLongbow(war.getNextActionOutcome(idPlayer), e); break;
-        case 13: scriptTornado(war.getNextActionOutcome(idPlayer), e); break;
-        case 14: scriptNinja(war.getNextActionOutcome(idPlayer), e); break;
-        case 15: scriptTelekinesis(war.getNextActionOutcome(idPlayer), e); break;
-        case 16: scriptGenericUnitAttack(war.getNextActionOutcome(idPlayer), e); break;
-        /*
-        case 1: scriptThrowBomb(e); break;
-        case 2: scriptThrowScimitar(e); break;
-        case 3: scriptMetheore(e); break;
-        case 4: scriptEarthquake(e); break;
-        case 5: scriptThrowRock(e); break;
-        case 6: scriptStalactite(e); break;
-        case 7: scriptRollingStones(e); break;
-        case 8: scriptThrowDart(e); break;
-        case 9: scriptSamurai(e); break;
-        case 10: scriptMakeItRain(e); break;
-        case 11: scriptDaggerRain(e); break;
-        case 12: scriptLongbow(e); break;
-        case 13: scriptTornado(e); break;
-        case 14: scriptNinja(e); break;
-        case 15: scriptThrowSpear(e); break;
-        case 16: scriptMetheore(e); break;
-        */
-        case 200: scriptEffectAction(e); break;
-        case 201: scriptFocusFire(e); break;
-        case 202: scriptIntimidate(war.getNextActionOutcome(idPlayer), e); break;
-        case 203: scriptResurect(war.getNextActionOutcome(idPlayer), e); break;
-        case 204: scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 205: scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 206: scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 207: scriptDebuffFire(war.getNextActionOutcome(idPlayer), e); break;
-        case 208: scriptDebuffWater(war.getNextActionOutcome(idPlayer), e); break;
-        case 209: scriptDebuffEarth(war.getNextActionOutcome(idPlayer), e); break;
-        case 212: scriptChangeFormation(war.getNextActionOutcome(idPlayer), e); break;
-        case 213: scriptTimeDilatation(war.getNextActionOutcome(idPlayer), e); break;
-        case 214: scriptHeroAttack(e); break;
-        case 215: scriptHeroAttack(e); break;
-        case 216: scriptPurify(war.getNextActionOutcome(idPlayer), e); break;
-        case 217: scriptConversion(war.getNextActionOutcome(idPlayer), e); break;
-        case 218: scriptSummon(war.getNextActionOutcome(idPlayer), e); break;
-        case 220: scriptSwap(war.getNextActionOutcome(idPlayer), e); break;
-        case 219: scriptTrueForm(war.getNextActionOutcome(idPlayer), e); break;
-        case 221: scriptSomniferous(war.getNextActionOutcome(idPlayer), e); break;
-        case 222: scriptCurse(war.getNextActionOutcome(idPlayer), e); break;
-        case 223: scriptHex(war.getNextActionOutcome(idPlayer), e); break;
-        case 227: scriptTarot(war.getNextActionOutcome(idPlayer), e); break;
-        case 228: scriptTeleport(war.getNextActionOutcome(idPlayer), e); break;
-        case 230: scriptConfusion(war.getNextActionOutcome(idPlayer), e); break;
-        case 231: scriptHelp(war.getNextActionOutcome(idPlayer), e); break;
-        case 232: scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e); break;
-        case 233: scriptDebuffAir(war.getNextActionOutcome(idPlayer), e); break;
-        case 235: scriptSleep(war.getNextActionOutcome(idPlayer), e); break;
-        case 237: scriptHeroAttack(e); break;
-        case 239: scriptSlavesCall(war.getNextActionOutcome(idPlayer), e); break;
-        case 241: scriptStampede(war.getNextActionOutcome(idPlayer), e); break;
-        case 242: scriptBecomeHuman(war.getNextActionOutcome(idPlayer), e); break;
+    case 0:
+        scriptFlamingArrows(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 1:
+        scriptThrowBomb(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 2:
+        scriptThrowScimitar(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 3:
+        scriptMetheore(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 4:
+        scriptEarthquake(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 5:
+        scriptSonic(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 6:
+        scriptStalactite(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 7:
+        scriptStrongWoman(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 8:
+        scriptBubbles(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 9:
+        scriptSamurai(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 10:
+        scriptMakeItRain(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 11:
+        scriptIceDragons(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 12:
+        scriptLongbow(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 13:
+        scriptTornado(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 14:
+        scriptNinja(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 15:
+        scriptTelekinesis(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 16:
+        scriptGenericUnitAttack(war.getNextActionOutcome(idPlayer), e);
+        break;
+    /*
+    case 1: scriptThrowBomb(e); break;
+    case 2: scriptThrowScimitar(e); break;
+    case 3: scriptMetheore(e); break;
+    case 4: scriptEarthquake(e); break;
+    case 5: scriptThrowRock(e); break;
+    case 6: scriptStalactite(e); break;
+    case 7: scriptRollingStones(e); break;
+    case 8: scriptThrowDart(e); break;
+    case 9: scriptSamurai(e); break;
+    case 10: scriptMakeItRain(e); break;
+    case 11: scriptDaggerRain(e); break;
+    case 12: scriptLongbow(e); break;
+    case 13: scriptTornado(e); break;
+    case 14: scriptNinja(e); break;
+    case 15: scriptThrowSpear(e); break;
+    case 16: scriptMetheore(e); break;
+    */
+    case 200:
+        scriptEffectAction(e);
+        break;
+    case 201:
+        scriptFocusFire(e);
+        break;
+    case 202:
+        scriptIntimidate(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 203:
+        scriptResurect(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 204:
+        scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 205:
+        scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 206:
+        scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 207:
+        scriptDebuffFire(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 208:
+        scriptDebuffWater(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 209:
+        scriptDebuffEarth(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 212:
+        scriptChangeFormation(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 213:
+        scriptTimeDilatation(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 214:
+        scriptHeroAttack(e);
+        break;
+    case 215:
+        scriptHeroAttack(e);
+        break;
+    case 216:
+        scriptPurify(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 217:
+        scriptConversion(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 218:
+        scriptSummon(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 220:
+        scriptSwap(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 219:
+        scriptTrueForm(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 221:
+        scriptSomniferous(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 222:
+        scriptCurse(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 223:
+        scriptHex(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 227:
+        scriptTarot(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 228:
+        scriptTeleport(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 230:
+        scriptConfusion(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 231:
+        scriptHelp(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 232:
+        scriptBuffDebuff(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 233:
+        scriptDebuffAir(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 235:
+        scriptSleep(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 237:
+        scriptHeroAttack(e);
+        break;
+    case 239:
+        scriptSlavesCall(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 241:
+        scriptStampede(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 242:
+        scriptBecomeHuman(war.getNextActionOutcome(idPlayer), e);
+        break;
 
 //        case 300: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
 //        case 301: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
 //        case 302: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
 //        case 303: scriptGrantFormationBuff(war.getNextActionOutcome(idPlayer), e); break;
 
-        case 400: scriptArmyVsArmy(war.getNextActionOutcome(idPlayer), e); break;
-        case 401: scriptManVsMan(war.getNextActionOutcome(idPlayer), e); break;
-        case 402: scriptEnslave(war.getNextActionOutcome(idPlayer), e); break;
-        case 403: scriptMercy(war.getNextActionOutcome(idPlayer), e); break;
+    case 400:
+        scriptArmyVsArmy(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 401:
+        scriptManVsMan(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 402:
+        scriptEnslave(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 403:
+        scriptMercy(war.getNextActionOutcome(idPlayer), e);
+        break;
 
-        case 500: scriptPresentArmy(e); break;
-        case 501: scriptPresentCaptain(e); break;
-        case 502: scriptAdvanceArmy(e); break;
-        case 503: scriptReturnArmy(e); break;
-        case 504: scriptRemoveDead(e); break;
-        case 512: scriptThrowCoin(war.getNextActionOutcome(idPlayer), e); break;
-        case 514: scriptBattleCleanup(); break;
-        case 515: scriptVictoryAnimation(0); break;
-        default: break;
+    case 500:
+        scriptPresentArmy(e);
+        break;
+    case 501:
+        scriptPresentCaptain(e);
+        break;
+    case 502:
+        scriptAdvanceArmy(e);
+        break;
+    case 503:
+        scriptReturnArmy(e);
+        break;
+    case 504:
+        scriptRemoveDead(e);
+        break;
+    case 512:
+        scriptThrowCoin(war.getNextActionOutcome(idPlayer), e);
+        break;
+    case 514:
+        scriptBattleCleanup();
+        break;
+    case 515:
+        scriptVictoryAnimation(0);
+        break;
+    default:
+        break;
     }
     //war.getNextActionOutcome(idPlayer).animDuration = getActingDuration();
-/*
-    if (e->get<CActionOutcome>()->action < 100){
-        e->add(new CHighlightTrigger(CUnitHighlight2::ACTING, 0));
-        notify(HIGHLIGHT_UNITS, e);
-        e->add(new CTimer(e->get<CActionOutcome>()->animDuration, HIGHLIGHT_UNITS_OFF));
-    }
-*/
+    /*
+        if (e->get<CActionOutcome>()->action < 100){
+            e->add(new CHighlightTrigger(CUnitHighlight2::ACTING, 0));
+            notify(HIGHLIGHT_UNITS, e);
+            e->add(new CTimer(e->get<CActionOutcome>()->animDuration, HIGHLIGHT_UNITS_OFF));
+        }
+    */
     notify(SCENE_STARTED, e);
 }
 
-void ScriptedAnimation::onStartAnimation(Entity* e){
-    if (e->get<CActionOutcome>()->action < 100){
+void ScriptedAnimation::onStartAnimation(Entity* e) {
+    if (e->get<CActionOutcome>()->action < 100) {
         scriptPreAttackSpeech(e);
     }
-    switch(e->get<CActionOutcome>()->action){
-        case 0: scriptFlamingArrows(e); break;
-        case 1: scriptThrowBomb(e); break;
-        case 2: scriptThrowScimitar(e); break;
-        case 3: scriptMetheore(e); break;
-        case 4: scriptEarthquake(e); break;
-        case 5: scriptThrowRock(e); break;
-        case 6: scriptStalactite(e); break;
-        case 7: scriptRollingStones(e); break;
-        case 8: scriptThrowDart(e); break;
-        case 9: scriptSamurai(e); break;
-        case 10: scriptMakeItRain(e); break;
-        case 11: scriptDaggerRain(e); break;
-        case 12: scriptLongbow(e); break;
-        case 13: scriptTornado(e); break;
-        case 14: scriptNinja(e); break;
-        case 15: scriptThrowSpear(e); break;
-        case 16: scriptMetheore(e); break;
+    switch(e->get<CActionOutcome>()->action) {
+    case 0:
+        scriptFlamingArrows(e);
+        break;
+    case 1:
+        scriptThrowBomb(e);
+        break;
+    case 2:
+        scriptThrowScimitar(e);
+        break;
+    case 3:
+        scriptMetheore(e);
+        break;
+    case 4:
+        scriptEarthquake(e);
+        break;
+    case 5:
+        scriptThrowRock(e);
+        break;
+    case 6:
+        scriptStalactite(e);
+        break;
+    case 7:
+        scriptRollingStones(e);
+        break;
+    case 8:
+        scriptThrowDart(e);
+        break;
+    case 9:
+        scriptSamurai(e);
+        break;
+    case 10:
+        scriptMakeItRain(e);
+        break;
+    case 11:
+        scriptDaggerRain(e);
+        break;
+    case 12:
+        scriptLongbow(e);
+        break;
+    case 13:
+        scriptTornado(e);
+        break;
+    case 14:
+        scriptNinja(e);
+        break;
+    case 15:
+        scriptThrowSpear(e);
+        break;
+    case 16:
+        scriptMetheore(e);
+        break;
 
-        case 200: scriptEffectAction(e); break;
-        case 201: scriptFocusFire(e); break;
-        case 202: scriptIntimidate(e); break;
-        case 203: scriptResurrect(e); break;
-        case 204: scriptBuffFire(e); break;
-        case 205: scriptBuffWater(e); break;
-        case 206: scriptBuffEarth(e); break;
-        case 207: scriptDebuffFire(e); break;
-        case 208: scriptDebuffWater(e); break;
-        case 209: scriptDebuffEarth(e); break;
-        case 212: scriptChangeFormation(e); break;
-        case 213: scriptTimeDilatation(e); break;
-        case 214: scriptHeroAttack(e); break;
-        case 215: scriptHeroAttack(e); break;
-        case 217: scriptConvert(e); break;
-        case 218: scriptSummon(e); break;
-        case 220: scriptSwapHeroes(e); break;
-        case 227: scriptTarot(e); break;
-        case 228: scriptTeleport(e); break;
-        case 231: scriptCallHelp(e); break;
-        case 232: scriptBuffAir(e); break;
-        case 233: scriptDebuffAir(e); break;
-        case 237: scriptHeroAttack(e); break;
-        case 239: scriptCallSlaves(e); break;
-        case 241: scriptStampede(e); break;
-        //case 242: scriptBecomeHuman(e); break;
+    case 200:
+        scriptEffectAction(e);
+        break;
+    case 201:
+        scriptFocusFire(e);
+        break;
+    case 202:
+        scriptIntimidate(e);
+        break;
+    case 203:
+        scriptResurrect(e);
+        break;
+    case 204:
+        scriptBuffFire(e);
+        break;
+    case 205:
+        scriptBuffWater(e);
+        break;
+    case 206:
+        scriptBuffEarth(e);
+        break;
+    case 207:
+        scriptDebuffFire(e);
+        break;
+    case 208:
+        scriptDebuffWater(e);
+        break;
+    case 209:
+        scriptDebuffEarth(e);
+        break;
+    case 212:
+        scriptChangeFormation(e);
+        break;
+    case 213:
+        scriptTimeDilatation(e);
+        break;
+    case 214:
+        scriptHeroAttack(e);
+        break;
+    case 215:
+        scriptHeroAttack(e);
+        break;
+    case 217:
+        scriptConvert(e);
+        break;
+    case 218:
+        scriptSummon(e);
+        break;
+    case 220:
+        scriptSwapHeroes(e);
+        break;
+    case 227:
+        scriptTarot(e);
+        break;
+    case 228:
+        scriptTeleport(e);
+        break;
+    case 231:
+        scriptCallHelp(e);
+        break;
+    case 232:
+        scriptBuffAir(e);
+        break;
+    case 233:
+        scriptDebuffAir(e);
+        break;
+    case 237:
+        scriptHeroAttack(e);
+        break;
+    case 239:
+        scriptCallSlaves(e);
+        break;
+    case 241:
+        scriptStampede(e);
+        break;
+    //case 242: scriptBecomeHuman(e); break;
 
-        case 400: scriptMeleeBattle(e); break;
-        case 401: scriptManVsMan(e); break;
-        case 402: scriptEnslave(e); break;
+    case 400:
+        scriptMeleeBattle(e);
+        break;
+    case 401:
+        scriptManVsMan(e);
+        break;
+    case 402:
+        scriptEnslave(e);
+        break;
 
-        case 500: scriptPresentArmy(e); break;
-        case 501: scriptPresentCaptain(e); break;
-        case 502: scriptAdvanceArmy(e); break;
-        case 503: scriptReturnArmy(e); break;
-        case 504: scriptRemoveDead(e); break;
-        //case 505: scriptThrowCoin(); break;
-        default: break;
+    case 500:
+        scriptPresentArmy(e);
+        break;
+    case 501:
+        scriptPresentCaptain(e);
+        break;
+    case 502:
+        scriptAdvanceArmy(e);
+        break;
+    case 503:
+        scriptReturnArmy(e);
+        break;
+    case 504:
+        scriptRemoveDead(e);
+        break;
+    //case 505: scriptThrowCoin(); break;
+    default:
+        break;
     }
     e->get<CActionOutcome>()->animDuration = getActingDuration();
 
-    if (e->get<CActionOutcome>()->action < 100){
+    if (e->get<CActionOutcome>()->action < 100) {
         e->add(new CHighlightTrigger(CUnitHighlight2::ACTING, 0));
         notify(HIGHLIGHT_UNITS, e);
         e->add(new CTimer(e->get<CActionOutcome>()->animDuration, HIGHLIGHT_UNITS_OFF));
@@ -454,9 +717,9 @@ void ScriptedAnimation::onStartAnimation(Entity* e){
     notify(SCENE_STARTED, e);
 }
 
-void ScriptedAnimation::scriptBuffDebuff(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptBuffDebuff(ActionOutcome& outcome, Entity* e) {
     Entity* eTarget = outcome.iValue > 0 ? e:e->get<CPlayer>()->enemy;
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eTarget, i);
         double yOff = -10;
         Entity* eArrow = eManager->createEntity();
@@ -477,7 +740,7 @@ void ScriptedAnimation::scriptBuffDebuff(ActionOutcome& outcome, Entity* e){
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Buff!", 3));
 }
 
-void ScriptedAnimation::scriptDebuffEarth(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptDebuffEarth(ActionOutcome& outcome, Entity* e) {
     Entity* eObj;
     int hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
     //int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:+1;
@@ -513,7 +776,7 @@ void ScriptedAnimation::scriptDebuffEarth(ActionOutcome& outcome, Entity* e){
 
     tChopperArrive = tAux;
 
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eTarget, i);
         double tStart = randomDouble(tChopperArrive, tChopperArrive + 1.0);
         Entity* eGem = eManager->createEntity();
@@ -536,7 +799,7 @@ void ScriptedAnimation::scriptDebuffEarth(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
     Entity* eObj;
     int hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
     //int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:+1;
@@ -590,7 +853,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e){
     eObj->get<CActor>()->addNode(new AMove(0.0, middlePoint.x, yStart, handSpeed));
     eObj->get<CActor>()->addNode(new ADestroy(tAux));
 
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eTarget, i);
         double tStart = randomDouble(tHandReady, tHandReady + 1.0);
         Entity* eGem = eManager->createEntity();
@@ -613,7 +876,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptConfusion(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptConfusion(ActionOutcome& outcome, Entity* e) {
     Entity* eCap = e->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Get confused!", 3));
 
@@ -621,7 +884,7 @@ void ScriptedAnimation::scriptConfusion(ActionOutcome& outcome, Entity* e){
     eEnemyHero->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, (int)outcome.action));
 }
 
-void ScriptedAnimation::scriptSummon(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSummon(ActionOutcome& outcome, Entity* e) {
     int hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:+1;
 
@@ -630,7 +893,7 @@ void ScriptedAnimation::scriptSummon(ActionOutcome& outcome, Entity* e){
 
     ///CREATE-SUMMONS
     EntityList summons;
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < n; i++) {
         Entity* eUnit = eManager->createEntity();
         int subUnit = randomInt(1, 2);
         CUnit u = CUnit::Map[id];
@@ -661,19 +924,19 @@ void ScriptedAnimation::scriptSummon(ActionOutcome& outcome, Entity* e){
 
     ///ANIM
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
-        if (contains(summons, eUnit)){
+        if (contains(summons, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new ATeleport(1.0, x0 + sign*p.x*ux, y0 + p.y*uy));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aIdle));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                eUnit->get<CUnit>()->aIdle));
+                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                        eUnit->get<CUnit>()->aIdle));
         }
         addActor(eUnit);
     }
@@ -683,7 +946,7 @@ void ScriptedAnimation::scriptSummon(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     int sign = eEnemy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     bool hFlip = eEnemy->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
@@ -710,15 +973,15 @@ void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e)
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[eEnemy->get<CArmy>()->formation];
-    for(EntityListIt i = eEnemy->get<CArmy>()->allUnits.begin(); i != eEnemy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eEnemy->get<CArmy>()->allUnits.begin(); i != eEnemy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-            eUnit->get<CUnit>()->aIdle));
+                    getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                    eUnit->get<CUnit>()->aIdle));
         addActor(eUnit);
     }
 
@@ -735,7 +998,7 @@ void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e)
 
 }
 
-void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
     bool hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     Entity* eObj;
@@ -781,7 +1044,7 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
 
     addActor(eObj);
 
-    if (eCapOld->get<CCaptain>()->id != 14 && outcome.bValue){
+    if (eCapOld->get<CCaptain>()->id != 14 && outcome.bValue) {
         eEnemy->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
         //eManager->removeEntity(eCapOld);
         map<CCaptain::ID, Entity*>::iterator it;
@@ -816,7 +1079,7 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
 
         addActor(eCapOld);
         addActor(eCapNew);
-    }else{
+    } else {
 
     }
 
@@ -841,7 +1104,7 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
     Entity* eCap = e->get<CArmy>()->captain;
 
     ///CARDS
@@ -853,10 +1116,16 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
     double x0 = eCap->get<CPosition>()->x - (spacing);
     double y0 = eCap->get<CPosition>()->y + yOff;
     string spriteCard;
-    switch(outcome.iValue){
-        case 1: spriteCard = "tarot-luck"; break;
-        case 2: spriteCard = "tarot-bad-luck"; break;
-        case 3: spriteCard = "tarot-neutral"; break;
+    switch(outcome.iValue) {
+    case 1:
+        spriteCard = "tarot-luck";
+        break;
+    case 2:
+        spriteCard = "tarot-bad-luck";
+        break;
+    case 3:
+        spriteCard = "tarot-neutral";
+        break;
         break;
     }
 
@@ -864,7 +1133,7 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
     int index = randomInt(0, 2);
     double x = x0;
     double y = y0;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 3; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x, y));
         eObj->add(new CDraw(CDraw::GUI1, double(0.0)));
@@ -875,10 +1144,10 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
 
         eObj->get<CActor>()->timeline.push_back(new AFade(0.0, 255, 255));
 
-        if (index == i){
+        if (index == i) {
             eObj->get<CActor>()->timeline.push_back(new ASpriteAnimation(2, spriteCard + "-spin.png"));
             eObj->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(spriteCard + "-spin.png").duration, spriteCard + ".png"));
-        }else{
+        } else {
             eObj->get<CActor>()->timeline.push_back(new ASpriteAnimation(2, "tarot-card-back.png"));
             eObj->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(spriteCard + "-spin.png").duration, "tarot-card-back.png"));
         }
@@ -895,7 +1164,7 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
     double when = tEndCardAnimation;
     Entity* eArmy = e;
     Entity* eEnemy = e->get<CPlayer>()->enemy;
-    for (auto i : outcome.idActors){
+    for (auto i : outcome.idActors) {
         Entity* eUnit = getUnitByID(eArmy, i);
 
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eUnit->get<CUnit>()->aDeath));
@@ -906,7 +1175,7 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
 
         addActor(eUnit);
     }
-    for (auto i : outcome.idTargets){
+    for (auto i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eEnemy, i);
 
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eUnit->get<CUnit>()->aDeath));
@@ -918,19 +1187,19 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e){
         addActor(eUnit);
     }
 
-        //hero
+    //hero
     Entity* eHero = e->get<CArmy>()->captain;
     eHero->get<CActor>()->addNode(new ASpriteAnimation(0.0, "nagendra-tarot.png"));
     eHero->get<CActor>()->addNode(new ASpriteAnimation(3.5, eHero->get<CCaptain>()->aIdle));
 }
 
-void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e) {
     Entity* eHero = e->get<CArmy>()->captain;
 
     /// ARMY EFFECTS
     map<CAction::ID, CAction>::iterator it;
-    for(it = e->get<CArmy>()->armyEffects.begin(); it != e->get<CArmy>()->armyEffects.end(); it++){
-        if (it->second.effectType == CAction::DEBUFF){
+    for(it = e->get<CArmy>()->armyEffects.begin(); it != e->get<CArmy>()->armyEffects.end(); it++) {
+        if (it->second.effectType == CAction::DEBUFF) {
             eHero->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::REMOVE_EFFECT, it->first));
         }
     }
@@ -978,20 +1247,20 @@ void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e){
     addActor(eObj);
 
     /// UNIT EFFECTS
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
-        for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++){
-            if (it->second.effectType == CAction::DEBUFF){
+        for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++) {
+            if (it->second.effectType == CAction::DEBUFF) {
                 eUnit->get<CActor>()->timeline.push_back(new AVariable(tShot + durShotTravel, AVariable::REMOVE_EFFECT, it->first));
             }
         }
     }
 }
 
-void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
     EntityList eTargets;
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(e, i);
         eTargets.push_back(eUnit);
     }
@@ -1005,11 +1274,11 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(Entity* eUnit : e->get<CArmy>()->allUnits){
+    for(Entity* eUnit : e->get<CArmy>()->allUnits) {
         if (eUnit->get<CUnit>()->dead && !contains(eTargets, eUnit)) continue;
         sf::Vector2i p = popFront(P);
 
-        if (contains(eTargets, eUnit)){
+        if (contains(eTargets, eUnit)) {
             ///HEART
             double xHeart = eUnit->get<CPosition>()->x;
             double yHeart = randomDouble(-250, -20);
@@ -1030,15 +1299,15 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e){
             eUnit->get<CActor>()->addNode(new AVariable(0.0, AVariable::DEAD, false));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                eUnit->get<CUnit>()->aIdle));
+                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                        eUnit->get<CUnit>()->aIdle));
 
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(2.0, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                eUnit->get<CUnit>()->aIdle));
+                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                        eUnit->get<CUnit>()->aIdle));
         }
         addActor(eUnit);
     }
@@ -1049,7 +1318,7 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     Entity* eEnemyHero = eEnemy->get<CArmy>()->captain;
     eEnemyHero->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, outcome.action));
@@ -1065,7 +1334,7 @@ void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e){
     notify(PLAY_SOUND, eSound);
 }
 
-void ScriptedAnimation::scriptSomniferous(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSomniferous(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     Entity* eEnemyHero = eEnemy->get<CArmy>()->captain;
 
@@ -1076,13 +1345,13 @@ void ScriptedAnimation::scriptSomniferous(ActionOutcome& outcome, Entity* e){
     addActor(eHero);
 }
 
-void ScriptedAnimation::scriptSleep(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSleep(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     EntityList targets;
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         targets.push_back(getUnitByID(eEnemy, i));
     }
-    for(auto& eUnit : targets){
+    for(auto& eUnit : targets) {
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, (int)outcome.action));
     }
 
@@ -1091,7 +1360,7 @@ void ScriptedAnimation::scriptSleep(ActionOutcome& outcome, Entity* e){
     addActor(eHero);
 }
 
-void ScriptedAnimation::scriptTimeDilatation(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptTimeDilatation(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     eEnemy->get<CPlayer>()->turnDuration -= outcome.iValue;
 
@@ -1100,7 +1369,7 @@ void ScriptedAnimation::scriptTimeDilatation(ActionOutcome& outcome, Entity* e){
     addActor(eHero);
 }
 
-void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e) {
     int hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:+1;
 
@@ -1109,7 +1378,7 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e){
 
     ///CREATE-SUMMONS
     EntityList summons;
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < n; i++) {
         Entity* eUnit = eManager->createEntity();
         int subUnit = randomInt(1, 2);
         CUnit u = CUnit::Map[id];
@@ -1140,21 +1409,21 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e){
 
     ///ANIM
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
-        if (contains(summons, eUnit)){
+        if (contains(summons, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new AMove(1.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             double durTravel = getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200);
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(durTravel, eUnit->get<CUnit>()->aIdle));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                eUnit->get<CUnit>()->aIdle));
+                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                        eUnit->get<CUnit>()->aIdle));
         }
         addActor(eUnit);
     }
@@ -1164,9 +1433,9 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptConversion(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptConversion(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eEnemy, i);
         eUnit->get<COwner>()->e = e;
         e->get<CArmy>()->allUnits.push_back(eUnit);
@@ -1183,15 +1452,15 @@ void ScriptedAnimation::scriptConversion(ActionOutcome& outcome, Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-            eUnit->get<CUnit>()->aIdle));
+                    getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                    eUnit->get<CUnit>()->aIdle));
         addActor(eUnit);
     }
 
@@ -1202,8 +1471,8 @@ void ScriptedAnimation::scriptConversion(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptImmortality(ActionOutcome& outcome, Entity* e){
-    for(auto& i : outcome.idTargets){
+void ScriptedAnimation::scriptImmortality(ActionOutcome& outcome, Entity* e) {
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(e, i);
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, (int)outcome.action));
     }
@@ -1213,17 +1482,17 @@ void ScriptedAnimation::scriptImmortality(ActionOutcome& outcome, Entity* e){
     addActor(eHero);
 }
 
-void ScriptedAnimation::scriptDoom(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptDoom(ActionOutcome& outcome, Entity* e) {
 
 }
 
-void ScriptedAnimation::scriptTeleport(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptTeleport(ActionOutcome& outcome, Entity* e) {
     Entity* eScenario = eManager->createEntity();
     eScenario->add(new CScenario(outcome.sValue));
     notify(LOAD_SCENARIO, eScenario);
 }
 
-void ScriptedAnimation::scriptSwap(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSwap(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     Entity* eCap1 = e->get<CArmy>()->captain;
@@ -1271,7 +1540,7 @@ void ScriptedAnimation::scriptSwap(ActionOutcome& outcome, Entity* e){
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     bool hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
@@ -1286,7 +1555,7 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e){
     //double x0 = e->get<CArmy>()->x;
     //double y0 = cyWindow - uy*12/2;
 
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         double xUnit = eUnit->get<CPosition>()->x;
@@ -1305,7 +1574,7 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e){
         eBuffalo->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow - sign*(wWindow/2 + 100), yUnit, speed));
         eBuffalo->get<CActor>()->timeline.push_back(new ADestroy(getTravelTime(xBuffalo, yBuffalo, cxWindow - sign*(wWindow/2 + 100), yUnit, speed)));
 
-        if (contains(targets, eUnit)){
+        if (contains(targets, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new AMove(getTravelTime(xBuffalo, yBuffalo, xUnit, yUnit, speed), cxWindow - sign*wWindow/2 - sign*100, yUnit, speed));
             double t = getTravelTime(xUnit, yUnit, cxWindow - sign*wWindow/2 - sign*100, yUnit, speed);
             eUnit->get<CActor>()->timeline.push_back(new ADestroy(t));
@@ -1338,12 +1607,12 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e){
     botSafeZone.left = e->get<CArmy>()->x + sign*botSafeZone.width;
     botSafeZone.top = cyWindow + (uyFormation*hFormation)/2 - 32/2 - botSafeZone.height;
 
-    for (Entity* eUnit : e->get<CArmy>()->allUnits){
+    for (Entity* eUnit : e->get<CArmy>()->allUnits) {
         if (eUnit->get<CUnit>()->dead) continue;
         sf::FloatRect safeZone;
-        if (abs(eUnit->get<CPosition>()->y - (topSafeZone.top + topSafeZone.height)) < abs(eUnit->get<CPosition>()->y - botSafeZone.top)){
+        if (abs(eUnit->get<CPosition>()->y - (topSafeZone.top + topSafeZone.height)) < abs(eUnit->get<CPosition>()->y - botSafeZone.top)) {
             safeZone = topSafeZone;
-        }else{
+        } else {
             safeZone = botSafeZone;
         }
         double xTarget = eUnit->get<CPosition>()->x;
@@ -1362,7 +1631,7 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptBecomeHuman(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptBecomeHuman(ActionOutcome& outcome, Entity* e) {
     Entity* eCapOld = e->get<CArmy>()->captain;
     Entity* eCapNew = eCapOld->getObservedEntity("OriginalHero");
 
@@ -1405,7 +1674,7 @@ void ScriptedAnimation::scriptBecomeHuman(ActionOutcome& outcome, Entity* e){
     addActor(eCapNew);
 }
 
-void ScriptedAnimation::scriptCroak(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptCroak(ActionOutcome& outcome, Entity* e) {
     Entity* eCapOld = e->get<CArmy>()->captain;
     Entity* eCapNew = eCapOld->getObservedEntity("OriginalHero");
 
@@ -1446,7 +1715,7 @@ void ScriptedAnimation::scriptCroak(ActionOutcome& outcome, Entity* e){
     addActor(eCapNew);
 }
 
-void ScriptedAnimation::scriptHelp(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptHelp(ActionOutcome& outcome, Entity* e) {
     Entity* eCap = e->get<CArmy>()->captain;
     Entity* eHelp = e->get<CArmy>()->captains[outcome.hero];
     CAction::ID actID = outcome.iValue;
@@ -1484,9 +1753,9 @@ void ScriptedAnimation::scriptHelp(ActionOutcome& outcome, Entity* e){
 }
 
 
-void ScriptedAnimation::scriptGenericUnitAttack(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptGenericUnitAttack(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
-    for(auto& i : outcome.unitActionOutcomes){
+    for(auto& i : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, i.idCauser);
         Entity* eDef = getUnitByID(eEnemy, i.idTarget);
 
@@ -1499,11 +1768,11 @@ void ScriptedAnimation::scriptGenericUnitAttack(ActionOutcome& outcome, Entity* 
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (i.id == i.DIED){
+        if (i.id == i.DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -1512,8 +1781,8 @@ void ScriptedAnimation::scriptGenericUnitAttack(ActionOutcome& outcome, Entity* 
         addActor(eAtk);
     }
 }
-void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double x1, double y1, AShoot::Object obj){
-    if (obj == AShoot::ARROW){
+void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double x1, double y1, AShoot::Object obj) {
+    if (obj == AShoot::ARROW) {
         double gravity = 60;
         double speed = 300;
 
@@ -1547,7 +1816,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
         eEffect->attachEmployer(eProj);
         eEffect->add(new CPosition(0,0));
         eEffect->get<CParticleEmmiter>()->on = true;
-    }else if (obj == AShoot::ARROW_2){
+    } else if (obj == AShoot::ARROW_2) {
         double gravity = 80;
         double speed = 300;
 
@@ -1569,7 +1838,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
 
         eProj->add(new CTimer(getTravelTime(x0, 0, x1, 0, eProj->get<CVelocity>()->x), REMOVE_ENTITY));
 
-    }else if (obj == AShoot::BOMB){
+    } else if (obj == AShoot::BOMB) {
         double gravity = 60;
         double speed = 300;
 
@@ -1618,7 +1887,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
         eEffect->add(new CPosition(0,0));
         eEffect->get<CParticleEmmiter>()->on = true;
         */
-    }else if (obj == AShoot::SCIMITAR){
+    } else if (obj == AShoot::SCIMITAR) {
         double speed = 400;
         Entity* eArmy = e->get<COwner>()->e;
         int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -1638,7 +1907,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
 
         //notify(PLAY_SOUND, eProj);
 
-    }else if (obj == AShoot::ROCK){
+    } else if (obj == AShoot::ROCK) {
         double gravity = 60;
         double speed = 450;
 
@@ -1660,7 +1929,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
         eProj->get<CAcceleration>()->y = gravity;
 
         eProj->add(new CTimer(getTravelTime(x0, 0, x1, 0, eProj->get<CVelocity>()->x), REMOVE_ENTITY));
-    }else if (obj == AShoot::SPEAR){
+    } else if (obj == AShoot::SPEAR) {
         double gravity = 60;
         double speed = 450;
 
@@ -1680,7 +1949,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
         eProj->get<CAcceleration>()->y = gravity;
 
         eProj->add(new CTimer(getTravelTime(x0, 0, x1, 0, eProj->get<CVelocity>()->x), REMOVE_ENTITY));
-    }else if (obj == AShoot::DART){
+    } else if (obj == AShoot::DART) {
         double gravity = 60;
         double speed = 450;
 
@@ -1700,7 +1969,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
         eProj->get<CAcceleration>()->y = gravity;
 
         eProj->add(new CTimer(getTravelTime(x0, 0, x1, 0, eProj->get<CVelocity>()->x), REMOVE_ENTITY));
-    }else if (obj == AShoot::ERIDU_BLADE){
+    } else if (obj == AShoot::ERIDU_BLADE) {
         double gravity = 60;
         double speed = 300;
 
@@ -1727,18 +1996,18 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
 
 }
 
-void ScriptedAnimation::popFrontAnimationNode(Entity* e){
+void ScriptedAnimation::popFrontAnimationNode(Entity* e) {
     if (e->get<CActor>()->timeline.empty()) return;
     AnimationNode* a = e->get<CActor>()->timeline.front();
     if (a != nullptr) delete a;
     e->get<CActor>()->timeline.pop_front();
 }
 
-void ScriptedAnimation::onAddActor(Entity* e){
+void ScriptedAnimation::onAddActor(Entity* e) {
     addActor(e);
 }
 
-void ScriptedAnimation::addActor(Entity* e){
+void ScriptedAnimation::addActor(Entity* e) {
     e->get<CActor>()->acting = true;
     e->get<CActor>()->timer.restart();
     playingScene = true;
@@ -1747,11 +2016,11 @@ void ScriptedAnimation::addActor(Entity* e){
 
 }
 
-void ScriptedAnimation::clearScene(){
+void ScriptedAnimation::clearScene() {
     actors.clear();
 }
 
-void ScriptedAnimation::createFormations(){
+void ScriptedAnimation::createFormations() {
 
     int F1[23][15] = {
         0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
@@ -1774,86 +2043,86 @@ void ScriptedAnimation::createFormations(){
         0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
         8,  0, 18,  0, 28,  0, 38,	0, 48,  0,  0,  0,  0,  0,  0,
         0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
-       10,  0, 20,  0, 30,  0, 40,	0, 50,  0,  0,  0,  0,  0,  0,
+        10,  0, 20,  0, 30,  0, 40,	0, 50,  0,  0,  0,  0,  0,  0,
         0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
         0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0
     };
 
     int F2[23][15] = {
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 35,  0, 46,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0, 24,  0, 33,  0, 44,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0, 15,  0, 22,  0, 31,  0, 42,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  8,  0, 13,  0, 20,  0, 29,  0, 40,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  3,  0,  6,  0, 11,  0, 18,  0, 27,  0, 38,  0, 49,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  2,  0,  5,  0, 10,  0, 17,  0, 26,  0, 37,  0, 48,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  4,  0,  7,  0, 12,  0, 19,  0, 28,  0, 39,  0, 50,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  9,  0, 14,  0, 21,  0, 31,  0, 41,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0, 16,  0, 23,  0, 32,  0, 43,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0, 25,  0, 34,  0, 45,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 36,  0, 47,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 35,  0, 46,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0, 24,  0, 33,  0, 44,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0, 15,  0, 22,  0, 31,  0, 42,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  8,  0, 13,  0, 20,  0, 29,  0, 40,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  3,  0,  6,  0, 11,  0, 18,  0, 27,  0, 38,  0, 49,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        1,  0,  2,  0,  5,  0, 10,  0, 17,  0, 26,  0, 37,  0, 48,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  4,  0,  7,  0, 12,  0, 19,  0, 28,  0, 39,  0, 50,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  9,  0, 14,  0, 21,  0, 31,  0, 41,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0, 16,  0, 23,  0, 32,  0, 43,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0, 25,  0, 34,  0, 45,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 36,  0, 47,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
     };
 
     int F3[23][15] = {
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  32,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  44,  0,  0,  0,  46,  0,  0,  0,  0,  0,
-       0,  0,  0,  31,  0,  0,  0,  11, 0,  0,  0,  34,  0,  0,  0,
-       0,  0,  0,  0,  0,  24, 0,  0,  0,  25, 0,  0,  0,  0,  0,
-       0,  0,  42,  0,  0,  0,  0,  5,  0,  0,  0,  0,  48,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  28,  0,  0,  13, 0,  0,  0,  0,  0,  14, 0,  0,  36,  0,
-       0,  0,  0,  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,
-       40,  0,  17, 0,  0,  0,  0,  0,  0,  0,  0,  0,  18, 0,  38,
-       0,  0,  0,  0,  7,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,
-       27,  0,  21, 0,  0,  0,  1,  0,  2,  0,  0,  0,  22, 0,  50,
-       0,  0,  0,  0,  9,  0,  0,  0,  0,  0,  10, 0,  0,  0,  0,
-       41,  0,  19, 0,  0,  0,  0,  0,  0,  0,  0,  0,  20, 0,  39,
-       0,  0,  0,  0,  0,  0,  0,  4,  0,  0,  0,  0,  0,  0,  0,
-       0,  29,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  37,  0,
-       0,  0,  0,  0,  15, 0,  0,  0,  0,  0,  16, 0,  0,  0,  0,
-       0,  0,  43,  0,  0,  0,  0,  6,  0,  0,  0,  0,  49,  0,  0,
-       0,  0,  0,  0,  0,  23, 0,  0,  0,  26, 0,  0,  0,  0,  0,
-       0,  0,  0,  30,  0,  0,  0,  12, 0,  0,  0,  35,  0,  0,  0,
-       0,  0,  0,  0,  0,  45,  0,  0,  0,  47,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  33,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  32,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  44,  0,  0,  0,  46,  0,  0,  0,  0,  0,
+        0,  0,  0,  31,  0,  0,  0,  11, 0,  0,  0,  34,  0,  0,  0,
+        0,  0,  0,  0,  0,  24, 0,  0,  0,  25, 0,  0,  0,  0,  0,
+        0,  0,  42,  0,  0,  0,  0,  5,  0,  0,  0,  0,  48,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  28,  0,  0,  13, 0,  0,  0,  0,  0,  14, 0,  0,  36,  0,
+        0,  0,  0,  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,
+        40,  0,  17, 0,  0,  0,  0,  0,  0,  0,  0,  0,  18, 0,  38,
+        0,  0,  0,  0,  7,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,
+        27,  0,  21, 0,  0,  0,  1,  0,  2,  0,  0,  0,  22, 0,  50,
+        0,  0,  0,  0,  9,  0,  0,  0,  0,  0,  10, 0,  0,  0,  0,
+        41,  0,  19, 0,  0,  0,  0,  0,  0,  0,  0,  0,  20, 0,  39,
+        0,  0,  0,  0,  0,  0,  0,  4,  0,  0,  0,  0,  0,  0,  0,
+        0,  29,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  37,  0,
+        0,  0,  0,  0,  15, 0,  0,  0,  0,  0,  16, 0,  0,  0,  0,
+        0,  0,  43,  0,  0,  0,  0,  6,  0,  0,  0,  0,  49,  0,  0,
+        0,  0,  0,  0,  0,  23, 0,  0,  0,  26, 0,  0,  0,  0,  0,
+        0,  0,  0,  30,  0,  0,  0,  12, 0,  0,  0,  35,  0,  0,  0,
+        0,  0,  0,  0,  0,  45,  0,  0,  0,  47,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  33,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
     };
     int F4[23][15] = {
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,
-       0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,
-       0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,
-       0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,
-       1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,
-       0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,
-       1,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  1,
-       0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,
-       1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,
-       0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,
-       0,  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  1,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,
+        0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,
+        0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,
+        0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,
+        1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,
+        0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,
+        1,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  1,
+        0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,
+        1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,
+        0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,
+        0,  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  1,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
     };
     setFormation(CArmy::F1, F1);
     setFormation(CArmy::F2, F2);
@@ -1861,18 +2130,18 @@ void ScriptedAnimation::createFormations(){
     setFormation(CArmy::F4, F4);
 }
 
-bool comparePairIntVector(pair<int, sf::Vector2i>& P1, pair<int, sf::Vector2i>& P2){
+bool comparePairIntVector(pair<int, sf::Vector2i>& P1, pair<int, sf::Vector2i>& P2) {
     return P1.first < P2.first;
 }
 
-void ScriptedAnimation::setFormation(CArmy::Formation formation, int p[23][15]){
+void ScriptedAnimation::setFormation(CArmy::Formation formation, int p[23][15]) {
     list< pair<int, sf::Vector2i> > F;
 
     int l = 23;
     int c = 15;
-    for(int i = 0; i < l; i++){
-        for(int j = 0; j < c; j++){
-            if (p[i][j] != 0){
+    for(int i = 0; i < l; i++) {
+        for(int j = 0; j < c; j++) {
+            if (p[i][j] != 0) {
                 F.push_back(make_pair(p[i][j], sf::Vector2i(j, i)));
             }
         }
@@ -1881,12 +2150,12 @@ void ScriptedAnimation::setFormation(CArmy::Formation formation, int p[23][15]){
     F.sort(comparePairIntVector);
 
     positions[formation].clear();
-    for(list< pair<int, sf::Vector2i> >::iterator i = F.begin(); i != F.end(); i++){
+    for(list< pair<int, sf::Vector2i> >::iterator i = F.begin(); i != F.end(); i++) {
         positions[formation].push_back(i->second);
     }
 }
 
-double ScriptedAnimation::getAngleToHit(double ox, double oy, double tx, double ty, double& v, double gravity){
+double ScriptedAnimation::getAngleToHit(double ox, double oy, double tx, double ty, double& v, double gravity) {
     double x = (tx - ox);
     double y = -(ty - oy);
     double g = gravity;
@@ -1897,7 +2166,7 @@ double ScriptedAnimation::getAngleToHit(double ox, double oy, double tx, double 
     return angle*M_DEG;
 }
 
-double ScriptedAnimation::getAngleToHit2(double ox, double oy, double tx, double ty, double& v, double gravity){
+double ScriptedAnimation::getAngleToHit2(double ox, double oy, double tx, double ty, double& v, double gravity) {
     /*
     double x = (tx - ox);
     double y = -(ty - oy);
@@ -1909,14 +2178,14 @@ double ScriptedAnimation::getAngleToHit2(double ox, double oy, double tx, double
     return 0.f;
 }
 
-double ScriptedAnimation::getMinimumSpeedToHit(double ox, double oy, double tx, double ty, double gravity){
+double ScriptedAnimation::getMinimumSpeedToHit(double ox, double oy, double tx, double ty, double gravity) {
     double x = (tx - ox);
     double y = -(ty - oy);
     double g = gravity;
     return sqrt(g*y + g*sqrt(x*x + y*y));
 }
 
-void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e) {
     Entity* eWin = war.getPlayer(outcome.idWinner);
     Entity* eLos = war.getPlayer(outcome.idLoser);
     ///================
@@ -1937,22 +2206,22 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
     double tResolution = 4;
 
     EntityList casualties;
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         casualties.push_back(getUnitByID(eWin, i));
     }
 
     list<sf::Vector2i> P = positions[eWin->get<CArmy>()->formation];
-    for(EntityListIt i = eWin->get<CArmy>()->allUnits.begin(); i != eWin->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eWin->get<CArmy>()->allUnits.begin(); i != eWin->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            tResolution,
-            eUnit->get<CUnit>()->aIdle));
+                    tResolution,
+                    eUnit->get<CUnit>()->aIdle));
         eUnit->get<CActor>()->timeline.push_back(new ATeleport(0.0, randomDouble(cxWindow - wBattle/2, cxWindow + wBattle/2), randomDouble(cyWindow - hBattle/2, cyWindow + hBattle/2)));
-        if (contains(casualties, eUnit)){
+        if (contains(casualties, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aDead));
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
         }
@@ -1960,13 +2229,13 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
         addActor(eUnit);
     }
     Entity* eCap = eWin->get<CArmy>()->captain;
-/*
-    eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
-    eCap->get<CActor>()->timeline.push_back(new AMove(0.0, x0 - sign*50, cyWindow, unitSpeed));
-    double t1 = getTravelTime(eCap->get<CPosition>()->x, eCap->get<CPosition>()->y, x0 - sign*50, cyWindow, unitSpeed);
-    eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1, eCap->get<CCaptain>()->aIdle));
-    addActor(eCap);
-*/
+    /*
+        eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
+        eCap->get<CActor>()->timeline.push_back(new AMove(0.0, x0 - sign*50, cyWindow, unitSpeed));
+        double t1 = getTravelTime(eCap->get<CPosition>()->x, eCap->get<CPosition>()->y, x0 - sign*50, cyWindow, unitSpeed);
+        eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1, eCap->get<CCaptain>()->aIdle));
+        addActor(eCap);
+    */
     ///================
     /// PLAYER LOSER
     ///================
@@ -1975,7 +2244,7 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
     x0 = eLos->get<CArmy>()->x;
 
     P = positions[eLos->get<CArmy>()->formation];
-    for(EntityListIt i = eLos->get<CArmy>()->allUnits.begin(); i != eLos->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eLos->get<CArmy>()->allUnits.begin(); i != eLos->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
@@ -1983,8 +2252,8 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed));
         //printf("%f %f\n", dx, getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 80));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            tResolution,
-            eUnit->get<CUnit>()->aIdle));
+                    tResolution,
+                    eUnit->get<CUnit>()->aIdle));
         eUnit->get<CActor>()->timeline.push_back(new ATeleport(0.0, randomDouble(cxWindow - wBattle/2, cxWindow + wBattle/2), randomDouble(cyWindow - hBattle/2, cyWindow + hBattle/2)));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aDead));
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
@@ -2026,13 +2295,13 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e){
     */
 }
 
-void ScriptedAnimation::scriptFightSmokeCloud(double duration){
+void ScriptedAnimation::scriptFightSmokeCloud(double duration) {
     double wBattle = 310/2;
     double hBattle = 310/2;
     double radius = sqrt(wBattle*wBattle + hBattle*hBattle);
     int nClouds = 250;
     srand(11);
-    for (int i = 0; i < nClouds; i++){
+    for (int i = 0; i < nClouds; i++) {
         Entity* eCloud = eManager->createEntity();
         double r = randomDouble(0.0, radius);
         double ang = randomDouble(0.0, 360);
@@ -2056,7 +2325,7 @@ void ScriptedAnimation::scriptFightSmokeCloud(double duration){
     srand(time(NULL));
 }
 
-void ScriptedAnimation::scriptMeleeBattle(Entity* e){
+void ScriptedAnimation::scriptMeleeBattle(Entity* e) {
     ///================
     /// PLAYER WINNER
     ///================
@@ -2075,17 +2344,17 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
     double unitSpeed = 100;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            0.2+getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed),
-            eUnit->get<CUnit>()->aIdle));
+                    0.2+getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed),
+                    eUnit->get<CUnit>()->aIdle));
         eUnit->get<CActor>()->timeline.push_back(new ATeleport(0.0, randomDouble(cxWindow - wBattle/2, cxWindow + wBattle/2), randomDouble(cyWindow - hBattle/2, cyWindow + hBattle/2)));
-        if (contains(e->get<CActionOutcome>()->targets, eUnit)){
+        if (contains(e->get<CActionOutcome>()->targets, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aDead));
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
         }
@@ -2093,13 +2362,13 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
         addActor(eUnit);
     }
     Entity* eCap = eArmy->get<CArmy>()->captain;
-/*
-    eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
-    eCap->get<CActor>()->timeline.push_back(new AMove(0.0, x0 - sign*50, cyWindow, unitSpeed));
-    double t1 = getTravelTime(eCap->get<CPosition>()->x, eCap->get<CPosition>()->y, x0 - sign*50, cyWindow, unitSpeed);
-    eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1, eCap->get<CCaptain>()->aIdle));
-    addActor(eCap);
-*/
+    /*
+        eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
+        eCap->get<CActor>()->timeline.push_back(new AMove(0.0, x0 - sign*50, cyWindow, unitSpeed));
+        double t1 = getTravelTime(eCap->get<CPosition>()->x, eCap->get<CPosition>()->y, x0 - sign*50, cyWindow, unitSpeed);
+        eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1, eCap->get<CCaptain>()->aIdle));
+        addActor(eCap);
+    */
     ///================
     /// PLAYER LOSER
     ///================
@@ -2110,7 +2379,7 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
     x0 = eArmy->get<CArmy>()->x;
 
     P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
@@ -2118,8 +2387,8 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed));
         //printf("%f %f\n", dx, getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 80));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            0.2+getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed),
-            eUnit->get<CUnit>()->aIdle));
+                    0.2+getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, unitSpeed),
+                    eUnit->get<CUnit>()->aIdle));
         eUnit->get<CActor>()->timeline.push_back(new ATeleport(0.0, randomDouble(cxWindow - wBattle/2, cxWindow + wBattle/2), randomDouble(cyWindow - hBattle/2, cyWindow + hBattle/2)));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aDead));
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
@@ -2127,8 +2396,8 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
         addActor(eUnit);
     }
     eCap = eArmy->get<CArmy>()->captain;
-/*
-*/
+    /*
+    */
     double t1 = 3;
     bool hFlip = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? true:false;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(t1, "Mercy, please!", 5));
@@ -2157,12 +2426,12 @@ void ScriptedAnimation::scriptMeleeBattle(Entity* e){
 
     addActor(eFold);
 }
-void ScriptedAnimation::scriptPresentArmy(Entity* e){
+void ScriptedAnimation::scriptPresentArmy(Entity* e) {
     Entity* eArmy = e;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     double dx = 550;
     double xTarget = cxWindow + sign*dx;
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         double unitSpeed = randomDouble(150, 200);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
@@ -2179,7 +2448,7 @@ void ScriptedAnimation::scriptPresentArmy(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptPresentCaptain(Entity* e){
+void ScriptedAnimation::scriptPresentCaptain(Entity* e) {
     Entity* eArmy = e;
     eArmy->get<CArmy>()->captain = eArmy->get<CArmy>()->captains[eArmy->get<CArmy>()->idCaptain];
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -2198,7 +2467,7 @@ void ScriptedAnimation::scriptPresentCaptain(Entity* e){
     addActor(eCap);
 
 }
-void ScriptedAnimation::scriptAdvanceArmy(Entity* e){
+void ScriptedAnimation::scriptAdvanceArmy(Entity* e) {
     Entity* eArmy = e;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2211,15 +2480,15 @@ void ScriptedAnimation::scriptAdvanceArmy(Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-            eUnit->get<CUnit>()->aIdle));
+                    getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                    eUnit->get<CUnit>()->aIdle));
         addActor(eUnit);
     }
 
@@ -2231,7 +2500,7 @@ void ScriptedAnimation::scriptAdvanceArmy(Entity* e){
 
     addActor(eCap);
 }
-void ScriptedAnimation::scriptChangeFormation(Entity* e){
+void ScriptedAnimation::scriptChangeFormation(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2242,15 +2511,15 @@ void ScriptedAnimation::scriptChangeFormation(Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-            eUnit->get<CUnit>()->aIdle));
+                    getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                    eUnit->get<CUnit>()->aIdle));
         addActor(eUnit);
     }
 
@@ -2262,7 +2531,7 @@ void ScriptedAnimation::scriptChangeFormation(Entity* e){
 
     addActor(eCap);
 }
-void ScriptedAnimation::scriptReturnArmy(Entity* e){
+void ScriptedAnimation::scriptReturnArmy(Entity* e) {
     Entity* eArmy = e;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2274,7 +2543,7 @@ void ScriptedAnimation::scriptReturnArmy(Entity* e){
     //double x0 = eArmy->get<CArmy>()->x;
     //double y0 = cyWindow - uy*12/2;
 
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
@@ -2292,15 +2561,15 @@ void ScriptedAnimation::scriptReturnArmy(Entity* e){
 
     Entity* eCap = eArmy->get<CArmy>()->captain;
 
-/*
-    if (eArmy->get<CArmy>()->win){
-        string speech = "SPEECH-VICTORY-" + int2str(randomInt(1,5));
-        eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speech), 4));
-    }else{
-        string speech = "SPEECH-DEFEATED-" + int2str(randomInt(1,5));
-        eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speech), 4));
-    }
-  */
+    /*
+        if (eArmy->get<CArmy>()->win){
+            string speech = "SPEECH-VICTORY-" + int2str(randomInt(1,5));
+            eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speech), 4));
+        }else{
+            string speech = "SPEECH-DEFEATED-" + int2str(randomInt(1,5));
+            eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speech), 4));
+        }
+      */
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
     eCap->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, sign == -1 ? true:false));
     eCap->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200));
@@ -2310,25 +2579,25 @@ void ScriptedAnimation::scriptReturnArmy(Entity* e){
     //addActor(eCap);
 }
 
-void ScriptedAnimation::scriptBattleCleanup(){
+void ScriptedAnimation::scriptBattleCleanup() {
     Entity* eWinner = war.getPlayer(war.getBattleWinner());
     Entity* eLoser = war.getPlayer(war.getBattleLoser());
     War::BattleClosure closure = war.getBattleClosure();
 
-    if (closure == war.ARMY_VS_ARMY){
+    if (closure == war.ARMY_VS_ARMY) {
         scriptReturnArmy(eWinner);
-    }else if (closure == war.MAN_VS_MAN){
-        scriptReturnArmy(eWinner);
-        scriptReturnArmy(eLoser);
-    }else if (closure == war.MERCY){
+    } else if (closure == war.MAN_VS_MAN) {
         scriptReturnArmy(eWinner);
         scriptReturnArmy(eLoser);
-    }else if (closure == war.ALL_KILLED){
+    } else if (closure == war.MERCY) {
+        scriptReturnArmy(eWinner);
+        scriptReturnArmy(eLoser);
+    } else if (closure == war.ALL_KILLED) {
         scriptReturnArmy(eWinner);
         scriptReturnArmy(eLoser);
     }
 
-    if (!config.getDeadBodies()){
+    if (!config.getDeadBodies()) {
         scriptRemoveDead(war.getPlayer(1));
         scriptRemoveDead(war.getPlayer(2));
     }
@@ -2337,9 +2606,9 @@ void ScriptedAnimation::scriptBattleCleanup(){
     eLoser->get<CArmy>()->allUnits.clear();
 }
 
-void ScriptedAnimation::scriptRemoveDead(Entity* e){
+void ScriptedAnimation::scriptRemoveDead(Entity* e) {
     Entity* eArmy = e;
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (!eUnit->get<CUnit>()->dead) continue;
         eUnit->get<CActor>()->timeline.push_back(new AFade(0, -255, 0));
@@ -2349,18 +2618,18 @@ void ScriptedAnimation::scriptRemoveDead(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptEffectAction(Entity* e){
+void ScriptedAnimation::scriptEffectAction(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
-    for(EntityListIt i = e->get<CActionOutcome>()->targets.begin(); i != e->get<CActionOutcome>()->targets.end(); i++){
+    for(EntityListIt i = e->get<CActionOutcome>()->targets.begin(); i != e->get<CActionOutcome>()->targets.end(); i++) {
         Entity* eUnit = *i;
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, 200));
         addActor(eUnit);
     }
 }
 
-void ScriptedAnimation::scriptUnitAttack(Entity* e){
+void ScriptedAnimation::scriptUnitAttack(Entity* e) {
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -2375,11 +2644,11 @@ void ScriptedAnimation::scriptUnitAttack(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -2389,14 +2658,14 @@ void ScriptedAnimation::scriptUnitAttack(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptManVsMan(Entity* e){
+void ScriptedAnimation::scriptManVsMan(Entity* e) {
 
     double unitSpeed = 100;
 
     ///===========
     /// Fighters
     ///===========
-    for(EntityListIt i = e->get<CActionOutcome>()->actors.begin(); i != e->get<CActionOutcome>()->actors.end(); i++){
+    for(EntityListIt i = e->get<CActionOutcome>()->actors.begin(); i != e->get<CActionOutcome>()->actors.end(); i++) {
         Entity* eUnit = *i;
         Entity* eArmy = eUnit->get<COwner>()->e;
         int sign = eArmy->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
@@ -2412,11 +2681,11 @@ void ScriptedAnimation::scriptManVsMan(Entity* e){
         t = getTravelTime(xTarget, cyWindow, xTarget - sign*16, cyWindow, unitSpeed);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eUnit->get<CUnit>()->aIdle));
 
-        if (eArmy == e->get<CActionOutcome>()->eLoser){
+        if (eArmy == e->get<CActionOutcome>()->eLoser) {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aDead));
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::WIN, false));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::WIN, true));
         }
 
@@ -2441,7 +2710,7 @@ void ScriptedAnimation::scriptManVsMan(Entity* e){
     addActor(eFold);
 }
 
-void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor){
+void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor) {
 
     double unitSpeed = 100;
 
@@ -2454,7 +2723,7 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor){
     EntityList fightActors;
     fightActors.push_back(P1fighter);
     fightActors.push_back(P2fighter);
-    for(EntityListIt i = fightActors.begin(); i != fightActors.end(); i++){
+    for(EntityListIt i = fightActors.begin(); i != fightActors.end(); i++) {
         Entity* eUnit = *i;
         Entity* eArmy = eUnit->get<COwner>()->e;
         int sign = eArmy->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
@@ -2470,11 +2739,11 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor){
         t = getTravelTime(xTarget, cyWindow, xTarget - sign*16, cyWindow, unitSpeed);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eUnit->get<CUnit>()->aIdle));
 
-        if (eArmy->get<CPlayer>()->id == outcome.idLoser){
+        if (eArmy->get<CPlayer>()->id == outcome.idLoser) {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aDead));
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::WIN, false));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::WIN, true));
         }
 
@@ -2503,12 +2772,12 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor){
     addActor(eFold);
 }
 
-void ScriptedAnimation::scriptFocusFire(Entity* e){
+void ScriptedAnimation::scriptFocusFire(Entity* e) {
 
 
 }
 
-void ScriptedAnimation::scriptIntimidate(Entity* e){
+void ScriptedAnimation::scriptIntimidate(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2522,14 +2791,14 @@ void ScriptedAnimation::scriptIntimidate(Entity* e){
     int speechs = 0;
     int nSpeechs = 1;
 
-    for(EntityListIt i = e->get<CActionOutcome>()->targets.begin(); i != e->get<CActionOutcome>()->targets.end(); i++){
+    for(EntityListIt i = e->get<CActionOutcome>()->targets.begin(); i != e->get<CActionOutcome>()->targets.end(); i++) {
         Entity* eUnit = *i;
         double xUnit = eUnit->get<CPosition>()->x;
         double yUnit = eUnit->get<CPosition>()->y;
-        if (speechs++ < nSpeechs){
+        if (speechs++ < nSpeechs) {
             eUnit->get<CActor>()->timeline.push_back(new ASpeak(intimSpeechDur, Assets::getString("SPEECH-INTIMIDATED-" + int2str(randomInt(1, 5))), 2));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(intimSpeechDur, eUnit->get<CUnit>()->aWalk));
         }
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, opposite(eUnit->get<CAnimation>()->hFlip)));
@@ -2549,7 +2818,7 @@ void ScriptedAnimation::scriptIntimidate(Entity* e){
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor){
+void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor) {
     Entity* eArmy = eActor;
     Entity* eEnemy = eActor->get<CPlayer>()->enemy;
     int sign = eEnemy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -2564,14 +2833,14 @@ void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor)
     int speechs = 0;
     int nSpeechs = 1;
 
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eEnemy, i);
         double xUnit = eUnit->get<CPosition>()->x;
         double yUnit = eUnit->get<CPosition>()->y;
-        if (speechs++ < nSpeechs){
+        if (speechs++ < nSpeechs) {
             eUnit->get<CActor>()->timeline.push_back(new ASpeak(intimSpeechDur, Assets::getString("SPEECH-INTIMIDATED-" + int2str(randomInt(1, 5))), 2));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(intimSpeechDur, eUnit->get<CUnit>()->aWalk));
         }
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, opposite(eUnit->get<CAnimation>()->hFlip)));
@@ -2594,7 +2863,7 @@ void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor)
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptStampede(Entity* e){
+void ScriptedAnimation::scriptStampede(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     bool hFlip = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? true:false;
@@ -2606,7 +2875,7 @@ void ScriptedAnimation::scriptStampede(Entity* e){
     //double x0 = eArmy->get<CArmy>()->x;
     //double y0 = cyWindow - uy*12/2;
 
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         double xUnit = eUnit->get<CPosition>()->x;
@@ -2625,7 +2894,7 @@ void ScriptedAnimation::scriptStampede(Entity* e){
         eBuffalo->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + 100, yUnit, speed));
         eBuffalo->get<CActor>()->timeline.push_back(new ADestroy(getTravelTime(xBuffalo, yBuffalo, cxWindow + sign*wWindow/2 + 100, yUnit, speed)));
 
-        if (contains(e->get<CActionOutcome>()->targets, eUnit)){
+        if (contains(e->get<CActionOutcome>()->targets, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new AMove(getTravelTime(xBuffalo, yBuffalo, xUnit, yUnit, speed), cxWindow + sign*wWindow/2 + sign*100, yUnit, speed));
             double t = getTravelTime(xUnit, yUnit, cxWindow + sign*wWindow/2 + sign*100, yUnit, speed);
             eUnit->get<CActor>()->timeline.push_back(new ADestroy(t));
@@ -2644,7 +2913,7 @@ void ScriptedAnimation::scriptStampede(Entity* e){
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptResurrect(Entity* e){
+void ScriptedAnimation::scriptResurrect(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2655,15 +2924,15 @@ void ScriptedAnimation::scriptResurrect(Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-            eUnit->get<CUnit>()->aIdle));
+                    getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                    eUnit->get<CUnit>()->aIdle));
         addActor(eUnit);
     }
 
@@ -2672,7 +2941,7 @@ void ScriptedAnimation::scriptResurrect(Entity* e){
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptConvert(Entity* e){
+void ScriptedAnimation::scriptConvert(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2683,15 +2952,15 @@ void ScriptedAnimation::scriptConvert(Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-            eUnit->get<CUnit>()->aIdle));
+                    getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                    eUnit->get<CUnit>()->aIdle));
         addActor(eUnit);
     }
 
@@ -2701,7 +2970,7 @@ void ScriptedAnimation::scriptConvert(Entity* e){
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptSummon(Entity* e){
+void ScriptedAnimation::scriptSummon(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2712,19 +2981,19 @@ void ScriptedAnimation::scriptSummon(Entity* e){
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
-        if (contains(e->get<CActionOutcome>()->actors, eUnit)){
+        if (contains(e->get<CActionOutcome>()->actors, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new ATeleport(1.0, x0 + sign*p.x*ux, y0 + p.y*uy));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aIdle));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                eUnit->get<CUnit>()->aIdle));
+                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                        eUnit->get<CUnit>()->aIdle));
         }
         addActor(eUnit);
     }
@@ -2733,7 +3002,7 @@ void ScriptedAnimation::scriptSummon(Entity* e){
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Meet my new friends!", 2));
 }
 
-void ScriptedAnimation::scriptCallSlaves(Entity* e){
+void ScriptedAnimation::scriptCallSlaves(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2750,22 +3019,22 @@ void ScriptedAnimation::scriptCallSlaves(Entity* e){
     double ySpawn = cyWindow;
 
     list<sf::Vector2i> P = positions[eArmy->get<CArmy>()->formation];
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
-        if (contains(e->get<CActionOutcome>()->actors, eUnit)){
+        if (contains(e->get<CActionOutcome>()->actors, eUnit)) {
             eUnit->get<CPosition>()->x = randomDouble(xSpawn - wSpawn/2, xSpawn + wSpawn/2);
             eUnit->get<CPosition>()->y = randomDouble(ySpawn - hSpawn/2, ySpawn + hSpawn/2);
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200), eUnit->get<CUnit>()->aIdle));
-        }else{
+        } else {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                eUnit->get<CUnit>()->aIdle));
+                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                        eUnit->get<CUnit>()->aIdle));
         }
         addActor(eUnit);
     }
@@ -2773,7 +3042,7 @@ void ScriptedAnimation::scriptCallSlaves(Entity* e){
     Entity* eCap = e->get<CActionOutcome>()->actorArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Meet my new friends!", 2));
 }
-void ScriptedAnimation::scriptSwapHeroes(Entity* e){
+void ScriptedAnimation::scriptSwapHeroes(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -2806,11 +3075,11 @@ void ScriptedAnimation::scriptSwapHeroes(Entity* e){
     addActor(eCap);
 }
 
-void ScriptedAnimation::scriptMetheore(Entity* e){
+void ScriptedAnimation::scriptMetheore(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -2859,12 +3128,12 @@ void ScriptedAnimation::scriptMetheore(Entity* e){
 
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-metheore-hit.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-metheore-hit.wav"));
         }
@@ -2875,7 +3144,7 @@ void ScriptedAnimation::scriptMetheore(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///SOUND ANNOUNCEMENT
@@ -2892,13 +3161,13 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -2960,20 +3229,20 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e){
         ///DEFENDER
         double tStart = unitRest1;
         double t0 = 0.0;
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tStart + travelTime + t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tStart + travelTime + t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 blocked[eDef] = true;
             }
@@ -2982,7 +3251,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -2995,7 +3264,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3007,7 +3276,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -3019,7 +3288,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, eEnemy);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
@@ -3029,12 +3298,12 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
 
     double xOff = wWindow;
     double yOff = 200;
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         xOff = max(abs(cxWindow - eDef->get<CPosition>()->x), xOff);
     }
     xOff = wWindow/2 + xOff;
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         tResolve.insert(make_pair(eDef, 0.0));
         Entity* eDragon = eManager->createEntity();
         double tStart = randomDouble(0.0, 2);
@@ -3070,7 +3339,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
         addActor(eDragon);
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -3123,20 +3392,20 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
         //double tStart = unitRest1;
         //double t0 = 0.0;
         //double travelTime = 0.0;
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tResolve[eDef]));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = tResolve[eDef];
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = tResolve[eDef];
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tResolve[eDef]));
                 blocked[eDef] = true;
             }
@@ -3145,7 +3414,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3158,7 +3427,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3170,11 +3439,11 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptRollingStones(Entity* e){
+void ScriptedAnimation::scriptRollingStones(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -3216,12 +3485,12 @@ void ScriptedAnimation::scriptRollingStones(Entity* e){
 
         ///DEFENDER
         double t3 = getTravelTime(cxWindow, eDef->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, speed2);
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1+t3, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(t1+t3, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
         }
@@ -3232,11 +3501,11 @@ void ScriptedAnimation::scriptRollingStones(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptStalactite(Entity* e){
+void ScriptedAnimation::scriptStalactite(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     //int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -3257,12 +3526,12 @@ void ScriptedAnimation::scriptStalactite(Entity* e){
         eObj->add(new CDimensions(20, 40));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eDef->get<CUnit>()->aDeath));
             //eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eDef->get<CUnit>()->aIdle));
             //eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
         }
@@ -3273,7 +3542,7 @@ void ScriptedAnimation::scriptStalactite(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -3284,12 +3553,12 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -3304,7 +3573,7 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
         double hObj = 100;
         double t0 = tStart + Assets::getAnimation(eAtk->get<CUnit>()->aAction02).duration;
         Entity* eObj = eManager->createEntity();
-        eObj->add(new CPosition(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y - hObj/2 + 33/2));
+        eObj->add(new CPosition(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y - hObj/2 + 33/2 + 10));
         eObj->add(new CDimensions(wObj, hObj));
         eObj->add(new CDraw(CDraw::WORLD_2));
         eObj->add(new CAnimation(false, ""));
@@ -3328,20 +3597,20 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
         ttShake = tShake;
         */
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, t0));
                 blocked[eDef] = true;
             }
@@ -3350,7 +3619,7 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3363,7 +3632,7 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3372,25 +3641,25 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e){
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
     }
-/*
-    ///SOUNDS
-    Entity* eSound = eManager->createEntity();
-    eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-mega-jump.wav"));
-    eSound->get<CActor>()->addNode(new ASound(ttShake - unitRest1, "sfx-rain-announcement.wav"));
+    /*
+        ///SOUNDS
+        Entity* eSound = eManager->createEntity();
+        eSound->add(new CActor());
+        eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-mega-jump.wav"));
+        eSound->get<CActor>()->addNode(new ASound(ttShake - unitRest1, "sfx-rain-announcement.wav"));
 
-    ///SHAKE
-    Entity* eTimer = eManager->createEntity();
-    eTimer->add(new CTimer(ttShake, SHAKE_CAMERA, true));
-    eTimer->add(new CCameraShake(shakeDuration, 8));
-*/
+        ///SHAKE
+        Entity* eTimer = eManager->createEntity();
+        eTimer->add(new CTimer(ttShake, SHAKE_CAMERA, true));
+        eTimer->add(new CCameraShake(shakeDuration, 8));
+    */
 }
 
-void ScriptedAnimation::scriptEarthquake(Entity* e){
+void ScriptedAnimation::scriptEarthquake(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     //int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -3407,12 +3676,12 @@ void ScriptedAnimation::scriptEarthquake(Entity* e){
 
         ///DEFENDER
         double deathTime = randomDouble(0, 2) + Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aDeath));
             //eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aIdle));
             //eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "Explosion9.wav"));
         }
@@ -3423,7 +3692,7 @@ void ScriptedAnimation::scriptEarthquake(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -3434,7 +3703,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
@@ -3442,7 +3711,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
     double ttShake = 0;
     double shakeDuration = 2;
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -3474,20 +3743,20 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
         ttShake = tShake;
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tShake + randomDouble(0,shakeDuration)));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tShake + randomDouble(0,shakeDuration));
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tShake + randomDouble(0,shakeDuration));
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tShake + randomDouble(0,shakeDuration)));
                 blocked[eDef] = true;
             }
@@ -3496,7 +3765,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3509,7 +3778,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3532,7 +3801,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -3544,12 +3813,15 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, eEnemy);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(Entity* eDef : eTargets){
+    for (auto& out : outcome.unitActionOutcomes) {
+        Entity* eAtk = getUnitByID(e, out.idCauser);
+        Entity* eDef = getUnitByID(eEnemy, out.idTarget);
+        
         tResolve.insert(make_pair(eDef, 0.0));
         double tStart = randomDouble(0.0, 1.0);
         double tTotal1, tTotal2, tTotal3;
@@ -3573,11 +3845,12 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
         double ascendTime = dropHeight/ySpeed;
         double xAmp = 4;
         double t0Aux = tStart;
+        double ascensionTravelTime = dropHeight/ySpeed;
         tTotal1 = 0;
         int xSign = -1;
         double x0 = eDef->get<CPosition>()->x;
         double y0 = eDef->get<CPosition>()->y;
-        while (tTotal1 <= ascendTime){
+        while (tTotal1 <= ascendTime) {
             double tTravel = getTravelTime(x0, 0, x0+xSign*xAmp, 0, xSpeed);
             eDef->get<CActor>()->addNode(new AMove(t0Aux, x0 + xSign*xAmp, y0 - tTravel*ySpeed, speed));
             t0Aux = tTravel;
@@ -3588,8 +3861,9 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
         }
 
         double delay = 1.0;
+        double popTime = tStart + ascensionTravelTime + delay;
         tTotal2 = 0.0;
-        while (tTotal2 <= delay){
+        while (tTotal2 <= delay) {
             double tTravel = getTravelTime(x0, 0, x0+xSign*xAmp, 0, xSpeed);
             eDef->get<CActor>()->addNode(new AMove(t0Aux, x0 + xSign*xAmp, y0, xSpeed));
             t0Aux = tTravel;
@@ -3619,27 +3893,56 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
         eShadow->get<CDraw>()->isHidden = true;
         eShadow->get<CActor>()->addNode(new AVariable(tStart, AVariable::HIDDEN, false));
         eShadow->get<CActor>()->addNode(new ADestroy(tTotal1+tTotal2+tTotal3));
+
+        // Dart
+        double dartSpeed = 200.f;
+        double gravity = 100.f;
+        double shotAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y - dropHeight, dartSpeed, gravity);
+        double xDartSpeed = cos(shotAngle*M_RAD) * dartSpeed;
+        double dartTravelDuration = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, xDartSpeed);
+        double shotDate = popTime - dartTravelDuration;
+
+        Entity* eObj = eManager->createEntity();
+        eObj->add(new CPosition(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y));
+        eObj->add(new CDraw(CDraw::SKY));
+        eObj->add(new CTexture("dart.png"));
+        eObj->add(new CRotation(true));
+        eObj->add(new CVelocity());
+        eObj->add(new CAcceleration());
+        eObj->add(new CActor());
+
+        eObj->get<CDraw>()->isHidden = true;
+        eObj->get<CActor>()->addNode(new AVariable(shotDate, AVariable::HIDDEN, false));
+        eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::AUTO_P, true));
+        eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
+        eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
+        eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(shotAngle*M_RAD)*dartSpeed));
+        eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*dartSpeed));
+        eObj->get<CActor>()->addNode(new ASound(dartTravelDuration, "sfx-pop-bubble-01.wav"));
+        eObj->get<CActor>()->addNode(new ADestroy(0.f));
+
+        addActor(eObj);
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         //Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         ///ATTACKER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tResolve[eDef]));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = tResolve[eDef];
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = tResolve[eDef];
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tResolve[eDef]));
                 blocked[eDef] = true;
             }
@@ -3648,7 +3951,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
         //addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3661,7 +3964,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3672,7 +3975,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -3684,12 +3987,12 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, eEnemy);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         tResolve.insert(make_pair(eDef, 0.0));
         double tStart = randomDouble(0.0, 1.0);
         //double tTotal1, tTotal2, tTotal3;
@@ -3737,25 +4040,25 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e){
         eShadow->get<CActor>()->addNode(new ADestroy(tAir));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         //Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         ///ATTACKER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tResolve[eDef]));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = tResolve[eDef];
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = tResolve[eDef];
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tResolve[eDef]));
                 blocked[eDef] = true;
             }
@@ -3764,7 +4067,7 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e){
         //addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3777,7 +4080,7 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3788,7 +4091,7 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -3799,12 +4102,12 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -3822,20 +4125,20 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tStart + travelTime + t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tStart + travelTime + t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 blocked[eDef] = true;
             }
@@ -3844,7 +4147,7 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3857,7 +4160,7 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -3867,10 +4170,10 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 }
-void ScriptedAnimation::scriptFlamingArrows(Entity* e){
+void ScriptedAnimation::scriptFlamingArrows(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -3888,13 +4191,13 @@ void ScriptedAnimation::scriptFlamingArrows(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aHurt));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(hurtDuration, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-hit-1.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aHurt));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(hurtDuration, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-hit-1.wav"));
@@ -3906,10 +4209,10 @@ void ScriptedAnimation::scriptFlamingArrows(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptLongbow(Entity* e){
+void ScriptedAnimation::scriptLongbow(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -3927,12 +4230,12 @@ void ScriptedAnimation::scriptLongbow(Entity* e){
         double angle = getAngleToHit2(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, projSpeed, gravity);
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-hit-2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-hit-2.wav"));
         }
@@ -3942,7 +4245,7 @@ void ScriptedAnimation::scriptLongbow(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptMakeItRain(Entity* e){
+void ScriptedAnimation::scriptMakeItRain(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -3994,7 +4297,7 @@ void ScriptedAnimation::scriptMakeItRain(Entity* e){
     double nEmmiters = 20;
     double space = 0.8*wCloud/nEmmiters;
     double xOff = -0.8*wCloud/2;
-    for(int i = 0; i < nEmmiters; i++){
+    for(int i = 0; i < nEmmiters; i++) {
         Entity* eEmmiter = eManager->createEntity();
         eEmmiter->add(new CPosition());
         eEmmiter->add(new CAnchor(xOff, 0));
@@ -4019,7 +4322,7 @@ void ScriptedAnimation::scriptMakeItRain(Entity* e){
     addActor(eDark);
 
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -4031,11 +4334,11 @@ void ScriptedAnimation::scriptMakeItRain(Entity* e){
 
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(xCloud, 0, cxArmy, 0, 100), eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(xCloud, 0, cxArmy, 0, 100), eDef->get<CUnit>()->aIdle));
         }
 
@@ -4045,7 +4348,7 @@ void ScriptedAnimation::scriptMakeItRain(Entity* e){
 }
 
 
-void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e) {
     Entity* eArmy = e;
     Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -4098,7 +4401,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
     double nEmmiters = 20;
     double space = 0.8*wCloud/nEmmiters;
     double xOff = -0.8*wCloud/2;
-    for(int i = 0; i < nEmmiters; i++){
+    for(int i = 0; i < nEmmiters; i++) {
         Entity* eEmmiter = eManager->createEntity();
         eEmmiter->add(new CPosition());
         eEmmiter->add(new CAnchor(xOff, 0));
@@ -4130,12 +4433,12 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -4157,20 +4460,20 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
         */
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, getTravelTime(xCloud, 0, cxArmy, 0, 100)));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], getTravelTime(xCloud, 0, cxArmy, 0, 100));
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], getTravelTime(xCloud, 0, cxArmy, 0, 100));
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, getTravelTime(xCloud, 0, cxArmy, 0, 100)));
                 blocked[eDef] = true;
             }
@@ -4180,7 +4483,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
         //addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4193,7 +4496,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4204,7 +4507,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     Entity* eArmy = e;
     Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -4254,12 +4557,12 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -4281,20 +4584,20 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e){
         double tHit = randomDouble(4, 6);
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tHit));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tHit);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tHit);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tHit));
                 blocked[eDef] = true;
             }
@@ -4304,7 +4607,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e){
         //addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4317,7 +4620,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4328,7 +4631,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptDaggerRain(Entity* e){
+void ScriptedAnimation::scriptDaggerRain(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -4359,7 +4662,7 @@ void ScriptedAnimation::scriptDaggerRain(Entity* e){
     double nEmmiters = 10;
     double space = 0.8*wCloud/nEmmiters;
     double xOff = -0.8*wCloud/2;
-    for(int i = 0; i < nEmmiters; i++){
+    for(int i = 0; i < nEmmiters; i++) {
         Entity* eEmmiter = eManager->createEntity();
         eEmmiter->add(new CPosition());
         eEmmiter->add(new CAnchor(xOff, 0));
@@ -4371,7 +4674,7 @@ void ScriptedAnimation::scriptDaggerRain(Entity* e){
     }
 
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -4383,11 +4686,11 @@ void ScriptedAnimation::scriptDaggerRain(Entity* e){
 
         ///DEFENDER
         double deathTime = randomDouble(4, 6);
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aIdle));
         }
 
@@ -4396,7 +4699,7 @@ void ScriptedAnimation::scriptDaggerRain(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptTornado(Entity* e){
+void ScriptedAnimation::scriptTornado(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
@@ -4438,7 +4741,7 @@ void ScriptedAnimation::scriptTornado(Entity* e){
     addActor(eObj);
 
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -4450,11 +4753,11 @@ void ScriptedAnimation::scriptTornado(Entity* e){
 
         ///DEFENDER
         double deathTime = randomDouble(4, 6);
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(deathTime, eDef->get<CUnit>()->aIdle));
         }
 
@@ -4463,10 +4766,10 @@ void ScriptedAnimation::scriptTornado(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptThrowScimitar(Entity* e){
+void ScriptedAnimation::scriptThrowScimitar(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -4482,12 +4785,12 @@ void ScriptedAnimation::scriptThrowScimitar(Entity* e){
         double travelTime = getDistance(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y)/projSpeed;
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-scimitar-hit.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-scimitar-hit.wav"));
         }
@@ -4498,7 +4801,7 @@ void ScriptedAnimation::scriptThrowScimitar(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -4509,12 +4812,12 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -4533,20 +4836,20 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
                                           projSpeed);
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tStart + travelTime + t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tStart + travelTime + t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 blocked[eDef] = true;
             }
@@ -4555,7 +4858,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4568,7 +4871,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4584,7 +4887,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e){
     eSound->add(new CTimer(unitRest1 + 0.5, PLAY_SOUND));
 }
 
-void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -4595,12 +4898,12 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -4636,20 +4939,20 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e){
         eObj->get<CActor>()->addNode(new ADestroy(tAux));
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tHit));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tHit);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tHit);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tHit));
                 blocked[eDef] = true;
             }
@@ -4658,7 +4961,7 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4671,7 +4974,7 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4681,17 +4984,17 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-/*
-    Entity* eSound = eManager->createEntity();
-    eSound->add(new CSound("sfx-spinning-03-01.wav", CSound::LOOP_THEN_REMOVE, 0.2, 1, 4));
-    eSound->add(new CTimer(unitRest1 + 0.5, PLAY_SOUND));
-*/
+    /*
+        Entity* eSound = eManager->createEntity();
+        eSound->add(new CSound("sfx-spinning-03-01.wav", CSound::LOOP_THEN_REMOVE, 0.2, 1, 4));
+        eSound->add(new CTimer(unitRest1 + 0.5, PLAY_SOUND));
+    */
 }
 
-void ScriptedAnimation::scriptSamurai(Entity* e){
+void ScriptedAnimation::scriptSamurai(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -4709,12 +5012,12 @@ void ScriptedAnimation::scriptSamurai(Entity* e){
         eAtk->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, eAtk->get<CAnimation>()->hFlip));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -4725,7 +5028,7 @@ void ScriptedAnimation::scriptSamurai(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -4737,22 +5040,20 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    Entity* eSound = eManager->createEntity();
-    eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-sonic-jumps-01.wav"));
-    eSound->get<CActor>()->addNode(new ADestroy(0.0));
+    double soundDate = INFINITY;
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         ///ATTACKER
         double tStart = unitRest1 + randomDouble(0.0, 1);
+        soundDate = min(soundDate, tStart);
         //eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction01));
         //eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction02));
         //eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction02).duration, eAtk->get<CUnit>()->aIdle));
@@ -4829,44 +5130,44 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
 
         eAtk->get<CActor>()->addNode(new AVariable(tEndStg2, AVariable::HIDDEN, false));
 
-/*
-        double gravity = 60;
-        double speed = 300;
-        Entity* eProj = eManager->createEntity();
-        eProj->add(new CAnimation(false, "arbalest-proj.png"));
-        //eProj->add(new CDimensions(30, 5));
-        eProj->add(new CPosition(x0, y0));
-        eProj->add(new CDraw(CDraw::WORLD_2));
-        eProj->add(new CAutoPilot());
-        eProj->add(new CVelocity());
-        eProj->add(new CAcceleration());
-        eProj->add(new CRotation(true));
+        /*
+                double gravity = 60;
+                double speed = 300;
+                Entity* eProj = eManager->createEntity();
+                eProj->add(new CAnimation(false, "arbalest-proj.png"));
+                //eProj->add(new CDimensions(30, 5));
+                eProj->add(new CPosition(x0, y0));
+                eProj->add(new CDraw(CDraw::WORLD_2));
+                eProj->add(new CAutoPilot());
+                eProj->add(new CVelocity());
+                eProj->add(new CAcceleration());
+                eProj->add(new CRotation(true));
 
-        double angle = getAngleToHit(x0, y0, x1, y1, speed);
-        eProj->get<CVelocity>()->x = cos(angle*M_RAD)*speed;
-        eProj->get<CVelocity>()->y = -sin(angle*M_RAD)*speed;
-        eProj->get<CAcceleration>()->x = 0;
-        eProj->get<CAcceleration>()->y = gravity;
-        */
+                double angle = getAngleToHit(x0, y0, x1, y1, speed);
+                eProj->get<CVelocity>()->x = cos(angle*M_RAD)*speed;
+                eProj->get<CVelocity>()->y = -sin(angle*M_RAD)*speed;
+                eProj->get<CAcceleration>()->x = 0;
+                eProj->get<CAcceleration>()->y = gravity;
+                */
         ///STALAGMITE
         double t0 = tEndStg1 + getTravelTime(cxWindow, 0, eDef->get<CPosition>()->x, 0, speed2);
 
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, t0));
                 blocked[eDef] = true;
             }
@@ -4875,7 +5176,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4888,7 +5189,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -4897,9 +5198,14 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e){
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
     }
+
+    Entity* eSound = eManager->createEntity();
+    eSound->add(new CActor());
+    eSound->get<CActor>()->addNode(new ASound(soundDate, "sfx-sonic-jumps-01.wav"));
+    eSound->get<CActor>()->addNode(new ADestroy(0.0));
 }
 
-void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     //int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -4911,7 +5217,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
@@ -4921,7 +5227,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
     eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-jump-01-01.wav"));
     eSound->get<CActor>()->addNode(new ADestroy(0.0));
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -4990,20 +5296,20 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
 
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, t0));
                 blocked[eDef] = true;
             }
@@ -5012,7 +5318,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5025,7 +5331,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5036,7 +5342,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -5048,7 +5354,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
@@ -5058,7 +5364,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
     eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-ice-02.wav"));
     eSound->get<CActor>()->addNode(new ADestroy(0.0));
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -5153,20 +5459,20 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
 
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, t0));
                 blocked[eDef] = true;
             }
@@ -5175,7 +5481,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5190,7 +5496,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5205,7 +5511,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e){
 
 
 
-void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -5217,7 +5523,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
@@ -5230,7 +5536,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
     */
     double darknessDuration = 0;
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -5319,20 +5625,20 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
         double t0 = tStart + tTravel;
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, t0));
                 blocked[eDef] = true;
             }
@@ -5342,7 +5648,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
         darknessDuration = max(darknessDuration, t0 + 1);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5355,7 +5661,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5378,11 +5684,11 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e){
     addActor(eDark);
 }
 
-void ScriptedAnimation::scriptNinja(Entity* e){
+void ScriptedAnimation::scriptNinja(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -5401,12 +5707,12 @@ void ScriptedAnimation::scriptNinja(Entity* e){
         eAtk->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, eAtk->get<CAnimation>()->hFlip));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -5417,10 +5723,10 @@ void ScriptedAnimation::scriptNinja(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptThrowBomb(Entity* e){
+void ScriptedAnimation::scriptThrowBomb(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -5438,12 +5744,12 @@ void ScriptedAnimation::scriptThrowBomb(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-bomb-explosion.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime + t0, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-bomb-explosion.wav"));
         }
@@ -5453,7 +5759,7 @@ void ScriptedAnimation::scriptThrowBomb(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
 
     ///AUXILIAR STRUCTURES
@@ -5464,12 +5770,12 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets){
+    for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes){
+    for(auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
@@ -5487,20 +5793,20 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (out.id == UnitActionOutcome::DIED){
-            if (!died[eDef]){
+        if (out.id == UnitActionOutcome::DIED) {
+            if (!died[eDef]) {
                 whoDiedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 died[eDef] = true;
-                if (blocked[eDef]){
+                if (blocked[eDef]) {
                     whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
                     blocked[eDef] = false;
                 }
             }
             whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tStart + travelTime + t0);
-        }else if (!died[eDef]){
-            if (blocked[eDef]){
+        } else if (!died[eDef]) {
+            if (blocked[eDef]) {
                 whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tStart + travelTime + t0);
-            }else{
+            } else {
                 whoBlockedWhen.insert(make_pair(eDef, tStart + travelTime + t0));
                 blocked[eDef] = true;
             }
@@ -5509,7 +5815,7 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
         addActor(eAtk);
     }
 
-    for(auto& p : whoDiedWhen){
+    for(auto& p : whoDiedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5522,7 +5828,7 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
         addActor(eDef);
     }
 
-    for(auto& p : whoBlockedWhen){
+    for(auto& p : whoBlockedWhen) {
         Entity* eDef = p.first;
         double when = p.second;
 
@@ -5533,10 +5839,10 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptThrowRock(Entity* e){
+void ScriptedAnimation::scriptThrowRock(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -5553,12 +5859,12 @@ void ScriptedAnimation::scriptThrowRock(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -5569,10 +5875,10 @@ void ScriptedAnimation::scriptThrowRock(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptThrowSpear(Entity* e){
+void ScriptedAnimation::scriptThrowSpear(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -5589,12 +5895,12 @@ void ScriptedAnimation::scriptThrowSpear(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -5605,10 +5911,10 @@ void ScriptedAnimation::scriptThrowSpear(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptThrowDart(Entity* e){
+void ScriptedAnimation::scriptThrowDart(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
         Entity* eDef = out.eTarget;
@@ -5625,12 +5931,12 @@ void ScriptedAnimation::scriptThrowDart(Entity* e){
         double travelTime = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, projSpeed*cos(angle*M_RAD));
 
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + travelTime, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -5641,7 +5947,7 @@ void ScriptedAnimation::scriptThrowDart(Entity* e){
 
 }
 
-void ScriptedAnimation::scriptEnslave(Entity* e){
+void ScriptedAnimation::scriptEnslave(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -5653,7 +5959,7 @@ void ScriptedAnimation::scriptEnslave(Entity* e){
     //double x0 = eArmy->get<CArmy>()->x;
     //double y0 = cyWindow - uy*12/2;
 
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
@@ -5684,7 +5990,7 @@ void ScriptedAnimation::scriptEnslave(Entity* e){
 
     eArmy = eArmy->get<CPlayer>()->enemy;
 
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
@@ -5710,14 +6016,14 @@ void ScriptedAnimation::scriptEnslave(Entity* e){
     ///--------------------------------------------------------
 }
 
-void ScriptedAnimation::scriptMercy(ActionOutcome& outcome, Entity* eActor){
+void ScriptedAnimation::scriptMercy(ActionOutcome& outcome, Entity* eActor) {
     Entity* eArmy = eActor;
     Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
 
     eEnemy->get<CArmy>()->prohibitedFormation = eEnemy->get<CArmy>()->formation;
     printf("prohibited %d\n", eEnemy->get<CArmy>()->prohibitedFormation);
 }
-void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor){
+void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor) {
     Entity* eArmy = eActor;
     int sign = eArmy->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
@@ -5729,7 +6035,7 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor){
     //double x0 = eArmy->get<CArmy>()->x;
     //double y0 = cyWindow - uy*12/2;
 
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
@@ -5760,7 +6066,7 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor){
 
     eArmy = eArmy->get<CPlayer>()->enemy;
 
-    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++){
+    for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
@@ -5787,25 +6093,25 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor){
     ///--------------------------------------------------------
 }
 
-void ScriptedAnimation::scriptTeleport(Entity* e){
+void ScriptedAnimation::scriptTeleport(Entity* e) {
     Entity* eScenario = eManager->createEntity();
     eScenario->add(new CScenario("RANDOM"));
     notify(LOAD_SCENARIO, eScenario);
 }
 
-void ScriptedAnimation::scriptHeroAttack(Entity* e){
+void ScriptedAnimation::scriptHeroAttack(Entity* e) {
     //Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     list<TargetOutcome>::iterator it;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eDef = out.eTarget;
         ///DEFENDER
-        if (it->id == TargetOutcome::DIED){
+        if (it->id == TargetOutcome::DIED) {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eDef->get<CUnit>()->aDeath));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
             eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
+        } else {
             eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eDef->get<CUnit>()->aIdle));
             eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "click2.wav"));
         }
@@ -5814,7 +6120,8 @@ void ScriptedAnimation::scriptHeroAttack(Entity* e){
     }
 }
 
-void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
+#if 0
     Entity* eWinner = war.getPlayer(outcome.idWinner);
     war.setActorID(outcome.idWinner);
     bool flip = false;
@@ -5845,11 +6152,14 @@ void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e){
     eTimer->add(new CActor());
     eTimer->get<CActor>()->timeline.push_back(new ADestroy(5));
     addActor(eTimer);
+#else
+    war.setActorID(1);
+#endif
 }
 
-void ScriptedAnimation::scriptBuffFire(Entity* e){
+void ScriptedAnimation::scriptBuffFire(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
-    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++){
+    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++) {
         Entity* eUnit = *it;
         double yOff = -10;
         Entity* eArrow = eManager->createEntity();
@@ -5868,10 +6178,10 @@ void ScriptedAnimation::scriptBuffFire(Entity* e){
     Entity* eCap = eArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Buff!", 3));
 }
-void ScriptedAnimation::scriptBuffWater(Entity* e){
+void ScriptedAnimation::scriptBuffWater(Entity* e) {
 
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
-    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++){
+    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++) {
         Entity* eUnit = *it;
         double yOff = -10;
         Entity* eArrow = eManager->createEntity();
@@ -5891,10 +6201,10 @@ void ScriptedAnimation::scriptBuffWater(Entity* e){
     Entity* eCap = eArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Buff!", 3));
 }
-void ScriptedAnimation::scriptBuffEarth(Entity* e){
+void ScriptedAnimation::scriptBuffEarth(Entity* e) {
 
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
-    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++){
+    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++) {
         Entity* eUnit = *it;
         double yOff = -10;
         Entity* eArrow = eManager->createEntity();
@@ -5914,9 +6224,9 @@ void ScriptedAnimation::scriptBuffEarth(Entity* e){
     Entity* eCap = eArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Buff!", 3));
 }
-void ScriptedAnimation::scriptBuffAir(Entity* e){
+void ScriptedAnimation::scriptBuffAir(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
-    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++){
+    for(EntityListIt it = e->get<CActionOutcome>()->targets.begin(); it != e->get<CActionOutcome>()->targets.end(); it++) {
         Entity* eUnit = *it;
         double yOff = -10;
         Entity* eArrow = eManager->createEntity();
@@ -5936,7 +6246,7 @@ void ScriptedAnimation::scriptBuffAir(Entity* e){
     Entity* eCap = eArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Buff!", 3));
 }
-void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e) {
     int hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
     //int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:+1;
     Entity* eTarget = e->get<CPlayer>()->enemy;
@@ -5964,7 +6274,7 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
     double cultistAngularSpeed = 180;
     double xAmp = 50;
     double yAmp = 50;
-    for (int i = 0; i < nCultists; i++){
+    for (int i = 0; i < nCultists; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition());
         eObj->add(new CAnimation(false, "hero-10-walk.png"));
@@ -5978,10 +6288,10 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
         double angle = i*angleStep;
         double tFirstFlip;
         bool flipAux;
-        if (angle < 180){
+        if (angle < 180) {
             flipAux = true;
             tFirstFlip = (180-angle)/cultistAngularSpeed;
-        }else{
+        } else {
             flipAux = false;
             tFirstFlip = (360-angle)/cultistAngularSpeed;
         }
@@ -5990,7 +6300,7 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
         flipAux = opposite(flipAux);
         eObj->get<CActor>()->addNode(new AVariable(tFirstFlip, AVariable::H_FLIP, flipAux));
         tAux += tFirstFlip;
-        while (tAux <= campDuration){
+        while (tAux <= campDuration) {
             flipAux = opposite(flipAux);
             eObj->get<CActor>()->addNode(new AVariable(180/cultistAngularSpeed, AVariable::H_FLIP, flipAux));
             tAux += 180/cultistAngularSpeed;
@@ -6001,7 +6311,7 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
     }
 
     ///TARGETS
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eTarget, i);
         Entity* eGem = eManager->createEntity();
         eGem->add(new CPosition(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y));
@@ -6042,20 +6352,20 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e){
         addActor(eGem);
     }
 }
-void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
     bool hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
 
     double xOff = wWindow;
     double yOff = 200;
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eTarget = getUnitByID(eEnemy, i);
         xOff = max(abs(cxWindow - eTarget->get<CPosition>()->x), xOff);
     }
     xOff = wWindow/2 + xOff;
 
-    for(auto& i : outcome.idTargets){
+    for(auto& i : outcome.idTargets) {
         Entity* eTarget = getUnitByID(eEnemy, i);
         double tHit = 0.0;
         Entity* eCrow = eManager->createEntity();
@@ -6114,19 +6424,19 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e){
 
     }
 }
-void ScriptedAnimation::scriptDebuffFire(Entity* e){}
-void ScriptedAnimation::scriptDebuffWater(Entity* e){}
-void ScriptedAnimation::scriptDebuffEarth(Entity* e){}
-void ScriptedAnimation::scriptDebuffAir(Entity* e){}
+void ScriptedAnimation::scriptDebuffFire(Entity* e) {}
+void ScriptedAnimation::scriptDebuffWater(Entity* e) {}
+void ScriptedAnimation::scriptDebuffEarth(Entity* e) {}
+void ScriptedAnimation::scriptDebuffAir(Entity* e) {}
 
-void ScriptedAnimation::scriptTimeDilatation(Entity* e){
+void ScriptedAnimation::scriptTimeDilatation(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     //Entity* eEnemy = eArmy->get<CPlayer>()->enemy;
 
     Entity* eCap = eArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Time dilatation", 3));
 }
-void ScriptedAnimation::scriptTarot(Entity* e){
+void ScriptedAnimation::scriptTarot(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     Entity* eCap = eArmy->get<CArmy>()->captain;
 
@@ -6141,10 +6451,16 @@ void ScriptedAnimation::scriptTarot(Entity* e){
     double y0 = eCap->get<CPosition>()->y + yOff;
 
     string spriteCard;
-    switch(e->get<CActionOutcome>()->iValue){
-        case 1: spriteCard = "tarot-luck"; break;
-        case 2: spriteCard = "tarot-bad"; break;
-        case 3: spriteCard = "tarot-neutral"; break;
+    switch(e->get<CActionOutcome>()->iValue) {
+    case 1:
+        spriteCard = "tarot-luck";
+        break;
+    case 2:
+        spriteCard = "tarot-bad";
+        break;
+    case 3:
+        spriteCard = "tarot-neutral";
+        break;
         break;
     }
 
@@ -6152,7 +6468,7 @@ void ScriptedAnimation::scriptTarot(Entity* e){
     int index = randomInt(0, 2);
     double x = x0;
     //double y = y0;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 3; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x, y0));
         eObj->add(new CDraw(CDraw::GUI1, double(0.0)));
@@ -6182,34 +6498,34 @@ void ScriptedAnimation::scriptTarot(Entity* e){
     eHero->get<CActor>()->addNode(new ASpriteAnimation(3.5, eHero->get<CCaptain>()->aIdle));
 }
 
-void ScriptedAnimation::scriptTrueForm(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptTrueForm(ActionOutcome& outcome, Entity* e) {
 
     Entity* eCapOld = e->get<CArmy>()->captain;
     Entity* eCapNew;
 
-        e->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
-        eCapOld->get<CActor>()->addNode(new ATeleport(0.0, -200, -200));
-        map<CCaptain::ID, Entity*>::iterator it;
-        it = e->get<CArmy>()->captains.find(eCapOld->get<CCaptain>()->id);
-        e->get<CArmy>()->captains.erase(it);
+    e->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
+    eCapOld->get<CActor>()->addNode(new ATeleport(0.0, -200, -200));
+    map<CCaptain::ID, Entity*>::iterator it;
+    it = e->get<CArmy>()->captains.find(eCapOld->get<CCaptain>()->id);
+    e->get<CArmy>()->captains.erase(it);
 
-        CCaptain::ID id = 13;
-        e->get<CPlayer>()->heroDeck.push_back(id);
+    CCaptain::ID id = 13;
+    e->get<CPlayer>()->heroDeck.push_back(id);
 
-        eCapNew = eManager->createEntity();
-        eCapNew->add(new CCaptain(CCaptain::Map[id]));
-        eCapNew->add(new CAnimation(eCapOld->get<CAnimation>()->hFlip, CCaptain::Map[id].aIdle));
-        eCapNew->add(new CDraw(CDraw::WORLD_1));
-        eCapNew->add(new CVelocity());
-        eCapNew->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
-        eCapNew->add(new CActor());
-        eCapNew->add(new COwner(e));
-        //eCapNew->add(new CDimensions(50, 50));
-        eCapNew->get<CVelocity>()->speed = 80;
-        eCapNew->addObservedEntity("OriginalHero", eCapOld);
+    eCapNew = eManager->createEntity();
+    eCapNew->add(new CCaptain(CCaptain::Map[id]));
+    eCapNew->add(new CAnimation(eCapOld->get<CAnimation>()->hFlip, CCaptain::Map[id].aIdle));
+    eCapNew->add(new CDraw(CDraw::WORLD_1));
+    eCapNew->add(new CVelocity());
+    eCapNew->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
+    eCapNew->add(new CActor());
+    eCapNew->add(new COwner(e));
+    //eCapNew->add(new CDimensions(50, 50));
+    eCapNew->get<CVelocity>()->speed = 80;
+    eCapNew->addObservedEntity("OriginalHero", eCapOld);
 
-        e->get<CArmy>()->captains.insert(make_pair(id, eCapNew));
-        e->get<CArmy>()->captain = eCapNew;
+    e->get<CArmy>()->captains.insert(make_pair(id, eCapNew));
+    e->get<CArmy>()->captain = eCapNew;
 
     Entity* eObj;
 
@@ -6239,7 +6555,7 @@ void ScriptedAnimation::scriptTrueForm(ActionOutcome& outcome, Entity* e){
 
 }
 
-void ScriptedAnimation::scriptCallHelp(Entity* e){
+void ScriptedAnimation::scriptCallHelp(Entity* e) {
     Entity* eArmy = e->get<CActionOutcome>()->actorArmy;
     Entity* eCap = eArmy->get<CArmy>()->captain;
     Entity* eHelp = e->get<CActionOutcome>()->targets.front();
@@ -6258,14 +6574,14 @@ void ScriptedAnimation::scriptCallHelp(Entity* e){
     eHelp->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(x,y,x - 2*sign*60, y,200), eHelp->get<CCaptain>()->aIdle));
 }
 
-void ScriptedAnimation::scriptPreAttackSpeech(Entity* e){
+void ScriptedAnimation::scriptPreAttackSpeech(Entity* e) {
     EntityList attackers;
     list<TargetOutcome>::iterator it;
     CUnit::ID uID;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++){
+    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
         TargetOutcome out = *it;
         Entity* eAtk = out.eCauser;
-        if (!contains(attackers, eAtk)){
+        if (!contains(attackers, eAtk)) {
             attackers.push_back(eAtk);
         }
         uID = eAtk->get<CUnit>()->id;
@@ -6277,12 +6593,12 @@ void ScriptedAnimation::scriptPreAttackSpeech(Entity* e){
     eSpeecher->get<CActor>()->timeline.push_back(new ASpeak(0.0, speech, unitRest1));
 }
 
-double ScriptedAnimation::getActingDuration(){
+double ScriptedAnimation::getActingDuration() {
     double maxDuration = 0;
-    for(EntityListIt i = actors.begin(); i != actors.end(); i++){
+    for(EntityListIt i = actors.begin(); i != actors.end(); i++) {
         double duration = 0;
         Entity* e = *i;
-        for(list<AnimationNode*>::iterator j = e->get<CActor>()->timeline.begin(); j != e->get<CActor>()->timeline.end(); j++){
+        for(list<AnimationNode*>::iterator j = e->get<CActor>()->timeline.begin(); j != e->get<CActor>()->timeline.end(); j++) {
             AnimationNode* node = *j;
             duration += node->triggerTime;
         }
@@ -6291,52 +6607,61 @@ double ScriptedAnimation::getActingDuration(){
     return maxDuration;
 }
 
-Entity* ScriptedAnimation::getUnitByID(Entity* eArmy, int id){
-    for(auto& e : eArmy->get<CArmy>()->allUnits){
+Entity* ScriptedAnimation::getUnitByID(Entity* eArmy, int id) {
+    for(auto& e : eArmy->get<CArmy>()->allUnits) {
         if (e->get<CUnit>()->armyID == id) return e;
     }
     printf("Unit not found! (player %d, unit %d)\n", eArmy->get<CPlayer>()->id, id);
     return nullptr;
 }
 
-void ScriptedAnimation::scriptGrantFormationBuff(ActionOutcome& outcome, Entity* e){
+void ScriptedAnimation::scriptGrantFormationBuff(ActionOutcome& outcome, Entity* e) {
 //    e->get<CArmy>()->formation = outcome.formation;
     CArmy::Formation formation = e->get<CArmy>()->formation;
     CAction::ID effect;
-    switch(formation){
-        case CArmy::F1: effect = 300; break;
-        case CArmy::F2: effect = 301; break;
-        case CArmy::F3: effect = 302; break;
-        case CArmy::F4: effect = 303; break;
-        default: break;
+    switch(formation) {
+    case CArmy::F1:
+        effect = 300;
+        break;
+    case CArmy::F2:
+        effect = 301;
+        break;
+    case CArmy::F3:
+        effect = 302;
+        break;
+    case CArmy::F4:
+        effect = 303;
+        break;
+    default:
+        break;
     }
     e->get<CArmy>()->armyEffects.insert(make_pair(effect, CAction::Map[effect]));
 }
 
-EntityList ScriptedAnimation::getActors(ActionOutcome& outcome, Entity* e){
+EntityList ScriptedAnimation::getActors(ActionOutcome& outcome, Entity* e) {
     EntityList l;
-    for (auto& i : outcome.idActors){
+    for (auto& i : outcome.idActors) {
         l.push_back(getUnitByID(e, i));
     }
     return l;
 }
 
-EntityList ScriptedAnimation::getTargets(ActionOutcome& outcome, Entity* e){
+EntityList ScriptedAnimation::getTargets(ActionOutcome& outcome, Entity* e) {
     EntityList l;
-    for (auto& i : outcome.idTargets){
+    for (auto& i : outcome.idTargets) {
         l.push_back(getUnitByID(e, i));
     }
     return l;
 }
 
-void ScriptedAnimation::scriptPurificationFlask(double xOrigin, double yOrigin, double tStart){
+void ScriptedAnimation::scriptPurificationFlask(double xOrigin, double yOrigin, double tStart) {
     //Entity* eEffect = eManager->createEntity();
     //Entity* eEmmitter;
 
     vector<int> starWeight = {50, 30, 10, 5, 5};
     vector<int> stars;
-    for(unsigned int i = 0; i < starWeight.size(); i++){
-        for (int c = 0; c < starWeight[i]; c++){
+    for(unsigned int i = 0; i < starWeight.size(); i++) {
+        for (int c = 0; c < starWeight[i]; c++) {
             stars.push_back(i+1);
         }
     }
@@ -6356,9 +6681,9 @@ void ScriptedAnimation::scriptPurificationFlask(double xOrigin, double yOrigin, 
     double yMax = cyWindow + hFormation*uyFormation/2;
     double tFirst = tStart;
 
-    for (int i = 0; i < nOrigins/2; i++){
+    for (int i = 0; i < nOrigins/2; i++) {
         double tGo = tFirst;
-        for(int j = 0; j < nStars; j++){
+        for(int j = 0; j < nStars; j++) {
             Entity* eStar;
 
             int starID = stars[randomInt(0, stars.size()-1)];
@@ -6379,7 +6704,7 @@ void ScriptedAnimation::scriptPurificationFlask(double xOrigin, double yOrigin, 
             eStar->get<CActor>()->addNode(new AFade(durTravel, fadeSpeed, 0));
             eStar->get<CActor>()->addNode(new ADestroy(durFade));
 
-            if (i > 0){
+            if (i > 0) {
                 x -= 2*i*dx;
 
                 starID = stars[randomInt(0, stars.size()-1)];
@@ -6411,7 +6736,7 @@ void ScriptedAnimation::scriptPurificationFlask(double xOrigin, double yOrigin, 
 
 }
 
-void ScriptedAnimation::scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type){
+void ScriptedAnimation::scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type) {
     double yOrigin = y - 32;
     double yTarget = yOrigin - 20;
     double speed = 60;
@@ -6439,7 +6764,7 @@ void ScriptedAnimation::scriptBlockIcon(double x, double y, double timing, bool 
     addActor(eIcon);
 }
 
-void ScriptedAnimation::scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type){
+void ScriptedAnimation::scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type) {
     double yOrigin = y - 32;
     double yTarget = yOrigin - 20;
     double speed = 60;
@@ -6467,16 +6792,16 @@ void ScriptedAnimation::scriptDeathIcon(double x, double y, double timing, bool 
     addActor(eIcon);
 }
 
-bool ScriptedAnimation::mapContains(map<Entity*, double> m, Entity* e){
+bool ScriptedAnimation::mapContains(map<Entity*, double> m, Entity* e) {
     map<Entity*, double>::iterator it = m.find(e);
     return it != m.end();
 }
 
-void ScriptedAnimation::scriptGeiser(double x, double y, double timing, double duration){
+void ScriptedAnimation::scriptGeiser(double x, double y, double timing, double duration) {
 
 }
 
-void ScriptedAnimation::scriptVictoryAnimation(double delay){
+void ScriptedAnimation::scriptVictoryAnimation(double delay) {
     Entity* eObj;
     Entity* ePanel;
     CDraw::Tag drawTag = CDraw::GUI3;
@@ -6596,7 +6921,7 @@ void ScriptedAnimation::scriptVictoryAnimation(double delay){
     askEndOfMatchQuestions(delay);
 }
 
-void ScriptedAnimation::scriptConfettiRain(double delay){
+void ScriptedAnimation::scriptConfettiRain(double delay) {
     std::vector<std::string> confettis = {"confetti-01.png",
                                           "confetti-02.png",
                                           "confetti-03.png",
@@ -6614,8 +6939,8 @@ void ScriptedAnimation::scriptConfettiRain(double delay){
     double nEmmiters = 20;
     double space = wWindow/nEmmiters;
     double xEmmiter = 0;
-    for(int i = 0; i <= nEmmiters; i++){
-        for (unsigned int j = 0; j < confettis.size(); j++){
+    for(int i = 0; i <= nEmmiters; i++) {
+        for (unsigned int j = 0; j < confettis.size(); j++) {
             Entity* eEmmiter = eManager->createEntity();
             double xPosition = randomDouble(xEmmiter-12, xEmmiter+12);
             eEmmiter->add(new CPosition(xPosition, -30));
@@ -6632,7 +6957,7 @@ void ScriptedAnimation::scriptConfettiRain(double delay){
     eEffect->get<CActor>()->addNode(new AVariable(delay, AVariable::PARTICLE_EFFECT, true));
 }
 
-void ScriptedAnimation::scriptPoofAt(double x, double y, double when){
+void ScriptedAnimation::scriptPoofAt(double x, double y, double when) {
     Entity* eSmoke = eManager->createEntity();
     string animation = "poof-03.png";
     double w = Assets::getAnimation(animation).wSprite;
@@ -6650,7 +6975,7 @@ void ScriptedAnimation::scriptPoofAt(double x, double y, double when){
     eSmoke->get<CActor>()->timeline.push_back(new ADestroy(Assets::getAnimation(animation).duration));
 }
 
-void ScriptedAnimation::askEndOfMatchQuestions(double delay){
+void ScriptedAnimation::askEndOfMatchQuestions(double delay) {
     Entity* eButton = eManager->createEntity();
     eButton->add(new CPosition(cxWindow, cyWindow));
     eButton->add(new CButtonHitbox(wWindow, hWindow));
@@ -6659,9 +6984,9 @@ void ScriptedAnimation::askEndOfMatchQuestions(double delay){
     eButton->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
 }
 
-sf::Vector2f ScriptedAnimation::getArmyMiddlePoint(Entity* e){
+sf::Vector2f ScriptedAnimation::getArmyMiddlePoint(Entity* e) {
     sf::Vector2f point(0,0);
-    for (Entity* eUnit : e->get<CArmy>()->allUnits){
+    for (Entity* eUnit : e->get<CArmy>()->allUnits) {
         if (eUnit->get<CUnit>()->dead) continue;
         point.x += eUnit->get<CPosition>()->x;
         point.y += eUnit->get<CPosition>()->y;
@@ -6671,7 +6996,7 @@ sf::Vector2f ScriptedAnimation::getArmyMiddlePoint(Entity* e){
     return point;
 }
 
-void ScriptedAnimation::onNewScreen(Entity* e){
+void ScriptedAnimation::onNewScreen(Entity* e) {
     clearScene();
     playingScene = false;
     notify(SCENE_ENDED);

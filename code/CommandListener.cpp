@@ -1,6 +1,6 @@
 #include "CommandListener.h"
 
-CommandListener::CommandListener(){
+CommandListener::CommandListener() {
     addSubscription(SHOW_CAPTAIN_OPTIONS);
     addSubscription(START_BATTLE_STATE);
     addSubscription(TAKE_CAPTAIN);
@@ -19,20 +19,20 @@ CommandListener::CommandListener(){
     listening = true;
 }
 
-CommandListener::~CommandListener(){
+CommandListener::~CommandListener() {
     //dtor
 }
 
-void CommandListener::update(){
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+void CommandListener::update() {
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
-        if (e->has(Component::OPTION_BOX) && e->get<COptionBox>()->state == COptionBox::CHOSEN){
+        if (e->has(Component::OPTION_BOX) && e->get<COptionBox>()->state == COptionBox::CHOSEN) {
             CAction::ID id = (CAction::ID) e->get<COptionBox>()->selected;
             Entity* eArmy = e->get<CCommandOption>()->eArmy;
             eArmy->get<CArmy>()->nextAction = id;
             notify(ACTION_SELECTED);
             eManager->removeEntity(e);
-        }else if (e->has(Component::ARMY_COMPOSITION) && e->get<CArmyComposition>()->composed){
+        } else if (e->has(Component::ARMY_COMPOSITION) && e->get<CArmyComposition>()->composed) {
             /*
             for(EntityListIt i = e->get<CArmyComposition>()->eOptions.begin(); i != e->get<CArmyComposition>()->eOptions.end(); i++){
                 notify(REMOVE_PANEL, *i);
@@ -51,7 +51,7 @@ void CommandListener::update(){
             eListener = nullptr;
             notify(ACTION_SELECTED);
             */
-        }else if (e->has(Component::ARMY_COMPOSITION) && !e->get<CArmyComposition>()->composed){
+        } else if (e->has(Component::ARMY_COMPOSITION) && !e->get<CArmyComposition>()->composed) {
             /*
             if (checkArmySize(e)){
                 e->get<CTooltip>()->text = "OK!";
@@ -66,11 +66,11 @@ void CommandListener::update(){
         }
     }
 
-    if (war.getSystemAction() == War::SHOW_HERO_POOL){
+    if (war.getSystemAction() == War::SHOW_HERO_POOL) {
         //showHeroPool();
         //war.setActionCompleted(0, true);
         //listening = true;
-    }else if (war.getSystemAction() == War::END_HERO_POOL){
+    } else if (war.getSystemAction() == War::END_HERO_POOL) {
         //endHeroPool();
     }
 
@@ -78,120 +78,139 @@ void CommandListener::update(){
     if (!eActor) return;
 
     //for(EntityListIt i = entities.begin(); i != entities.end(); i++){
-        if (!listening){
-            if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-                //clearArmy(war.getPlayer1());
-                //cout << war.getActorID() << endl;
-                if (!eActor->has(Component::AI)){
-                    showUnitOptions(eActor);
-                    listening = true;
-                }
-                /*
-                clearArmy(war.getPlayer2());
-                notify(RECOMPOSE_ARMY, war.getPlayer2());
-                */
-            }else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION && !eActor->has(Component::AI) && !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-                showCaptainOptions(eActor);
-                listening = true;
-            }else if (war.getSystemAction() == War::ASK_FORMATION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-                showFormationOptions(eActor);
-                listening = true;
-            }else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-                showCaptainActionOptions(eActor);
-                listening = true;
-            }else if (war.getSystemAction() == War::ASK_ARMY_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-                showArmyActionOptions(eActor);
-                listening = true;
-            }else if (war.getSystemAction() == War::ASK_BATTLE_CLOSURE && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)){
-                showBattleClosureOptions(eActor);
+    if (!listening) {
+        if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE && !war.getRemotelyControled(eActor->get<CPlayer>()->id)) {
+            //clearArmy(war.getPlayer1());
+            //cout << war.getActorID() << endl;
+            if (!eActor->has(Component::AI)) {
+                showUnitOptions(eActor);
                 listening = true;
             }
-            /*else if (war.getSystemAction() == War::PRESENT_ARMY){
-                presentArmy(eActor);
-            }else if (war.getSystemAction() == War::ADVANCE_ARMY){
-                advanceArmy(eActor);
-            }else if (war.getSystemAction() == War::FIELD_CLEANUP){
-                cleanupField(eActor);
-            }else if (war.getSystemAction() == War::SHOW_HERO_POOL){
-                //showHeroPool();
-            }
-            */else if (war.getSystemAction() == War::ASK_HERO_PICK){
-                askHeroPick(eActor);
-            }
-        }else{
-            if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE){
-                if (eListener && eListener->getObservedEntity("AssemblyDone")){
-                    if (getArmyCompositionSize(eListener) > eActor->get<CPlayer>()->maxPicks){
-                        eListener->getObservedEntity("AssemblyDone")->get<CButtonTrigger>()->setUniqueTrigger(EMPTY_MESSAGE);
-                    }else{
-                        eListener->getObservedEntity("AssemblyDone")->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
-                    }
+            /*
+            clearArmy(war.getPlayer2());
+            notify(RECOMPOSE_ARMY, war.getPlayer2());
+            */
+        } else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION && !eActor->has(Component::AI) && !war.getRemotelyControled(eActor->get<CPlayer>()->id)) {
+            showCaptainOptions(eActor);
+            listening = true;
+        } else if (war.getSystemAction() == War::ASK_FORMATION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)) {
+            showFormationOptions(eActor);
+            listening = true;
+        } else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)) {
+            showCaptainActionOptions(eActor);
+            listening = true;
+        } else if (war.getSystemAction() == War::ASK_ARMY_ACTION && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)) {
+            showArmyActionOptions(eActor);
+            listening = true;
+        } else if (war.getSystemAction() == War::ASK_BATTLE_CLOSURE && !eActor->has(Component::AI)&& !war.getRemotelyControled(eActor->get<CPlayer>()->id)) {
+            showBattleClosureOptions(eActor);
+            listening = true;
+        }
+        /*else if (war.getSystemAction() == War::PRESENT_ARMY){
+            presentArmy(eActor);
+        }else if (war.getSystemAction() == War::ADVANCE_ARMY){
+            advanceArmy(eActor);
+        }else if (war.getSystemAction() == War::FIELD_CLEANUP){
+            cleanupField(eActor);
+        }else if (war.getSystemAction() == War::SHOW_HERO_POOL){
+            //showHeroPool();
+        }
+        */else if (war.getSystemAction() == War::ASK_HERO_PICK) {
+            askHeroPick(eActor);
+        }
+    } else {
+        if (war.getSystemAction() == War::ASK_ARMY_ASSEMBLE) {
+            if (eListener && eListener->getObservedEntity("AssemblyDone")) {
+                if (getArmyCompositionSize(eListener) > eActor->get<CPlayer>()->maxPicks) {
+                    eListener->getObservedEntity("AssemblyDone")->get<CButtonTrigger>()->setUniqueTrigger(EMPTY_MESSAGE);
+                } else {
+                    eListener->getObservedEntity("AssemblyDone")->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
                 }
             }
         }
+    }
     //}
 }
 
-void CommandListener::onStartBattleState(Entity* e){
-    if (BattleState::ASK_ARMY_ASSEMBLE == e->get<CBattle>()->state.id){
+void CommandListener::onStartBattleState(Entity* e) {
+    if (BattleState::ASK_ARMY_ASSEMBLE == e->get<CBattle>()->state.id) {
         clearArmy(e->get<CBattle>()->state.actors.front());
         showUnitOptions(e->get<CBattle>()->state.actors.front());
         clearArmy(e->get<CBattle>()->state.actors.front()->get<CPlayer>()->enemy);
         notify(RECOMPOSE_ARMY, e->get<CBattle>()->state.actors.front()->get<CPlayer>()->enemy);
     }
 
-    for(EntityListIt i = e->get<CBattle>()->state.actors.begin(); i != e->get<CBattle>()->state.actors.end(); i++){
+    for(EntityListIt i = e->get<CBattle>()->state.actors.begin(); i != e->get<CBattle>()->state.actors.end(); i++) {
         Entity* actor = *i;
         BattleState::ID state = e->get<CBattle>()->state.id;
         if (actor->has(Component::AI) && (
-            state == BattleState::ASK_CAPTAIN_SELECTION ||
-            state == BattleState::ASK_FORMATION ||
-            state == BattleState::ASK_CAPTAIN_ACTION ||
-            state == BattleState::ASK_ARMY_ACTION ||
-            state == BattleState::ASK_BATTLE_CLOSURE
-            )){
+                    state == BattleState::ASK_CAPTAIN_SELECTION ||
+                    state == BattleState::ASK_FORMATION ||
+                    state == BattleState::ASK_CAPTAIN_ACTION ||
+                    state == BattleState::ASK_ARMY_ACTION ||
+                    state == BattleState::ASK_BATTLE_CLOSURE
+                )) {
 
             continue;
         }
 
-        switch(e->get<CBattle>()->state.id){
-            case BattleState::ASK_CAPTAIN_SELECTION: showCaptainOptions(actor); break;
-            case BattleState::ASK_FORMATION: showFormationOptions(actor); break;
-            case BattleState::ASK_CAPTAIN_ACTION: showCaptainActionOptions(actor); break;
-            case BattleState::ASK_ARMY_ACTION: showArmyActionOptions(actor); break;
-            case BattleState::ASK_BATTLE_CLOSURE: showBattleClosureOptions(actor); break;
-            case BattleState::PLAY_MELEE_BATTLE: playMeleeBattle(actor); break;
-            case BattleState::PRESENT_ARMY: presentArmy(actor); break;
-            case BattleState::ADVANCE_ARMY: advanceArmy(actor); break;
-            case BattleState::FIELD_CLEANUP: cleanupField(actor); break;
-            default: break;
+        switch(e->get<CBattle>()->state.id) {
+        case BattleState::ASK_CAPTAIN_SELECTION:
+            showCaptainOptions(actor);
+            break;
+        case BattleState::ASK_FORMATION:
+            showFormationOptions(actor);
+            break;
+        case BattleState::ASK_CAPTAIN_ACTION:
+            showCaptainActionOptions(actor);
+            break;
+        case BattleState::ASK_ARMY_ACTION:
+            showArmyActionOptions(actor);
+            break;
+        case BattleState::ASK_BATTLE_CLOSURE:
+            showBattleClosureOptions(actor);
+            break;
+        case BattleState::PLAY_MELEE_BATTLE:
+            playMeleeBattle(actor);
+            break;
+        case BattleState::PRESENT_ARMY:
+            presentArmy(actor);
+            break;
+        case BattleState::ADVANCE_ARMY:
+            advanceArmy(actor);
+            break;
+        case BattleState::FIELD_CLEANUP:
+            cleanupField(actor);
+            break;
+        default:
+            break;
         }
     }
 }
 
-void CommandListener::onSystemAction(Entity* e){
+void CommandListener::onSystemAction(Entity* e) {
     listening = false;
 }
 
-void CommandListener::askHeroPick(Entity* e){
+void CommandListener::askHeroPick(Entity* e) {
     if (!eListener) return;
     EntityList eOptionList = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
     //printf("options size = %d", eOptionList.size());
-    if (!war.getRemotelyControled(e->get<CPlayer>()->id) && !e->has(Component::AI) && !war.getNextActionOutcome(e->get<CPlayer>()->id).ready){
+    if (!war.getRemotelyControled(e->get<CPlayer>()->id) && !e->has(Component::AI) && !war.getNextActionOutcome(e->get<CPlayer>()->id).ready) {
         eListener->addObservedEntity("PlayerBeingListenedTo", e);
-        for(auto& eOpt : eOptionList){
+        for(auto& eOpt : eOptionList) {
             eOpt->get<CButtonTrigger>()->setUniqueTrigger(SELECT_ACTION);
         }
-    }else{
+    } else {
         eListener->addObservedEntity("PlayerBeingListenedTo", e);
         //printf("Clearing triggers..\n");
-        for(auto& eOpt : eOptionList){
+        for(auto& eOpt : eOptionList) {
             eOpt->get<CButtonTrigger>()->msgs.clear();
         }
     }
 }
 
-void CommandListener::onShowHeroPool(Entity* e){
+void CommandListener::onShowHeroPool(Entity* e) {
     eListener = eManager->createEntity();
 
     list<CCaptain::ID> options = war.getNextActionOutcome().heroes;
@@ -206,7 +225,7 @@ void CommandListener::onShowHeroPool(Entity* e){
 
     Entity* eOptions = eManager->createEntity();
 
-    for (list<CCaptain::ID>::iterator i = options.begin(); i != options.end(); i++){
+    for (list<CCaptain::ID>::iterator i = options.begin(); i != options.end(); i++) {
         CCaptain cap = CCaptain::Map[*i];
         Entity* eOption = eManager->createEntity();
         eOption->add(new CPosition(x,y));
@@ -238,7 +257,7 @@ void CommandListener::onShowHeroPool(Entity* e){
     listening = true;
 }
 
-void CommandListener::showCaptainOptions(Entity* e){
+void CommandListener::showCaptainOptions(Entity* e) {
     eListener = eManager->createEntity();
 
     int K = 100;
@@ -255,7 +274,7 @@ void CommandListener::showCaptainOptions(Entity* e){
 
     Entity* eOptions = eManager->createEntity();
 
-    for(auto& i : e->get<CArmy>()->captains){
+    for(auto& i : e->get<CArmy>()->captains) {
         if (i.second->get<CCaptain>()->isConfined) continue;
         CCaptain::ID idCap = i.first;
         CAction::ID idAct = K+idCap;
@@ -289,7 +308,7 @@ void CommandListener::showCaptainOptions(Entity* e){
     listening = true;
 }
 
-void CommandListener::showFormationOptions(Entity* e){
+void CommandListener::showFormationOptions(Entity* e) {
     eListener = eManager->createEntity();
     Entity* eOptions = eManager->createEntity();
 
@@ -310,7 +329,7 @@ void CommandListener::showFormationOptions(Entity* e){
     double tBetween = 0.2;
     int count = 0;
 
-    for(int i = 0; i < options; i++){
+    for(int i = 0; i < options; i++) {
         if (i == e->get<CArmy>()->prohibitedFormation) continue;
         CAction::ID idAct = K+i;
         Entity* eBut = eManager->createEntity();
@@ -341,7 +360,7 @@ void CommandListener::showFormationOptions(Entity* e){
     listening = true;
 }
 
-void CommandListener::showCaptainActionOptions(Entity* e){
+void CommandListener::showCaptainActionOptions(Entity* e) {
     eListener = eManager->createEntity();
     Entity* eOptions = eManager->createEntity();
 
@@ -358,7 +377,7 @@ void CommandListener::showCaptainActionOptions(Entity* e){
     double tBetween = 0.2;
     int count = 0;
 
-    for(auto& i : e->get<CArmy>()->captain->get<CCaptain>()->actions){
+    for(auto& i : e->get<CArmy>()->captain->get<CCaptain>()->actions) {
         if (i == 226) continue;
         CAction::ID idAct = i;
         Entity* eBut = eManager->createEntity();
@@ -389,7 +408,7 @@ void CommandListener::showCaptainActionOptions(Entity* e){
     listening = true;
 }
 
-void CommandListener::showArmyActionOptions(Entity* e){
+void CommandListener::showArmyActionOptions(Entity* e) {
     eListener = eManager->createEntity();
     Entity* eOptions = eManager->createEntity();
 
@@ -407,7 +426,7 @@ void CommandListener::showArmyActionOptions(Entity* e){
     double tBetween = 0.2;
     int count = 0;
 
-    for(auto& i : e->get<CArmy>()->unitCount){
+    for(auto& i : e->get<CArmy>()->unitCount) {
         if (i.second <= 0) continue;
         CUnit::ID idUnit = i.first;
         CAction::ID actID = CUnit::Map[i.first].action;
@@ -445,7 +464,7 @@ void CommandListener::showArmyActionOptions(Entity* e){
     listening = true;
 }
 
-void CommandListener::showBattleClosureOptions(Entity* e){
+void CommandListener::showBattleClosureOptions(Entity* e) {
     eListener = eManager->createEntity();
 
     //Entity* eCap = e->get<CArmy>()->captain;
@@ -463,7 +482,7 @@ void CommandListener::showBattleClosureOptions(Entity* e){
     double tBetween = 0.2;
     int count = 0;
 
-    for(int i = 0; i < options; i++){
+    for(int i = 0; i < options; i++) {
         CAction::ID idAct = K+i;
         Entity* eBut = eManager->createEntity();
         eBut->add(new CButtonState());
@@ -493,41 +512,41 @@ void CommandListener::showBattleClosureOptions(Entity* e){
     listening = true;
 }
 
-void CommandListener::playMeleeBattle(Entity* e){
-      CAction::ID id = (CAction::ID) 400;
-      e->get<CArmy>()->nextAction = id;
-      notify(PLAY_ACTION, e);
+void CommandListener::playMeleeBattle(Entity* e) {
+    CAction::ID id = (CAction::ID) 400;
+    e->get<CArmy>()->nextAction = id;
+    notify(PLAY_ACTION, e);
 }
 
-void CommandListener::selectRandomUnits(list<CUnit::ID>& output, list<CUnit::ID>& input, int n){
+void CommandListener::selectRandomUnits(list<CUnit::ID>& output, list<CUnit::ID>& input, int n) {
     output.clear();
     list<CUnit::ID> deck = input;
     n = min(n, (int) deck.size());
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < n; i++) {
         output.push_back(popRandom(deck));
     }
 }
 
-bool ascendingUnitID(Entity* e1, Entity* e2){
+bool ascendingUnitID(Entity* e1, Entity* e2) {
     return e1->get<CUnit>()->id < e2->get<CUnit>()->id;
 }
 
-void CommandListener::showUnitOptions(Entity* e){
-    if (!war.getMatchConfig().randomArmy){
+void CommandListener::showUnitOptions(Entity* e) {
+    if (!war.getMatchConfig().randomArmy) {
         list<CUnit::ID> options;
         Entity* eOptions = eManager->createEntity();
         list<CUnit::ID> unitDeck;
-        for (list<CUnit::ID>::iterator it = e->get<CPlayer>()->unitDeck.begin(); it != e->get<CPlayer>()->unitDeck.end(); it++){
-            if (CUnit::Map[*it].damage != e->get<CArmy>()->prohibitedDamageType){
+        for (list<CUnit::ID>::iterator it = e->get<CPlayer>()->unitDeck.begin(); it != e->get<CPlayer>()->unitDeck.end(); it++) {
+            if (CUnit::Map[*it].damage != e->get<CArmy>()->prohibitedDamageType) {
                 //unitDeck.remove(*it);
                 unitDeck.push_back(*it);
-            }else{
+            } else {
                 //it++;
             }
         }
         selectRandomUnits(options, unitDeck, war.getMatchConfig().nUnitOpt);
 
-        for (list<CUnit::ID>::iterator i = options.begin(); i != options.end(); i++){
+        for (list<CUnit::ID>::iterator i = options.begin(); i != options.end(); i++) {
             CUnit::ID id = *i;
             Entity* eOption = eManager->createEntity();
             eOption->add(new CSpinButton(0, war.getMatchConfig().recruitGroup, 0, e->get<CPlayer>()->maxPicks));
@@ -566,14 +585,14 @@ void CommandListener::showUnitOptions(Entity* e){
         EntityList eListOptions = eOptions->getObservedEntities();
         eListOptions.sort(ascendingUnitID);
 
-        for (Entity* i : eListOptions){
+        for (Entity* i : eListOptions) {
             notify(CREATE_SPIN_BUTTONS, i);
         }
 
         double spacing = 60;
         double x = cxWindow - (eOptions->getObservedEntities().size()-1)*spacing/2;
         double y = -50;
-        for(Entity* eOption : eListOptions){
+        for(Entity* eOption : eListOptions) {
             eOption->get<CPosition>()->x = x;
             eOption->get<CPosition>()->y = y;
 
@@ -626,7 +645,7 @@ void CommandListener::showUnitOptions(Entity* e){
         eListener->addObservedEntity("UnitOptions", eOptions);
         eListener->addObservedEntity("AssemblyDone", btEnd);
         eListener->addObservedEntity("PlayerBeingListenedTo", e);
-    }else{
+    } else {
         notify(ASSIGN_RANDOM_ARMY, e);
 
         e->get<CArmy>()->repicks = e->get<CPlayer>()->maxRepicks;
@@ -670,31 +689,31 @@ void CommandListener::showUnitOptions(Entity* e){
     }
 }
 
-void CommandListener::clearArmy(Entity* e){
+void CommandListener::clearArmy(Entity* e) {
     e->get<CArmy>()->unitCount.clear();
     e->get<CArmy>()->allUnits.clear();
 }
 
-void CommandListener::reassembleArmies(Entity* e){
+void CommandListener::reassembleArmies(Entity* e) {
 
 }
 
-void CommandListener::presentArmy(Entity* e){
+void CommandListener::presentArmy(Entity* e) {
     e->get<CArmy>()->nextAction = 500;
     notify(PLAY_ACTION, e);
 }
 
-void CommandListener::advanceArmy(Entity* e){
+void CommandListener::advanceArmy(Entity* e) {
     e->get<CArmy>()->nextAction = 502;
     notify(PLAY_ACTION, e);
 }
 
-void CommandListener::cleanupField(Entity* e){
+void CommandListener::cleanupField(Entity* e) {
     Entity* eWin = e;
     Entity* eLos = e->get<CPlayer>()->enemy;
     CAction::ID na = eWin->get<CArmy>()->nextAction;
 
-    if (na != 402){
+    if (na != 402) {
         eWin->get<CArmy>()->nextAction = 503;
         notify(PLAY_ACTION, eWin);
     }
@@ -703,7 +722,7 @@ void CommandListener::cleanupField(Entity* e){
     notify(PLAY_ACTION, eWin);
 
 
-    if (na != 402){
+    if (na != 402) {
         eLos->get<CArmy>()->nextAction = 503;
         notify(PLAY_ACTION, eLos);
     }
@@ -715,51 +734,51 @@ void CommandListener::cleanupField(Entity* e){
     eLos->get<CArmy>()->allUnits.clear();
 }
 
-bool CommandListener::checkArmySize(Entity* e){
+bool CommandListener::checkArmySize(Entity* e) {
     Entity* eArmy = e->get<CCommandOption>()->eArmy;
     int nUnits = 0;
-    for(EntityListIt i = e->get<CArmyComposition>()->eOptions.begin(); i != e->get<CArmyComposition>()->eOptions.end(); i++){
+    for(EntityListIt i = e->get<CArmyComposition>()->eOptions.begin(); i != e->get<CArmyComposition>()->eOptions.end(); i++) {
         Entity* eOpt = *i;
         nUnits += eOpt->get<CSpinButton>()->value;
     }
-    if (nUnits > eArmy->get<CPlayer>()->maxPicks){
+    if (nUnits > eArmy->get<CPlayer>()->maxPicks) {
         return false;
-    }else{
+    } else {
         return true;
     }
 }
 
-void CommandListener::onAcceptArmy(Entity* e){
+void CommandListener::onAcceptArmy(Entity* e) {
     eManager->removeEntity(e);
     notify(ACTION_SELECTED);
 }
 
-void CommandListener::onRandomizeArmy(Entity* e){
+void CommandListener::onRandomizeArmy(Entity* e) {
     Entity* eArmy = e->get<COwner>()->e;
     notify(ASSIGN_RANDOM_ARMY, eArmy);
     notify(UPDATE_TOOLTIP, e);
     eArmy->get<CArmy>()->repicks--;
-    if (eArmy->get<CArmy>()->repicks <= 0){
+    if (eArmy->get<CArmy>()->repicks <= 0) {
         eManager->removeEntity(e);
-    }else{
+    } else {
         e->get<CTooltip>()->text = "Repicks remaining: " + int2str(eArmy->get<CArmy>()->repicks);
         notify(UPDATE_TOOLTIP, e);
     }
 }
 
-void CommandListener::onPickHero(Entity* e){
+void CommandListener::onPickHero(Entity* e) {
 }
 
-void CommandListener::endHeroPool(){
+void CommandListener::endHeroPool() {
     notify(REMOVE_PANEL, eListener);
     eListener = nullptr;
 }
 
-void CommandListener::onEndHeroPool(Entity* e){
+void CommandListener::onEndHeroPool(Entity* e) {
     //printf("OK\n");
     bool first = true;
     EntityList eList = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
-    for(auto& i : eList){
+    for(auto& i : eList) {
         animateButtonOutPuff(i, 0.0, first ? true:false);
         first = false;
     }
@@ -767,26 +786,26 @@ void CommandListener::onEndHeroPool(Entity* e){
     //listening = false;
 }
 
-void CommandListener::onSelectAction(Entity* e){
+void CommandListener::onSelectAction(Entity* e) {
     ///FIRST SAVE THE ACTION ID TO THE ACTION OUTCOME STRUCTURE
     Entity* eArmy = eListener->getObservedEntity("PlayerBeingListenedTo");
 
     ///THEN REMOVE OPTIONS FROM SCREEN
-    if (war.getSystemAction() == war.ASK_HERO_PICK){
+    if (war.getSystemAction() == war.ASK_HERO_PICK) {
         CCaptain::ID heroID = (int)e->get<CAction>()->id - 600;
         Entity* eButton = eListener->getObservedEntity("HeroOptions")->getObservedEntity(int2str((int) heroID));
         eListener->getObservedEntity("HeroOptions")->removeObservedEntity(eButton);
         animateButtonOutPuff(eButton);
-    }else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE){
+    } else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE) {
         eArmy->get<CArmy>()->unitCount.clear();
         //map<CUnit::ID, CUnit>& units = CUnit::Map;
         EntityList eOptions = eListener->getObservedEntity("UnitOptions")->getObservedEntities();
 
         bool first = true;
         Entity* btEnd = eListener->getObservedEntity("AssemblyDone");
-        for (Entity* eOpt : eOptions){
+        for (Entity* eOpt : eOptions) {
             CUnit::ID id = eOpt->get<CUnit>()->id;
-            if (eOpt->get<CSpinButton>()->value > 0){
+            if (eOpt->get<CSpinButton>()->value > 0) {
                 eArmy->get<CArmy>()->unitCount.insert(make_pair(id, eOpt->get<CSpinButton>()->value));
             }
             animateUnitOptionOut(eOpt, first);
@@ -795,15 +814,15 @@ void CommandListener::onSelectAction(Entity* e){
         animateButtonOutPuff(btEnd, 0.0, true);
         eListener = nullptr;
 
-    }else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION
-        ||    war.getSystemAction() == war.ASK_FORMATION
-        ||    war.getSystemAction() == war.ASK_ARMY_ACTION
-        ||    war.getSystemAction() == war.ASK_CAPTAIN_ACTION
-        ||    war.getSystemAction() == war.ASK_BATTLE_CLOSURE){
+    } else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION
+               ||    war.getSystemAction() == war.ASK_FORMATION
+               ||    war.getSystemAction() == war.ASK_ARMY_ACTION
+               ||    war.getSystemAction() == war.ASK_CAPTAIN_ACTION
+               ||    war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
 
         EntityList eOptions = eListener->getObservedEntity("Options")->getObservedEntities();
         bool first = true;
-        for(Entity* i : eOptions){
+        for(Entity* i : eOptions) {
             if (first) animateButtonOutPuff(i, 0.0, true);
             else animateButtonOutPuff(i, 0.0, false);
             first = false;
@@ -814,21 +833,21 @@ void CommandListener::onSelectAction(Entity* e){
     war.getNextActionOutcome(eArmy->get<CPlayer>()->id).action = e->get<CAction>()->id;
 }
 
-void CommandListener::onRemoveFromHeroPool(Entity* e){
+void CommandListener::onRemoveFromHeroPool(Entity* e) {
     CCaptain::ID idHero = war.getNextActionOutcome(e->get<CPlayer>()->id).hero;
     Entity* eHero = nullptr;
-    for(auto& i : eListener->get<CPanel>()->objects){
+    for(auto& i : eListener->get<CPanel>()->objects) {
         eHero = i;
         if (eHero->get<CCaptain>()->id == idHero) break;
     }
     //printf("player %d, hero %d\n", e->get<CPlayer>()->id, idHero);
-    if (eHero){
+    if (eHero) {
         eManager->removeEntity(eHero);
         eListener->get<CPanel>()->objects.remove(eHero);
     }
 }
 
-void CommandListener::animateButtonInPuff(Entity* e, double after, bool sound){
+void CommandListener::animateButtonInPuff(Entity* e, double after, bool sound) {
     e->get<CDraw>()->isHidden = true;
     e->get<CButtonState>()->state = CButtonState::LOCKED;
     e->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::HIDDEN, true));
@@ -838,7 +857,7 @@ void CommandListener::animateButtonInPuff(Entity* e, double after, bool sound){
     string animation = "poof-03.png";
     double w = Assets::getAnimation(animation).wSprite;
     double h = Assets::getAnimation(animation).hSprite;
-    if (e->has(Component::DIMENSIONS)){
+    if (e->has(Component::DIMENSIONS)) {
         w = max(w, e->get<CDimensions>()->width);
         h = max(h, e->get<CDimensions>()->height);
     }
@@ -857,7 +876,7 @@ void CommandListener::animateButtonInPuff(Entity* e, double after, bool sound){
     e->get<CActor>()->timeline.push_back(new AVariable(after+Assets::getAnimation(animation).rate, AVariable::HIDDEN, false));
     e->get<CActor>()->timeline.push_back(new AVariable(Assets::getAnimation(animation).duration, AVariable::BUT_LOCKED, false));
 }
-void CommandListener::animateButtonOutPuff(Entity* e, double after, bool sound){
+void CommandListener::animateButtonOutPuff(Entity* e, double after, bool sound) {
     notify(BUTTON_LOST_FOCUS, e);
     e->get<CDraw>()->isHidden = true;
     e->get<CButtonState>()->state = CButtonState::LOCKED;
@@ -868,7 +887,7 @@ void CommandListener::animateButtonOutPuff(Entity* e, double after, bool sound){
     string animation = "poof-03.png";
     double w = Assets::getAnimation(animation).wSprite;
     double h = Assets::getAnimation(animation).hSprite;
-    if (e->has(Component::DIMENSIONS)){
+    if (e->has(Component::DIMENSIONS)) {
         w = max(w, e->get<CDimensions>()->width);
         h = max(h, e->get<CDimensions>()->height);
     }
@@ -887,7 +906,7 @@ void CommandListener::animateButtonOutPuff(Entity* e, double after, bool sound){
     e->get<CActor>()->timeline.push_back(new ADestroy(after+Assets::getAnimation(animation).duration));
 }
 
-void CommandListener::animateUnitOptionIn(Entity* e){
+void CommandListener::animateUnitOptionIn(Entity* e) {
     double yTarget = cyWindow - 60;
     double spacing = 30;
     double spacing2 = 106;
@@ -931,7 +950,7 @@ void CommandListener::animateUnitOptionIn(Entity* e){
     tAux = getTravelTime(xCurrent, yTarget, xCurrent, yTarget + spacing2/2, speed3);
     eLess->get<CActor>()->addNode(new AVariable(tAux, AVariable::BUT_LOCKED, false));
 }
-void CommandListener::animateUnitOptionOut(Entity* e, bool sound){
+void CommandListener::animateUnitOptionOut(Entity* e, bool sound) {
     double yTarget = cyWindow - 60;
     //double spacing = 30;
     //double spacing2 = 106;
@@ -986,11 +1005,11 @@ void CommandListener::animateUnitOptionOut(Entity* e, bool sound){
     notify(ADD_ACTOR, eSmoke);
 }
 
-int CommandListener::getArmyCompositionSize(Entity* e){
+int CommandListener::getArmyCompositionSize(Entity* e) {
     Entity* eOptions = e->getObservedEntity("UnitOptions");
     EntityList options = eOptions->getObservedEntities();
     int sum = 0;
-    for (Entity* i : options){
+    for (Entity* i : options) {
         sum += i->get<CSpinButton>()->value;
     }
     return sum;

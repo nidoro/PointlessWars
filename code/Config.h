@@ -7,7 +7,7 @@
 #include "Standard.h"
 #include "OSAppDataDir.h"
 
-class Config{
+class Config {
     public:
         Config();
         ~Config();
@@ -22,7 +22,7 @@ class Config{
         string getLanguage();
         std::list<std::string> getSupportedLanguages();
         std::string isLanguageSupported(std::string lan);
-        
+
         void setResolution(unsigned w, unsigned h);
         void setFullscreen(bool value);
         void setMusMaxVolume(double value);
@@ -31,7 +31,7 @@ class Config{
         void setSkipIntro(bool value);
         void setQuickStart(string value);
         void setLanguage(string lan);
-        
+
         bool loadConfigFile(std::string file);
         bool saveConfigFile(std::string file);
         void validateValues();

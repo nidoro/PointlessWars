@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class FormationEditor : public System{
+class FormationEditor : public System {
     public:
         FormationEditor();
         ~FormationEditor();

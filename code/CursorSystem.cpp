@@ -1,33 +1,33 @@
 #include "CursorSystem.h"
 
-CursorSystem::CursorSystem(){
+CursorSystem::CursorSystem() {
     addRequirement(Component::CURSOR);
     addSubscription(GAME_STARTED);
 }
 
-CursorSystem::~CursorSystem(){
+CursorSystem::~CursorSystem() {
     //dtor
 }
 
-void CursorSystem::update(){
-    for (EntityListIt i = entities.begin(); i != entities.end(); i++){
+void CursorSystem::update() {
+    for (EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
         sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
         sf::Vector2f cursorPosition = window->mapPixelToCoords(mousePosition);
         e->get<CPosition>()->x = cursorPosition.x;
         e->get<CPosition>()->y = cursorPosition.y;
 
-        if (e->has(Component::PARTICLE_EMMITER)){
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+        if (e->has(Component::PARTICLE_EMMITER)) {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 e->get<CParticleEmmiter>()->on = true;
-            }else{
+            } else {
                 e->get<CParticleEmmiter>()->on = false;
             }
         }
     }
 }
 
-void CursorSystem::onGameStarted(Entity* e){
+void CursorSystem::onGameStarted(Entity* e) {
     Entity* cursor = eManager->createEntity();
     cursor->add(new CTexture("cursor.png"));
     cursor->add(new CPosition());

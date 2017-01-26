@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Standard.h"
 
-class PathSystem : public System{
+class PathSystem : public System {
     public:
         PathSystem();
         ~PathSystem();

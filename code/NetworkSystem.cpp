@@ -1,6 +1,6 @@
 #include "NetworkSystem.h"
 
-NetworkSystem::NetworkSystem(){
+NetworkSystem::NetworkSystem() {
     addSubscription(GAME_STARTED);
     addSubscription(TRY_AND_CONNECT);
     addSubscription(DISCONNECT_FROM_SERVER);
@@ -22,12 +22,12 @@ void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, d
     this->eManager = eManager;
     this->window = window;
     this->targetUPS = targetUPS;
-/*
-    wWindow = window->getView().getSize().x;
-    hWindow = window->getView().getSize().y;
-    cxWindow = wWindow/2;
-    cyWindow = hWindow/2;
-*/
+    /*
+        wWindow = window->getView().getSize().x;
+        hWindow = window->getView().getSize().y;
+        cxWindow = wWindow/2;
+        cyWindow = hWindow/2;
+    */
     wWindow = 1280;
     hWindow = 720;
     cxWindow = wWindow/2;
@@ -54,62 +54,62 @@ void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, d
     eInfoWin = nullptr;
 }
 
-void NetworkSystem::update(){
+void NetworkSystem::update() {
     //updateGUI();
     updateConnection();
     converse();
 
-    if (!processQueue.empty()){
+    if (!processQueue.empty()) {
         processPacket(processQueue.front());
         processQueue.pop_front();
     }
 }
 
-void NetworkSystem::converse(){
-    if (state != OFFLINE && state != CONNECTING){
+void NetworkSystem::converse() {
+    if (state != OFFLINE && state != CONNECTING) {
         sf::Packet pkt;
         sf::Socket::Status sts;
-        while ((sts = serverSocket.receive(pkt)) == sf::Socket::Done){
+        while ((sts = serverSocket.receive(pkt)) == sf::Socket::Done) {
             processQueue.push_back(pkt);
         }
-        if (sts == sf::Socket::Disconnected){
+        if (sts == sf::Socket::Disconnected) {
             notify(DISCONNECT_FROM_SERVER);
         }
-        while (!sendQueue.empty() && serverSocket.send(sendQueue.front()) == sf::Socket::Done){
+        while (!sendQueue.empty() && serverSocket.send(sendQueue.front()) == sf::Socket::Done) {
             sendQueue.pop_front();
         }
     }
 }
 
-void NetworkSystem::processPacket(sf::Packet& packet){
+void NetworkSystem::processPacket(sf::Packet& packet) {
     sf::String id;
     sf::Packet packetOriginal = packet;
     packet >> id;
-    if (id == "PING"){
+    if (id == "PING") {
         sf::Packet snd;
         snd << sf::String("PONG");
         serverSocket.send(snd);
-    }else if (id == "MATCH-FOUND"){
+    } else if (id == "MATCH-FOUND") {
         war = War();
         war.setMultiplayer(true);
         war.setRemotelyControled(0, true);
         //notify(INITIALIZE_WAR);
         state = PLAYING_MATCH;
         //startMatch();
-    }else if (id == "LEAVE-MATCH"){
+    } else if (id == "LEAVE-MATCH") {
         //isPlayersTurn = false;
         printf("Opponent left...");
-    }else if (id == "STATE-RECEIVED"){
+    } else if (id == "STATE-RECEIVED") {
         war.setPeerReceivedState(true);
-    }else if (id == "SET-P1-CONTROLER"){
+    } else if (id == "SET-P1-CONTROLER") {
         war.setRemotelyControled(1, false);
         war.setRemotelyControled(2, true);
-    }else if (id == "SET-P2-CONTROLER"){
+    } else if (id == "SET-P2-CONTROLER") {
         war.setRemotelyControled(1, true);
         war.setRemotelyControled(2, false);
-    }else if (id == "SET-STATE-CONTROLER"){
+    } else if (id == "SET-STATE-CONTROLER") {
         war.setRemotelyControled(0, false);
-    }else if (id == "INITIALIZE-WAR"){
+    } else if (id == "INITIALIZE-WAR") {
         war.getMatchConfig().loadFromFile("Prototype");
         Entity* eScreen = eManager->createEntity();
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
@@ -119,27 +119,27 @@ void NetworkSystem::processPacket(sf::Packet& packet){
         notify(LOCK_ALL_BUTTONS);
         notify(BRING_UI_LAYER_FORWARD);
         //notify(INITIALIZE_WAR);
-    }else{
+    } else {
         Entity* ePacket = eManager->createEntity();
         ePacket->add(new CPacket(packetOriginal));
         notify(PACKET_RECEIVED, ePacket);
     }
 }
 
-void NetworkSystem::onSendPacket(Entity* e){
+void NetworkSystem::onSendPacket(Entity* e) {
     sendQueue.push_back(e->get<CPacket>()->packet);
 }
 
-void NetworkSystem::updateConnection(){
-    if (state == CONNECTING){
-        if (connectionClock.getElapsedTime().asSeconds() >= connectionTimeOut){
+void NetworkSystem::updateConnection() {
+    if (state == CONNECTING) {
+        if (connectionClock.getElapsedTime().asSeconds() >= connectionTimeOut) {
             state = OFFLINE;
             createConnectionFailedWindow();
             //addToDebugLog("connection failed!");
-        }else{
+        } else {
             sf::Socket::Status status = serverSocket.connect(serverIP, serverPort);
             //printf("connecting to %s, status: %d\n", serverIP.toString().c_str(), status);
-            if (status == sf::Socket::Done){
+            if (status == sf::Socket::Done) {
                 state = JUST_ONLINE;
                 notify(CONNECTION_SUCCESSFUL);
                 printf("connected to %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
@@ -149,7 +149,7 @@ void NetworkSystem::updateConnection(){
     }
 }
 
-void NetworkSystem::onConnectionSuccessful(Entity* e){
+void NetworkSystem::onConnectionSuccessful(Entity* e) {
     eManager->removeEntity(eInfoWin);
     notify(BRING_UI_LAYER_FORWARD);
 
@@ -162,10 +162,10 @@ void NetworkSystem::onConnectionSuccessful(Entity* e){
     eManager->removeEntity(eObj);
 }
 
-void NetworkSystem::onTryAndConnect(Entity* e){
-    if (state != OFFLINE){
+void NetworkSystem::onTryAndConnect(Entity* e) {
+    if (state != OFFLINE) {
         notify(CONNECTION_SUCCESSFUL);
-    }else{
+    } else {
         /*
         serverIP = ipBuff;
         serverPort = str2int(portBuff);
@@ -185,8 +185,8 @@ void NetworkSystem::onTryAndConnect(Entity* e){
     }
 }
 
-void NetworkSystem::onDisconnectFromServer(Entity* e){
-    if (state != OFFLINE && state != CONNECTING){
+void NetworkSystem::onDisconnectFromServer(Entity* e) {
+    if (state != OFFLINE && state != CONNECTING) {
         printf("disconnected from %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
         serverSocket.disconnect();
         state = OFFLINE;
@@ -194,7 +194,7 @@ void NetworkSystem::onDisconnectFromServer(Entity* e){
     }
 }
 
-void NetworkSystem::onFindMatch(Entity* e){
+void NetworkSystem::onFindMatch(Entity* e) {
     sf::Packet packet;
     packet << sf::String("FIND-MATCH");
     packet << sf::String("Standard");
@@ -204,8 +204,8 @@ void NetworkSystem::onFindMatch(Entity* e){
     eQMDisplayer->add(new CTypingEffect(Assets::getString("MESSAGE-QUICK-MATCH-SEARCHING"), 50));
 }
 
-void NetworkSystem::onCancelQuickMatchSearch(Entity* e){
-    if (state == SEARCHING_QUICK_MATCH){
+void NetworkSystem::onCancelQuickMatchSearch(Entity* e) {
+    if (state == SEARCHING_QUICK_MATCH) {
         sf::Packet packet;
         packet << sf::String("CANCEL-QUICK-MATCH-SEARCH");
         sendQueue.push_back(packet);
@@ -214,21 +214,21 @@ void NetworkSystem::onCancelQuickMatchSearch(Entity* e){
     }
 }
 
-void NetworkSystem::onNewCommandLine(Entity* e){
-    if (e->get<CCommandLine>()->command == "connect-to-server"){
-        if (e->get<CCommandLine>()->hasParam("port")){
+void NetworkSystem::onNewCommandLine(Entity* e) {
+    if (e->get<CCommandLine>()->command == "connect-to-server") {
+        if (e->get<CCommandLine>()->hasParam("port")) {
             serverPort = str2int(e->get<CCommandLine>()->params["port"]);
         }
-        if (e->get<CCommandLine>()->hasParam("ip")){
+        if (e->get<CCommandLine>()->hasParam("ip")) {
             serverIP = e->get<CCommandLine>()->params["ip"];
         }
         notify(TRY_AND_CONNECT);
-    }else if (e->get<CCommandLine>()->command == "disconnect-from-server"){
+    } else if (e->get<CCommandLine>()->command == "disconnect-from-server") {
         notify(DISCONNECT_FROM_SERVER);
     }
 }
 
-void NetworkSystem::createInfoWindow(){
+void NetworkSystem::createInfoWindow() {
     eManager->removeEntity(eInfoWin);
 
     string panelTexture = "9p-grey-frame-rounded.png";
@@ -269,7 +269,7 @@ void NetworkSystem::createInfoWindow(){
     notify(BRING_UI_LAYER_FORWARD, eInfoWin);
 }
 
-void NetworkSystem::createConnectionFailedWindow(){
+void NetworkSystem::createConnectionFailedWindow() {
     eManager->removeEntity(eInfoWin);
 
     string panelTexture = "9p-grey-frame-rounded.png";
@@ -309,7 +309,7 @@ void NetworkSystem::createConnectionFailedWindow(){
     notify(BRING_UI_LAYER_FORWARD, eInfoWin);
 }
 
-void NetworkSystem::createConnectionLostWindow(){
+void NetworkSystem::createConnectionLostWindow() {
     eManager->removeEntity(eInfoWin);
 
     string panelTexture = "9p-grey-frame-rounded.png";
@@ -350,20 +350,20 @@ void NetworkSystem::createConnectionLostWindow(){
     notify(BRING_UI_LAYER_FORWARD, eInfoWin);
 }
 
-void NetworkSystem::onStopConnectionTry(Entity* e){
+void NetworkSystem::onStopConnectionTry(Entity* e) {
     notify(DISCONNECT_FROM_SERVER);
     eManager->removeEntity(eInfoWin);
     notify(BRING_UI_LAYER_FORWARD);
 }
 
-void NetworkSystem::onConnectionLost(Entity* e){
+void NetworkSystem::onConnectionLost(Entity* e) {
     eManager->removeEntity(eInfoWin);
     notify(BRING_UI_LAYER_FORWARD);
 }
 
 Entity* NetworkSystem::createRectButton(string label, double fontSize, double h, double x, double y,
                                         sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness,
-                                        Message m, CUILayer::Layer UILayer){
+                                        Message m, CUILayer::Layer UILayer) {
     sf::RectangleShape rect;
     double w = 0;
     double sideSpacing = 10;
@@ -388,13 +388,13 @@ Entity* NetworkSystem::createRectButton(string label, double fontSize, double h,
     return e;
 }
 
-void NetworkSystem::stop(){
+void NetworkSystem::stop() {
     notify(DISCONNECT_FROM_SERVER);
 }
-void NetworkSystem::onSetServerMessageDisplayerQuickMatch(Entity* e){
+void NetworkSystem::onSetServerMessageDisplayerQuickMatch(Entity* e) {
     eQMDisplayer = e;
 }
-void NetworkSystem::updateGUI(){
+void NetworkSystem::updateGUI() {
     /*
     ImGui::Begin("Client");
         ImGuiInputTextFlags inputFlags = 0;

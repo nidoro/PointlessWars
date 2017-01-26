@@ -5,13 +5,13 @@
 #include "Standard.h"
 #include "Assets.h"
 
-class ScreenSystem : public System{
+class ScreenSystem : public System {
     public:
         ScreenSystem();
         ~ScreenSystem();
 
         void update();
-        
+
     private:
         void onCreateScreen(Entity* e);
         void onStartScreenTransition(Entity* e);

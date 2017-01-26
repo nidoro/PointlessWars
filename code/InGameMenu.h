@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class InGameMenu : public System{
+class InGameMenu : public System {
     public:
         InGameMenu();
         ~InGameMenu();

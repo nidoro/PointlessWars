@@ -1,6 +1,6 @@
 #include "InGameMenu.h"
 
-InGameMenu::InGameMenu(){
+InGameMenu::InGameMenu() {
     addSubscription(OPEN_MENU);
     addSubscription(RESUME_GAME);
     addSubscription(CHANGE_MENU_PAGE);
@@ -11,11 +11,11 @@ InGameMenu::InGameMenu(){
     UILayer = CUILayer::L1;
 }
 
-InGameMenu::~InGameMenu(){
+InGameMenu::~InGameMenu() {
 
 }
 
-void InGameMenu::onOpenMenu(Entity* e){
+void InGameMenu::onOpenMenu(Entity* e) {
     //notify(LOCK_ALL_BUTTONS);
     Entity* eLayer = eManager->createEntity();
     eLayer->add(new CUILayer(UILayer));
@@ -26,7 +26,7 @@ void InGameMenu::onOpenMenu(Entity* e){
     showPage(CInGameMenuPage::FIRST);
 }
 
-void InGameMenu::create(){
+void InGameMenu::create() {
     pages.clear();
     pages.resize(CInGameMenuPage::N_PAGES);
 
@@ -121,7 +121,7 @@ void InGameMenu::create(){
     /// RESOLUTION DROP LIST
     list<string> resStrings;
     unsigned int bbp = sf::VideoMode::getFullscreenModes()[0].bitsPerPixel;
-    for (unsigned int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++){
+    for (unsigned int i = 0; i < sf::VideoMode::getFullscreenModes().size(); i++) {
         if (sf::VideoMode::getFullscreenModes()[i].bitsPerPixel != bbp) continue;
         resStrings.push_back(int2str(sf::VideoMode::getFullscreenModes()[i].width) + " x " + int2str(sf::VideoMode::getFullscreenModes()[i].height));
     }
@@ -198,36 +198,36 @@ void InGameMenu::create(){
     addToPage(eObj, CInGameMenuPage::OPTIONS);
 }
 
-void InGameMenu::onChangeMenuPage(Entity* e){
-    if (e->has(Component::IN_GAME_MENU_PAGE)){
+void InGameMenu::onChangeMenuPage(Entity* e) {
+    if (e->has(Component::IN_GAME_MENU_PAGE)) {
         showPage(e->get<CInGameMenuPage>()->id);
     }
 
-    if (getPage(e) == CInGameMenuPage::OPTIONS){
+    if (getPage(e) == CInGameMenuPage::OPTIONS) {
         config.saveConfigFile("config.xml");
     }
 }
 
-CInGameMenuPage::ID InGameMenu::getPage(Entity* e){
-    for (unsigned int i = 0; i < pages.size(); i++){
-        for (Entity* eObj : pages[i]){
+CInGameMenuPage::ID InGameMenu::getPage(Entity* e) {
+    for (unsigned int i = 0; i < pages.size(); i++) {
+        for (Entity* eObj : pages[i]) {
             if (eObj == e) return (CInGameMenuPage::ID) i;
         }
     }
     return (CInGameMenuPage::ID) 0;
 }
 
-void InGameMenu::addToPage(Entity* e, CInGameMenuPage::ID id){
+void InGameMenu::addToPage(Entity* e, CInGameMenuPage::ID id) {
     pages[id].push_back(e);
     ePanel->get<CPanel>()->objects.push_back(e);
     ePanel->attachEmployee(e);
 }
 
-void InGameMenu::showPage(CInGameMenuPage::ID id){
-    for(unsigned i = 0; i < pages.size(); i++){
-        for(EntityListIt it = pages[i].begin(); it != pages[i].end(); it++){
+void InGameMenu::showPage(CInGameMenuPage::ID id) {
+    for(unsigned i = 0; i < pages.size(); i++) {
+        for(EntityListIt it = pages[i].begin(); it != pages[i].end(); it++) {
             Entity* eObj = *it;
-            if (eObj->has(Component::BUTTON_STATE)){
+            if (eObj->has(Component::BUTTON_STATE)) {
                 eObj->get<CButtonState>()->state = CButtonState::LOCKED;
             }
             eObj->get<CDraw>()->isHidden = true;
@@ -235,24 +235,24 @@ void InGameMenu::showPage(CInGameMenuPage::ID id){
         }
     }
 
-    for(EntityListIt it = pages[id].begin(); it != pages[id].end(); it++){
+    for(EntityListIt it = pages[id].begin(); it != pages[id].end(); it++) {
         Entity* eObj = *it;
-        if (eObj->has(Component::BUTTON_STATE)){
+        if (eObj->has(Component::BUTTON_STATE)) {
             eObj->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
         }
         eObj->get<CDraw>()->isHidden = false;
     }
 }
 
-void InGameMenu::clearPage(CInGameMenuPage::ID id){
-    for(EntityListIt i = pages[id].begin(); i != pages[id].end(); i++){
+void InGameMenu::clearPage(CInGameMenuPage::ID id) {
+    for(EntityListIt i = pages[id].begin(); i != pages[id].end(); i++) {
         Entity* e = *i;
         eManager->removeEntity(e);
     }
     pages[id].clear();
 }
 
-Entity* InGameMenu::createButton(string label, double w, double h, double x, double y, Message m){
+Entity* InGameMenu::createButton(string label, double w, double h, double x, double y, Message m) {
     Entity* e = eManager->createEntity();
     e->add(new CTexture());
     e->add(new CPosition(x, y));
@@ -270,7 +270,7 @@ Entity* InGameMenu::createButton(string label, double w, double h, double x, dou
     return e;
 }
 
-Entity* InGameMenu::createRectButton(string label, double fontSize, double h, double x, double y, sf::Color textColor, sf::Color outColor, double outThickness, Message m){
+Entity* InGameMenu::createRectButton(string label, double fontSize, double h, double x, double y, sf::Color textColor, sf::Color outColor, double outThickness, Message m) {
     sf::RectangleShape rect;
     double w = 0;
     double sideSpacing = 10;
@@ -295,20 +295,20 @@ Entity* InGameMenu::createRectButton(string label, double fontSize, double h, do
     return e;
 }
 
-void InGameMenu::onResumeGame(Entity* e){
+void InGameMenu::onResumeGame(Entity* e) {
     notify(REMOVE_PANEL, ePanel);
     notify(BRING_UI_LAYER_FORWARD);
     //notify(UNLOCK_ALL_BUTTONS);
     ePanel = nullptr;
 }
 
-void InGameMenu::onHasBeenToggled(Entity* e){
-    if (ePanel){
-        if (e == ePanel->getObservedEntity("OptionFullscreen")){
+void InGameMenu::onHasBeenToggled(Entity* e) {
+    if (ePanel) {
+        if (e == ePanel->getObservedEntity("OptionFullscreen")) {
             config.setFullscreen(e->get<CStringToggleButton>()->valueIndex == 0 ? true:false);
             window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
-                          "Pointless Wars",
-                          config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+                           "Pointless Wars",
+                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
             window->setVerticalSyncEnabled(true);
             window->setMouseCursorVisible(false);
             config.saveConfigFile("config.xml");
@@ -316,9 +316,9 @@ void InGameMenu::onHasBeenToggled(Entity* e){
     }
 }
 
-void InGameMenu::onHasChangedValue(Entity* e){
-    if (ePanel){
-        if (e == ePanel->getObservedEntity("OptionResolution")){
+void InGameMenu::onHasChangedValue(Entity* e) {
+    if (ePanel) {
+        if (e == ePanel->getObservedEntity("OptionResolution")) {
             stringstream ss(e->get<CDropList>()->value);
             string strWRes, strAux, strHRes;
             ss >> strWRes;
@@ -326,8 +326,8 @@ void InGameMenu::onHasChangedValue(Entity* e){
             ss >> strHRes;
             config.setResolution(str2int(strWRes), str2int(strHRes));
             window->create(sf::VideoMode(config.getResolution().x, config.getResolution().y),
-                          "Pointless Wars",
-                          config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
+                           "Pointless Wars",
+                           config.getFullscreen() ? sf::Style::Fullscreen : sf::Style::Default);
             window->setVerticalSyncEnabled(true);
             window->setMouseCursorVisible(false);
 

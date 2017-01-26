@@ -6,7 +6,7 @@
 #include "Assets.h"
 #include <SFML/Audio.hpp>
 
-class SoundSystem : public System{
+class SoundSystem : public System {
     public:
         SoundSystem();
         ~SoundSystem();

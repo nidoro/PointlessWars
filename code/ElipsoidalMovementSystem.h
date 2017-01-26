@@ -3,7 +3,7 @@
 
 #include "System.h"
 
-class ElipsoidalMovementSystem : public System{
+class ElipsoidalMovementSystem : public System {
     public:
         ElipsoidalMovementSystem();
         ~ElipsoidalMovementSystem();

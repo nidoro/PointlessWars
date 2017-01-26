@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class DropListSystem : public System{
+class DropListSystem : public System {
     public:
         DropListSystem();
         ~DropListSystem();

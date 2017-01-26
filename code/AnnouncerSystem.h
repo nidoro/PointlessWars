@@ -4,7 +4,7 @@
 #include "System.h"
 #include "Assets.h"
 
-class AnnouncerSystem : public System{
+class AnnouncerSystem : public System {
     public:
         AnnouncerSystem();
         ~AnnouncerSystem();

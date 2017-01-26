@@ -3,9 +3,9 @@
 #include "Entity.h"
 #include "Component.h"
 
-class EntitiesManager{
+class EntitiesManager {
     public:
-        enum Event{
+        enum Event {
             LIST_UPDATED,
             GAME_SCREEN_UPDATED
         };

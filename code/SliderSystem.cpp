@@ -1,33 +1,33 @@
 #include "SliderSystem.h"
 
-SliderSystem::SliderSystem(){
+SliderSystem::SliderSystem() {
     addSubscription(START_SLIDING);
     addSubscription(MOUSE_BUTTON_RELEASED);
     addRequirement(Component::SLIDER);
 }
 
-SliderSystem::~SliderSystem(){
+SliderSystem::~SliderSystem() {
     //dtor
 }
 
 
-void SliderSystem::update(){
+void SliderSystem::update() {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
     sf::Vector2f cursorPosition = window->mapPixelToCoords(mousePosition);
 
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
 
-        if (e->get<CSlider>()->sliding){
+        if (e->get<CSlider>()->sliding) {
             double xTarget;
             double yTarget;
             double length = e->get<CSlider>()->length;
-            if (e->get<CSlider>()->direction == CSlider::HORIZONTAL){
+            if (e->get<CSlider>()->direction == CSlider::HORIZONTAL) {
                 xTarget = cursorPosition.x;
                 xTarget = max(xTarget, e->get<CSlider>()->x-length/2.f);
                 xTarget = min(xTarget, e->get<CSlider>()->x+length/2.f);
                 yTarget = e->get<CSlider>()->y;
-            }else{
+            } else {
                 yTarget = cursorPosition.y;
                 yTarget = max(yTarget, e->get<CSlider>()->y-length/2);
                 yTarget = min(yTarget, e->get<CSlider>()->y+length/2);
@@ -42,15 +42,15 @@ void SliderSystem::update(){
     }
 }
 
-void SliderSystem::updateValue(Entity* e){
+void SliderSystem::updateValue(Entity* e) {
     double posMin;
     double pos;
     double length = e->get<CSlider>()->length;
-    if (e->get<CSlider>()->direction == CSlider::HORIZONTAL){
+    if (e->get<CSlider>()->direction == CSlider::HORIZONTAL) {
         pos = e->get<CPosition>()->x;
         posMin = e->get<CSlider>()->x - length/2;
         e->get<CSlider>()->value = (pos-posMin)/(length);
-    }else{
+    } else {
         pos = e->get<CPosition>()->y;
         posMin = e->get<CSlider>()->y - length/2;
         e->get<CSlider>()->value = 1 - (pos-posMin)/(length);
@@ -59,24 +59,24 @@ void SliderSystem::updateValue(Entity* e){
     e->get<CSlider>()->value = max(e->get<CSlider>()->value, (double)0.f);
 }
 
-void SliderSystem::updateVariable(Entity* e){
-    if (e->get<CSlider>()->variable == "music-volume"){
+void SliderSystem::updateVariable(Entity* e) {
+    if (e->get<CSlider>()->variable == "music-volume") {
         config.setMusMaxVolume(e->get<CSlider>()->value*100.f);
-    }else if (e->get<CSlider>()->variable == "sfx-volume"){
+    } else if (e->get<CSlider>()->variable == "sfx-volume") {
         config.setSfxMaxVolume(e->get<CSlider>()->value*100.f);
     }
 }
 
-void SliderSystem::onStartSliding(Entity* e){
+void SliderSystem::onStartSliding(Entity* e) {
     //notify(LOCK_ALL_BUTTONS);
     e->get<CSlider>()->sliding = true;
 }
 
-void SliderSystem::onMouseButtonReleased(Entity* e){
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++){
+void SliderSystem::onMouseButtonReleased(Entity* e) {
+    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* eSlider = *i;
-        if (eSlider->get<CSlider>()->sliding){
-            if (eSlider->get<CSlider>()->variable == "music-volume" || eSlider->get<CSlider>()->variable == "sfx-volume"){
+        if (eSlider->get<CSlider>()->sliding) {
+            if (eSlider->get<CSlider>()->variable == "music-volume" || eSlider->get<CSlider>()->variable == "sfx-volume") {
                 config.saveConfigFile(getAppDataDir() + "/config.xml");
             }
         }

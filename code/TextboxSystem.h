@@ -4,7 +4,7 @@
 #include "System.h"
 #include <sstream>
 
-class TextboxSystem : public System{
+class TextboxSystem : public System {
     public:
         TextboxSystem();
         ~TextboxSystem();
