@@ -310,7 +310,7 @@ void ScriptedAnimation::onPlayAction(Entity* e) {
         idPlayer = e->get<CPlayer>()->id;
     }
     if (war.getNextActionOutcome(idPlayer).action < 100) {
-        //scriptPreAttackSpeech(e);
+        scriptPreAttackSpeech(war.getNextActionOutcome(idPlayer), e);
     }
     if (war.getNextActionOutcome(idPlayer).action < 100) {
         //scriptGenericUnitAttack(war.getNextActionOutcome(idPlayer), e);
@@ -545,7 +545,7 @@ void ScriptedAnimation::onPlayAction(Entity* e) {
 
 void ScriptedAnimation::onStartAnimation(Entity* e) {
     if (e->get<CActionOutcome>()->action < 100) {
-        scriptPreAttackSpeech(e);
+        //scriptPreAttackSpeech(e);
     }
     switch(e->get<CActionOutcome>()->action) {
     case 0:
@@ -3723,7 +3723,8 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
         //double t0 = Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
         double tAux = 0;
         double tShake = tStart;
-        eAtk->get<CActor>()->timeline.push_back(new AMove(tStart, eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y - yOff, speed1));
+        eAtk->get<CActor>()->timeline.push_back(new AVariable(tStart, AVariable::DRAW_TAG, CDraw::WORLD_3));
+        eAtk->get<CActor>()->timeline.push_back(new AMove(0.0, eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y - yOff, speed1));
         tAux = getTravelTime(0, 0, 0, yOff, speed1);
         tShake += tAux;
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction01));
@@ -3732,8 +3733,9 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tAux, eAtk->get<CUnit>()->aAction03));
         eAtk->get<CActor>()->timeline.push_back(new AMove(0.0, eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, speed2));
         tAux = getTravelTime(0, 0, 0, yOff, speed2);
+        eAtk->get<CActor>()->timeline.push_back(new AVariable(tAux, AVariable::DRAW_TAG, CDraw::WORLD_1));
         tShake += tAux;
-        eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tAux + shakeDuration, eAtk->get<CUnit>()->aIdle));
+        eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(shakeDuration, eAtk->get<CUnit>()->aIdle));
 
         ///SHAKE TIMER
         Entity* eTimer = eManager->createEntity();
@@ -3920,6 +3922,12 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*dartSpeed));
         eObj->get<CActor>()->addNode(new ASound(dartTravelDuration, "sfx-pop-bubble-01.wav"));
         eObj->get<CActor>()->addNode(new ADestroy(0.f));
+        
+        //Attacker animation    
+        double durAttackAnimation = Assets::getAnimation("unit-08-action-01.png").duration;
+        eAtk->get<CActor>()->addNode(new ASpriteAnimation(shotDate - durAttackAnimation, "unit-08-action-01.png"));
+        eAtk->get<CActor>()->addNode(new ASpriteAnimation(durAttackAnimation, "unit-08-idle.png"));
+        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.wav"));
 
         addActor(eObj);
     }
@@ -6574,23 +6582,12 @@ void ScriptedAnimation::scriptCallHelp(Entity* e) {
     eHelp->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(x,y,x - 2*sign*60, y,200), eHelp->get<CCaptain>()->aIdle));
 }
 
-void ScriptedAnimation::scriptPreAttackSpeech(Entity* e) {
-    EntityList attackers;
-    list<TargetOutcome>::iterator it;
-    CUnit::ID uID;
-    for(it = e->get<CActionOutcome>()->outcomes.begin(); it != e->get<CActionOutcome>()->outcomes.end(); it++) {
-        TargetOutcome out = *it;
-        Entity* eAtk = out.eCauser;
-        if (!contains(attackers, eAtk)) {
-            attackers.push_back(eAtk);
-        }
-        uID = eAtk->get<CUnit>()->id;
-    }
-
-    Entity* eSpeecher = pickRandom(attackers);
-    int nSpeeches = 1;
-    string speech = Assets::getString("SPEECH-" + int2str(randomInt(1, nSpeeches), 2) + "-UNIT-" + int2str(uID, 2) + "-PRE-ATTACK");
-    eSpeecher->get<CActor>()->timeline.push_back(new ASpeak(0.0, speech, unitRest1));
+void ScriptedAnimation::scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e) {
+    Entity* eCap = e->get<CArmy>()->captain;
+    std::string capName = toUpper(Assets::getString(eCap->get<CCaptain>()->strName));
+    std::string unitName = toUpper(Assets::getString(CUnit::Map[outcome.action].strName));
+    std::string strSpeech = "SPEECH-PRE-ATTACK-" + capName + "-" + unitName + "-" + int2str(randomInt(1, 1), 2);
+    eCap->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString(strSpeech), 2.3));
 }
 
 double ScriptedAnimation::getActingDuration() {

@@ -48,7 +48,11 @@ void AISystem::onSystemAction(Entity* e) {
         if (eActor->get<CPlayer>()->heroPool.size() <= 1) {
             eActor->get<CAInt>()->brainDelay = 0.4;
         } else {
+#if 0
             eActor->get<CAInt>()->brainDelay = randomDouble(0.8, 1.8);
+#else
+            eActor->get<CAInt>()->brainDelay = 0.2;
+#endif
         }
     } else if (war.getSystemAction() == War::ASK_CAPTAIN_SELECTION) {
         selectHero(eActor);

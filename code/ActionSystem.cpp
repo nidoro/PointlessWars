@@ -1849,7 +1849,7 @@ void ActionSystem::preprocessArmyComposition(ActionOutcome& outcome, Entity* e) 
     }
 #else
     if (e->get<CPlayer>()->side == CPlayer::LEFT) {
-        outcome.armyComposition.insert(make_pair(8, 20));
+        outcome.armyComposition.insert(make_pair(4, 20));
     } else {
         //outcome.armyComposition.insert(make_pair(2, 20));
     }

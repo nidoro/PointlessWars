@@ -98,7 +98,7 @@ class ScriptedAnimation : public System {
         void scriptTornado(Entity* e);
         void scriptTornado(ActionOutcome& outcome, Entity* e);
         void scriptDoNothing(Entity* e);
-        void scriptPreAttackSpeech(Entity* e);
+        void scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e);
         void scriptBuffDebuff(ActionOutcome& outcome, Entity* e);
         void scriptConfusion(ActionOutcome& outcome, Entity* e);
         void scriptSummon(ActionOutcome& outcome, Entity* e);

@@ -261,14 +261,6 @@ void WarSystem::initializeState() {
         addSystemAction(war.SET_FORMATION_EFFECT, idSecond);
         addSystemAction(war.ADVANCE_ARMIES);
         addSystemAction(war.COIN, -1);
-        /*
-                addSystemAction(war.COIN, -1);
-                addSystemAction(war.COIN, -1);
-                addSystemAction(war.COIN, -1);
-                addSystemAction(war.COIN, -1);
-                addSystemAction(war.COIN, -1);
-                addSystemAction(war.PLAY_INITIAL_INTIMIDATION, idFirst);
-        */
 
         addSystemAction(war.UPDATE_BATTLE_QUEUE, -1);
     } else if (war.getSystemAction() == war.UPDATE_BATTLE_QUEUE) {
