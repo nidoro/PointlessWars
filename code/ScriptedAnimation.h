@@ -99,6 +99,7 @@ class ScriptedAnimation : public System {
         void scriptTornado(ActionOutcome& outcome, Entity* e);
         void scriptDoNothing(Entity* e);
         void scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e);
+        void scriptPostAttackSpeech(ActionOutcome& outcome, Entity* e, double date = 0.f);
         void scriptBuffDebuff(ActionOutcome& outcome, Entity* e);
         void scriptConfusion(ActionOutcome& outcome, Entity* e);
         void scriptSummon(ActionOutcome& outcome, Entity* e);
@@ -144,6 +145,8 @@ class ScriptedAnimation : public System {
 
         EntityList getActors(ActionOutcome& outcome, Entity* e);
         EntityList getTargets(ActionOutcome& outcome, Entity* e);
+        
+        int getDeathCount(ActionOutcome& outcome);
 
         void scriptBuffFire(Entity* e);
         void scriptBuffWater(Entity* e);

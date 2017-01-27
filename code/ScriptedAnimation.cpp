@@ -532,6 +532,9 @@ void ScriptedAnimation::onPlayAction(Entity* e) {
     default:
         break;
     }
+    if (war.getNextActionOutcome(idPlayer).action < 100) {
+        scriptPostAttackSpeech(war.getNextActionOutcome(idPlayer), e, getActingDuration());
+    }
     //war.getNextActionOutcome(idPlayer).animDuration = getActingDuration();
     /*
         if (e->get<CActionOutcome>()->action < 100){
@@ -3723,7 +3726,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
         //double t0 = Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
         double tAux = 0;
         double tShake = tStart;
-        eAtk->get<CActor>()->timeline.push_back(new AVariable(tStart, AVariable::DRAW_TAG, CDraw::WORLD_3));
+        eAtk->get<CActor>()->timeline.push_back(new AVariable(tStart, AVariable::DRAW_TAG, CDraw::WORLD_2));
         eAtk->get<CActor>()->timeline.push_back(new AMove(0.0, eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y - yOff, speed1));
         tAux = getTravelTime(0, 0, 0, yOff, speed1);
         tShake += tAux;
@@ -3852,6 +3855,8 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         int xSign = -1;
         double x0 = eDef->get<CPosition>()->x;
         double y0 = eDef->get<CPosition>()->y;
+        eDef->get<CActor>()->addNode(new AVariable(tStart, AVariable::DRAW_TAG, CDraw::WORLD_2));
+        t0Aux = 0.f;
         while (tTotal1 <= ascendTime) {
             double tTravel = getTravelTime(x0, 0, x0+xSign*xAmp, 0, xSpeed);
             eDef->get<CActor>()->addNode(new AMove(t0Aux, x0 + xSign*xAmp, y0 - tTravel*ySpeed, speed));
@@ -3883,6 +3888,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         eDef->get<CActor>()->addNode(new AMove(t0Aux, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, descentSpeed));
         tTotal3 = getTravelTime(0.0, y0, 0.0, eDef->get<CPosition>()->y, descentSpeed);
         eDef->get<CActor>()->addNode(new ASpriteAnimation(tTotal3, eDef->get<CUnit>()->aIdle));
+        eDef->get<CActor>()->addNode(new AVariable(0.0, AVariable::DRAW_TAG, CDraw::WORLD_1));
 
         tResolve[eDef] = tTotal1+tTotal2+tTotal3+tStart;
 
@@ -3897,7 +3903,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         eShadow->get<CActor>()->addNode(new ADestroy(tTotal1+tTotal2+tTotal3));
 
         // Dart
-        double dartSpeed = 200.f;
+        double dartSpeed = 400.f;
         double gravity = 100.f;
         double shotAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y - dropHeight, dartSpeed, gravity);
         double xDartSpeed = cos(shotAngle*M_RAD) * dartSpeed;
@@ -4533,27 +4539,41 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     double hTornado = Assets::getAnimation("tornado.png").hSprite;
     double yTornado = cyWindow + hFormation*uyFormation/2 - hTornado/2 + hSection/2;
     double xTornado = cxArmy - sign*wSection/2;
+    double delayToMove = 1.f;
     eObj = eManager->createEntity();
-    eObj->add(new CPosition(xTornado, yTornado));
+    eObj->add(new CPosition(cxWindow, cyWindow));
     eObj->add(new CAnimation(false, "tornado.png"));
     eObj->add(new CActor());
-    eObj->add(new CDraw(CDraw::CLOUDS, 0));
+    eObj->add(new CDraw(CDraw::WORLD_2, 0));
     eObj->add(new CVelocity());
     eObj->add(new CSound("sfx-tornado.wav", CSound::LOOP, 2, 2, 8.2));
     notify(PLAY_SOUND, eObj);
 
     double speed = 200;
+    double speed0 = 300;
     double y1 = yTornado;
     double y2 = yTornado - lines*hSection;
     double tAux = getTravelTime(xTornado, y1, xTornado - 1*sign*wSection, y2, speed);
+    double tFirstTravel = getTravelTime(cxWindow, cyWindow, xTornado, yTornado, speed0);
+    double fadeSpeed = 120;
+    double alphaTarget = 200;
+    double fadeDuration = alphaTarget / fadeSpeed;
+    double tTornadoStartFadeOut = fadeDuration + tFirstTravel + 4*tAux;
+    double durationLineTravel = tAux;
+    double timeToLastLine = fadeDuration + delayToMove + tFirstTravel + 3*durationLineTravel;
+    double x0LastLine = xTornado - 3*sign*wSection;
+    double y0LastLine = y2;
+    double x1LastLine = xTornado - 4*sign*wSection;
+    double y1LastLine = y1;
 
-    eObj->get<CActor>()->timeline.push_back(new AFade(0.0, 120, 200));
-    eObj->get<CActor>()->timeline.push_back(new AMove(255.f/120.f, xTornado - 1*sign*wSection, y2, speed));
+    eObj->get<CActor>()->timeline.push_back(new AFade(0.0, fadeSpeed, alphaTarget));
+    eObj->get<CActor>()->timeline.push_back(new AMove(fadeDuration + delayToMove, xTornado, yTornado, speed0));
+    eObj->get<CActor>()->timeline.push_back(new AMove(tFirstTravel, xTornado - 1*sign*wSection, y2, speed));
     eObj->get<CActor>()->timeline.push_back(new AMove(tAux, xTornado - 2*sign*wSection, y1, speed));
     eObj->get<CActor>()->timeline.push_back(new AMove(tAux, xTornado - 3*sign*wSection, y2, speed));
     eObj->get<CActor>()->timeline.push_back(new AMove(tAux, xTornado - 4*sign*wSection, y1, speed));
-    eObj->get<CActor>()->timeline.push_back(new AFade(0.0, -120, 0));
-    eObj->get<CActor>()->timeline.push_back(new ADestroy(255.f/120.f));
+    eObj->get<CActor>()->timeline.push_back(new AFade(0.0, -fadeSpeed, 0.f));
+    eObj->get<CActor>()->timeline.push_back(new ADestroy(fadeDuration));
     addActor(eObj);
 
 
@@ -4565,20 +4585,69 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     map<Entity*, bool> died;
     EntityList eTargets = getTargets(outcome, e);
 
-    for(Entity* eDef : eTargets) {
+    for (Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
 
-    for(auto& out : outcome.unitActionOutcomes) {
+    for (auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
+        //========================================
+        
         ///ATTACKER
-        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.wav"));
-        eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction01));
-        eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
+        if (!eAtk->has(Component::ACCELERATION)) eAtk->add(new CAcceleration);
+        
+        double tStart = randomDouble(0.f, 0.5f);
+        double gravity = 200.f;
+        double firstJumpStart = tStart;
+        double firstJumpSpeed = 200.f;
+        double xOff = -sign*32.f;
+        double firstJumpAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, cxWindow + xOff, cyWindow, firstJumpSpeed, gravity);
+        double firstJumpDuration = getTravelTime(eAtk->get<CPosition>()->x, 0.f, cxWindow + xOff, 0.f, cos(firstJumpAngle*M_RAD) * firstJumpSpeed);
+        
+        double lastLineTimeOffset = randomDouble(0.f, durationLineTravel-0.25);
+        double secondJumpStart = timeToLastLine - firstJumpDuration + lastLineTimeOffset;
+        double x0SecondJump = x0LastLine + abs(x0LastLine - x1LastLine) * (lastLineTimeOffset / durationLineTravel);
+        double y0SecondJump = y0LastLine + abs(y0LastLine - y1LastLine) * (lastLineTimeOffset / durationLineTravel);
+        double secondJumpSpeed = 200.f;
+        double secondJumpAngle = getAngleToHit(x0SecondJump, y0SecondJump, cxWindow, eAtk->get<CPosition>()->y, secondJumpSpeed, gravity);
+        double secondJumpDuration = getTravelTime(x0SecondJump, 0.f, cxWindow, 0.f, cos(secondJumpAngle*M_RAD) * secondJumpSpeed);
+        
+        eAtk->get<CActor>()->addNode(new AAddComponent(firstJumpStart, new CAutoPilot(), Component::AUTO_PILOT));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(firstJumpAngle*M_RAD)*firstJumpSpeed));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(firstJumpAngle*M_RAD)*firstJumpSpeed));
+        eAtk->get<CActor>()->addNode(new AVariable(firstJumpDuration, AVariable::HIDDEN, true));
+        eAtk->get<CActor>()->addNode(new ARemoveComponent(0.f, Component::AUTO_PILOT));
+        
+        eAtk->get<CActor>()->addNode(new ATeleport(secondJumpStart, x0SecondJump, y0SecondJump));
+        eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::HIDDEN, false));
+        eAtk->get<CActor>()->addNode(new AAddComponent(0.f, new CAutoPilot(), Component::AUTO_PILOT));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(secondJumpAngle*M_RAD)*secondJumpSpeed));
+        eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(secondJumpAngle*M_RAD)*secondJumpSpeed));
+        eAtk->get<CActor>()->addNode(new ARemoveComponent(secondJumpDuration, Component::AUTO_PILOT));
+        
+        ///SHADOW 1
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(*eAtk->get<CPosition>()));
+        eObj->add(new CDraw(CDraw::WORLD));
+        eObj->add(new CTexture("small-shadow.png"));
+        eObj->add(new CActor());
+        eObj->add(new CVelocity());
+        eObj->get<CDraw>()->isHidden = true;
 
+        double shadowSpeed = getDistance(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, cxWindow + xOff, cyWindow)/firstJumpDuration;
+
+        eObj->get<CActor>()->addNode(new AVariable(firstJumpStart, AVariable::HIDDEN, false));
+        eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow + xOff, cyWindow, shadowSpeed));
+        eObj->get<CActor>()->addNode(new ADestroy(firstJumpDuration));
+        
+        //========================================
         ///DEFENDER
         /*
         if (it->id == TargetOutcome::DIED){
@@ -6590,6 +6659,21 @@ void ScriptedAnimation::scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e)
     eCap->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString(strSpeech), 2.3));
 }
 
+void ScriptedAnimation::scriptPostAttackSpeech(ActionOutcome& outcome, Entity* e, double date) {
+    Entity* eEnemy = e->get<CPlayer>()->enemy;
+    Entity* eCap = eEnemy->get<CArmy>()->captain;
+    std::string capName = toUpper(Assets::getString(eCap->get<CCaptain>()->strName));
+    
+    bool effective = false;
+    int deathCount = getDeathCount(outcome);
+    if (deathCount > 0.15 * eEnemy->get<CArmy>()->nAlive) {
+        effective = true;
+    }
+    
+    std::string strSpeech = "SPEECH-AFTER-DEFENSE-" + capName + (effective ? "" : "-NOT") + "-EFFECTIVE-" + int2str(randomInt(1, 1), 2);
+    eCap->get<CActor>()->addNode(new ASpeak(date, Assets::getString(strSpeech), 2.3));
+}
+
 double ScriptedAnimation::getActingDuration() {
     double maxDuration = 0;
     for(EntityListIt i = actors.begin(); i != actors.end(); i++) {
@@ -6997,4 +7081,14 @@ void ScriptedAnimation::onNewScreen(Entity* e) {
     clearScene();
     playingScene = false;
     notify(SCENE_ENDED);
+}
+
+int ScriptedAnimation::getDeathCount(ActionOutcome& outcome) {
+    int result = 0;
+    for (auto& out : outcome.unitActionOutcomes) {
+        if (out.id == UnitActionOutcome::DIED) {
+            ++result;
+        }
+    }
+    return result;
 }

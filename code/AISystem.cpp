@@ -62,7 +62,11 @@ void AISystem::onSystemAction(Entity* e) {
         eActor->get<CAInt>()->brainDelay = 0.f;
     } else if (war.getSystemAction() == War::ASK_CAPTAIN_ACTION) {
         selectHeroAction(eActor);
+#if 0
         eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
+#else
+        eActor->get<CAInt>()->brainDelay = 2.3;
+#endif
     } else if (war.getSystemAction() == War::ASK_ARMY_ACTION) {
         selectArmyAction(eActor);
         eActor->get<CAInt>()->brainDelay = randomDouble(0.0, 2.0);
