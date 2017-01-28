@@ -98,7 +98,9 @@ void Assets::createNinePatches() {
                     }
 
                     sf::Texture* pieceTexture = new sf::Texture;
-                    pieceTexture->loadFromImage(img, rects[iPart][jPart]);
+                    if (!pieceTexture->loadFromImage(img, rects[iPart][jPart])) {
+                        printf("Failed to load texture from image: %s (nine-patch %d, %d)\n", filename.c_str(), iPart, jPart);
+                    }
                     ninePatch.textureParts[iPart][jPart] = pieceTexture;
 
                     //printf("left %d top %d\n", rects[iPart][jPart].left, rects[iPart][jPart].top);
@@ -1310,7 +1312,9 @@ void Assets::createSprites() {
         sf::IntRect rect(0, 0, animation.wSprite, animation.hSprite);
         for (int i = 0; i < animation.nFrames; i++) {
             sf::Texture* sptTexture = new sf::Texture;
-            sptTexture->loadFromImage(image, rect);
+            if (!sptTexture->loadFromImage(image, rect)) {
+                printf("%s :: Failed to load texture from image: %s\n", __PRETTY_FUNCTION__, animation.id.c_str());
+            }
             sf::Sprite s(*sptTexture);
             animation.frames.push_back(s);
             rect.left += animation.wSprite;
@@ -1979,7 +1983,6 @@ void Assets::readSoundsMap(ifstream& file) {
 void Assets::readMusicMap(ifstream& file) {
     int nEntries;
     file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
-    printf("Reading %d musics", nEntries);
 
     musics.clear();
     for (int i = 0; i < nEntries; i++) {
@@ -2002,7 +2005,6 @@ void Assets::readMusicMap(ifstream& file) {
 void Assets::readFontsMap(ifstream& file) {
     int nEntries;
     file.read(reinterpret_cast<char*> (&nEntries), sizeof(&nEntries));
-    printf("Reading %d fonts", nEntries);
 
     fonts.clear();
     for (int i = 0; i < nEntries; i++) {

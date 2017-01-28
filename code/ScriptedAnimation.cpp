@@ -2847,11 +2847,11 @@ void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor)
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(intimSpeechDur, eUnit->get<CUnit>()->aWalk));
         }
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, opposite(eUnit->get<CAnimation>()->hFlip)));
-        eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::REMOVE_FROM_ARMY));
         double yDest = cyWindow + randomDouble(-15,15);
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + sign*100, yDest, 200));
         double t = getTravelTime(xUnit, yUnit, cxWindow + sign*wWindow/2 + sign*100, yDest, 200);
-        eUnit->get<CActor>()->timeline.push_back(new ADestroy(t));
+        eUnit->get<CActor>()->timeline.push_back(new AVariable(t, AVariable::REMOVE_FROM_ARMY));
+        eUnit->get<CActor>()->timeline.push_back(new ADestroy(0.f));
 
         addActor(eUnit);
     }
@@ -3289,7 +3289,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e) {
 
     map<Entity*, bool> blocked;
     map<Entity*, bool> died;
-    EntityList eTargets = getTargets(outcome, eEnemy);
+    EntityList eTargets = getTargets(outcome, e);
 
     for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
@@ -3816,7 +3816,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
 
     map<Entity*, bool> blocked;
     map<Entity*, bool> died;
-    EntityList eTargets = getTargets(outcome, eEnemy);
+    EntityList eTargets = getTargets(outcome, e);
 
     for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
@@ -3999,7 +3999,7 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e) {
 
     map<Entity*, bool> blocked;
     map<Entity*, bool> died;
-    EntityList eTargets = getTargets(outcome, eEnemy);
+    EntityList eTargets = getTargets(outcome, e);
 
     for(Entity* eDef : eTargets) {
         blocked.insert(make_pair(eDef, false));
@@ -4546,7 +4546,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     eObj->add(new CActor());
     eObj->add(new CDraw(CDraw::WORLD_2, 0));
     eObj->add(new CVelocity());
-    eObj->add(new CSound("sfx-tornado.wav", CSound::LOOP, 2, 2, 8.2));
+    eObj->add(new CSound("sfx-tornado.wav", CSound::LOOP, 2, 2, 10.f));
     notify(PLAY_SOUND, eObj);
 
     double speed = 200;
@@ -4603,7 +4603,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double gravity = 200.f;
         double firstJumpStart = tStart;
         double firstJumpSpeed = 200.f;
-        double xOff = -sign*32.f;
+        double xOff = -sign*10.f;
         double firstJumpAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, cxWindow + xOff, cyWindow, firstJumpSpeed, gravity);
         double firstJumpDuration = getTravelTime(eAtk->get<CPosition>()->x, 0.f, cxWindow + xOff, 0.f, cos(firstJumpAngle*M_RAD) * firstJumpSpeed);
         
@@ -4615,7 +4615,12 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double secondJumpAngle = getAngleToHit(x0SecondJump, y0SecondJump, cxWindow, eAtk->get<CPosition>()->y, secondJumpSpeed, gravity);
         double secondJumpDuration = getTravelTime(x0SecondJump, 0.f, cxWindow, 0.f, cos(secondJumpAngle*M_RAD) * secondJumpSpeed);
         
+        double walkSpeed = 400.f;
+        double walkDistance = abs(cxWindow - eAtk->get<CPosition>()->x);
+        double walkDuration = walkDistance / walkSpeed;
+        
         eAtk->get<CActor>()->addNode(new AAddComponent(firstJumpStart, new CAutoPilot(), Component::AUTO_PILOT));
+        eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::DRAW_TAG, CDraw::WORLD_2));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(firstJumpAngle*M_RAD)*firstJumpSpeed));
@@ -4624,6 +4629,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eAtk->get<CActor>()->addNode(new ARemoveComponent(0.f, Component::AUTO_PILOT));
         
         eAtk->get<CActor>()->addNode(new ATeleport(secondJumpStart, x0SecondJump, y0SecondJump));
+        eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::H_FLIP, !eAtk->get<CAnimation>()->hFlip));
         eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::HIDDEN, false));
         eAtk->get<CActor>()->addNode(new AAddComponent(0.f, new CAutoPilot(), Component::AUTO_PILOT));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
@@ -4631,6 +4637,11 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(secondJumpAngle*M_RAD)*secondJumpSpeed));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(secondJumpAngle*M_RAD)*secondJumpSpeed));
         eAtk->get<CActor>()->addNode(new ARemoveComponent(secondJumpDuration, Component::AUTO_PILOT));
+        eAtk->get<CActor>()->addNode(new AMove(0.f, eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, walkSpeed));
+        eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::DRAW_TAG, CDraw::WORLD_1));
+        eAtk->get<CActor>()->addNode(new ASpriteAnimation(0.f, eAtk->get<CUnit>()->aWalk));
+        eAtk->get<CActor>()->addNode(new AVariable(walkDuration, AVariable::H_FLIP, eAtk->get<CAnimation>()->hFlip));
+        eAtk->get<CActor>()->addNode(new ASpriteAnimation(0.f, eAtk->get<CUnit>()->aIdle));
         
         ///SHADOW 1
         eObj = eManager->createEntity();
@@ -4647,18 +4658,24 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow + xOff, cyWindow, shadowSpeed));
         eObj->get<CActor>()->addNode(new ADestroy(firstJumpDuration));
         
+        ///SHADOW 2
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(x0SecondJump, y0SecondJump));
+        eObj->add(new CDraw(CDraw::WORLD));
+        eObj->add(new CTexture("small-shadow.png"));
+        eObj->add(new CActor());
+        eObj->add(new CVelocity());
+        eObj->get<CDraw>()->isHidden = true;
+        
+        shadowSpeed = getDistance(x0SecondJump, y0SecondJump, cxWindow, eAtk->get<CPosition>()->y)/secondJumpDuration;
+
+        eObj->get<CActor>()->addNode(new AVariable(firstJumpStart + firstJumpDuration + secondJumpStart, AVariable::HIDDEN, false));
+        eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow, eAtk->get<CPosition>()->y, shadowSpeed));
+        eObj->get<CActor>()->addNode(new ADestroy(secondJumpDuration));
+        
         //========================================
         ///DEFENDER
-        /*
-        if (it->id == TargetOutcome::DIED){
-            eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(xCloud, 0, cxArmy, 0, 100), eDef->get<CUnit>()->aDeath));
-            eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
-            eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-        }else{
-            eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(getTravelTime(xCloud, 0, cxArmy, 0, 100), eDef->get<CUnit>()->aIdle));
-        }
-        */
-        double tHit = randomDouble(4, 6);
+        double tHit = randomDouble(5.f, 7.f);
 
         ///DEFENDER
         if (out.id == UnitActionOutcome::DIED) {
@@ -4680,8 +4697,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
             }
         }
 
-        //addActor(eDef);
-        //addActor(eAtk);
+        addActor(eAtk);
     }
 
     for(auto& p : whoDiedWhen) {
@@ -6730,7 +6746,7 @@ EntityList ScriptedAnimation::getActors(ActionOutcome& outcome, Entity* e) {
 EntityList ScriptedAnimation::getTargets(ActionOutcome& outcome, Entity* e) {
     EntityList l;
     for (auto& i : outcome.idTargets) {
-        l.push_back(getUnitByID(e, i));
+        l.push_back(getUnitByID(e->get<CPlayer>()->enemy, i));
     }
     return l;
 }
