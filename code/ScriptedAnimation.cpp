@@ -4589,6 +4589,20 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
+    
+    std::list<double> hitTimes;
+    for (int i = 0; i < eTargets.size(); ++i) {
+        hitTimes.push_back(randomDouble(5.f, 7.f));
+    }
+    hitTimes.sort();
+    if (sign == -1) eTargets.sort([]( Entity* a, Entity* b ) { return a->get<CPosition>()->x < b->get<CPosition>()->x; });
+    else            eTargets.sort([]( Entity* a, Entity* b ) { return a->get<CPosition>()->x > b->get<CPosition>()->x; });
+
+    std::map<Entity*, double> hitTimesMap;
+    for (auto& eUnit : eTargets) {
+        hitTimesMap.insert(std::make_pair(eUnit, hitTimes.front()));
+        hitTimes.pop_front();
+    }
 
     for (auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
@@ -4675,7 +4689,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         
         //========================================
         ///DEFENDER
-        double tHit = randomDouble(5.f, 7.f);
+        double tHit = hitTimesMap[eDef];
 
         ///DEFENDER
         if (out.id == UnitActionOutcome::DIED) {
