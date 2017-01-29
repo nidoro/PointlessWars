@@ -90,7 +90,7 @@ void Game::start() {
     eInput->add(new CKeyboardInput());
     eInput->add(new CSystem());
 
-    bool networkReadyToUpdate = true;
+    //bool networkReadyToUpdate = true;
     std::vector<bool> updatedAfterNetwork(systems.size(), false);
 
     bool processInput = true;

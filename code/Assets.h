@@ -4,14 +4,16 @@
 #include <map>
 #include <cstring>
 #include <string>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <boost/filesystem.hpp>
 #include <cstdio>
 #include <fstream>
 #include <list>
 #include <sstream>
 #include <iostream>
+#include <experimental/filesystem>
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 #include "Standard.h"
 #include "Messages.h"
 #include "Component.h"
@@ -19,10 +21,7 @@
 #include "json.hpp"
 #include "OSAppDataDir.h"
 
-namespace fs = boost::filesystem;
-
-const int wWorld = 1280;
-const int hWorld = 720;
+namespace fs = std::experimental::filesystem;
 
 struct Animation {
     Animation() {
@@ -49,145 +48,6 @@ struct Animation {
     Message endMessage;
 };
 
-struct Buff {
-    enum ID {
-        NONE,
-        FORMATION_SQUARE,
-        FORMATION_OVAL,
-        FORMATION_SPEAR,
-        FORMATION_OPEN
-    };
-    enum Type {FORMATION = 1, POSITIVE, NEGATIVE};
-    Type type;
-    ID id;
-    double rangedBonus;
-    double meleeBonus;
-    double siegeBonus;
-    double defenseBonus;
-    string icon;
-    string description;
-};
-
-struct Action {
-    enum ID {
-        NONE,
-        RANGED_ATK,
-        MELEE_DEF,
-        SHOOT_ARROW,
-        RAISE_SHIELD,
-        THROW_STONE,
-        N_ACTIONS
-    };
-    ID id;
-    string btDefTexture;
-    string btHovTexture;
-    string btActTexture;
-    string strText, strTitle;
-    Buff::ID buff;
-};
-
-struct Item {
-    enum ID {BOW, SWORD, SHIELD, LIGHT_ARMOR, HEAVY_ARMOR, N_ITEMS};
-    Item(double v, Action::ID a = Action::NONE) {
-        value = v;
-        action = a;
-    }
-    double value;
-    Action::ID action;
-};
-
-struct Unit {
-    typedef int ID;
-
-    enum Type {MELEE = 1, RANGED, MAGIC, N_UTYPES};
-
-    Unit() {
-        animations.resize(N_ANIMATIONS);
-        items.resize(Item::N_ITEMS, false);
-    }
-
-    enum Animation {IDLE, WALK, DEATH, DEAD, ACTION, RAISE_SHIELD, SHIELD,  N_ANIMATIONS};
-
-    ID id;
-    string strName;
-    Type type;
-    Action::ID action;
-    string texture;
-    string projTexture;
-    int attack;
-    int defense;
-    double speed;
-    double width, height;
-    string icon;
-    bool hasAction;
-
-    int melee;
-    int armor;
-    int intimidation;
-    int rMinDamage;
-    int rMaxDamage;
-    int mDamage;
-
-    int damage;
-    int cResist;
-    int rResist;
-    int mResist;
-
-    vector<string> animations;
-    vector<bool> items;
-};
-
-struct GridCoord {
-    GridCoord() {
-        x = y = 0;
-    };
-    GridCoord(int x, int y) {
-        this->x = x;
-        this->y = y;
-    }
-    int x;
-    int y;
-};
-
-struct Formation {
-    enum ID {
-        SQUARE,
-        OPEN,
-        SPEAR,
-        OVAL,
-        N_FORMATIONS
-    };
-    vector<GridCoord> spots;
-    double meleeBonus;
-    double rangedBonus;
-    double siegeBonus;
-    double defenseBonus;
-    string btDefTexture;
-    string btHovTexture;
-    string btActTexture;
-    string strText, strTitle;
-    Buff::ID buff;
-};
-
-struct Projectile {
-    enum ID {
-        ARROW=1
-    };
-    ID id;
-    string texture;
-    double speed;
-    double width, height;
-};
-
-struct BattleSolving {
-    enum ID {MELEE_BATTLE, MAN_VS_MAN, CHAMPIONS_DUEL, DRAW, N_SOLVINGS};
-    ID id;
-    string btDefTexture;
-    string btHovTexture;
-    string btActTexture;
-    string strText, strTitle;
-};
-
 struct NinePatch {
     NinePatch() {
         parts = vector< vector<sf::Sprite> >(3, vector<sf::Sprite>(3));
@@ -210,20 +70,13 @@ class Assets {
         static void load();
         static void shutdown();
         static sf::Texture* getTexture(std::string file, bool returnNullIfMissing = false);
-        static Formation getFormation(Formation::ID f);
-        static void createBattleSolvings();
         static void createColors();
 
-        static void readUnits();
         static void readObjects();
         static void readScenarios();
 
         static void readActions();
-        static void readFonts();
-        static void readBuffs();
-        static void readProjectiles();
         static void readAnimations();
-        static void readItems();
         static void readStrings(string lan = "en");
         static void readSounds();
         static void readMusics();
@@ -251,14 +104,8 @@ class Assets {
 
         static const NinePatch& getNinePatch(string id);
 
-        static const Buff& getBuff(Buff::ID id);
-        static const Unit& getUnit(Unit::ID id);
-        static const Action& getAction(Action::ID id);
-        static const Projectile& getProjectile(Projectile::ID id);
         static Animation& getAnimation(Animation::ID id);
         static CChar& getChar(Animation::ID id);
-        static const Item& getItem(Item::ID id);
-        static const BattleSolving& getBattleSolving(BattleSolving::ID id);
         static const string getString(string id);
         static sf::SoundBuffer* getSound(string id);
         static sf::Music* getMusic(string id);
@@ -286,14 +133,7 @@ class Assets {
         static map<string, NinePatch> ninePatches;
         static map<string, sf::Texture*> textures;
         static map<string, sf::Font> fonts;
-        static vector<Formation> formations;
-        static map<Unit::ID, Unit> units;
-        static map<Action::ID, Action> actions;
-        static map<Buff::ID, Buff> buffs;
-        static map<Projectile::ID, Projectile> projectiles;
         static map<Animation::ID, Animation> animations;
-        static map<Item::ID, Item> items;
-        static map<BattleSolving::ID, BattleSolving> solvings;
         static map<string, string> stringMap;
         static map<string, sf::Music*> musics;
         static map<string, sf::SoundBuffer*> sounds;

@@ -16,7 +16,7 @@
 
 const double M_RAD = M_PI/180;
 const double M_DEG = 180/M_PI;
-/*
+
 using std::abs;
 using std::sin;
 using std::cos;
@@ -38,8 +38,7 @@ using std::numeric_limits;
 using std::swap;
 using std::pair;
 using std::stringstream;
-*/
-using namespace std;
+
 typedef list<int> IntList;
 typedef list<int>::iterator IntListIt;
 

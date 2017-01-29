@@ -3826,7 +3826,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
     for (auto& out : outcome.unitActionOutcomes) {
         Entity* eAtk = getUnitByID(e, out.idCauser);
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
-        
+
         tResolve.insert(make_pair(eDef, 0.0));
         double tStart = randomDouble(0.0, 1.0);
         double tTotal1, tTotal2, tTotal3;
@@ -3928,8 +3928,8 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*dartSpeed));
         eObj->get<CActor>()->addNode(new ASound(dartTravelDuration, "sfx-pop-bubble-01.wav"));
         eObj->get<CActor>()->addNode(new ADestroy(0.f));
-        
-        //Attacker animation    
+
+        //Attacker animation
         double durAttackAnimation = Assets::getAnimation("unit-08-action-01.png").duration;
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(shotDate - durAttackAnimation, "unit-08-action-01.png"));
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(durAttackAnimation, "unit-08-idle.png"));
@@ -4558,7 +4558,6 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     double fadeSpeed = 120;
     double alphaTarget = 200;
     double fadeDuration = alphaTarget / fadeSpeed;
-    double tTornadoStartFadeOut = fadeDuration + tFirstTravel + 4*tAux;
     double durationLineTravel = tAux;
     double timeToLastLine = fadeDuration + delayToMove + tFirstTravel + 3*durationLineTravel;
     double x0LastLine = xTornado - 3*sign*wSection;
@@ -4589,9 +4588,9 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         blocked.insert(make_pair(eDef, false));
         died.insert(make_pair(eDef, false));
     }
-    
+
     std::list<double> hitTimes;
-    for (int i = 0; i < eTargets.size(); ++i) {
+    for (int i = 0; (unsigned) i < eTargets.size(); ++i) {
         hitTimes.push_back(randomDouble(5.f, 7.f));
     }
     hitTimes.sort();
@@ -4609,10 +4608,10 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         //========================================
-        
+
         ///ATTACKER
         if (!eAtk->has(Component::ACCELERATION)) eAtk->add(new CAcceleration);
-        
+
         double tStart = randomDouble(0.f, 0.5f);
         double gravity = 200.f;
         double firstJumpStart = tStart;
@@ -4620,7 +4619,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double xOff = -sign*10.f;
         double firstJumpAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, cxWindow + xOff, cyWindow, firstJumpSpeed, gravity);
         double firstJumpDuration = getTravelTime(eAtk->get<CPosition>()->x, 0.f, cxWindow + xOff, 0.f, cos(firstJumpAngle*M_RAD) * firstJumpSpeed);
-        
+
         double lastLineTimeOffset = randomDouble(0.f, durationLineTravel-0.25);
         double secondJumpStart = timeToLastLine - firstJumpDuration + lastLineTimeOffset;
         double x0SecondJump = x0LastLine + abs(x0LastLine - x1LastLine) * (lastLineTimeOffset / durationLineTravel);
@@ -4628,11 +4627,11 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double secondJumpSpeed = 200.f;
         double secondJumpAngle = getAngleToHit(x0SecondJump, y0SecondJump, cxWindow, eAtk->get<CPosition>()->y, secondJumpSpeed, gravity);
         double secondJumpDuration = getTravelTime(x0SecondJump, 0.f, cxWindow, 0.f, cos(secondJumpAngle*M_RAD) * secondJumpSpeed);
-        
+
         double walkSpeed = 400.f;
         double walkDistance = abs(cxWindow - eAtk->get<CPosition>()->x);
         double walkDuration = walkDistance / walkSpeed;
-        
+
         eAtk->get<CActor>()->addNode(new AAddComponent(firstJumpStart, new CAutoPilot(), Component::AUTO_PILOT));
         eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::DRAW_TAG, CDraw::WORLD_2));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
@@ -4641,7 +4640,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(firstJumpAngle*M_RAD)*firstJumpSpeed));
         eAtk->get<CActor>()->addNode(new AVariable(firstJumpDuration, AVariable::HIDDEN, true));
         eAtk->get<CActor>()->addNode(new ARemoveComponent(0.f, Component::AUTO_PILOT));
-        
+
         eAtk->get<CActor>()->addNode(new ATeleport(secondJumpStart, x0SecondJump, y0SecondJump));
         eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::H_FLIP, !eAtk->get<CAnimation>()->hFlip));
         eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::HIDDEN, false));
@@ -4656,7 +4655,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(0.f, eAtk->get<CUnit>()->aWalk));
         eAtk->get<CActor>()->addNode(new AVariable(walkDuration, AVariable::H_FLIP, eAtk->get<CAnimation>()->hFlip));
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(0.f, eAtk->get<CUnit>()->aIdle));
-        
+
         ///SHADOW 1
         eObj = eManager->createEntity();
         eObj->add(new CPosition(*eAtk->get<CPosition>()));
@@ -4671,7 +4670,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eObj->get<CActor>()->addNode(new AVariable(firstJumpStart, AVariable::HIDDEN, false));
         eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow + xOff, cyWindow, shadowSpeed));
         eObj->get<CActor>()->addNode(new ADestroy(firstJumpDuration));
-        
+
         ///SHADOW 2
         eObj = eManager->createEntity();
         eObj->add(new CPosition(x0SecondJump, y0SecondJump));
@@ -4680,13 +4679,13 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         eObj->add(new CActor());
         eObj->add(new CVelocity());
         eObj->get<CDraw>()->isHidden = true;
-        
+
         shadowSpeed = getDistance(x0SecondJump, y0SecondJump, cxWindow, eAtk->get<CPosition>()->y)/secondJumpDuration;
 
         eObj->get<CActor>()->addNode(new AVariable(firstJumpStart + firstJumpDuration + secondJumpStart, AVariable::HIDDEN, false));
         eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow, eAtk->get<CPosition>()->y, shadowSpeed));
         eObj->get<CActor>()->addNode(new ADestroy(secondJumpDuration));
-        
+
         //========================================
         ///DEFENDER
         double tHit = hitTimesMap[eDef];
@@ -6693,13 +6692,13 @@ void ScriptedAnimation::scriptPostAttackSpeech(ActionOutcome& outcome, Entity* e
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     Entity* eCap = eEnemy->get<CArmy>()->captain;
     std::string capName = toUpper(Assets::getString(eCap->get<CCaptain>()->strName));
-    
+
     bool effective = false;
     int deathCount = getDeathCount(outcome);
     if (deathCount > 0.15 * eEnemy->get<CArmy>()->nAlive) {
         effective = true;
     }
-    
+
     std::string strSpeech = "SPEECH-AFTER-DEFENSE-" + capName + (effective ? "" : "-NOT") + "-EFFECTIVE-" + int2str(randomInt(1, 1), 2);
     eCap->get<CActor>()->addNode(new ASpeak(date, Assets::getString(strSpeech), 2.3));
 }

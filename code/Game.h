@@ -1,8 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
+
 #include <list>
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/SoundRecorder.hpp>
+
 #include "Entity.h"
 #include "System.h"
 #include "RenderSystem.h"
