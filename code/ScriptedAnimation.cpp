@@ -968,9 +968,9 @@ void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e)
     addActor(eEtelka);
 
 
+    Entity* eCapEnemy = eEnemy->get<CArmy>()->captain;
     eEnemy->get<CArmy>()->armyEffects.erase(eEnemy->get<CArmy>()->armyEffects.find(eEnemy->get<CArmy>()->formation + 300));
     eEnemy->get<CArmy>()->formation = outcome.formation;
-    eEnemy->get<CArmy>()->armyEffects.insert(make_pair(eEnemy->get<CArmy>()->formation + 300, CAction::Map[eEnemy->get<CArmy>()->formation + 300]));
 
     //double dx = wWalkStep;
     double ux = uxFormation;
@@ -983,7 +983,7 @@ void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e)
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
-        eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
+        eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart + 0.5, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
                     getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
@@ -991,15 +991,15 @@ void ScriptedAnimation::scriptChangeFormation(ActionOutcome& outcome, Entity* e)
         addActor(eUnit);
     }
 
-    Entity* eCapEnemy = eEnemy->get<CArmy>()->captain;
     double turnFrequency = 2;
-    eCapEnemy->get<CActor>()->addNode(new ASpeak(tStart, "!!!!", animDuration));
+    eCapEnemy->get<CActor>()->addNode(new ASpeak(tStart + 0.5, "!!!!", animDuration));
     eCapEnemy->get<CActor>()->addNode(new AVariable(0.0, AVariable::H_FLIP, opposite(hFlip)));
     eCapEnemy->get<CActor>()->addNode(new AVariable(1.0/turnFrequency, AVariable::H_FLIP, hFlip));
     eCapEnemy->get<CActor>()->addNode(new AVariable(1.0/turnFrequency, AVariable::H_FLIP, opposite(hFlip)));
     eCapEnemy->get<CActor>()->addNode(new AVariable(1.0/turnFrequency, AVariable::H_FLIP, hFlip));
     eCapEnemy->get<CActor>()->addNode(new AVariable(1.0/turnFrequency, AVariable::H_FLIP, opposite(hFlip)));
     eCapEnemy->get<CActor>()->addNode(new AVariable(1.0/turnFrequency, AVariable::H_FLIP, hFlip));
+    eCapEnemy->get<CActor>()->addNode(new AVariable(0.f, AVariable::ADD_EFFECT, eEnemy->get<CArmy>()->formation + 300));
     addActor(eCapEnemy);
 
 }
@@ -1031,7 +1031,7 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
     eEtelka->get<CActor>()->addNode(new ASpriteAnimation(durEtelkaAnimation, eEtelka->get<CCaptain>()->aIdle));
 
     if (!outcome.bValue) {
-        std::string strSpeech = "SPEECH-FAILED-HEX-" + toUpper(Assets::getString(eCapOld->get<CCaptain>()->strName)) + "-" + int2str(randomInt(1,1), 2);
+        std::string strSpeech = "SPEECH-FAILED-HEX-" + toUpper(eCapOld->get<CCaptain>()->uniqueName) + "-" + int2str(randomInt(1,1), 2);
         eCapOld->get<CActor>()->addNode(new ASpeak(tHit, Assets::getString(strSpeech), 2.5));
         eCapOld->get<CActor>()->addNode(new AVariable(2.0f, AVariable::HIDDEN, eEtelka->get<CDraw>()->isHidden));
     }
@@ -1688,44 +1688,51 @@ void ScriptedAnimation::scriptBecomeHuman(ActionOutcome& outcome, Entity* e) {
 }
 
 void ScriptedAnimation::scriptCroak(ActionOutcome& outcome, Entity* e) {
-    Entity* eCapOld = e->get<CArmy>()->captain;
-    Entity* eCapNew = eCapOld->getObservedEntity("OriginalHero");
+    if (outcome.bValue) {
+        Entity* eCapOld = e->get<CArmy>()->captain;
+        Entity* eCapNew = eCapOld->getObservedEntity("OriginalHero");
 
-    e->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
-    eManager->removeEntity(eCapOld);
-    map<CCaptain::ID, Entity*>::iterator it;
-    it = e->get<CArmy>()->captains.find(eCapOld->get<CCaptain>()->id);
-    e->get<CArmy>()->captains.erase(it);
+        e->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
+        eManager->removeEntity(eCapOld);
+        map<CCaptain::ID, Entity*>::iterator it;
+        it = e->get<CArmy>()->captains.find(eCapOld->get<CCaptain>()->id);
+        e->get<CArmy>()->captains.erase(it);
 
-    CCaptain::ID id = eCapNew->get<CCaptain>()->id;
-    e->get<CPlayer>()->heroDeck.push_back(id);
+        CCaptain::ID id = eCapNew->get<CCaptain>()->id;
+        e->get<CPlayer>()->heroDeck.push_back(id);
 
-    e->get<CArmy>()->captains.insert(make_pair(id, eCapNew));
-    e->get<CArmy>()->captain = eCapNew;
+        e->get<CArmy>()->captains.insert(make_pair(id, eCapNew));
+        e->get<CArmy>()->captain = eCapNew;
 
-    Entity* eObj;
+        Entity* eObj;
 
-    ///PUFF
-    string puffAnimation = "poof-02.png";
-    string sfxPoofIn = "sfx-poof-04.wav";
-    string sfxPoofOut = "sfx-poof-03.wav";
-    double puffDuration = Assets::getAnimation(puffAnimation).duration;
-    eObj = eManager->createEntity();
-    eObj->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
-    eObj->add(new CDraw(CDraw::WORLD_2));
-    eObj->add(new CDimensions(85, 85));
-    eObj->add(new CAnimation(false, puffAnimation));
-    eObj->add(new CActor());
+        ///PUFF
+        string puffAnimation = "poof-02.png";
+        string sfxPoofIn = "sfx-poof-04.wav";
+        string sfxPoofOut = "sfx-poof-03.wav";
+        double puffDuration = Assets::getAnimation(puffAnimation).duration;
+        eObj = eManager->createEntity();
+        eObj->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
+        eObj->add(new CDraw(CDraw::WORLD_2));
+        eObj->add(new CDimensions(85, 85));
+        eObj->add(new CAnimation(false, puffAnimation));
+        eObj->add(new CActor());
 
-    eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
-    eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-    eObj->get<CActor>()->addNode(new AVariable(puffDuration, AVariable::HIDDEN, true));
+        eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
+        eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
+        eObj->get<CActor>()->addNode(new AVariable(puffDuration, AVariable::HIDDEN, true));
 
-    eCapNew->get<CActor>()->addNode(new ATeleport(0.0, eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
-    eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-GRR"), 2));
+        eCapNew->get<CActor>()->addNode(new ATeleport(0.0, eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
+        eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-GRR"), 2));
 
-    addActor(eObj);
-    addActor(eCapNew);
+        addActor(eObj);
+        addActor(eCapNew);
+    } else {
+        Entity* eHero = e->get<CArmy>()->captain;
+        eHero->get<CActor>()->addNode(new ASpeak(0.5, Assets::getString("SPEECH-CROAK-FAILED"), 2.5f));
+        eHero->get<CActor>()->addNode(new AVariable(2.5f, AVariable::HIDDEN, eHero->get<CDraw>()->isHidden));
+        addActor(eHero);
+    }
 }
 
 void ScriptedAnimation::scriptHelp(ActionOutcome& outcome, Entity* e) {
@@ -2469,7 +2476,7 @@ void ScriptedAnimation::scriptPresentCaptain(Entity* e) {
     double xTarget = cxWindow + sign*dx;
 
     Entity* eCap = eArmy->get<CArmy>()->captain;
-    std::string heroName = Assets::getString(eCap->get<CCaptain>()->strName);
+    std::string heroName = eCap->get<CCaptain>()->uniqueName;
     std::string speechText = "SPEECH-PRESENTATION-" + toUpper(heroName) + "-" + int2str(randomInt(1,2), 2);
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
     eCap->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, eCap->get<CPosition>()->y, 200));
@@ -2559,7 +2566,7 @@ void ScriptedAnimation::scriptReturnArmy(Entity* e) {
     for(EntityListIt i = eArmy->get<CArmy>()->allUnits.begin(); i != eArmy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
-        eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
+        eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(1.f, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, opposite(eUnit->get<CAnimation>()->hFlip)));
         double yDest = cyWindow + randomDouble(-15,15);
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*400, yDest, 200));
@@ -2845,8 +2852,9 @@ void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor)
 
     int speechs = 0;
     int nSpeechs = 1;
+    int nSuccesses = outcome.idTargets.size();
 
-    for(auto& i : outcome.idTargets) {
+    for (auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eEnemy, i);
         double xUnit = eUnit->get<CPosition>()->x;
         double yUnit = eUnit->get<CPosition>()->y;
@@ -2867,11 +2875,22 @@ void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor)
     }
 
     Entity* eCap = eArmy->get<CArmy>()->captain;
-    std::string heroName = Assets::getString(eCap->get<CCaptain>()->strName);
+    std::string heroName = eCap->get<CCaptain>()->uniqueName;
     std::string speechText = "SPEECH-INTIMIDATION-" + toUpper(heroName) + "-" + int2str(randomInt(1,2), 2);
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speechText), 3));
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aIntimidation));
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eCap->get<CCaptain>()->aIntimidation).duration, eCap->get<CCaptain>()->aIdle));
+    
+    Entity* eCapEnemy = eEnemy->get<CArmy>()->captain;
+    if (nSuccesses > 0) {
+        std::string capName = toUpper(eCapEnemy->get<CCaptain>()->uniqueName);
+        std::string speech = Assets::getString("SPEECH-AFTER-DEFENSE-" + capName + "-EFFECTIVE-" + int2str(randomInt(1, 1), 2));
+        eCapEnemy->get<CActor>()->addNode(new ASpeak(3.0f, speech, 2.5f));
+    } else {
+        std::string capName = toUpper(eCapEnemy->get<CCaptain>()->uniqueName);
+        std::string speech = Assets::getString("SPEECH-AFTER-DEFENSE-" + capName + "-NOT-EFFECTIVE-" + int2str(randomInt(1, 1), 2));
+        eCapEnemy->get<CActor>()->addNode(new ASpeak(3.0f, speech, 2.5f));
+    }
 
     addActor(eCap);
 }
@@ -6692,8 +6711,8 @@ void ScriptedAnimation::scriptCallHelp(Entity* e) {
 
 void ScriptedAnimation::scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e) {
     Entity* eCap = e->get<CArmy>()->captain;
-    std::string capName = toUpper(Assets::getString(eCap->get<CCaptain>()->strName));
-    std::string unitName = toUpper(Assets::getString(CUnit::Map[outcome.action].strName));
+    std::string capName = toUpper(eCap->get<CCaptain>()->uniqueName);
+    std::string unitName = toUpper(CUnit::Map[outcome.action].uniqueName);
     std::string strSpeech = "SPEECH-PRE-ATTACK-" + capName + "-" + unitName + "-" + int2str(randomInt(1, 1), 2);
     eCap->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString(strSpeech), 2.3));
 }
@@ -6701,7 +6720,7 @@ void ScriptedAnimation::scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e)
 void ScriptedAnimation::scriptPostAttackSpeech(ActionOutcome& outcome, Entity* e, double date) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     Entity* eCap = eEnemy->get<CArmy>()->captain;
-    std::string capName = toUpper(Assets::getString(eCap->get<CCaptain>()->strName));
+    std::string capName = toUpper(eCap->get<CCaptain>()->uniqueName);
 
     bool effective = false;
     int deathCount = getDeathCount(outcome);

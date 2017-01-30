@@ -1998,7 +1998,7 @@ void ActionSystem::preprocessChangeFormation(ActionOutcome& outcome, Entity* e) 
 
 void ActionSystem::preprocessHex(ActionOutcome& outcome, Entity* e) {
     double chance = 0.5;
-#if 0
+#if 1
     if (randomDouble(0, 1) <= chance) outcome.bValue = true;
     else outcome.bValue = false;
 #else
@@ -2149,7 +2149,11 @@ void ActionSystem::preprocessBecomeHuman(ActionOutcome& outcome, Entity* e) {
 }
 
 void ActionSystem::preprocessCroak(ActionOutcome& outcome, Entity* e) {
-    double chance = 0.70;
+#if 0
+    double chance = 0.50;
+#else
+    double chance = 0.f;
+#endif
     if (randomDouble(0, 1) < chance) outcome.bValue = true;
     else outcome.bValue = false;
 }

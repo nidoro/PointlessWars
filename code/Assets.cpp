@@ -341,54 +341,69 @@ void Assets::createCaptains() {
         captains[i].btActTexture = "hero-" + int2str(i, 2) + "-portrait-highlit.png";
     }
     //HERO-00	Chimalmat
+    captains[0].uniqueName = "CHIMALMAT";
     captains[0].actions.push_back(205);
     captains[0].actions.push_back(231);
     captains[0].actions.push_back(226);
     //captains[0].portrait = "chimalmat-s.png";
     //HERO-01	Abraham
+    captains[1].uniqueName = "ABRAHAM";
     captains[1].actions.push_back(230);
     captains[1].actions.push_back(218);
     //captains[1].portrait = "abraham-s.png";
     //HERO-02	Etelka
+    captains[2].uniqueName = "ETELKA";
     captains[2].actions.push_back(212);
     captains[2].actions.push_back(223);
     //HERO-03	Nagendra
+    captains[3].uniqueName = "NAGENDRA";
     captains[3].actions.push_back(208);
     captains[3].actions.push_back(227);
     //HERO-04	Goraidh
+    captains[4].uniqueName = "GORAIDH";
     captains[4].actions.push_back(209);
     captains[4].actions.push_back(216);
     //HERO-05	Mog-Ur
+    captains[5].uniqueName = "MOG-UR";
     captains[5].actions.push_back(203);
     captains[5].actions.push_back(222);
     //HERO-06	Caeser
+    captains[6].uniqueName = "CAESER";
     captains[6].actions.push_back(232);
     captains[6].actions.push_back(221);
     //HERO-07	Tï¿½rrega
+    captains[7].uniqueName = "TARREGA";
     captains[7].actions.push_back(213);
     captains[7].actions.push_back(235);
     //HERO-08	Catherine
+    captains[8].uniqueName = "CATHERINE";
     captains[8].actions.push_back(233);
     captains[8].actions.push_back(239);
     //HERO-09	Jamyang
+    captains[9].uniqueName = "JAMYANG";
     captains[9].actions.push_back(206);
     captains[9].actions.push_back(217);
     //HERO-10	Imamu
+    captains[10].uniqueName = "IMAMU";
     captains[10].actions.push_back(207);
     captains[10].actions.push_back(219);
     //HERO-11	Alfgeir
+    captains[11].uniqueName = "ALFGEIR";
     captains[11].actions.push_back(204);
     captains[11].actions.push_back(238);
     //HERO-12	Lily
+    captains[12].uniqueName = "LILY";
     captains[12].actions.push_back(228);
     captains[12].actions.push_back(224);
     captains[12].actions.push_back(220);
     //HERO-13	True Form
+    captains[13].uniqueName = "TRUE-FORM";
     captains[13].actions.push_back(241);
     captains[13].actions.push_back(242);
     captains[13].aIdle = "hero-" + int2str(13, 2) + "-idle.png";
     captains[13].aWalk = "hero-" + int2str(13, 2) + "-walk.png";
     //HERO-13	Frog
+    captains[14].uniqueName = "FROG";
     captains[14].actions.push_back(240);
 
     captains[13].actions.remove(202);
@@ -425,6 +440,30 @@ void Assets::createUnits() {
         0, 0, 0, 0, 4, //19
         0, 0, 0, 0, 4 //20
     };
+    
+    std::string uniqueNames[] = {
+        "Arbalest",
+        "Odalisque",
+        "Mamluk",
+        "Wizard",
+        "Axeman",
+        "Spike",
+        "Champion",
+        "Taekwon",
+        "Huli",
+        "Samurai",
+        "Shaolin",
+        "Abomination",
+        "Longbowman",
+        "Halberdier",
+        "Ninja",
+        "Illusionist",
+        "TBD",
+        "Obsolete",
+        "Obsolete",
+        "Promise",
+        "Vassal"
+    };
 
     //1(0) 13(3) 6(2) 9(1)
     //2(0) 13(3) 6(2) 9(1)
@@ -432,6 +471,7 @@ void Assets::createUnits() {
 
     for (int i = 0; i < nUnits; i++) {
         CUnit unit;
+        unit.uniqueName = uniqueNames[i];
         unit.id = i;
         unit.action = (CAction::ID) i;
         unit.resistance[CUnit::FIRE] = unitAtt[i][0];

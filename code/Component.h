@@ -764,7 +764,8 @@ struct CUnit : public Component {
         dead = false;
         armyID = 0;
     }
-
+    
+    std::string uniqueName;
     string displayer;
     vector<int> resistance;
     vector<int> realResist;
@@ -823,7 +824,8 @@ struct CCaptain : public Component {
     }
 
     ID id;
-
+    
+    std::string uniqueName;
     string strName;
     string texture;
     string icon;
