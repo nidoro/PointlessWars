@@ -295,7 +295,7 @@ void Assets::createActions() {
         actions[i].duration = -1;
         actions[i].description = getString("DESCRIPTION-ACTION-" + int2str(i));
         actions[i].name = getString("NAME-ACTION-" + int2str(i));
-        actions[i].btDefTexture = "button-g-" + int2str(i - 300, 2) + ".png";
+        actions[i].btDefTexture = "button-formation-" + int2str(i - 300, 2) + ".png";
         actions[i].btHovTexture = "button-formation-" + int2str(i - 300, 2) + "-highlit.png";
         actions[i].btActTexture = "button-formation-" + int2str(i - 300, 2) + "-highlit.png";
     }

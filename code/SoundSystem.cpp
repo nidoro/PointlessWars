@@ -67,7 +67,7 @@ void SoundSystem::onPlaySound(Entity* e) {
         }
 
         if (e->get<CSound>()->fadeInLength > 0.f) {
-            e->get<CSound>()->volumn = 0.01f;
+            e->get<CSound>()->volumn = 0.0f;
         } else {
             e->get<CSound>()->volumn = e->get<CSound>()->maxVolumn;
         }

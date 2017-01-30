@@ -19,9 +19,13 @@ ScreenSystem::~ScreenSystem() {
 }
 
 void ScreenSystem::update() {
+#if PW_DEBUG
+    window->setTitle("Entities count = " + int2str(eManager->getCount()));
+#else
     string windowName;
     windowName = "Pointless Wars";
     window->setTitle(windowName);
+#endif
 }
 
 void ScreenSystem::onCreateScreen(Entity* e) {

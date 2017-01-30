@@ -480,6 +480,9 @@ void ScriptedAnimation::onPlayAction(Entity* e) {
     case 239:
         scriptSlavesCall(war.getNextActionOutcome(idPlayer), e);
         break;
+    case 240:
+        scriptCroak(war.getNextActionOutcome(idPlayer), e);
+        break;
     case 241:
         scriptStampede(war.getNextActionOutcome(idPlayer), e);
         break;
@@ -1016,7 +1019,9 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
     double tShot = tStart + durEtelkaAnimation/2;
     double shotSpeed = 200;
     double gravity = 200;
-    double shotAngle = getAngleToHit(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y, eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y, shotSpeed, gravity);
+    double shotAngle = getAngleToHit(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y, 
+                                     eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y, 
+                                     shotSpeed, gravity);
     double durShotTravel = getTravelTime(eCapOld->get<CPosition>()->x, 0, eEtelka->get<CPosition>()->x, 0, cos(shotAngle*M_RAD)*shotSpeed);
     double tHit = tShot + durShotTravel;
 
@@ -1025,7 +1030,12 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
     eEtelka->get<CActor>()->addNode(new ASpriteAnimation(0.0, "etelka-hex.png"));
     eEtelka->get<CActor>()->addNode(new ASpriteAnimation(durEtelkaAnimation, eEtelka->get<CCaptain>()->aIdle));
 
-    if (!outcome.bValue) eEtelka->get<CActor>()->addNode(new ASpeak(tHit + 0.2, Assets::getString("SPEECH-ETELKA-HEX-FAIL"), 2.5));
+    if (!outcome.bValue) {
+        std::string strSpeech = "SPEECH-FAILED-HEX-" + toUpper(Assets::getString(eCapOld->get<CCaptain>()->strName)) + "-" + int2str(randomInt(1,1), 2);
+        eCapOld->get<CActor>()->addNode(new ASpeak(tHit, Assets::getString(strSpeech), 2.5));
+        eCapOld->get<CActor>()->addNode(new AVariable(2.0f, AVariable::HIDDEN, eEtelka->get<CDraw>()->isHidden));
+    }
+    
     ///ANIMATE ARROW
     eObj = eManager->createEntity();
     eObj->add(new CPosition(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y));
