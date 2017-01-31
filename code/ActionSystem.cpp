@@ -2018,18 +2018,18 @@ void ActionSystem::preprocessTarot(ActionOutcome& outcome, Entity* e) {
     int nTargets = 5;
     outcome.iValue = card;
     switch (card) {
-    case 1:
-        nEnemies = nTargets;
-        break;
-    case 2:
-        nEnemies = nTargets;
-        nAllies = nTargets;
-        break;
-    case 3:
-        nAllies = nTargets;
-        break;
-    default:
-        break;
+        case 1:
+            nEnemies = nTargets;
+            break;
+        case 2:
+            nEnemies = nTargets;
+            nAllies = nTargets;
+            break;
+        case 3:
+            nAllies = nTargets;
+            break;
+        default:
+            break;
     }
 
     EntityList aliveAllies = getAliveUnits(e);
@@ -2149,7 +2149,7 @@ void ActionSystem::preprocessBecomeHuman(ActionOutcome& outcome, Entity* e) {
 }
 
 void ActionSystem::preprocessCroak(ActionOutcome& outcome, Entity* e) {
-#if 0
+#if 1
     double chance = 0.50;
 #else
     double chance = 0.f;

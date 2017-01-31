@@ -1134,11 +1134,10 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
         spriteCard = "tarot-luck";
         break;
     case 2:
-        spriteCard = "tarot-bad-luck";
-        break;
-    case 3:
         spriteCard = "tarot-neutral";
         break;
+    case 3:
+        spriteCard = "tarot-bad-luck";
         break;
     }
 
@@ -1202,7 +1201,13 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
 
     //hero
     Entity* eHero = e->get<CArmy>()->captain;
-    eHero->get<CActor>()->addNode(new ASpriteAnimation(0.0, "nagendra-tarot.png"));
+    std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
+    std::string suffix = (outcome.iValue == 1 ? "GOOD" : (outcome.iValue == 2 ? "NEUTRAL" : "BAD"));
+    std::string speech = Assets::getString("SPEECH-" + heroName + "-TAROT-" + suffix + "-" + int2str(randomInt(1, 1), 2));
+    
+    eHero->get<CActor>()->addNode(new ASpriteAnimation(0.0, "nagendra-tarot-01.png"));
+    eHero->get<CActor>()->addNode(new ASpriteAnimation(3.5, "nagendra-tarot-02.png"));
+    eHero->get<CActor>()->addNode(new ASpeak(0.f, speech, 2.5f));
     eHero->get<CActor>()->addNode(new ASpriteAnimation(3.5, eHero->get<CCaptain>()->aIdle));
 }
 
