@@ -116,6 +116,7 @@ class ActionSystem : public System {
         void playMeleeBattle(Entity* e);
         bool contains(map<CAction::ID, CAction>& m, CAction::ID id);
         bool mapContains(map<CAction::ID, CAction>& m, CAction::ID id);
+        bool isCursed(Entity* e);
 
 
         EntityList getAliveUnits(Entity* e);

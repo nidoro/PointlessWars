@@ -297,6 +297,19 @@ void ScriptedAnimation::onSystemAction(Entity* e) {
 
 }
 
+void ScriptedAnimation::scriptBackfire(ActionOutcome& outcome, Entity* e) {
+    for (auto i : outcome.idBackfire) {
+        Entity* eUnit = getUnitByID(e, i);
+        float when = unitRest1;
+        eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eUnit->get<CUnit>()->aDeath));
+        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eUnit->get<CUnit>()->aDeath).duration, eUnit->get<CUnit>()->aDead));
+        eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
+
+        scriptDeathIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, when, eUnit->get<CAnimation>()->hFlip, outcome.dmgType);
+    }
+}
+
 void ScriptedAnimation::onThrowCoin(Entity* e) {
     //scriptThrowCoin();
     notify(SCENE_STARTED, e);
@@ -311,6 +324,7 @@ void ScriptedAnimation::onPlayAction(Entity* e) {
     }
     if (war.getNextActionOutcome(idPlayer).action < 100) {
         scriptPreAttackSpeech(war.getNextActionOutcome(idPlayer), e);
+        scriptBackfire(war.getNextActionOutcome(idPlayer), e);
     }
     if (war.getNextActionOutcome(idPlayer).action < 100) {
         //scriptGenericUnitAttack(war.getNextActionOutcome(idPlayer), e);
@@ -803,6 +817,11 @@ void ScriptedAnimation::scriptDebuffEarth(ActionOutcome& outcome, Entity* e) {
 
         addActor(eGem);
     }
+
+    Entity* eHero = e->get<CArmy>()->captain;
+    std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
+    std::string speech = Assets::getString("SPEECH-" + heroName + "-EARTH-DEBUFF-" + int2str(randomInt(1,1), 2));
+    eHero->get<CActor>()->addNode(new ASpeak(0.f, speech, 2.5f));
 }
 
 void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
@@ -859,7 +878,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
     eObj->get<CActor>()->addNode(new AMove(0.0, middlePoint.x, yStart, handSpeed));
     eObj->get<CActor>()->addNode(new ADestroy(tAux));
 
-    for(auto& i : outcome.idTargets) {
+    for (auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eTarget, i);
         double tStart = randomDouble(tHandReady, tHandReady + 1.0);
         Entity* eGem = eManager->createEntity();
@@ -880,7 +899,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
 
         addActor(eGem);
     }
-    
+
     Entity* eHero = e->get<CArmy>()->captain;
     std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
     std::string speech = Assets::getString("SPEECH-" + heroName + "-WATER-DEBUFF-" + int2str(randomInt(1,1), 2));
@@ -1024,8 +1043,8 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
     double tShot = tStart + durEtelkaAnimation/2;
     double shotSpeed = 200;
     double gravity = 200;
-    double shotAngle = getAngleToHit(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y, 
-                                     eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y, 
+    double shotAngle = getAngleToHit(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y,
+                                     eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y,
                                      shotSpeed, gravity);
     double durShotTravel = getTravelTime(eCapOld->get<CPosition>()->x, 0, eEtelka->get<CPosition>()->x, 0, cos(shotAngle*M_RAD)*shotSpeed);
     double tHit = tShot + durShotTravel;
@@ -1040,7 +1059,7 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
         eCapOld->get<CActor>()->addNode(new ASpeak(tHit, Assets::getString(strSpeech), 2.5));
         eCapOld->get<CActor>()->addNode(new AVariable(2.0f, AVariable::HIDDEN, eEtelka->get<CDraw>()->isHidden));
     }
-    
+
     ///ANIMATE ARROW
     eObj = eManager->createEntity();
     eObj->add(new CPosition(eEtelka->get<CPosition>()->x, eEtelka->get<CPosition>()->y));
@@ -1209,7 +1228,7 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
     std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
     std::string suffix = (outcome.iValue == 1 ? "GOOD" : (outcome.iValue == 2 ? "NEUTRAL" : "BAD"));
     std::string speech = Assets::getString("SPEECH-" + heroName + "-TAROT-" + suffix + "-" + int2str(randomInt(1, 1), 2));
-    
+
     eHero->get<CActor>()->addNode(new ASpriteAnimation(0.0, "nagendra-tarot-01.png"));
     eHero->get<CActor>()->addNode(new ASpriteAnimation(3.5, "nagendra-tarot-02.png"));
     eHero->get<CActor>()->addNode(new ASpeak(0.f, speech, 2.5f));
@@ -1218,14 +1237,6 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
 
 void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e) {
     Entity* eHero = e->get<CArmy>()->captain;
-
-    /// ARMY EFFECTS
-    map<CAction::ID, CAction>::iterator it;
-    for(it = e->get<CArmy>()->armyEffects.begin(); it != e->get<CArmy>()->armyEffects.end(); it++) {
-        if (it->second.effectType == CAction::DEBUFF) {
-            eHero->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::REMOVE_EFFECT, it->first));
-        }
-    }
 
     ///ANIMATE HERO
     double tStart = 0.5;
@@ -1239,7 +1250,7 @@ void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e) {
     double durShotTravel = getTravelTime(eHero->get<CPosition>()->x, 0, armyCenter.x, 0, cos(shotAngle*M_RAD)*shotSpeed);
     //double tHit = tShot + durShotTravel;
 
-    eHero->get<CActor>()->addNode(new ASpeak(tStart, Assets::getString("SPEECH-GORAIDH-PURIFY"), 2.5));
+    eHero->get<CActor>()->addNode(new ASpeak(tStart, Assets::getString("SPEECH-GORAIDH-PURIFY-" + int2str(randomInt(1,1), 2)), 2.5));
     eHero->get<CActor>()->addNode(new ASpriteAnimation(0.0, "goraidh-purification.png"));
     eHero->get<CActor>()->addNode(new ASpriteAnimation(durEtelkaAnimation, eHero->get<CCaptain>()->aIdle));
 
@@ -1273,9 +1284,21 @@ void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e) {
     for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
-        for(it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++) {
+        for (auto it = eUnit->get<CUnit>()->effects.begin(); it != eUnit->get<CUnit>()->effects.end(); it++) {
             if (it->second.effectType == CAction::DEBUFF) {
                 eUnit->get<CActor>()->timeline.push_back(new AVariable(tShot + durShotTravel, AVariable::REMOVE_EFFECT, it->first));
+            }
+        }
+    }
+    
+    /// ARMY EFFECTS
+    bool firstOne = true;
+    for (auto it = e->get<CArmy>()->armyEffects.begin(); it != e->get<CArmy>()->armyEffects.end(); it++) {
+        if (it->second.effectType == CAction::DEBUFF) {
+            if (firstOne) {
+                eHero->get<CActor>()->timeline.push_back(new AVariable(durShotTravel, AVariable::REMOVE_EFFECT, it->first));
+            } else {
+                eHero->get<CActor>()->timeline.push_back(new AVariable(0.f, AVariable::REMOVE_EFFECT, it->first));
             }
         }
     }
@@ -1343,13 +1366,16 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
 
 void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
-    Entity* eEnemyHero = eEnemy->get<CArmy>()->captain;
-    eEnemyHero->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, outcome.action));
+    
+    for (auto i : outcome.idTargets) {
+        Entity* eUnit = getUnitByID(eEnemy, i);
+        eUnit->get<CActor>()->addNode(new AVariable(2.5f, AVariable::ADD_EFFECT, outcome.action));
+        scriptCurseIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, 2.5f, eUnit->get<CAnimation>()->hFlip);
+    }
 
     Entity* eHero = e->get<CArmy>()->captain;
     eHero->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Ooga booga wooga!", 2));
     eHero->get<CActor>()->timeline.push_back(new ASpriteAnimation(4.0, eHero->get<CCaptain>()->aIdle));
-    eHero->get<CCaptain>()->morale++;
     addActor(eHero);
 
     Entity* eSound = eManager->createEntity();
@@ -2890,7 +2916,7 @@ void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor)
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speechText), 3));
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aIntimidation));
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eCap->get<CCaptain>()->aIntimidation).duration, eCap->get<CCaptain>()->aIdle));
-    
+
     Entity* eCapEnemy = eEnemy->get<CArmy>()->captain;
     if (nSuccesses > 0) {
         std::string capName = toUpper(eCapEnemy->get<CCaptain>()->uniqueName);
@@ -6496,6 +6522,11 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e) {
 
         addActor(eGem);
     }
+
+    Entity* eHero = e->get<CArmy>()->captain;
+    std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
+    std::string speech = Assets::getString("SPEECH-" + heroName + "-FIRE-DEBUFF-" + int2str(randomInt(1,1), 2));
+    eHero->get<CActor>()->addNode(new ASpeak(0.f, speech, 2.5f));
 }
 void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
@@ -6568,6 +6599,11 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
         scriptBlockIcon(eTarget->get<CPosition>()->x, eTarget->get<CPosition>()->y, tHit, opposite(hFlip), CUnit::AIR);
 
     }
+
+    Entity* eHero = e->get<CArmy>()->captain;
+    std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
+    std::string speech = Assets::getString("SPEECH-" + heroName + "-AIR-DEBUFF-" + int2str(randomInt(1,1), 2));
+    eHero->get<CActor>()->addNode(new ASpeak(0.f, speech, 2.5f));
 }
 void ScriptedAnimation::scriptDebuffFire(Entity* e) {}
 void ScriptedAnimation::scriptDebuffWater(Entity* e) {}
@@ -6890,6 +6926,34 @@ void ScriptedAnimation::scriptBlockIcon(double x, double y, double timing, bool 
     double yTarget = yOrigin - 20;
     double speed = 60;
     string pic = "shield-" + int2str(type, 2) + ".png";
+    double tAux;
+    double angSpeed = 360;
+    double startingAngle = 180;
+    double duration = 1.8;
+    double yAmp = 4;
+
+    Entity* eIcon = eManager->createEntity();
+    eIcon->add(new CPosition(x, yOrigin));
+    eIcon->add(new CTexture(pic, hFlip));
+    eIcon->add(new CDraw(CDraw::WORLD_3));
+    eIcon->add(new CActor());
+    eIcon->add(new CVelocity());
+
+    eIcon->get<CDraw>()->isHidden = true;
+    eIcon->get<CActor>()->timeline.push_back(new AVariable(timing, AVariable::HIDDEN, false));
+    eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, x, yTarget, speed));
+    tAux = getTravelTime(x, yOrigin, x, yTarget, speed);
+    eIcon->get<CActor>()->addNode(new AAddComponent(tAux, new CElipsoidalMovement(x, yTarget, 0, yAmp, angSpeed, startingAngle), Component::ELIPSOIDAL_MOVEMENT));
+    eIcon->get<CActor>()->timeline.push_back(new ADestroy(duration));
+
+    addActor(eIcon);
+}
+
+void ScriptedAnimation::scriptCurseIcon(double x, double y, double timing, bool hFlip) {
+    double yOrigin = y - 32;
+    double yTarget = yOrigin - 20;
+    double speed = 60;
+    string pic = "curse-icon.png";
     double tAux;
     double angSpeed = 360;
     double startingAngle = 180;

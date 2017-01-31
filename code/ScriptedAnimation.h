@@ -126,6 +126,7 @@ class ScriptedAnimation : public System {
         void scriptGenericUnitAttack(ActionOutcome& outcome, Entity* e);
         void scriptGrantFormationBuff(ActionOutcome& outcome, Entity* e);
         void scriptArmyVsArmy(ActionOutcome& outcome, Entity* e);
+        void scriptBackfire(ActionOutcome& outcome, Entity* e);
         void scriptFightSmokeCloud(double duration);
         void scriptVictoryAnimation(double delay);
         void scriptConfettiRain(double delay);
@@ -134,6 +135,7 @@ class ScriptedAnimation : public System {
         void scriptPoofAt(double x, double y, double when);
         void scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
+        void scriptCurseIcon(double x, double y, double timing, bool hFlip);
         void scriptGeiser(double x, double y, double timing, double duration);
         void scriptPurificationFlask(double x, double y, double tStart);
 

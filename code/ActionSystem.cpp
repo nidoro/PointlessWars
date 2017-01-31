@@ -2070,9 +2070,15 @@ void ActionSystem::preprocessResurect(ActionOutcome& outcome, Entity* e) {
 }
 
 void ActionSystem::preprocessCurse(ActionOutcome& outcome, Entity* e) {
-    double chance = 0.3;
-    if (randomDouble(0, 1) <= chance) outcome.bValue = true;
-    else outcome.bValue = false;
+    Entity* eEnemy = e->get<CPlayer>()->enemy;
+    EntityList candidates = getAliveUnits(eEnemy);
+    int maxTargets = min(20, (int) candidates.size());
+    int nTargets = randomInt(1, maxTargets);
+    for (int i = 0; i < nTargets; i++) {
+        Entity* eUnit = pickRandom(candidates);
+        candidates.remove(eUnit);
+        outcome.idTargets.push_back(eUnit->get<CUnit>()->armyID);
+    }
 }
 
 void ActionSystem::preprocessSleep(ActionOutcome& outcome, Entity* e) {
@@ -2183,7 +2189,7 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e) {
     CUnit::DamageType dmg;
     CUnit::ID uID = outcome.action;
 
-    for(EntityListIt i = aliveAtk.begin(); i != aliveAtk.end(); i++) {
+    for (EntityListIt i = aliveAtk.begin(); i != aliveAtk.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->id == uID) {
             unitsAtk.push_back(eUnit);
@@ -2191,6 +2197,17 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e) {
         }
     }
 
+    //Backfire due to curse
+    float curseSuccessChance = 1.0;
+    for (auto eUnit : unitsAtk) {
+        if (isCursed(eUnit)) {
+            if (randomDouble(0, 1) < curseSuccessChance) {
+                outcome.idBackfire.push_back(eUnit->get<CUnit>()->armyID);
+                unitsAtk.remove(eUnit);
+            }
+        }
+    }
+    
     orderTargets(aliveDef, eAttacker->get<CArmy>()->armyEffects, dmg);
     int nCount = 0;
     int nAtk = unitsAtk.size();
@@ -2201,7 +2218,7 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e) {
         }
     }
 
-    for(EntityListIt i = unitsDef.begin(); i != unitsDef.end(); i++) {
+    for (EntityListIt i = unitsDef.begin(); i != unitsDef.end(); i++) {
         Entity* eUnit = *i;
         Entity* eCauser = pickRandom(unitsAtk);
         Entity* eTarget = eUnit;
@@ -2438,3 +2455,7 @@ void ActionSystem::throwCoin() {
     */
 }
 
+bool ActionSystem::isCursed(Entity* e) {
+    auto it = e->get<CUnit>()->effects.find(222);
+    return it != e->get<CUnit>()->effects.end();
+}

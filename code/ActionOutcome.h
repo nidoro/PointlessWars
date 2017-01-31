@@ -38,6 +38,7 @@ class ActionOutcome {
 
         list<int> idTargets;
         list<int> idActors;
+        list<int> idBackfire;
         int nTargets;
         int nActors;
 

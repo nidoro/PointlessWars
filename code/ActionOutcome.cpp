@@ -31,6 +31,11 @@ sf::Packet& operator <<(sf::Packet& packet, const ActionOutcome& outcome) {
         packet << sf::Int32(i);
     }
 
+    packet << sf::Int32(outcome.idBackfire.size());
+    for (auto& i : outcome.idBackfire) {
+        packet << sf::Int32(i);
+    }
+    
     packet << sf::Int32(outcome.nTargets);
     packet << sf::Int32(outcome.nActors);
 

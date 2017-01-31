@@ -189,7 +189,7 @@ void Assets::createActions() {
     actions.insert(make_pair(K + 19, CAction(K + 19))); //TRUE FORM
     actions.insert(make_pair(K + 20, CAction(K + 20))); //SWAP
     actions.insert(make_pair(K + 21, CAction(K + 21, CAction::DEBUFF, -1, true, true))); ///SOMNIFEROUS
-    actions.insert(make_pair(K + 22, CAction(K + 22))); ///CURSE
+    actions.insert(make_pair(K + 22, CAction(K + 22, CAction::DEBUFF, 2))); ///CURSE
     actions.insert(make_pair(K + 23, CAction(K + 23))); //HEX
     actions.insert(make_pair(K + 24, CAction(K + 24))); ///DOOM
     actions.insert(make_pair(K + 25, CAction(K + 25))); ///HERO VS HERO
