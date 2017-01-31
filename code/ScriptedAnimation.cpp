@@ -880,6 +880,11 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
 
         addActor(eGem);
     }
+    
+    Entity* eHero = e->get<CArmy>()->captain;
+    std::string heroName = toUpper(eHero->get<CCaptain>()->uniqueName);
+    std::string speech = Assets::getString("SPEECH-" + heroName + "-WATER-DEBUFF-" + int2str(randomInt(1,1), 2));
+    eHero->get<CActor>()->addNode(new ASpeak(0.f, speech, 2.5f));
 }
 
 void ScriptedAnimation::scriptConfusion(ActionOutcome& outcome, Entity* e) {
