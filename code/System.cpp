@@ -156,9 +156,6 @@ void System::onNotify(Message m, Entity* e) {
     case FINISH_ACTION_TARGET_SELECTION:
         onFinishActionTargetSelection(e);
         break;
-    case START_BATTLE_STATE:
-        onStartBattleState(e);
-        break;
     case END_BATTLE_STATE:
         onEndBattleState(e);
         break;

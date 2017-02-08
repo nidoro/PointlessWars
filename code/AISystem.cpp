@@ -1,7 +1,6 @@
 #include "AISystem.h"
 
 AISystem::AISystem() {
-    addSubscription(START_BATTLE_STATE);
     addSubscription(SYSTEM_ACTION);
     addRequirement(Component::AI);
 }

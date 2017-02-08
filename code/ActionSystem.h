@@ -11,17 +11,9 @@ class ActionSystem : public System {
         ~ActionSystem();
 
     private:
-
         void update();
 
-        void onExecuteActions(Entity* e);
-        void onStartBattleState(Entity* e);
-        void onPlayAction(Entity* e);
         void onSceneEnded(Entity* e);
-        void onSystemAction(Entity* e);
-
-        void executeAction(Entity* e);
-        void playAction(Entity* e);
 
         void createArmy(Entity* e);
         void composeArmy(Entity* e);
@@ -31,47 +23,14 @@ class ActionSystem : public System {
         void playPresentCaptain(Entity* e);
         void playReturnArmy(Entity* e);
         void playRemoveDead(Entity* e);
-        void playUnitAttack(Entity* e, CUnit::ID);
-        void playManVsMan(Entity*);
         void playEnslave(Entity*);
-        void playIntimidate(Entity* e);
-        void playFocusFire(Entity* e);
-        void playResurrect(Entity* e);
-        void playConvert(Entity* e);
-        void playSummon(Entity* e);
-        void playTrueForm(Entity* e);
-        void playHex(Entity* e);
-        void playSwapHeroes(Entity* e);
-        void playPurify(Entity* e);
-        void playConfusion(Entity* e);
-        void playFocus(Entity* e, CUnit::DamageType dmgType);
-        void playChangeFormation(Entity* e);
-        void playMindControl(Entity* e);
-        void playPoison(Entity* e);
-        void playCurse(Entity* e);
-        void playTeleport(Entity* e);
-        void playHeroAttack(Entity* e, CAction::ID actID);
-        void playCroak(Entity* e);
-        void playSilence(Entity* e);
-        void playImmortality(Entity* e);
-        void playTarot(Entity* e);
-        void playTimeDilatation(Entity* e);
-        void playCallSlaves(Entity* e);
-        void playStampede(Entity* e);
         void playBecomeHuman(Entity* e);
 
-        void playFireBuffAction(Entity* e);
-        void playWaterBuffAction(Entity* e);
-        void playEarthBuffAction(Entity* e);
-        void playFireDebuffAction(Entity* e);
-        void playWaterDebuffAction(Entity* e);
-        void playEarthDebuffAction(Entity* e);
         void playBuffDebuff(Entity* e, CUnit::DamageType dmgType, bool buff);
         void doNothing(Entity* e);
 
-        ///NEW THINGS
         void executeAction(CPlayer::ID id);
-
+        
         ///PREPROCESSORS
         void preprocessAction(CPlayer::ID id);
         void preprocessIntimidation(ActionOutcome& outcome, Entity* e);
@@ -107,17 +66,13 @@ class ActionSystem : public System {
         void preprocessEnslave(ActionOutcome& outcome, Entity* e);
         void preprocessMercy(ActionOutcome& outcome, Entity* e);
 
-        void throwCoin();
         void orderTargets(EntityList& targets, map<CAction::ID, CAction>& effects, CUnit::DamageType dmg);
-
-        void playEffectAction(Entity* e);
 
         void computeMeleeBattle(Entity* e, Entity* eOut);
         void playMeleeBattle(Entity* e);
         bool contains(map<CAction::ID, CAction>& m, CAction::ID id);
         bool mapContains(map<CAction::ID, CAction>& m, CAction::ID id);
         bool isCursed(Entity* e);
-
 
         EntityList getAliveUnits(Entity* e);
         EntityList getDeadUnits(Entity* e);

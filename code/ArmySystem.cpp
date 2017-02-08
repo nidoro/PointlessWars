@@ -14,7 +14,6 @@ ArmySystem::ArmySystem() {
     addSubscription(ASSIGN_RANDOM_ARMY);
     addSubscription(CREATE_ARMY);
     addSubscription(RECOMPOSE_ARMY);
-    addSubscription(START_BATTLE_STATE);
     addSubscription(SYSTEM_ACTION);
     //addSubscription(PICK_HERO);
 }

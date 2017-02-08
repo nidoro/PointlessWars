@@ -2,7 +2,6 @@
 
 CommandListener::CommandListener() {
     addSubscription(SHOW_CAPTAIN_OPTIONS);
-    addSubscription(START_BATTLE_STATE);
     addSubscription(TAKE_CAPTAIN);
     addSubscription(ACCEPT_ARMY);
     addSubscription(RANDOMIZE_ARMY);
