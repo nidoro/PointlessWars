@@ -6405,7 +6405,7 @@
 	"Messages.h"
 	"Standard.h"
 
-1486516324 w:\code\messages.h
+1486764882 w:\code\messages.h
 
 1485662527 w:\code\standard.h
 	<cmath>
@@ -6473,7 +6473,7 @@
 	"Component.h"
 	"OSAppDataDir.h"
 
-1485185769 w:\code\osappdatadir.h
+1486763874 w:\code\osappdatadir.h
 	<string>
 	<fstream>
 	<iostream>
@@ -6534,7 +6534,7 @@
 	"System.h"
 	"Assets.h"
 
-1486516324 source:w:\code\armysystem.cpp
+1486764569 source:w:\code\armysystem.cpp
 	"ArmySystem.h"
 
 1485185769 w:\code\armysystem.h
@@ -6598,7 +6598,7 @@
 	"System.h"
 	"Assets.h"
 
-1485185769 source:w:\code\debugservices.cpp
+1486765563 source:w:\code\debugservices.cpp
 	"DebugServices.h"
 
 1485185768 source:w:\code\displayersystem.cpp
@@ -6756,10 +6756,10 @@
 	"System.h"
 	"Assets.h"
 
-1485660390 source:w:\code\game.cpp
+1486765420 source:w:\code\game.cpp
 	"Game.h"
 
-1485657056 w:\code\game.h
+1486765258 w:\code\game.h
 	<list>
 	<SFML/Audio.hpp>
 	<SFML/Audio/SoundRecorder.hpp>
@@ -6769,7 +6769,6 @@
 	"EntitiesManager.h"
 	"ButtonSystem.h"
 	"AnchorSystem.h"
-	"OptionBoxSystem.h"
 	"AnimationSystem.h"
 	"CursorSystem.h"
 	"UnitSystem.h"
@@ -6870,7 +6869,7 @@
 	"System.h"
 	"Standard.h"
 
-1486515340 w:\code\scriptedanimation.h
+1486763999 w:\code\scriptedanimation.h
 	"System.h"
 	"Assets.h"
 
@@ -6952,7 +6951,7 @@
 1485185768 source:w:\code\optionboxsystem.cpp
 	"OptionBoxSystem.h"
 
-1486512689 source:w:\code\osappdatadir.cpp
+1486763841 source:w:\code\osappdatadir.cpp
 	"OSAppDataDir.h"
 
 1485185769 source:w:\code\panelsystem.cpp
@@ -6979,10 +6978,10 @@
 1485185768 source:w:\code\scenariosystem.cpp
 	"ScenarioSystem.h"
 
-1485800984 source:w:\code\screensystem.cpp
+1486764325 source:w:\code\screensystem.cpp
 	"ScreenSystem.h"
 
-1486514916 source:w:\code\scriptedanimation.cpp
+1486764325 source:w:\code\scriptedanimation.cpp
 	"ScriptedAnimation.h"
 
 1485185769 source:w:\code\scrolllistsystem.cpp
@@ -7003,7 +7002,7 @@
 1485187432 source:w:\code\standard.cpp
 	"Standard.h"
 
-1486516565 source:w:\code\system.cpp
+1486764380 source:w:\code\system.cpp
 	"System.h"
 
 1485185769 source:w:\code\textboxsystem.cpp

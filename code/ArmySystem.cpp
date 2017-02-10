@@ -3,7 +3,6 @@
 ArmySystem::ArmySystem() {
     addRequirement(Component::ARMY);
 
-    addSubscription(PLAYER_CREATED);
     addSubscription(INITIALIZE_PLAYER);
     addSubscription(BATTLE_FIELD_CREATED);
     addSubscription(NEXT_BATTLE_PHASE);

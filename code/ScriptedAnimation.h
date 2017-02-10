@@ -33,7 +33,7 @@ class ScriptedAnimation : public System {
 
         void createProjectile(Entity* e, double x0, double y0, double x1, double y1, AShoot::Object obj);
         
-        // SYSTEM ANIMATIONS
+        // @note: SYSTEM ANIMATIONS
         void scriptMeleeBattle(Entity* e);
         void scriptPresentArmy(Entity* e);
         void scriptPresentCaptain(Entity* e);
@@ -45,13 +45,13 @@ class ScriptedAnimation : public System {
         
         void askEndOfMatchQuestions(double delay);
         
-        // BATTLE CLOSURES
+        // @note: BATTLE CLOSURES
         void scriptArmyVsArmy(ActionOutcome& outcome, Entity* e);
         void scriptEnslave(ActionOutcome& outcome, Entity* eActor);
         void scriptManVsMan(ActionOutcome& outcome, Entity* eActor);
         void scriptMercy(ActionOutcome& outcome, Entity* eActor);
         
-        // UNIT ATTACKS
+        // @note: UNIT ATTACKS
         void scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e);
         void scriptPostAttackSpeech(ActionOutcome& outcome, Entity* e, double date = 0.f);
         void scriptMetheore(ActionOutcome& outcome, Entity* e);
@@ -71,7 +71,7 @@ class ScriptedAnimation : public System {
         void scriptSamurai(ActionOutcome& outcome, Entity* e);
         void scriptTornado(ActionOutcome& outcome, Entity* e);
         
-        // HERO ABILITIES
+        // @note: HERO ABILITIES
         void scriptIntimidate(ActionOutcome& outcome, Entity* eActor);
         void scriptConfusion(ActionOutcome& outcome, Entity* e);
         void scriptSummon(ActionOutcome& outcome, Entity* e);
@@ -102,7 +102,7 @@ class ScriptedAnimation : public System {
         void scriptDebuffEarth(ActionOutcome& outcome, Entity* e);
         void scriptDebuffAir(ActionOutcome& outcome, Entity* e);
 
-        // SUB SCRIPTS
+        // @note: SUB SCRIPTS
         void scriptFightSmokeCloud(double duration);
         void scriptVictoryAnimation(double delay);
         void scriptConfettiRain(double delay);
@@ -110,10 +110,9 @@ class ScriptedAnimation : public System {
         void scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptCurseIcon(double x, double y, double timing, bool hFlip);
-        void scriptGeiser(double x, double y, double timing, double duration);
         void scriptPurificationFlask(double x, double y, double tStart);
         
-        // HELPERS
+        // @note: HELPERS
         double getActingDuration();
         EntityList getActors(ActionOutcome& outcome, Entity* e);
         EntityList getTargets(ActionOutcome& outcome, Entity* e);
@@ -121,7 +120,6 @@ class ScriptedAnimation : public System {
         sf::Vector2f getArmyMiddlePoint(Entity* e);
         Entity* getUnitByID(Entity* eArmy, int id);
         
-        // DATA
         bool playingScene;
         EntityList actors;
         vector< list<sf::Vector2i> > positions;
@@ -138,7 +136,6 @@ class ScriptedAnimation : public System {
         double unitRest2;
         double intimSpeechDur;
         double hurtDuration;
-        bool mapContains(map<Entity*, double> m, Entity* e);
 };
 
 #endif // SCRIPTEDANIMATION_H

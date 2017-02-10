@@ -73,7 +73,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/f1ffb32f/MatchConfig.o \
 	${OBJECTDIR}/_ext/f1ffb32f/NetworkSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/OSAppDataDir.o \
-	${OBJECTDIR}/_ext/f1ffb32f/OptionBoxSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/PanelSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/ParticleSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/PathSystem.o \
@@ -318,11 +317,6 @@ ${OBJECTDIR}/_ext/f1ffb32f/OSAppDataDir.o: /C/Users/Davi\ Doro/PW\ Local/Pointle
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/OSAppDataDir.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/OSAppDataDir.cpp
-
-${OBJECTDIR}/_ext/f1ffb32f/OptionBoxSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/OptionBoxSystem.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/OptionBoxSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/OptionBoxSystem.cpp
 
 ${OBJECTDIR}/_ext/f1ffb32f/PanelSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/PanelSystem.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f

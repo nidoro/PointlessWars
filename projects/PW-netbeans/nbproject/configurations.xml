@@ -102,8 +102,6 @@
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/NetworkSystem.h</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/OSAppDataDir.cpp</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/OSAppDataDir.h</itemPath>
-    <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/OptionBoxSystem.cpp</itemPath>
-    <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/OptionBoxSystem.h</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/PanelSystem.cpp</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/PanelSystem.h</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/ParticleSystem.cpp</itemPath>
@@ -575,16 +573,6 @@
             flavor2="0">
       </item>
       <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/OSAppDataDir.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/OptionBoxSystem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/OptionBoxSystem.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1301,16 +1289,6 @@
             flavor2="0">
       </item>
       <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/OSAppDataDir.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/OptionBoxSystem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/OptionBoxSystem.h"
             ex="false"
             tool="3"
             flavor2="0">

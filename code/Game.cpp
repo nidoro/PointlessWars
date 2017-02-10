@@ -4,10 +4,6 @@ Game::Game() {
 
 }
 
-Game::~Game() {
-
-}
-
 void Game::start() {
     helper::initializeAppDataDirectory();
 
@@ -30,8 +26,13 @@ void Game::start() {
 
     window.setVerticalSyncEnabled(true);
 
+#if PW_DEBUG
     DBG_SERVICES.initialize(&window);
-    //ImGui::SFML::Init(window);
+#endif
+    
+#if 0
+    ImGui::SFML::Init(window);
+#endif
 
     window.setMouseCursorVisible(false);
 
@@ -50,10 +51,8 @@ void Game::start() {
     initializeSystem(new TextboxSystem());
     initializeSystem(new FadeSystem());
     initializeSystem(new ArmySystem());
-
     initializeSystem(new ButtonSystem());
     initializeSystem(new AnchorSystem());
-    initializeSystem(new OptionBoxSystem());
     initializeSystem(new TimerSystem());
     initializeSystem(new TooltipSystem());
     initializeSystem(new SoundSystem());
@@ -74,13 +73,16 @@ void Game::start() {
     initializeSystem(new FormationEditor());
     initializeSystem(new InGameMenu());
     initializeSystem(new SliderSystem());
-    //initializeSystem(new CMDLineSystem());
     initializeSystem(new AnnouncerSystem());
     initializeSystem(new ElipsoidalMovementSystem());
     initializeSystem(new SideUISystem());
     initializeSystem(new GUIGroupSystem());
     initializeSystem(new TiltSystem());
 
+#if PW_DEBUG
+    initializeSystem(new CMDLineSystem());
+#endif
+    
     initializeSystem(new RenderSystem(), -1);
 
     System::notify(GAME_STARTED);
@@ -133,6 +135,7 @@ void Game::start() {
             }
 
         }
+        // @todo: find a better way to loop through system updates
         /*
         int nSys = 0;
         for (auto sys : systems){

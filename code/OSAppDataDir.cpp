@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 #include "OSAppDataDir.h"
+
 namespace helper {
+
 bool initializeAppDataDirectory() {
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
     TCHAR path[MAX_PATH];
-    // TODO: handle error and exceptions (inspect HRESULT hr = ...)
-    //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+    // @todo: handle error and exceptions (inspect HRESULT hr = ...)
+    // HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
     SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
     std::string appRootDir = std::string(path) + "/Pointless Wars";
     createDirectory(appRootDir);
-    if (!fileExists(appRootDir + "/animations.dat")) {
-        //std::ofstream file(appRootDir + "/animations.dat");
-        //file << getDefaultFileContent("animations.dat");
-        //file.close();
-    }
     if (!fileExists(appRootDir + "/strings-en.json")) {
         std::ofstream file(appRootDir + "/strings-en.json");
         file << getDefaultFileContent("strings-en.json");
@@ -46,11 +38,12 @@ bool initializeAppDataDirectory() {
     path += "/.Pointless Wars";
 #endif
 }
+
 std::string getAppDataDir() {
 #if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
     TCHAR path[MAX_PATH];
-    //TODO: inspect HRESULT
-    //HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
+    // @todo: inspect HRESULT
+    // HRESULT hr = SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
     SHGetFolderPath(HWND_DESKTOP, CSIDL_APPDATA, NULL, SHGFP_TYPE_DEFAULT, path);
     return std::string(std::string(path) + "/Pointless Wars");
 #elif defined(__unix__) || defined(__unix) || defined(__linux__)

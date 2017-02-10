@@ -4,7 +4,6 @@ ScreenSystem::ScreenSystem() {
     addSubscription(GAME_STARTED);
     addSubscription(START_SCREEN_TRANSITION);
     addSubscription(CREATE_SCREEN);
-    addSubscription(BT_NEW_GAME);
     addSubscription(NEW_COMMAND_LINE);
     addSubscription(KEY_PRESSED);
     addSubscription(UPDATE_RESOLUTION_WITH_DROP_LIST);

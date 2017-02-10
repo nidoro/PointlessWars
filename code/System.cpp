@@ -96,9 +96,6 @@ void System::onNotify(Message m, Entity* e) {
     case BUTTON_RELEASED:
         onButtonReleased(e);
         break;
-    case BUTTON_TRIGGERED:
-        onButtonTriggered(e);
-        break;
     case CREATE_SPIN_BUTTONS:
         onCreateSpinButtons(e);
         break;
@@ -111,15 +108,6 @@ void System::onNotify(Message m, Entity* e) {
     case DECREASE_SPIN_BUTTON_VALUE:
         onDecreaseSpinButtonValue(e);
         break;
-    case SELECT_OPTION:
-        onSelectOptionBox(e);
-        break;
-    case EXPAND_OPTION_BOX:
-        onExpandOptionBox(e);
-        break;
-    case RETRACT_OPTION_BOX:
-        onRetractOptionBox(e);
-        break;
     case START_FADE_OUT_TRANSITION:
         onStartFadeOutTransition(e);
         break;
@@ -128,9 +116,6 @@ void System::onNotify(Message m, Entity* e) {
         break;
     case FADE_ENDED:
         onFadeEnded(e);
-        break;
-    case BT_NEW_GAME:
-        onBtNewGame(e);
         break;
     case INITIALIZE_WAR:
         onInitializeWar(e);
@@ -194,9 +179,6 @@ void System::onNotify(Message m, Entity* e) {
         break;
     case INITIALIZE_EDITOR:
         onInitializeEditor(e);
-        break;
-    case BT_EDITOR:
-        onBtEditor(e);
         break;
     case INITIALIZE_SCROLL_LIST:
         onInitializeScrollList(e);

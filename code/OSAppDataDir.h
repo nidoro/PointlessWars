@@ -12,11 +12,13 @@
 #endif
 
 namespace helper {
+
 bool fileExists(std::string path);
 bool initializeAppDataDirectory();
 std::string getAppDataDir();
 bool createDirectory(std::string path);
 std::string getDefaultFileContent(std::string filename);
+
 };
-#endif /* OSAPPDATADIR_H */
+#endif
 

@@ -2,7 +2,8 @@
 
 DebugServices* DebugServices::instance = nullptr;
 
-DebugServices::DebugServices() : clockDebugStart(std::clock()),
+DebugServices::DebugServices() : 
+    clockDebugStart(std::clock()),
     maxStoredTimedBlockEntries(30000),
     maxStoredWatchedVariableEntries(30000),
     maxStoredMessages(30000),
@@ -34,33 +35,33 @@ void DebugServices::showUI() {
     std::string label = (isPaused ? "Unpause":"Pause");
     if (ImGui::Button(label.c_str())) {
         isPaused = !isPaused;
-    };
+    }
     ImGui::PopItemWidth();
     /*
-            if (ImGui::TreeNode("Filters")){
-                ImGui::Button("Clear all");
-                ImGui::PushItemWidth(100);
-                ImGui::Text("Show instant:");
-                ImGui::SameLine();
-                ImGui::InputFloat("##float1", &instant);
-                ImGui::SameLine();
-                ImGui::Button("Clear##1");
-                ImGui::Text("Show interval:");
-                ImGui::SameLine();
-                ImGui::SameLine();
-                ImGui::InputFloat("##float2", &beginInterval);
-                ImGui::SameLine();
-                ImGui::InputFloat("##float3", &endInterval);
-                ImGui::SameLine();
-                ImGui::Button("Clear##2");
-                ImGui::Text("Show function:");
-                ImGui::SameLine();
-                ImGui::InputText("##text1", functionFilter, 1000);
-                ImGui::SameLine();
-                ImGui::Button("Clear##1");
-                ImGui::PopItemWidth();
-                ImGui::TreePop();
-            }
+    if (ImGui::TreeNode("Filters")){
+        ImGui::Button("Clear all");
+        ImGui::PushItemWidth(100);
+        ImGui::Text("Show instant:");
+        ImGui::SameLine();
+        ImGui::InputFloat("##float1", &instant);
+        ImGui::SameLine();
+        ImGui::Button("Clear##1");
+        ImGui::Text("Show interval:");
+        ImGui::SameLine();
+        ImGui::SameLine();
+        ImGui::InputFloat("##float2", &beginInterval);
+        ImGui::SameLine();
+        ImGui::InputFloat("##float3", &endInterval);
+        ImGui::SameLine();
+        ImGui::Button("Clear##2");
+        ImGui::Text("Show function:");
+        ImGui::SameLine();
+        ImGui::InputText("##text1", functionFilter, 1000);
+        ImGui::SameLine();
+        ImGui::Button("Clear##1");
+        ImGui::PopItemWidth();
+        ImGui::TreePop();
+    }
     */
 
     if (ImGui::TreeNode("Messages log")) {
@@ -74,6 +75,7 @@ void DebugServices::showUI() {
         }
         ImGui::TreePop();
     }
+    
     if (ImGui::TreeNode("Watched Variables")) {
         for (auto& p : watchedVariableRecords) {
             if (ImGui::TreeNode(p.first.c_str())) {
@@ -92,6 +94,7 @@ void DebugServices::showUI() {
         }
         ImGui::TreePop();
     }
+    
     if (ImGui::TreeNode("Timed Blocks")) {
         for (auto& p : timedBlocksOvertimeInfo) {
             if (ImGui::TreeNode(p.first.c_str())) {

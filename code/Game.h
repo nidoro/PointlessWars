@@ -11,7 +11,6 @@
 #include "EntitiesManager.h"
 #include "ButtonSystem.h"
 #include "AnchorSystem.h"
-#include "OptionBoxSystem.h"
 #include "AnimationSystem.h"
 #include "CursorSystem.h"
 #include "UnitSystem.h"
@@ -62,7 +61,6 @@
 class Game {
     public:
         Game();
-        ~Game();
 
         void start();
     private:

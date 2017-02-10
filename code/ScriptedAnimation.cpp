@@ -5293,15 +5293,6 @@ void ScriptedAnimation::scriptDeathIcon(double x, double y, double timing, bool 
     addActor(eIcon);
 }
 
-bool ScriptedAnimation::mapContains(map<Entity*, double> m, Entity* e) {
-    map<Entity*, double>::iterator it = m.find(e);
-    return it != m.end();
-}
-
-void ScriptedAnimation::scriptGeiser(double x, double y, double timing, double duration) {
-
-}
-
 void ScriptedAnimation::scriptVictoryAnimation(double delay) {
     Entity* eObj;
     Entity* ePanel;
