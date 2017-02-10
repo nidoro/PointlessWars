@@ -8,35 +8,23 @@
 class ActionSystem : public System {
     public:
         ActionSystem();
-        ~ActionSystem();
 
     private:
         void update();
 
-        void onSceneEnded(Entity* e);
-
+        void executeAction(CPlayer::ID id);
         void createArmy(Entity* e);
         void composeArmy(Entity* e);
-
-        void playPresentArmy(Entity* e);
-        void playAdvanceArmy(Entity* e);
-        void playPresentCaptain(Entity* e);
-        void playReturnArmy(Entity* e);
-        void playRemoveDead(Entity* e);
-        void playEnslave(Entity*);
-        void playBecomeHuman(Entity* e);
-
-        void playBuffDebuff(Entity* e, CUnit::DamageType dmgType, bool buff);
         void doNothing(Entity* e);
-
-        void executeAction(CPlayer::ID id);
         
-        ///PREPROCESSORS
+        // @note: calls the appropriated preprocessor
         void preprocessAction(CPlayer::ID id);
+        // @note: system actions preprocessors
+        void preprocessCoinThrow(ActionOutcome& outcome, Entity* e);
+        // @note: hero abilities preprocessors
         void preprocessIntimidation(ActionOutcome& outcome, Entity* e);
         void preprocessArmyComposition(ActionOutcome& outcome, Entity* e);
         void preprocessRandomArmy(ActionOutcome& outcome, Entity* e);
-        void preprocessCoinThrow(ActionOutcome& outcome, Entity* e);
         void preprocessBuffDebuff(ActionOutcome& outcome, Entity* e);
         void preprocessConfusion(ActionOutcome& outcome, Entity* e);
         void preprocessSummon(ActionOutcome& outcome, Entity* e);
@@ -60,20 +48,18 @@ class ActionSystem : public System {
         void preprocessBecomeHuman(ActionOutcome& outcome, Entity* e);
         void preprocessCroak(ActionOutcome& outcome, Entity* e);
         void preprocessHelp(ActionOutcome& outcome, Entity* e);
+        // @note: unit attack preprocessor
         void preprocessUnitAttack(ActionOutcome& outcome, Entity* e);
+        void orderTargets(EntityList& targets, map<CAction::ID, CAction>& effects, CUnit::DamageType dmg);
+        // @note: battle closure preprocessors
         void preprocessArmyVsArmy(ActionOutcome& outcome, Entity* e);
         void preprocessManVsMan(ActionOutcome& outcome, Entity* e);
         void preprocessEnslave(ActionOutcome& outcome, Entity* e);
         void preprocessMercy(ActionOutcome& outcome, Entity* e);
 
-        void orderTargets(EntityList& targets, map<CAction::ID, CAction>& effects, CUnit::DamageType dmg);
-
-        void computeMeleeBattle(Entity* e, Entity* eOut);
-        void playMeleeBattle(Entity* e);
-        bool contains(map<CAction::ID, CAction>& m, CAction::ID id);
+        // @note: helpers
         bool mapContains(map<CAction::ID, CAction>& m, CAction::ID id);
         bool isCursed(Entity* e);
-
         EntityList getAliveUnits(Entity* e);
         EntityList getDeadUnits(Entity* e);
 

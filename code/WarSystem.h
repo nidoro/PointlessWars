@@ -6,18 +6,9 @@
 
 using namespace std;
 
-struct GameObserver {
-    int nHeroesP1;
-    int nHeroesP2;
-    bool isPlayingAnimation;
-    CCaptain::ID hero;
-    CArmy::Formation formation;
-};
-
 class WarSystem : public System {
     public:
         WarSystem();
-        ~WarSystem();
 
         void update();
 
@@ -42,9 +33,8 @@ class WarSystem : public System {
         void addSystemAction(War::SystemAction sysAct, CPlayer::ID p = 0);
         std::list<sf::Packet> packetsQueue;
 
-        GameObserver gameObserver;
         bool inBattle;
         bool hasMatchEnded;
 };
 
-#endif // WARSYSTEM_H
+#endif

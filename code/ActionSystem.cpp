@@ -4,33 +4,29 @@ ActionSystem::ActionSystem() {
     addSubscription(SCENE_ENDED);
 }
 
-ActionSystem::~ActionSystem() {
-
-}
-
 void ActionSystem::update() {
     if (!war.getPlaying()) return;
     for(int i = 0; i < 3; i++) {
         if (!war.getNextActionOutcome(i).ready && war.getNextActionOutcome(i).action >= 0 && !war.getRemotelyControled(i)) {
             if (i > 0 && war.getPlayer(i)->has(Component::AI)) {
                 if (war.getPlayer(i)->get<CAInt>()->actionSelected) {
-                    ///PREPROCESS ACTION
+                    // @note: PREPROCESS ACTION
                     preprocessAction(i);
-                    ///ACTION READY TO BE PLAYED
+                    // @note: ACTION READY TO BE PLAYED
                     war.getNextActionOutcome(i).ready = true;
                     war.getPlayer(i)->get<CAInt>()->actionSelected = false;
                 }
             } else {
-                ///PREPROCESS ACTION
+                // @note: PREPROCESS ACTION
                 preprocessAction(i);
-                ///ACTION READY TO BE PLAYED
+                // @note: ACTION READY TO BE PLAYED
                 war.getNextActionOutcome(i).ready = true;
             }
         }
 
-        ///IF ACTION IS READY TO BE PLAYED AND PLAYER IS READY TO PLAY
+        // @note: IF ACTION IS READY TO BE PLAYED AND PLAYER IS READY TO PLAY
         if (war.getNextActionOutcome(i).ready && war.getPlayerReady(i)) {
-            ///EXECUTE ACTION
+            // @note: EXECUTE ACTION
             executeAction(i);
             /// @note: set action completed and player is not ready to act again until next state
             war.setActionCompleted(i, true);
@@ -267,16 +263,16 @@ void ActionSystem::preprocessAction(CPlayer::ID id) {
         break;
     ///SYSTEM ACTIONS
     case 500:
-        playPresentArmy(war.getPlayer(id));
+        //playPresentArmy(war.getPlayer(id));
         break;
     case 502:
-        playAdvanceArmy(war.getPlayer(id));
+        //playAdvanceArmy(war.getPlayer(id));
         break;
     case 503:
-        playReturnArmy(war.getPlayer(id));
+        //playReturnArmy(war.getPlayer(id));
         break;
     case 504:
-        playRemoveDead(war.getPlayer(id));
+        //playRemoveDead(war.getPlayer(id));
         break;
     case 510:
         war.getNextActionOutcome(id).heroes = war.getMatchConfig().heroPool;
@@ -516,89 +512,6 @@ bool prioritizeAir(Entity* e1, Entity* e2) {
     return e1->get<CUnit>()->damage == t && e1->get<CUnit>()->damage != t;
 }
 
-void ActionSystem::playPresentArmy(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(500, e));
-    notify(START_ANIMATION, eOutcome);
-}
-
-void ActionSystem::playPresentCaptain(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(501, e));
-    notify(START_ANIMATION, eOutcome);
-}
-
-void ActionSystem::playAdvanceArmy(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(502, e));
-    notify(START_ANIMATION, eOutcome);
-}
-
-void ActionSystem::playReturnArmy(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(503, e));
-    notify(START_ANIMATION, eOutcome);
-}
-
-void ActionSystem::playRemoveDead(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(504, e));
-    notify(START_ANIMATION, eOutcome);
-}
-
-void ActionSystem::computeMeleeBattle(Entity* P, Entity* eOut) {
-    Entity* P1 = P;
-    Entity* P2 = P->get<CPlayer>()->enemy;
-
-    Entity* eWin;
-    Entity* eLos;
-
-    EntityList P1alive = getAliveUnits(P1);
-    EntityList P2alive = getAliveUnits(P2);
-
-    int nP1 = P1alive.size();
-    int nP2 = P2alive.size();
-    int total = nP1 + nP2;
-
-    if (randomInt(1, total) < nP1) {
-        eWin = P1;
-        eLos = P2;
-        if (nP1 > nP2) eOut->get<CActionOutcome>()->targets.merge(pickNRandom(P1alive, nP1 - nP2));
-        else eOut->get<CActionOutcome>()->targets.merge(pickNRandom(P1alive, nP1 - 1));
-    } else {
-        eWin = P2;
-        eLos = P1;
-        if (nP1 > nP2) eOut->get<CActionOutcome>()->targets.merge(pickNRandom(P2alive, nP2 - nP1));
-        else eOut->get<CActionOutcome>()->targets.merge(pickNRandom(P2alive, nP2 - 1));
-    }
-
-    eOut->get<CActionOutcome>()->targets.merge(getAliveUnits(eLos));
-    eOut->get<CActionOutcome>()->eWinner = eWin;
-    eOut->get<CActionOutcome>()->eLoser = eLos;
-}
-void ActionSystem::playMeleeBattle(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(400, e));
-    computeMeleeBattle(e, eOutcome);
-    notify(START_ANIMATION, eOutcome);
-}
-
-void ActionSystem::playEnslave(Entity* e) {
-    Entity* eOutcome = eManager->createEntity();
-    eOutcome->add(new CActionOutcome(402, e));
-
-    Entity* eEnemy = e->get<CPlayer>()->enemy;
-
-    notify(START_ANIMATION, eOutcome);
-
-    eEnemy->get<CArmy>()->captains.erase(eEnemy->get<CArmy>()->captains.find(eEnemy->get<CArmy>()->captain->get<CCaptain>()->id));
-    //eEnemy->get<CArmy>()->captain = nullptr;
-}
-
-void ActionSystem::onSceneEnded(Entity* e) {
-
-}
-
 EntityList ActionSystem::getAliveUnits(Entity* e) {
     EntityList l;
     for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
@@ -615,12 +528,6 @@ EntityList ActionSystem::getDeadUnits(Entity* e) {
         if (eUnit->get<CUnit>()->dead) l.push_back(eUnit);
     }
     return l;
-}
-
-bool ActionSystem::contains(map<CAction::ID, CAction>& m, CAction::ID id) {
-    map<CAction::ID, CAction>::iterator it;
-    it = m.find(id);
-    return it != m.end();
 }
 
 void ActionSystem::preprocessCoinThrow(ActionOutcome& outcome, Entity* actor) {
@@ -1165,33 +1072,6 @@ void ActionSystem::preprocessMercy(ActionOutcome& outcome, Entity* e) {
     outcome.idWinner = eWin->get<CPlayer>()->id;
     outcome.idLoser = eLos->get<CPlayer>()->id;
 }
-
-void ActionSystem::playBuffDebuff(Entity* e, CUnit::DamageType dmg, bool buff) {
-    Entity* eOut = eManager->createEntity();
-    CAction::ID actID;
-    if      (dmg == CUnit::FIRE && buff) actID = 204;
-    else if (dmg == CUnit::WATER && buff) actID = 205;
-    else if (dmg == CUnit::EARTH && buff) actID = 206;
-    else if (dmg == CUnit::AIR && buff) actID = 232;
-    else if (dmg == CUnit::FIRE && !buff) actID = 207;
-    else if (dmg == CUnit::WATER && !buff) actID = 208;
-    else if (dmg == CUnit::EARTH && !buff) actID = 209;
-    else if (dmg == CUnit::AIR && !buff) actID = 233;
-    eOut->add(new CActionOutcome(actID, e));
-
-    EntityList alive = getAliveUnits(e);
-    double chance = 0.3;
-    for(EntityListIt i = alive.begin(); i != alive.end(); i++) {
-        Entity* eUnit = *i;
-        if (randomDouble(0, 1) <= chance) {
-            eUnit->get<CUnit>()->effects.insert(make_pair(actID, CAction::Map[actID]));
-            eOut->get<CActionOutcome>()->targets.push_back(eUnit);
-        }
-    }
-
-    notify(START_ANIMATION, eOut);
-}
-
 
 void ActionSystem::doNothing(Entity* e) {
     Entity* eOut = eManager->createEntity();

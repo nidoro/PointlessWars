@@ -5,25 +5,20 @@ WarSystem::WarSystem() {
     addSubscription(PACKET_RECEIVED);
     addSubscription(END_MATCH);
     addSubscription(SET_MATCH_CONFIG);
+    
     inBattle = false;
     hasMatchEnded = true;
-}
-
-WarSystem::~WarSystem() {
-    //dtor
 }
 
 void WarSystem::update() {
     processPackets();
     if (!hasMatchEnded) {
-        //if (!war.getRemotelyControled(0)){
         if (war.getActionCompleted() && !war.getPlayingAnimation()) {
             callNextSystemAction();
             initializeState();
             notify(SYSTEM_ACTION);
             //sendStateToPeer();
         }
-        //}
     }
 
     for (int i = 0; i < 3; i++) {
@@ -394,7 +389,7 @@ void WarSystem::initializeState() {
         war.setActionCompleted(2, true);
 
     } else if (war.getSystemAction() == war.PRESENT_ARMIES) {
-        //gameObserver.isPlayingAnimation = true;
+        
     } else if(war.getSystemAction() == war.ASK_HERO_PICK) {
         war.setNextAction(0, -1);
         war.setNextAction(1, -1);
@@ -570,22 +565,7 @@ void WarSystem::processPackets() {
         packet >> idActor;
         packet >> action;
         war.addPendingAction(idActor, action);
-        /*
-        if (!war.getPlayerReady(idActor)){
-            war.getNextActionOutcome(idActor) = action;
-            war.setActionReceived(idActor, true);
-
-            Entity* eSend = eManager->createEntity();
-            eSend->add(new CPacket());
-            eSend->get<CPacket>()->packet << sf::String("ACTION-RECEIVED");
-            eSend->get<CPacket>()->packet << sf::Int32(idActor);
-            notify(SEND_PACKET, eSend);
-        }else{
-            printf("pending player %d action %d\n", idActor, action.action);
-            war.addPendingAction(idActor, action);
-        }
-        */
-        printf("received: player %d action %d\n", idActor, war.getNextActionOutcome(idActor).action);
+        //printf("received: player %d action %d\n", idActor, war.getNextActionOutcome(idActor).action);
         for (auto& p : war.getNextActionOutcome(idActor).armyComposition) {
             std::cout << p.first << std::endl;
         }
@@ -593,7 +573,7 @@ void WarSystem::processPackets() {
         sf::Int32 idActor;
         packet >> idActor;
         war.setActionReceived(idActor, true);
-        printf("remote client received %d's action\n", idActor);
+        //printf("remote client received %d's action\n", idActor);
     }
 
     packetsQueue.pop_front();

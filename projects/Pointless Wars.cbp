@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Pointless Wars" />
+		<Option pch_mode="2" />
+		<Option compiler="mingw-620" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/win32-debug/pw-debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/win32-debug" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="mingw-620" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DPW_PACK_RESOURCES" />
+					<Add option="-DPW_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-audio-d" />
+					<Add library="sfml-network-d" />
+					<Add library="sfml-system-d" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/win32/Pointless Wars" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/win32" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="mingw-620" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-audio" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+				</Linker>
+			</Target>
+			<Target title="Release with -g">
+				<Option output="../bin/win32-release/Pointless Wars" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../bin/win32-release" />
+				<Option object_output="obj/Release-Debug/" />
+				<Option type="0" />
+				<Option compiler="mingw-620" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-audio" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++0x" />
+			<Add option="-Wno-comment" />
+			<Add option="-D_USE_MATH_DEFINES" />
+			<Add option="-DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS" />
+			<Add directory="C:/Libs/SFML-2.4.0/include" />
+			<Add directory="C:/Users/Davi Doro/PW Local/PointlessWars/code/external" />
+		</Compiler>
+		<Linker>
+			<Add library="opengl32" />
+			<Add library="../win32/icon-win32.o" />
+			<Add library="stdc++fs" />
+			<Add directory="C:/Libs/SFML-2.4.0/lib" />
+		</Linker>
+		<Unit filename="../code/AISystem.cpp" />
+		<Unit filename="../code/AISystem.h" />
+		<Unit filename="../code/ActionOutcome.cpp" />
+		<Unit filename="../code/ActionOutcome.h" />
+		<Unit filename="../code/ActionSystem.cpp" />
+		<Unit filename="../code/ActionSystem.h" />
+		<Unit filename="../code/AnchorSystem.cpp" />
+		<Unit filename="../code/AnchorSystem.h" />
+		<Unit filename="../code/AnimationSystem.cpp" />
+		<Unit filename="../code/AnimationSystem.h" />
+		<Unit filename="../code/AnnouncerSystem.cpp" />
+		<Unit filename="../code/AnnouncerSystem.h" />
+		<Unit filename="../code/ArmyHUDSystem.cpp" />
+		<Unit filename="../code/ArmyHUDSystem.h" />
+		<Unit filename="../code/ArmySystem.cpp" />
+		<Unit filename="../code/ArmySystem.h" />
+		<Unit filename="../code/Assets.cpp" />
+		<Unit filename="../code/Assets.h" />
+		<Unit filename="../code/AutoPilotSystem.cpp" />
+		<Unit filename="../code/AutoPilotSystem.h" />
+		<Unit filename="../code/ButtonSystem.cpp" />
+		<Unit filename="../code/ButtonSystem.h" />
+		<Unit filename="../code/CMDLineSystem.cpp" />
+		<Unit filename="../code/CMDLineSystem.h" />
+		<Unit filename="../code/CameraSystem.cpp" />
+		<Unit filename="../code/CameraSystem.h" />
+		<Unit filename="../code/CommandListener.cpp" />
+		<Unit filename="../code/CommandListener.h" />
+		<Unit filename="../code/Component.cpp" />
+		<Unit filename="../code/Component.h" />
+		<Unit filename="../code/Config.cpp" />
+		<Unit filename="../code/Config.h" />
+		<Unit filename="../code/CursorSystem.cpp" />
+		<Unit filename="../code/CursorSystem.h" />
+		<Unit filename="../code/CustomMatchSystem.cpp" />
+		<Unit filename="../code/CustomMatchSystem.h" />
+		<Unit filename="../code/DebugServices.cpp" />
+		<Unit filename="../code/DebugServices.h" />
+		<Unit filename="../code/DisplayerSystem.cpp" />
+		<Unit filename="../code/DisplayerSystem.h" />
+		<Unit filename="../code/DragDropSystem.cpp" />
+		<Unit filename="../code/DragDropSystem.h" />
+		<Unit filename="../code/DropListSystem.cpp" />
+		<Unit filename="../code/DropListSystem.h" />
+		<Unit filename="../code/EditorSystem.cpp" />
+		<Unit filename="../code/EditorSystem.h" />
+		<Unit filename="../code/ElipsoidalMovementSystem.cpp" />
+		<Unit filename="../code/ElipsoidalMovementSystem.h" />
+		<Unit filename="../code/EntitiesManager.cpp" />
+		<Unit filename="../code/EntitiesManager.h" />
+		<Unit filename="../code/Entity.cpp" />
+		<Unit filename="../code/Entity.h" />
+		<Unit filename="../code/FadeSystem.cpp" />
+		<Unit filename="../code/FadeSystem.h" />
+		<Unit filename="../code/FormationEditor.cpp" />
+		<Unit filename="../code/FormationEditor.h" />
+		<Unit filename="../code/GUIGroupSystem.cpp" />
+		<Unit filename="../code/GUIGroupSystem.h" />
+		<Unit filename="../code/Game.cpp" />
+		<Unit filename="../code/Game.h" />
+		<Unit filename="../code/InGameMenu.cpp" />
+		<Unit filename="../code/InGameMenu.h" />
+		<Unit filename="../code/InputTextBoxSystem.cpp" />
+		<Unit filename="../code/InputTextBoxSystem.h" />
+		<Unit filename="../code/MainMenuSystem.cpp" />
+		<Unit filename="../code/MainMenuSystem.h" />
+		<Unit filename="../code/MasterSystem.cpp" />
+		<Unit filename="../code/MasterSystem.h" />
+		<Unit filename="../code/MatchConfig.cpp" />
+		<Unit filename="../code/MatchConfig.h" />
+		<Unit filename="../code/Messages.h" />
+		<Unit filename="../code/NetworkSystem.cpp" />
+		<Unit filename="../code/NetworkSystem.h" />
+		<Unit filename="../code/OSAppDataDir.cpp" />
+		<Unit filename="../code/OSAppDataDir.h" />
+		<Unit filename="../code/OptionBoxSystem.cpp" />
+		<Unit filename="../code/OptionBoxSystem.h" />
+		<Unit filename="../code/PanelSystem.cpp" />
+		<Unit filename="../code/PanelSystem.h" />
+		<Unit filename="../code/ParticleSystem.cpp" />
+		<Unit filename="../code/ParticleSystem.h" />
+		<Unit filename="../code/PathSystem.cpp" />
+		<Unit filename="../code/PathSystem.h" />
+		<Unit filename="../code/RemotePlayer.cpp" />
+		<Unit filename="../code/RemotePlayer.h" />
+		<Unit filename="../code/RenderSystem.cpp" />
+		<Unit filename="../code/RenderSystem.h" />
+		<Unit filename="../code/ScenarioSystem.cpp" />
+		<Unit filename="../code/ScenarioSystem.h" />
+		<Unit filename="../code/ScreenSystem.cpp" />
+		<Unit filename="../code/ScreenSystem.h" />
+		<Unit filename="../code/ScriptedAnimation.cpp" />
+		<Unit filename="../code/ScriptedAnimation.h" />
+		<Unit filename="../code/ScrollListSystem.cpp" />
+		<Unit filename="../code/ScrollListSystem.h" />
+		<Unit filename="../code/SideUISystem.cpp" />
+		<Unit filename="../code/SideUISystem.h" />
+		<Unit filename="../code/SliderSystem.cpp" />
+		<Unit filename="../code/SliderSystem.h" />
+		<Unit filename="../code/SoundSystem.cpp" />
+		<Unit filename="../code/SoundSystem.h" />
+		<Unit filename="../code/SpinButtonSystem.cpp" />
+		<Unit filename="../code/SpinButtonSystem.h" />
+		<Unit filename="../code/Standard.cpp" />
+		<Unit filename="../code/Standard.h" />
+		<Unit filename="../code/System.cpp" />
+		<Unit filename="../code/System.h" />
+		<Unit filename="../code/TextboxSystem.cpp" />
+		<Unit filename="../code/TextboxSystem.h" />
+		<Unit filename="../code/TiltSystem.cpp" />
+		<Unit filename="../code/TiltSystem.h" />
+		<Unit filename="../code/TimerSystem.cpp" />
+		<Unit filename="../code/TimerSystem.h" />
+		<Unit filename="../code/TooltipSystem.cpp" />
+		<Unit filename="../code/TooltipSystem.h" />
+		<Unit filename="../code/UnitSystem.cpp" />
+		<Unit filename="../code/UnitSystem.h" />
+		<Unit filename="../code/War.cpp" />
+		<Unit filename="../code/War.h" />
+		<Unit filename="../code/WarSystem.cpp" />
+		<Unit filename="../code/WarSystem.h" />
+		<Unit filename="../code/external/imconfig.h" />
+		<Unit filename="../code/external/imgui-SFML.cpp" />
+		<Unit filename="../code/external/imgui-SFML.h" />
+		<Unit filename="../code/external/imgui.cpp" />
+		<Unit filename="../code/external/imgui.h" />
+		<Unit filename="../code/external/imgui_draw.cpp" />
+		<Unit filename="../code/external/imgui_internal.h" />
+		<Unit filename="../code/external/json.hpp" />
+		<Unit filename="../code/external/tinyxml2.cpp" />
+		<Unit filename="../code/external/tinyxml2.h" />
+		<Unit filename="../code/main.cpp" />
+		<Unit filename="../code/random_int_array.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
