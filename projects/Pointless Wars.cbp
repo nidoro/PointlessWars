@@ -152,8 +152,6 @@
 		<Unit filename="../code/NetworkSystem.h" />
 		<Unit filename="../code/OSAppDataDir.cpp" />
 		<Unit filename="../code/OSAppDataDir.h" />
-		<Unit filename="../code/OptionBoxSystem.cpp" />
-		<Unit filename="../code/OptionBoxSystem.h" />
 		<Unit filename="../code/PanelSystem.cpp" />
 		<Unit filename="../code/PanelSystem.h" />
 		<Unit filename="../code/ParticleSystem.cpp" />

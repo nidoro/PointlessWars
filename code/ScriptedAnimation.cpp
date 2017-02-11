@@ -198,7 +198,8 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node) {
             if (e->has(Component::UNIT)) e->get<CUnit>()->effects.erase(e->get<CUnit>()->effects.find(nd->iValue));
             else e->get<COwner>()->e->get<CArmy>()->armyEffects.erase(e->get<COwner>()->e->get<CArmy>()->armyEffects.find(nd->iValue));
             break;
-        //case AVariable::WIN: e->get<COwner>()->e->get<CArmy>()->win = nd->bValue; break;
+        // @cleanup:
+        // case AVariable::WIN: e->get<COwner>()->e->get<CArmy>()->win = nd->bValue; break;
         case AVariable::REPLACE_HERO:
             e->get<COwner>()->e->get<CArmy>()->captain = e->getObservedEntity("ReplaceHero");
             break;
@@ -257,9 +258,10 @@ void ScriptedAnimation::onInitializeWar(Entity* e) {
     midSpace = 130;
     totalWalk = cxWindow - midSpace/2 - x0Formation - xOffCaptain;
     wWalkStep = totalWalk/war.getMatchConfig().nTurns;
-
-    ///TEST
-    //scriptVictoryAnimation(1.0);
+    // @cleanup:
+#if 0
+    scriptVictoryAnimation(1.0);
+#endif
 }
 
 void ScriptedAnimation::onSceneStarted(Entity* e) {
@@ -1059,13 +1061,13 @@ void ScriptedAnimation::scriptPurify(ActionOutcome& outcome, Entity* e) {
 }
 
 void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
+    int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
+    
     EntityList eTargets;
-    for(auto& i : outcome.idTargets) {
+    for (auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(e, i);
         eTargets.push_back(eUnit);
     }
-
-    int sign = e->get<CPlayer>()->side == CPlayer::LEFT ? -1:1;
 
     //double dx = wWalkStep;
     double ux = uxFormation;
@@ -1074,15 +1076,15 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
     double y0 = cyWindow - uy*hFormation/2;
 
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(Entity* eUnit : e->get<CArmy>()->allUnits) {
+    for (Entity* eUnit : e->get<CArmy>()->allUnits) {
         if (eUnit->get<CUnit>()->dead && !contains(eTargets, eUnit)) continue;
         sf::Vector2i p = popFront(P);
 
         if (contains(eTargets, eUnit)) {
-            ///HEART
+            // @note: HEART
             double xHeart = eUnit->get<CPosition>()->x;
             double yHeart = randomDouble(-250, -20);
-            double heartSpeed = 110;
+            double heartSpeed = randomDouble(110, 150);
             double durHeartTravel = getTravelTime(xHeart, yHeart, eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, heartSpeed);
             Entity* eObj = eManager->createEntity();
             eObj->add(new CPosition(xHeart, yHeart));
@@ -1094,7 +1096,7 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
             eObj->get<CActor>()->addNode(new AMove(0.0, eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, heartSpeed));
             eObj->get<CActor>()->addNode(new ADestroy(durHeartTravel));
 
-            ///UNIT
+            // @note: UNIT
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(durHeartTravel, eUnit->get<CUnit>()->aWalk));
             eUnit->get<CActor>()->addNode(new AVariable(0.0, AVariable::DEAD, false));
             eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
@@ -4793,7 +4795,7 @@ void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
     eTimer->get<CActor>()->timeline.push_back(new ADestroy(5));
     addActor(eTimer);
 #else
-    war.setActorID(1);
+    war.setActorID(2);
 #endif
 }
 

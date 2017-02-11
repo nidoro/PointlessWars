@@ -16,15 +16,19 @@
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/random_int_array.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Component.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ActionSystem.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/OSAppDataDir.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ArmySystem.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/WarSystem.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Assets.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Component.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Game.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ScriptedAnimation.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ActionOutcome.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/DebugServices.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/System.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Entity.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/OSAppDataDir.cpp</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/CommandListener.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/RenderSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Entity.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/System.cpp</file>
@@ -35,6 +39,7 @@
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ScreenSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/EntitiesManager.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Messages.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/main.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/SoundSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/AISystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ArmySystem.cpp</file>
