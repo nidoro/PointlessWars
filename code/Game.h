@@ -60,8 +60,6 @@
 
 class Game {
     public:
-        Game();
-
         void start();
     private:
         EntitiesManager eManager;

@@ -694,7 +694,7 @@ void ActionSystem::preprocessBuffDebuff(ActionOutcome& outcome, Entity* e) {
         alive = getAliveUnits(e->get<CPlayer>()->enemy);
     }
     double chance = 0.3;
-    for(EntityListIt i = alive.begin(); i != alive.end(); i++) {
+    for (EntityListIt i = alive.begin(); i != alive.end(); i++) {
         if (randomDouble(0, 1) <= chance) {
             outcome.idTargets.push_back((*i)->get<CUnit>()->armyID);
         }
@@ -722,7 +722,7 @@ void ActionSystem::preprocessChangeFormation(ActionOutcome& outcome, Entity* e) 
 
 void ActionSystem::preprocessHex(ActionOutcome& outcome, Entity* e) {
     double chance = 0.5;
-    // @cleanup: temporary
+    // @cleanup: temporary way of avoiding randomness
 #if 1
     if (randomDouble(0, 1) <= chance) outcome.bValue = true;
     else outcome.bValue = false;
@@ -772,7 +772,7 @@ void ActionSystem::preprocessPurify(ActionOutcome& outcome, Entity* e) {
 }
 
 void ActionSystem::preprocessResurect(ActionOutcome& outcome, Entity* e) {
-    int nRes = 5;
+    int nRes = randomInt(1, 5);
     EntityList candidates;
     for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
@@ -788,7 +788,7 @@ void ActionSystem::preprocessResurect(ActionOutcome& outcome, Entity* e) {
         targets = pickNRandom(candidates, nRes);
     }
 
-    for(EntityListIt i = targets.begin(); i != targets.end(); i++) {
+    for (EntityListIt i = targets.begin(); i != targets.end(); i++) {
         Entity* eUnit = *i;
         outcome.idTargets.push_back(eUnit->get<CUnit>()->armyID);
     }

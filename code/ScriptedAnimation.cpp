@@ -1074,40 +1074,53 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
     double uy = uyFormation;
     double x0 = e->get<CArmy>()->x;
     double y0 = cyWindow - uy*hFormation/2;
+    
+    // @note: flying hearts script
+    std::map<Entity*, double> resurectTime;
+    double moveTime = 0.f;
+    double littleDelay = 1.75f;
+    for (Entity* eUnit : eTargets) {
+        // @note: HEART
+        //double xHeart = eUnit->get<CPosition>()->x;
+        double xHeart = eUnit->get<CPosition>()->x + randomDouble(-100, 100);
+        double yHeart = randomDouble(-250, -20);
+        double yTarget = eUnit->get<CPosition>()->y - 32;
+        double xTarget = eUnit->get<CPosition>()->x - 8;
+        double heartSpeed = randomDouble(130, 180);
+        double durHeartTravel = getTravelTime(xHeart, yHeart, xTarget, yTarget, heartSpeed);
+        moveTime = max(moveTime, durHeartTravel + littleDelay);
+        
+        Entity* eObj = eManager->createEntity();
+        eObj->add(new CPosition(xHeart, yHeart));
+        eObj->add(new CDraw(CDraw::SKY));
+        eObj->add(new CAnimation(false, "heart-flying.png"));
+        eObj->add(new CActor());
+        eObj->add(new CVelocity());
 
+        eObj->get<CActor>()->addNode(new AMove(0.0, xTarget, yTarget, heartSpeed));
+        eObj->get<CActor>()->addNode(new AAddComponent(durHeartTravel, new CElipsoidalMovement(eUnit->get<CPosition>()->x, yTarget, 8, 8, -180, 180, true, true), Component::ELIPSOIDAL_MOVEMENT));
+        eObj->get<CActor>()->addNode(new ADestroy(littleDelay));
+        resurectTime.insert(std::make_pair(eUnit, durHeartTravel + littleDelay/2.f));
+    }
+    
+    // @note: rearrangement
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
     for (Entity* eUnit : e->get<CArmy>()->allUnits) {
         if (eUnit->get<CUnit>()->dead && !contains(eTargets, eUnit)) continue;
         sf::Vector2i p = popFront(P);
 
         if (contains(eTargets, eUnit)) {
-            // @note: HEART
-            double xHeart = eUnit->get<CPosition>()->x;
-            double yHeart = randomDouble(-250, -20);
-            double heartSpeed = randomDouble(110, 150);
-            double durHeartTravel = getTravelTime(xHeart, yHeart, eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, heartSpeed);
-            Entity* eObj = eManager->createEntity();
-            eObj->add(new CPosition(xHeart, yHeart));
-            eObj->add(new CDraw(CDraw::SKY));
-            eObj->add(new CAnimation(false, "heart-flying.png"));
-            eObj->add(new CActor());
-            eObj->add(new CVelocity());
-
-            eObj->get<CActor>()->addNode(new AMove(0.0, eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, heartSpeed));
-            eObj->get<CActor>()->addNode(new ADestroy(durHeartTravel));
-
-            // @note: UNIT
-            eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(durHeartTravel, eUnit->get<CUnit>()->aWalk));
+            eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(resurectTime[eUnit], eUnit->get<CUnit>()->aIdle));
             eUnit->get<CActor>()->addNode(new AVariable(0.0, AVariable::DEAD, false));
-            eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
+            eUnit->get<CActor>()->timeline.push_back(new AMove(moveTime - resurectTime[eUnit], x0 + sign*p.x*ux, y0 + p.y*uy, 200));
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
                         getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
                         eUnit->get<CUnit>()->aIdle));
 
         } else {
-            eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(2.0, eUnit->get<CUnit>()->aWalk));
-            eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
-            eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
+            eUnit->get<CActor>()->addNode(new ASpriteAnimation(moveTime, eUnit->get<CUnit>()->aWalk));
+            eUnit->get<CActor>()->addNode(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
+            eUnit->get<CActor>()->addNode(new ASpriteAnimation(
                         getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
                         eUnit->get<CUnit>()->aIdle));
         }
@@ -1115,9 +1128,10 @@ void ScriptedAnimation::scriptResurect(ActionOutcome& outcome, Entity* e) {
     }
 
     Entity* eCap = e->get<CArmy>()->captain;
-    eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Come back, my friends!", 2));
+    // @todo: Mog-Ur resurrection speech
+    std::string speech = Assets::getString("SPEECH-MOG-UR-RESURRECTION-" + int2str(randomInt(1, 1), 2));
+    eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, speech, 2.5f));
     addActor(eCap);
-
 }
 
 void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e) {

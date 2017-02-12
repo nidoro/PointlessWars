@@ -1,9 +1,5 @@
 #include "Game.h"
 
-Game::Game() {
-
-}
-
 void Game::start() {
     helper::initializeAppDataDirectory();
 
