@@ -590,7 +590,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
 
     double tAux;
 
-    ///CLOUD
+    // @note: CLOUD
     sf::Vector2f middlePoint = getArmyMiddlePoint(eTarget);
     double yOff = -240;
     double yStart = cyWindow + yOff;
@@ -611,7 +611,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
 
     addActor(eObj);
 
-    ///HAND
+    // @note: HAND
     double yHand = yStart + 45;
     double tHandReady = 1.f;
     double tdHandStill = 3.f;
@@ -1144,12 +1144,13 @@ void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e) {
     }
 
     Entity* eHero = e->get<CArmy>()->captain;
-    eHero->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Ooga booga wooga!", 2));
+    std::string speech = Assets::getString("SPEECH-MOG-UR-CURSE-" + int2str(randomInt(1,1), 2));
+    eHero->get<CActor>()->timeline.push_back(new ASpeak(0.0, speech, 2.5f));
     eHero->get<CActor>()->timeline.push_back(new ASpriteAnimation(4.0, eHero->get<CCaptain>()->aIdle));
     addActor(eHero);
 
     Entity* eSound = eManager->createEntity();
-    eSound->add(new CSound("sfx-tribal-drums.ogg", CSound::REMOVE_ENTITY));
+    eSound->add(new CSound("sfx-tribal-drums.ogg", CSound::LOOP_THEN_REMOVE, 0.1, 0.1, 2));
     notify(PLAY_SOUND, eSound);
 }
 
@@ -4777,6 +4778,7 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor) {
 }
 
 void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
+    // @cleanup
 #if 0
     Entity* eWinner = war.getPlayer(outcome.idWinner);
     war.setActorID(outcome.idWinner);
@@ -4809,7 +4811,7 @@ void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
     eTimer->get<CActor>()->timeline.push_back(new ADestroy(5));
     addActor(eTimer);
 #else
-    war.setActorID(2);
+    war.setActorID(1);
 #endif
 }
 
