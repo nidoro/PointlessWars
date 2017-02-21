@@ -20,7 +20,7 @@
 	"Messages.h"
 	"Standard.h"
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
 	<SFML/Graphics/BlendMode.hpp>
 	<SFML/Graphics/CircleShape.hpp>
@@ -48,7 +48,7 @@
 	<SFML/Graphics/VertexArray.hpp>
 	<SFML/Graphics/View.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window.hpp
 	<SFML/System.hpp>
 	<SFML/Window/Context.hpp>
 	<SFML/Window/ContextSettings.hpp>
@@ -63,7 +63,7 @@
 	<SFML/Window/WindowHandle.hpp>
 	<SFML/Window/WindowStyle.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Clock.hpp>
 	<SFML/System/Err.hpp>
@@ -83,24 +83,24 @@
 	<SFML/System/Vector2.hpp>
 	<SFML/System/Vector3.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\config.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\config.hpp
 	"TargetConditionals.h"
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\clock.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\clock.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/Time.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\export.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\export.hpp
 	<SFML/Config.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\time.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\time.hpp
 	<SFML/System/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\err.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\err.hpp
 	<SFML/System/Export.hpp>
 	<ostream>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\fileinputstream.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\fileinputstream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
 	<SFML/System/InputStream.hpp>
@@ -108,32 +108,32 @@
 	<cstdio>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\inputstream.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\inputstream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\noncopyable.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\noncopyable.hpp
 	<SFML/System/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\lock.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\lock.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\memoryinputstream.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\memoryinputstream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/InputStream.hpp>
 	<SFML/System/Export.hpp>
 	<cstdlib>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\mutex.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\mutex.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\sleep.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\sleep.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/Time.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\string.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\string.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/Utf.hpp>
 	<iterator>
@@ -141,7 +141,7 @@
 	<string>
 	<SFML/System/String.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\utf.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\utf.hpp
 	<SFML/Config.hpp>
 	<algorithm>
 	<locale>
@@ -149,85 +149,85 @@
 	<cstdlib>
 	<SFML/System/Utf.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\utf.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\utf.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\string.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\string.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\thread.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\thread.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<cstdlib>
 	<SFML/System/Thread.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\thread.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\thread.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\threadlocal.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\threadlocal.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<cstdlib>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\threadlocalptr.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\threadlocalptr.hpp
 	<SFML/System/ThreadLocal.hpp>
 	<SFML/System/ThreadLocalPtr.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\threadlocalptr.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\threadlocalptr.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\vector2.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\vector2.hpp
 	<SFML/System/Vector2.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\vector2.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\vector2.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\vector3.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\vector3.hpp
 	<SFML/System/Vector3.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\system\vector3.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\system\vector3.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\context.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\context.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/Window/GlResource.hpp>
 	<SFML/Window/ContextSettings.hpp>
 	<SFML/System/NonCopyable.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\export.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\export.hpp
 	<SFML/Config.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\glresource.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\glresource.hpp
 	<SFML/Window/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\contextsettings.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\contextsettings.hpp
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\event.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\event.hpp
 	<SFML/Config.hpp>
 	<SFML/Window/Joystick.hpp>
 	<SFML/Window/Keyboard.hpp>
 	<SFML/Window/Mouse.hpp>
 	<SFML/Window/Sensor.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\joystick.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\joystick.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/String.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\keyboard.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\keyboard.hpp
 	<SFML/Window/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\mouse.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\mouse.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/Vector2.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\sensor.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\sensor.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/Vector3.hpp>
 	<SFML/System/Time.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\touch.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\touch.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/Vector2.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\videomode.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\videomode.hpp
 	<SFML/Window/Export.hpp>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\window.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\window.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/Window/ContextSettings.hpp>
 	<SFML/Window/VideoMode.hpp>
@@ -239,54 +239,54 @@
 	<SFML/System/NonCopyable.hpp>
 	<SFML/System/String.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\windowhandle.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\windowhandle.hpp
 	<SFML/Config.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\window\windowstyle.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\window\windowstyle.hpp
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\blendmode.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\blendmode.hpp
 	<SFML/Graphics/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\export.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\export.hpp
 	<SFML/Config.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\circleshape.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\circleshape.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Shape.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\shape.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\shape.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Graphics/Transformable.hpp>
 	<SFML/Graphics/VertexArray.hpp>
 	<SFML/System/Vector2.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\drawable.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\drawable.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/RenderStates.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\renderstates.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\renderstates.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/BlendMode.hpp>
 	<SFML/Graphics/Transform.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\transform.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\transform.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Rect.hpp>
 	<SFML/System/Vector2.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\rect.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\rect.hpp
 	<SFML/System/Vector2.hpp>
 	<algorithm>
 	<SFML/Graphics/Rect.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\rect.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\rect.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\transformable.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\transformable.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Transform.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\vertexarray.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\vertexarray.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Vertex.hpp>
 	<SFML/Graphics/PrimitiveType.hpp>
@@ -294,22 +294,22 @@
 	<SFML/Graphics/Drawable.hpp>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\vertex.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\vertex.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Color.hpp>
 	<SFML/System/Vector2.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\color.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\color.hpp
 	<SFML/Graphics/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\primitivetype.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\primitivetype.hpp
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\convexshape.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\convexshape.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Shape.hpp>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\font.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\font.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Glyph.hpp>
 	<SFML/Graphics/Texture.hpp>
@@ -320,27 +320,27 @@
 	<string>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\glyph.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\glyph.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Rect.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\texture.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\texture.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Image.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\image.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\image.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Color.hpp>
 	<SFML/Graphics/Rect.hpp>
 	<string>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\rectangleshape.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\rectangleshape.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Shape.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\rendertarget.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\rendertarget.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Color.hpp>
 	<SFML/Graphics/Rect.hpp>
@@ -352,25 +352,25 @@
 	<SFML/Graphics/Vertex.hpp>
 	<SFML/System/NonCopyable.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\view.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\view.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Rect.hpp>
 	<SFML/Graphics/Transform.hpp>
 	<SFML/System/Vector2.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\rendertexture.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\rendertexture.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Texture.hpp>
 	<SFML/Graphics/RenderTarget.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\renderwindow.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\renderwindow.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/RenderTarget.hpp>
 	<SFML/Graphics/Image.hpp>
 	<SFML/Window/Window.hpp>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\shader.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\shader.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Glsl.hpp>
 	<SFML/Window/GlResource.hpp>
@@ -380,23 +380,23 @@
 	<map>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\glsl.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\glsl.hpp
 	<SFML/Graphics/Transform.hpp>
 	<SFML/Graphics/Color.hpp>
 	<SFML/System/Vector2.hpp>
 	<SFML/System/Vector3.hpp>
 	<SFML/Graphics/Glsl.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\glsl.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\glsl.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\sprite.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\sprite.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Graphics/Transformable.hpp>
 	<SFML/Graphics/Vertex.hpp>
 	<SFML/Graphics/Rect.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\graphics\text.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\graphics\text.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Graphics/Transformable.hpp>
@@ -407,7 +407,7 @@
 	<string>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio.hpp
 	<SFML/System.hpp>
 	<SFML/Audio/InputSoundFile.hpp>
 	<SFML/Audio/Listener.hpp>
@@ -423,20 +423,20 @@
 	<SFML/Audio/SoundSource.hpp>
 	<SFML/Audio/SoundStream.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\inputsoundfile.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\inputsoundfile.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<SFML/System/Time.hpp>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\export.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\export.hpp
 	<SFML/Config.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\listener.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\listener.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/System/Vector3.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\music.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\music.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/SoundStream.hpp>
 	<SFML/Audio/InputSoundFile.hpp>
@@ -445,7 +445,7 @@
 	<string>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundstream.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundstream.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/SoundSource.hpp>
 	<SFML/System/Thread.hpp>
@@ -453,26 +453,26 @@
 	<SFML/System/Mutex.hpp>
 	<cstdlib>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundsource.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundsource.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/AlResource.hpp>
 	<SFML/System/Vector3.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\alresource.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\alresource.hpp
 	<SFML/Audio/Export.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\outputsoundfile.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\outputsoundfile.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\sound.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\sound.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/SoundSource.hpp>
 	<SFML/System/Time.hpp>
 	<cstdlib>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundbuffer.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundbuffer.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/AlResource.hpp>
 	<SFML/System/Time.hpp>
@@ -480,13 +480,13 @@
 	<vector>
 	<set>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundbufferrecorder.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundbufferrecorder.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/SoundBuffer.hpp>
 	<SFML/Audio/SoundRecorder.hpp>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundrecorder.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundrecorder.hpp
 	<SFML/Audio/Export.hpp>
 	<SFML/Audio/AlResource.hpp>
 	<SFML/System/Thread.hpp>
@@ -494,23 +494,23 @@
 	<vector>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilefactory.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilefactory.hpp
 	<SFML/Audio/Export.hpp>
 	<string>
 	<vector>
 	<SFML/Audio/SoundFileFactory.inl>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilefactory.inl
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilefactory.inl
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilereader.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilereader.hpp
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilewriter.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\audio\soundfilewriter.hpp
 	<SFML/Audio/Export.hpp>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network.hpp
 	<SFML/System.hpp>
 	<SFML/Network/Ftp.hpp>
 	<SFML/Network/Http.hpp>
@@ -523,7 +523,7 @@
 	<SFML/Network/TcpSocket.hpp>
 	<SFML/Network/UdpSocket.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\ftp.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\ftp.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/TcpSocket.hpp>
 	<SFML/System/NonCopyable.hpp>
@@ -531,25 +531,25 @@
 	<string>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\export.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\export.hpp
 	<SFML/Config.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\tcpsocket.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\tcpsocket.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/Socket.hpp>
 	<SFML/System/Time.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\socket.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\socket.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/SocketHandle.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\sockethandle.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\sockethandle.hpp
 	<SFML/Config.hpp>
 	<basetsd.h>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\http.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\http.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/IpAddress.hpp>
 	<SFML/Network/TcpSocket.hpp>
@@ -558,28 +558,28 @@
 	<map>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\ipaddress.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\ipaddress.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/System/Time.hpp>
 	<istream>
 	<ostream>
 	<string>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\packet.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\packet.hpp
 	<SFML/Network/Export.hpp>
 	<string>
 	<vector>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\socketselector.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\socketselector.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/System/Time.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\tcplistener.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\tcplistener.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/Socket.hpp>
 	<SFML/Network/IpAddress.hpp>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\network\udpsocket.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\network\udpsocket.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/Socket.hpp>
 	<SFML/Network/IpAddress.hpp>
@@ -4194,7 +4194,7 @@
 	<SFML/Window/Window.hpp>
 	<cstddef>
 
-1470646434 c:\libs\sfml-2.4.0\include\sfml\opengl.hpp
+1470642834 c:\libs\sfml-2.4.0\include\sfml\opengl.hpp
 	<SFML/Config.hpp>
 	<windows.h>
 	<GL/gl.h>
@@ -6252,7 +6252,7 @@
 1486516273 source:c:\users\davi doro\pw local\pointlesswars\code\warsystem.cpp
 	"WarSystem.h"
 
-1485185768 c:\users\davi doro\pw local\pointlesswars\code\external\imgui.h
+1485182168 c:\users\davi doro\pw local\pointlesswars\code\external\imgui.h
 	"imconfig.h"
 	<float.h>
 	<stdarg.h>
@@ -6261,17 +6261,17 @@
 	<assert.h>
 	"imgui_user.h"
 
-1484933172 c:\users\davi doro\pw local\pointlesswars\code\external\imconfig.h
+1484929572 c:\users\davi doro\pw local\pointlesswars\code\external\imconfig.h
 	<SFML/System/Vector2.hpp>
 	<SFML/Graphics/Color.hpp>
 
-1485185768 c:\users\davi doro\pw local\pointlesswars\code\external\imgui-sfml.h
+1485182168 c:\users\davi doro\pw local\pointlesswars\code\external\imgui-sfml.h
 	<SFML/System/Vector2.hpp>
 	<SFML/Graphics/Rect.hpp>
 	<SFML/Graphics/Color.hpp>
 	<SFML/System/Time.hpp>
 
-1484933172 c:\users\davi doro\pw local\pointlesswars\code\external\json.hpp
+1484929572 c:\users\davi doro\pw local\pointlesswars\code\external\json.hpp
 	<algorithm>
 	<array>
 	<cassert>
@@ -6361,7 +6361,7 @@
 	<string.h>
 	<memory.h>
 
-1485185768 c:\users\davi doro\pw local\pointlesswars\code\external\tinyxml2.h
+1485182168 c:\users\davi doro\pw local\pointlesswars\code\external\tinyxml2.h
 	<ctype.h>
 	<limits.h>
 	<stdio.h>
@@ -6386,14 +6386,14 @@
 1485188225 source:c:\users\davi doro\pw local\pointlesswars\code\random_int_array.cpp
 	"System.h"
 
-1485904173 source:w:\code\actionoutcome.cpp
+1485900573 source:w:\code\actionoutcome.cpp
 	"ActionOutcome.h"
 
-1485904723 w:\code\actionoutcome.h
+1485901123 w:\code\actionoutcome.h
 	"Component.h"
 	<SFML/Network.hpp>
 
-1485818756 w:\code\component.h
+1485815156 w:\code\component.h
 	<cstring>
 	<cmath>
 	<list>
@@ -6405,9 +6405,9 @@
 	"Messages.h"
 	"Standard.h"
 
-1486764882 w:\code\messages.h
+1486761282 w:\code\messages.h
 
-1485662527 w:\code\standard.h
+1485658927 w:\code\standard.h
 	<cmath>
 	<cstdlib>
 	<cstdio>
@@ -6422,13 +6422,13 @@
 	<random>
 	<ctime>
 
-1486516324 source:w:\code\aisystem.cpp
+1486512724 source:w:\code\aisystem.cpp
 	"AISystem.h"
 
-1485185768 w:\code\aisystem.h
+1485182168 w:\code\aisystem.h
 	"System.h"
 
-1485188458 w:\code\system.h
+1485184858 w:\code\system.h
 	<stack>
 	"Entity.h"
 	"EntitiesManager.h"
@@ -6437,13 +6437,13 @@
 	"Config.h"
 	"OSAppDataDir.h"
 
-1485185769 w:\code\entity.h
+1485182169 w:\code\entity.h
 	"Component.h"
 	<vector>
 	<cstdlib>
 	"DebugServices.h"
 
-1485185768 w:\code\debugservices.h
+1485182168 w:\code\debugservices.h
 	<ctime>
 	<cstring>
 	<map>
@@ -6455,17 +6455,17 @@
 	"imgui.h"
 	"imgui-SFML.h"
 
-1485185769 w:\code\entitiesmanager.h
+1485182169 w:\code\entitiesmanager.h
 	"Entity.h"
 	"Component.h"
 
-1485185768 w:\code\war.h
+1485182168 w:\code\war.h
 	"Standard.h"
 	"Entity.h"
 	"MatchConfig.h"
 	"ActionOutcome.h"
 
-1485185769 w:\code\matchconfig.h
+1485182169 w:\code\matchconfig.h
 	<sstream>
 	<SFML/Network.hpp>
 	"Standard.h"
@@ -6473,7 +6473,7 @@
 	"Component.h"
 	"OSAppDataDir.h"
 
-1486763874 w:\code\osappdatadir.h
+1486760274 w:\code\osappdatadir.h
 	<string>
 	<fstream>
 	<iostream>
@@ -6481,27 +6481,27 @@
 	<Shlobj.h>
 	<pwd.h>
 
-1485185769 w:\code\config.h
+1485182169 w:\code\config.h
 	<SFML/Graphics.hpp>
 	<SFML/Window.hpp>
 	"tinyxml2.h"
 	"Standard.h"
 	"OSAppDataDir.h"
 
-1485185768 source:w:\code\anchorsystem.cpp
+1485182168 source:w:\code\anchorsystem.cpp
 	"AnchorSystem.h"
 
-1485185768 w:\code\anchorsystem.h
+1485182168 w:\code\anchorsystem.h
 	"System.h"
 
-1485185769 source:w:\code\animationsystem.cpp
+1485182169 source:w:\code\animationsystem.cpp
 	"AnimationSystem.h"
 
-1485185768 w:\code\animationsystem.h
+1485182168 w:\code\animationsystem.h
 	"System.h"
 	"Assets.h"
 
-1485662321 w:\code\assets.h
+1485658721 w:\code\assets.h
 	<map>
 	<cstring>
 	<string>
@@ -6520,127 +6520,127 @@
 	"json.hpp"
 	"OSAppDataDir.h"
 
-1485185770 source:w:\code\announcersystem.cpp
+1485182170 source:w:\code\announcersystem.cpp
 	"AnnouncerSystem.h"
 
-1485185769 w:\code\announcersystem.h
+1485182169 w:\code\announcersystem.h
 	"System.h"
 	"Assets.h"
 
-1485185770 source:w:\code\armyhudsystem.cpp
+1485182170 source:w:\code\armyhudsystem.cpp
 	"ArmyHUDSystem.h"
 
-1485185768 w:\code\armyhudsystem.h
+1485182168 w:\code\armyhudsystem.h
 	"System.h"
 	"Assets.h"
 
-1486764569 source:w:\code\armysystem.cpp
+1486760969 source:w:\code\armysystem.cpp
 	"ArmySystem.h"
 
-1485185769 w:\code\armysystem.h
+1485182169 w:\code\armysystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 
-1485903594 source:w:\code\assets.cpp
+1485899994 source:w:\code\assets.cpp
 	"Assets.h"
 
-1485185769 source:w:\code\autopilotsystem.cpp
+1485182169 source:w:\code\autopilotsystem.cpp
 	"AutoPilotSystem.h"
 
-1485185769 w:\code\autopilotsystem.h
+1485182169 w:\code\autopilotsystem.h
 	"System.h"
 
-1485185769 source:w:\code\buttonsystem.cpp
+1485182169 source:w:\code\buttonsystem.cpp
 	"ButtonSystem.h"
 
-1485185769 w:\code\buttonsystem.h
+1485182169 w:\code\buttonsystem.h
 	"System.h"
 	"Standard.h"
 
-1485185768 source:w:\code\camerasystem.cpp
+1485182168 source:w:\code\camerasystem.cpp
 	"CameraSystem.h"
 
-1485185769 w:\code\camerasystem.h
+1485182169 w:\code\camerasystem.h
 	"System.h"
 
-1485185769 source:w:\code\cmdlinesystem.cpp
+1485182169 source:w:\code\cmdlinesystem.cpp
 	"CMDLineSystem.h"
 
-1485185769 w:\code\cmdlinesystem.h
+1485182169 w:\code\cmdlinesystem.h
 	"System.h"
 	<thread>
 
-1486758349 source:w:\code\commandlistener.cpp
+1486754749 source:w:\code\commandlistener.cpp
 	"CommandListener.h"
 
-1486758347 w:\code\commandlistener.h
+1486754747 w:\code\commandlistener.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 
-1484933171 source:w:\code\component.cpp
+1484929571 source:w:\code\component.cpp
 	"Component.h"
 
-1485185768 source:w:\code\config.cpp
+1485182168 source:w:\code\config.cpp
 	"Config.h"
 
-1485185769 source:w:\code\cursorsystem.cpp
+1485182169 source:w:\code\cursorsystem.cpp
 	"CursorSystem.h"
 
-1485185768 w:\code\cursorsystem.h
+1485182168 w:\code\cursorsystem.h
 	"System.h"
 
-1485185768 source:w:\code\custommatchsystem.cpp
+1485182168 source:w:\code\custommatchsystem.cpp
 	"CustomMatchSystem.h"
 
-1485185768 w:\code\custommatchsystem.h
+1485182168 w:\code\custommatchsystem.h
 	"System.h"
 	"Assets.h"
 
-1486765735 source:w:\code\debugservices.cpp
+1486762135 source:w:\code\debugservices.cpp
 	"DebugServices.h"
 
-1485185768 source:w:\code\displayersystem.cpp
+1485182168 source:w:\code\displayersystem.cpp
 	"DisplayerSystem.h"
 
-1485185769 w:\code\displayersystem.h
+1485182169 w:\code\displayersystem.h
 	"System.h"
 	"Standard.h"
 
-1485185768 source:w:\code\dragdropsystem.cpp
+1485182168 source:w:\code\dragdropsystem.cpp
 	"DragDropSystem.h"
 
-1485185769 w:\code\dragdropsystem.h
+1485182169 w:\code\dragdropsystem.h
 	"System.h"
 
-1485185769 source:w:\code\droplistsystem.cpp
+1485182169 source:w:\code\droplistsystem.cpp
 	"DropListSystem.h"
 
-1485185768 w:\code\droplistsystem.h
+1485182168 w:\code\droplistsystem.h
 	"System.h"
 	"Assets.h"
 
-1485185768 source:w:\code\editorsystem.cpp
+1485182168 source:w:\code\editorsystem.cpp
 	"EditorSystem.h"
 
-1485185770 w:\code\editorsystem.h
+1485182170 w:\code\editorsystem.h
 	"System.h"
 	"Assets.h"
 
-1485185769 source:w:\code\elipsoidalmovementsystem.cpp
+1485182169 source:w:\code\elipsoidalmovementsystem.cpp
 	"ElipsoidalMovementSystem.h"
 
-1485185769 w:\code\elipsoidalmovementsystem.h
+1485182169 w:\code\elipsoidalmovementsystem.h
 	"System.h"
 
-1485185769 source:w:\code\entitiesmanager.cpp
+1485182169 source:w:\code\entitiesmanager.cpp
 	"EntitiesManager.h"
 
-1485185768 source:w:\code\entity.cpp
+1485182168 source:w:\code\entity.cpp
 	"Entity.h"
 
-1485185770 source:w:\code\external\imgui-sfml.cpp
+1485182170 source:w:\code\external\imgui-sfml.cpp
 	"imgui-SFML.h"
 	"imgui.h"
 	<SFML/OpenGL.hpp>
@@ -6654,13 +6654,13 @@
 	<cstddef>
 	<cassert>
 
-1485185768 w:\code\external\imgui-sfml.h
+1485182168 w:\code\external\imgui-sfml.h
 	<SFML/System/Vector2.hpp>
 	<SFML/Graphics/Rect.hpp>
 	<SFML/Graphics/Color.hpp>
 	<SFML/System/Time.hpp>
 
-1485185768 w:\code\external\imgui.h
+1485182168 w:\code\external\imgui.h
 	"imconfig.h"
 	<float.h>
 	<stdarg.h>
@@ -6669,11 +6669,11 @@
 	<assert.h>
 	"imgui_user.h"
 
-1484933172 w:\code\external\imconfig.h
+1484929572 w:\code\external\imconfig.h
 	<SFML/System/Vector2.hpp>
 	<SFML/Graphics/Color.hpp>
 
-1485185769 source:w:\code\external\imgui.cpp
+1485182169 source:w:\code\external\imgui.cpp
 	"imgui.h"
 	"imgui_internal.h"
 	<ctype.h>
@@ -6687,15 +6687,15 @@
 	<imm.h>
 	"imgui_user.inl"
 
-1485185768 w:\code\external\imgui_internal.h
+1485182168 w:\code\external\imgui_internal.h
 	<stdio.h>
 	<math.h>
 	"stb_textedit.h"
 
-1484933172 w:\code\external\stb_textedit.h
+1484929572 w:\code\external\stb_textedit.h
 	<string.h>
 
-1485185769 source:w:\code\external\imgui_draw.cpp
+1485182169 source:w:\code\external\imgui_draw.cpp
 	"imgui.h"
 	"imgui_internal.h"
 	<stdio.h>
@@ -6705,11 +6705,11 @@
 	"stb_rect_pack.h"
 	"stb_truetype.h"
 
-1484933172 w:\code\external\stb_rect_pack.h
+1484929572 w:\code\external\stb_rect_pack.h
 	<stdlib.h>
 	<assert.h>
 
-1484933172 w:\code\external\stb_truetype.h
+1484929572 w:\code\external\stb_truetype.h
 	"stb_truetype.h"
 	<stdio.h>
 	"stb_truetype.h"
@@ -6721,7 +6721,7 @@
 	<string.h>
 	<memory.h>
 
-1485185769 source:w:\code\external\tinyxml2.cpp
+1485182169 source:w:\code\external\tinyxml2.cpp
 	"tinyxml2.h"
 	<new>
 	<stddef.h>
@@ -6729,7 +6729,7 @@
 	<cstddef>
 	<cstdarg>
 
-1485185768 w:\code\external\tinyxml2.h
+1485182168 w:\code\external\tinyxml2.h
 	<ctype.h>
 	<limits.h>
 	<stdio.h>
@@ -6743,23 +6743,23 @@
 	<android/log.h>
 	<assert.h>
 
-1485185769 source:w:\code\fadesystem.cpp
+1485182169 source:w:\code\fadesystem.cpp
 	"FadeSystem.h"
 
-1485185770 w:\code\fadesystem.h
+1485182170 w:\code\fadesystem.h
 	"System.h"
 
-1485185768 source:w:\code\formationeditor.cpp
+1485182168 source:w:\code\formationeditor.cpp
 	"FormationEditor.h"
 
-1485185769 w:\code\formationeditor.h
+1485182169 w:\code\formationeditor.h
 	"System.h"
 	"Assets.h"
 
-1486919441 source:w:\code\game.cpp
+1486915841 source:w:\code\game.cpp
 	"Game.h"
 
-1486919435 w:\code\game.h
+1486915835 w:\code\game.h
 	<list>
 	<SFML/Audio.hpp>
 	<SFML/Audio/SoundRecorder.hpp>
@@ -6816,7 +6816,7 @@
 	"imgui.h"
 	"OSAppDataDir.h"
 
-1485185768 w:\code\rendersystem.h
+1485182168 w:\code\rendersystem.h
 	"System.h"
 	<SFML/Graphics.hpp>
 	"Standard.h"
@@ -6826,206 +6826,206 @@
 1485185769 w:\code\optionboxsystem.h
 	"System.h"
 
-1485185769 w:\code\unitsystem.h
+1485182169 w:\code\unitsystem.h
 	"System.h"
 	"Standard.h"
 
-1485185769 w:\code\timersystem.h
+1485182169 w:\code\timersystem.h
 	"System.h"
 
-1485185769 w:\code\tooltipsystem.h
+1485182169 w:\code\tooltipsystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 
-1485185769 w:\code\textboxsystem.h
+1485182169 w:\code\textboxsystem.h
 	"System.h"
 	<sstream>
 
-1485185769 w:\code\soundsystem.h
+1485182169 w:\code\soundsystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 	<SFML/Audio.hpp>
 
-1485185770 w:\code\spinbuttonsystem.h
+1485182170 w:\code\spinbuttonsystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 
-1485185769 w:\code\panelsystem.h
+1485182169 w:\code\panelsystem.h
 	"System.h"
 
-1486758660 w:\code\warsystem.h
+1486755060 w:\code\warsystem.h
 	"System.h"
 	"Assets.h"
 
-1486757131 w:\code\actionsystem.h
+1486753531 w:\code\actionsystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 
-1485185770 w:\code\pathsystem.h
+1485182170 w:\code\pathsystem.h
 	"System.h"
 	"Standard.h"
 
-1486763999 w:\code\scriptedanimation.h
+1486760399 w:\code\scriptedanimation.h
 	"System.h"
 	"Assets.h"
 
-1485185768 w:\code\scenariosystem.h
+1485182168 w:\code\scenariosystem.h
 	"System.h"
 	"Assets.h"
 
-1485185769 w:\code\scrolllistsystem.h
+1485182169 w:\code\scrolllistsystem.h
 	"System.h"
 
-1485185770 w:\code\inputtextboxsystem.h
+1485182170 w:\code\inputtextboxsystem.h
 	"System.h"
 
-1485185769 w:\code\networksystem.h
+1485182169 w:\code\networksystem.h
 	<SFML/Network.hpp>
 	"System.h"
 	"Assets.h"
 	"imgui.h"
 
-1485185769 w:\code\screensystem.h
+1485182169 w:\code\screensystem.h
 	"System.h"
 	"Standard.h"
 	"Assets.h"
 
-1485185769 w:\code\particlesystem.h
+1485182169 w:\code\particlesystem.h
 	"System.h"
 
-1485185768 w:\code\mainmenusystem.h
-	"System.h"
-	"Assets.h"
-
-1485185769 w:\code\ingamemenu.h
+1485182168 w:\code\mainmenusystem.h
 	"System.h"
 	"Assets.h"
 
-1485185769 w:\code\slidersystem.h
+1485182169 w:\code\ingamemenu.h
+	"System.h"
+	"Assets.h"
+
+1485182169 w:\code\slidersystem.h
 	"System.h"
 
-1485185769 w:\code\sideuisystem.h
+1485182169 w:\code\sideuisystem.h
 	"System.h"
 	"Standard.h"
 
-1485185769 w:\code\guigroupsystem.h
+1485182169 w:\code\guigroupsystem.h
 	"System.h"
 	"Assets.h"
 
-1485185768 w:\code\tiltsystem.h
+1485182168 w:\code\tiltsystem.h
 	"System.h"
 
-1485185768 source:w:\code\guigroupsystem.cpp
+1485182168 source:w:\code\guigroupsystem.cpp
 	"GUIGroupSystem.h"
 
-1485185769 source:w:\code\ingamemenu.cpp
+1485182169 source:w:\code\ingamemenu.cpp
 	"InGameMenu.h"
 
-1485185769 source:w:\code\inputtextboxsystem.cpp
+1485182169 source:w:\code\inputtextboxsystem.cpp
 	"InputTextBoxSystem.h"
 
-1485185769 source:w:\code\main.cpp
+1485182169 source:w:\code\main.cpp
 	<SFML/Graphics.hpp>
 	"Game.h"
 	"OSAppDataDir.h"
 
-1485185769 source:w:\code\mainmenusystem.cpp
+1485182169 source:w:\code\mainmenusystem.cpp
 	"MainMenuSystem.h"
 
-1485185769 source:w:\code\mastersystem.cpp
+1485182169 source:w:\code\mastersystem.cpp
 	"MasterSystem.h"
 
-1485185769 w:\code\mastersystem.h
+1485182169 w:\code\mastersystem.h
 	"System.h"
 
-1485185768 source:w:\code\matchconfig.cpp
+1485182168 source:w:\code\matchconfig.cpp
 	"MatchConfig.h"
 
-1485185769 source:w:\code\networksystem.cpp
+1485182169 source:w:\code\networksystem.cpp
 	"NetworkSystem.h"
 
 1485185768 source:w:\code\optionboxsystem.cpp
 	"OptionBoxSystem.h"
 
-1486763841 source:w:\code\osappdatadir.cpp
+1486760241 source:w:\code\osappdatadir.cpp
 	"OSAppDataDir.h"
 
-1485185769 source:w:\code\panelsystem.cpp
+1485182169 source:w:\code\panelsystem.cpp
 	"PanelSystem.h"
 
-1485185769 source:w:\code\particlesystem.cpp
+1485182169 source:w:\code\particlesystem.cpp
 	"ParticleSystem.h"
 
-1485185770 source:w:\code\pathsystem.cpp
+1485182170 source:w:\code\pathsystem.cpp
 	"PathSystem.h"
 
-1485188225 source:w:\code\random_int_array.cpp
+1485184625 source:w:\code\random_int_array.cpp
 	"System.h"
 
-1485185770 source:w:\code\remoteplayer.cpp
+1485182170 source:w:\code\remoteplayer.cpp
 	"RemotePlayer.h"
 
-1485185770 w:\code\remoteplayer.h
+1485182170 w:\code\remoteplayer.h
 	"System.h"
 
-1485185768 source:w:\code\rendersystem.cpp
+1485182168 source:w:\code\rendersystem.cpp
 	"RenderSystem.h"
 
-1485185768 source:w:\code\scenariosystem.cpp
+1485182168 source:w:\code\scenariosystem.cpp
 	"ScenarioSystem.h"
 
-1486764325 source:w:\code\screensystem.cpp
+1486760725 source:w:\code\screensystem.cpp
 	"ScreenSystem.h"
 
-1486922314 source:w:\code\scriptedanimation.cpp
+1487020709 source:w:\code\scriptedanimation.cpp
 	"ScriptedAnimation.h"
 
-1485185769 source:w:\code\scrolllistsystem.cpp
+1485182169 source:w:\code\scrolllistsystem.cpp
 	"ScrollListSystem.h"
 
-1485185769 source:w:\code\sideuisystem.cpp
+1485182169 source:w:\code\sideuisystem.cpp
 	"SideUISystem.h"
 
-1485185769 source:w:\code\slidersystem.cpp
+1485182169 source:w:\code\slidersystem.cpp
 	"SliderSystem.h"
 
-1485798675 source:w:\code\soundsystem.cpp
+1485795075 source:w:\code\soundsystem.cpp
 	"SoundSystem.h"
 
-1485185769 source:w:\code\spinbuttonsystem.cpp
+1485182169 source:w:\code\spinbuttonsystem.cpp
 	"SpinButtonSystem.h"
 
-1485187432 source:w:\code\standard.cpp
+1485183832 source:w:\code\standard.cpp
 	"Standard.h"
 
-1486764380 source:w:\code\system.cpp
+1486760780 source:w:\code\system.cpp
 	"System.h"
 
-1485185769 source:w:\code\textboxsystem.cpp
+1485182169 source:w:\code\textboxsystem.cpp
 	"TextboxSystem.h"
 
-1485185768 source:w:\code\tiltsystem.cpp
+1485182168 source:w:\code\tiltsystem.cpp
 	"TiltSystem.h"
 
-1485185769 source:w:\code\timersystem.cpp
+1485182169 source:w:\code\timersystem.cpp
 	"TimerSystem.h"
 
-1485185768 source:w:\code\tooltipsystem.cpp
+1485182168 source:w:\code\tooltipsystem.cpp
 	"TooltipSystem.h"
 
-1485185768 source:w:\code\unitsystem.cpp
+1485182168 source:w:\code\unitsystem.cpp
 	"UnitSystem.h"
 
-1485185768 source:w:\code\war.cpp
+1485182168 source:w:\code\war.cpp
 	"War.h"
 
-1486758521 source:w:\code\warsystem.cpp
+1486754921 source:w:\code\warsystem.cpp
 	"WarSystem.h"
 
-1486922320 source:w:\code\actionsystem.cpp
+1486918720 source:w:\code\actionsystem.cpp
 	"ActionSystem.h"
 

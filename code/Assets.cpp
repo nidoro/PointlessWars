@@ -1267,7 +1267,6 @@ void Assets::packResources(string filename) {
 
     strcpy(ID, "Textures");
     nEntries = getFilesCount(rscRoot + "images",{".png", ".jpg", ".bg"});
-    printf("Textures: %d\n", nEntries);
     file.write(ID, 255);
     file.write(reinterpret_cast<const char *> (&nEntries), sizeof (nEntries));
     writeFilesAt(file, rscRoot + "images",{".png", ".jpg", ".bg"});
@@ -1280,14 +1279,12 @@ void Assets::packResources(string filename) {
 
     strcpy(ID, "Music");
     nEntries = getFilesCount(rscRoot + "music",{".ogg", ".wav"});
-    printf("Musics: %d\n", nEntries);
     file.write(ID, 255);
     file.write(reinterpret_cast<const char *> (&nEntries), sizeof (nEntries));
     writeFilesAt(file, rscRoot + "music",{".ogg", ".wav"});
 
     strcpy(ID, "Fonts");
     nEntries = getFilesCount(rscRoot + "fonts",{".ttf", ".TTF"});
-    printf("Fonts: %d\n", nEntries);
     file.write(ID, 255);
     file.write(reinterpret_cast<const char *> (&nEntries), sizeof (nEntries));
     writeFilesAt(file, rscRoot + "fonts",{".ttf", ".TTF"});
