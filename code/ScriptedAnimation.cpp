@@ -4933,32 +4933,38 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
     bool hFlip = e->get<CPlayer>()->side == CPlayer::LEFT ? false:true;
 
     double xOff = wWindow;
+    double xOrig = sign == -1 ? -300 : wWindow + 300;
     double yOff = 200;
-    for(auto& i : outcome.idTargets) {
+    for (auto& i : outcome.idTargets) {
         Entity* eTarget = getUnitByID(eEnemy, i);
         xOff = max(abs(cxWindow - eTarget->get<CPosition>()->x), xOff);
     }
-    xOff = wWindow/2 + xOff;
+    xOff = eEnemy->get<CArmy>()->x + xOff;
 
-    for(auto& i : outcome.idTargets) {
+    for (auto& i : outcome.idTargets) {
         Entity* eTarget = getUnitByID(eEnemy, i);
         double tHit = 0.0;
         Entity* eCrow = eManager->createEntity();
-        double tStart = randomDouble(0.0, 2);
+        //double tStart = randomDouble(0.0, 2);
+        double tStart = 0.f;
         double yCrow = eTarget->get<CPosition>()->y - yOff;
         double speed1 = 300;
         double speed2 = 500;
+        double xOffCrow = randomDouble(0.f, 300);
         //double speed3 = 400;
         double tAux;
 
-        eCrow->add(new CPosition(eTarget->get<CPosition>()->x + sign*xOff, yCrow));
+        eCrow->add(new CPosition(xOrig + sign*xOffCrow, yCrow));
         eCrow->add(new CAnimation(hFlip, "crow1.png"));
         eCrow->add(new CDraw(CDraw::WORLD_2));
         eCrow->add(new CActor());
         eCrow->add(new CVelocity());
-        eCrow->get<CActor>()->addNode(new ASpriteAnimation(tStart, "crow1.png"));
+        eCrow->get<CAnimation>()->frame = randomInt(0, Assets::getAnimation(eCrow->get<CAnimation>()->current).nFrames-1);
+        eCrow->get<CAnimation>()->update = false;
+        
+        //eCrow->get<CActor>()->addNode(new ASpriteAnimation(tStart, "crow1.png"));
         eCrow->get<CActor>()->addNode(new AMove(0.0, eTarget->get<CPosition>()->x + sign*yOff, yCrow, speed1));
-        tAux = getTravelTime(eTarget->get<CPosition>()->x + sign*xOff, yCrow,
+        tAux = getTravelTime(xOrig + sign*xOffCrow, yCrow,
                              eTarget->get<CPosition>()->x + sign*yOff, yCrow, speed1);
         tHit += tAux;
         eCrow->get<CActor>()->addNode(new ASpriteAnimation(tAux, "crow1-gliding.png"));
@@ -4970,9 +4976,9 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
         tAux = getTravelTime(eTarget->get<CPosition>()->x, eTarget->get<CPosition>()->y,
                              eTarget->get<CPosition>()->x - sign*yOff, yCrow, speed2);
 
-        eCrow->get<CActor>()->addNode(new AMove(tAux, cxWindow - sign*wWindow/2 - sign*32, yCrow, speed2));
+        eCrow->get<CActor>()->addNode(new AMove(tAux, cxWindow - sign*wWindow/2 - sign*60, yCrow, speed2));
         tAux = getTravelTime(eTarget->get<CPosition>()->x - sign*yOff, yCrow,
-                             cxWindow - sign*wWindow/2, yCrow, speed2);
+                             cxWindow - sign*wWindow/2 - sign*60, yCrow, speed2);
 
         eCrow->get<CActor>()->addNode(new ADestroy(tAux));
 

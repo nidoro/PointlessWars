@@ -13,10 +13,9 @@ ScenarioSystem::~ScenarioSystem() {
 }
 
 void ScenarioSystem::update() {
-    //for(EntityListIt i = entities.begin(); i != entities.end(); i++){
-    //Entity* e = *i;
-    //}
+    
 }
+
 void ScenarioSystem::load(string name, double xOff, double yOff) {
     if (toUpper(name) == "RANDOM") name = getRandom(current);
 
@@ -46,7 +45,9 @@ void ScenarioSystem::load(string name, double xOff, double yOff) {
             eObj->add(new CButtonState());
         }
         eObj->add(new CActor());
-        eObj->add(new CScenarioObject(*i));
+        eObj->add(new CScenarioObject(CScenarioObject::Map[i->id]));
+        //eObj->add(new CScenarioObject(*i));
+        eObj->get<CScenarioObject>()->bindedAnimationID = i->bindedAnimationID;
         eObj->get<CAnimation>()->frame = randomInt(0, Assets::getAnimation(eObj->get<CAnimation>()->current).nFrames - 1);
         eObj->get<CAnimation>()->sprite = Assets::getAnimation(eObj->get<CAnimation>()->current).frames[eObj->get<CAnimation>()->frame];
         eObj->get<CAnimation>()->update = false;
@@ -64,7 +65,7 @@ void ScenarioSystem::load(string name, double xOff, double yOff) {
 
     for (auto& p : bindedAnimationsMap) {
         for (Entity* eObj : objectsWithBindedAnim) {
-            if (eObj != bindedAnimationsMap[p.first]) {
+            if (eObj != bindedAnimationsMap[p.first] && eObj->get<CScenarioObject>()->bindedAnimationID == p.first) {
                 eObj->addObservedEntity("TiedAnimation", bindedAnimationsMap[p.first]);
             }
         }
