@@ -218,7 +218,7 @@ void TooltipSystem::createUnitTooltip(Entity* e) {
     w = wAux + 10;
     xAux = x - w/2 + 30/2 + 10;
     y = y - h/2 + 30/2 + 20;
-    if (cunit.action != -1) {
+    if (cunit.action != 20) {
         Entity* eDamIcon = eManager->createEntity();
         eDamIcon->add(new CDraw(CDraw::GUI5));
         eDamIcon->add(new CPosition(xAux, y));
@@ -243,7 +243,7 @@ void TooltipSystem::createUnitTooltip(Entity* e) {
     //double wBarUnit = wBarFull/3;
     xAux = x - wBarFull/2 + 30/2 + 10;
 
-    for(int i = 0; i < CUnit::N_DAMAGE_TYPES; i++) {
+    for (int i = 0; i < CUnit::N_DAMAGE_TYPES; i++) {
         /// ICON
         resIcons[i] = eManager->createEntity();
         resIcons[i]->add(new CDraw(CDraw::GUI5));

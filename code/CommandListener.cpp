@@ -314,7 +314,11 @@ void CommandListener::showArmyActionOptions(Entity* e) {
         //eBut->add(new CTooltip(CTooltip::ACTION));
         eBut->add(new CAction(actID));
         eBut->add(new CUnit(CUnit::Map[i.first]));
-        eBut->add(new CHighlightTrigger(CUnitHighlight2::ATTACK, i.first));
+        if (i.first != 20) {
+            eBut->add(new CHighlightTrigger(CUnitHighlight2::ATTACK, i.first));
+        } else {
+            eBut->add(new CHighlightTrigger(CUnitHighlight2::UNIT, i.first));
+        }
         eBut->add(new COwner(e));
         eBut->add(new CActor());
         eBut->get<CButtonState>()->gainedFocusMessage = HIGHLIGHT_UNITS;

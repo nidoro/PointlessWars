@@ -291,6 +291,7 @@ unit-17-idle.png   			32		32		2			4		1
 unit-18-idle.png   			32		32		2			4		1
 unit-19-01-idle.png			32		32		2			4		1
 unit-19-02-idle.png			32		32		2			4		1
+unit-20-idle.png			32		32		2			4		1
 unit-20-01-idle.png			32		32		2			4		1
 unit-20-02-idle.png			32		32		2			4		1
 unit-20-03-idle.png			32		32		2			4		1
@@ -317,6 +318,7 @@ unit-17-walk.png   			32		32		2			4		1
 unit-18-walk.png   			32		32		2			4		1
 unit-19-01-walk.png			32		32		2			4		1
 unit-19-02-walk.png			32		32		2			4		1
+unit-20-walk.png			32		32		2			4		1
 unit-20-01-walk.png			32		32		2			4		1
 unit-20-02-walk.png			32		32		2			4		1
 unit-20-03-walk.png			32		32		2			4		1
@@ -338,6 +340,7 @@ unit-12-death.png   			32		32		5			10		1
 unit-13-death.png   			32		32		3			6		1
 unit-14-death.png   			32		32		5			6		1
 unit-15-death.png   			32		32		5			4		1
+unit-20-death.png   			32		32		4			4		1
 %unit-16-death.png   			32		32		2			4		1
 %unit-17-death.png   			32		32		2			4		1
 %unit-18-death.png   			32		32		2			4		1
@@ -358,6 +361,7 @@ unit-12-dead.png   			32		32		1			4		1
 unit-13-dead.png   			32		32		1			4		1
 unit-14-dead.png   			32		32		1			4		1
 unit-15-dead.png   			32		32		1			4		1
+unit-20-dead.png   			32		32		1			4		1
 %unit-16-dead.png   		32		32		1			4		1
 %unit-17-dead.png   		32		32		1			4		1
 %unit-18-dead.png   		32		32		1			4		1

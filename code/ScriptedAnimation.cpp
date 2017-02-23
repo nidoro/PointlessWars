@@ -1292,13 +1292,13 @@ void ScriptedAnimation::scriptConversion(ActionOutcome& outcome, Entity* e) {
 }
 
 void ScriptedAnimation::scriptImmortality(ActionOutcome& outcome, Entity* e) {
-    for(auto& i : outcome.idTargets) {
+    for (auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(e, i);
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::ADD_EFFECT, (int)outcome.action));
     }
 
     Entity* eHero = e->get<CArmy>()->captain;
-    eHero->get<CActor>()->timeline.push_back(new ASpeak(0.0, "BLalala!", 2));
+    eHero->get<CActor>()->addNode(new ASpeak(0.0, "BLalala!", 2));
     addActor(eHero);
 }
 

@@ -478,7 +478,7 @@ void Assets::createUnits() {
         unit.resistance[CUnit::WATER] = unitAtt[i][1];
         unit.resistance[CUnit::EARTH] = unitAtt[i][2];
         unit.resistance[CUnit::AIR] = unitAtt[i][3];
-        unit.damage = (CUnit::DamageType)unitAtt[i][4];
+        unit.damage = (CUnit::DamageType) unitAtt[i][4];
         unit.color = Assets::colors[unit.id];
         unit.strName = "NAME-UNIT-" + int2str(i, 2);
         unit.displayer = "unit-" + int2str(i, 2) + "-counter.png";
@@ -505,17 +505,6 @@ void Assets::createUnits() {
 
     units[19].action = -1;
     units[19].damage = CUnit::FIRE;
-    units[20].action = -1;
-    units[20].damage = CUnit::FIRE;
-
-    /*
-        units[8].portrait = "blow-s.png";
-        units[11].portrait = "dagger-s.png";
-        units[13].portrait = "halberdier-s.png";
-        units[12].portrait = "longbow-s.png";
-        units[14].portrait = "ninja-s.png";
-        units[3].portrait = "wizard-s.png";
-     */
 }
 
 void Assets::createColors() {
