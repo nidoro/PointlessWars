@@ -70,6 +70,7 @@ class ScriptedAnimation : public System {
         void scriptNinja(ActionOutcome& outcome, Entity* e);
         void scriptSamurai(ActionOutcome& outcome, Entity* e);
         void scriptTornado(ActionOutcome& outcome, Entity* e);
+        void scriptVassalPitchfork(ActionOutcome& outcome, Entity* e);
         
         // @note: HERO ABILITIES
         void scriptIntimidate(ActionOutcome& outcome, Entity* eActor);

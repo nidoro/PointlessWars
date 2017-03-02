@@ -6571,7 +6571,7 @@
 	"System.h"
 	<thread>
 
-1486754749 source:w:\code\commandlistener.cpp
+1487809285 source:w:\code\commandlistener.cpp
 	"CommandListener.h"
 
 1486754747 w:\code\commandlistener.h
@@ -6869,7 +6869,7 @@
 	"System.h"
 	"Standard.h"
 
-1486760399 w:\code\scriptedanimation.h
+1488466448 w:\code\scriptedanimation.h
 	"System.h"
 	"Assets.h"
 
@@ -6981,7 +6981,7 @@
 1486760725 source:w:\code\screensystem.cpp
 	"ScreenSystem.h"
 
-1487805066 source:w:\code\scriptedanimation.cpp
+1488466479 source:w:\code\scriptedanimation.cpp
 	"ScriptedAnimation.h"
 
 1485182169 source:w:\code\scrolllistsystem.cpp
