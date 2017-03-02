@@ -868,7 +868,7 @@ void ActionSystem::preprocessStampede(ActionOutcome& outcome, Entity* e) {
 
     double bailChance = 0.15;
     for(EntityListIt i = alive.begin(); i != alive.end(); i++) {
-        if (randomInt(0, 100) <= bailChance*100) {
+        if (randomDouble(0, 1) < bailChance) {
             outcome.idTargets.push_back((*i)->get<CUnit>()->armyID);
         }
     }

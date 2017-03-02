@@ -1233,7 +1233,7 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e) {
 
     ///ANIM
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
+    for (EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);
@@ -1242,14 +1242,19 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e) {
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
             double durTravel = getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200);
             eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(durTravel, eUnit->get<CUnit>()->aIdle));
+            addActor(eUnit);
         } else {
-            eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
-            eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
-            eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
-                        getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
-                        eUnit->get<CUnit>()->aIdle));
+            double xFinal = x0 + sign*p.x*ux;
+            double yFinal = y0 + sign*p.y*uy;
+            if (eUnit->get<CPosition>()->x != xFinal && eUnit->get<CPosition>()->y != yFinal) {
+                eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
+                eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
+                eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(
+                            getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, x0 + sign*p.x*ux, y0 + p.y*uy, 200),
+                            eUnit->get<CUnit>()->aIdle));
+                addActor(eUnit);
+            }
         }
-        addActor(eUnit);
     }
 
     Entity* eCap = e->get<CArmy>()->captain;
@@ -1379,7 +1384,7 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e) {
     //double x0 = e->get<CArmy>()->x;
     //double y0 = cyWindow - uy*12/2;
 
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
+    for (EntityListIt i = eEnemy->get<CArmy>()->allUnits.begin(); i != eEnemy->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         double xUnit = eUnit->get<CPosition>()->x;
@@ -1401,6 +1406,7 @@ void ScriptedAnimation::scriptStampede(ActionOutcome& outcome, Entity* e) {
         if (contains(targets, eUnit)) {
             eUnit->get<CActor>()->timeline.push_back(new AMove(getTravelTime(xBuffalo, yBuffalo, xUnit, yUnit, speed), cxWindow - sign*wWindow/2 - sign*100, yUnit, speed));
             double t = getTravelTime(xUnit, yUnit, cxWindow - sign*wWindow/2 - sign*100, yUnit, speed);
+            eUnit->get<CActor>()->timeline.push_back(new AVariable(t, AVariable::REMOVE_FROM_ARMY));
             eUnit->get<CActor>()->timeline.push_back(new ADestroy(t));
             addActor(eUnit);
         }
@@ -1471,30 +1477,11 @@ void ScriptedAnimation::scriptBecomeHuman(ActionOutcome& outcome, Entity* e) {
     e->get<CArmy>()->captains.insert(make_pair(id, eCapNew));
     e->get<CArmy>()->captain = eCapNew;
 
-
-    Entity* eObj;
-
-    ///PUFF
-    string puffAnimation = "poof-02.png";
-    string sfxPoofIn = "sfx-poof-04.wav";
-    string sfxPoofOut = "sfx-poof-03.wav";
-    double puffDuration = Assets::getAnimation(puffAnimation).duration;
-    eObj = eManager->createEntity();
-    eObj->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
-    eObj->add(new CDraw(CDraw::WORLD_2));
-    eObj->add(new CDimensions(85, 85));
-    eObj->add(new CAnimation(false, puffAnimation));
-    eObj->add(new CActor());
-
-    eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
-    eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-    eObj->get<CActor>()->addNode(new AVariable(puffDuration, AVariable::HIDDEN, true));
-
     eCapNew->get<CActor>()->addNode(new ATeleport(0.0, eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
-    eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-IMAMU"), 2));
+    eCapNew->get<CActor>()->addNode(new ASpriteAnimation(0.0, "imamu-transform-02.png"));
+    eCapNew->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation("imamu-transform-02.png").duration, eCapNew->get<CCaptain>()->aIdle));
+    eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-IMAMU"), 2.5f));
 
-
-    addActor(eObj);
     addActor(eCapNew);
 }
 
@@ -4900,13 +4887,13 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e) {
     for (int i = 0; i < nCultists; i++) {
         eObj = eManager->createEntity();
         eObj->add(new CPosition());
-        eObj->add(new CAnimation(false, "hero-10-walk.png"));
+        eObj->add(new CAnimation(false, "aboriginal.png"));
         eObj->add(new CDraw(CDraw::WORLD_1, 0.f));
         eObj->add(new CActor());
         eObj->add(new CElipsoidalMovement(cxWindow, cyWindow, xAmp, yAmp, cultistAngularSpeed, i*angleStep, true, true));
 
         eObj->get<CActor>()->addNode(new AFade(0.f, campFadeSpeed, 255));
-        ///SET FIRST FLIP
+        // @note: SET FIRST FLIP
         double tAux = 0.f;
         double angle = i*angleStep;
         double tFirstFlip;
@@ -4930,11 +4917,10 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e) {
         }
         eObj->get<CActor>()->addNode(new AFade(tAux - (campDuration + (255/campFadeSpeed))- tFirstFlip, -campFadeSpeed, 0.0));
         eObj->get<CActor>()->addNode(new ADestroy(255/campFadeSpeed));
-
     }
 
-    ///TARGETS
-    for(auto& i : outcome.idTargets) {
+    // @note: targets
+    for (auto& i : outcome.idTargets) {
         Entity* eUnit = getUnitByID(eTarget, i);
         Entity* eGem = eManager->createEntity();
         eGem->add(new CPosition(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y));
@@ -5067,7 +5053,7 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
 
 void ScriptedAnimation::scriptTrueForm(ActionOutcome& outcome, Entity* e) {
     Entity* eCapOld = e->get<CArmy>()->captain;
-    Entity* eCapNew;
+    Entity* eCapNew = nullptr;
 
     e->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
     eCapOld->get<CActor>()->addNode(new ATeleport(0.0, -200, -200));
@@ -5086,39 +5072,17 @@ void ScriptedAnimation::scriptTrueForm(ActionOutcome& outcome, Entity* e) {
     eCapNew->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
     eCapNew->add(new CActor());
     eCapNew->add(new COwner(e));
-    //eCapNew->add(new CDimensions(50, 50));
     eCapNew->get<CVelocity>()->speed = 80;
     eCapNew->addObservedEntity("OriginalHero", eCapOld);
 
     e->get<CArmy>()->captains.insert(make_pair(id, eCapNew));
     e->get<CArmy>()->captain = eCapNew;
 
-    Entity* eObj;
+    eCapNew->get<CActor>()->addNode(new ASpriteAnimation(0.0, "imamu-transform-01.png"));
+    eCapNew->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation("imamu-transform-01.png").duration, eCapNew->get<CCaptain>()->aIdle));
+    eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-BUFFALO"), 2.5f));
 
-    ///PUFF
-    string puffAnimation = "poof-02.png";
-    string sfxPoofIn = "sfx-poof-04.wav";
-    string sfxPoofOut = "sfx-poof-03.wav";
-    double puffDuration = Assets::getAnimation(puffAnimation).duration;
-    eObj = eManager->createEntity();
-    eObj->add(new CPosition(eCapNew->get<CPosition>()->x, eCapNew->get<CPosition>()->y));
-    eObj->add(new CDraw(CDraw::WORLD_2));
-    eObj->add(new CDimensions(85, 85));
-    eObj->add(new CAnimation(false, puffAnimation));
-    eObj->add(new CActor());
-
-    eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
-    eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-    eObj->get<CActor>()->addNode(new AVariable(puffDuration, AVariable::HIDDEN, true));
-
-    eCapNew->get<CActor>()->addNode(new ASpeak(0.0, Assets::getString("SPEECH-BUFFALO"), 2));
-
-
-    addActor(eObj);
     addActor(eCapNew);
-
-
-
 }
 
 void ScriptedAnimation::scriptPreAttackSpeech(ActionOutcome& outcome, Entity* e) {

@@ -600,7 +600,7 @@ void Assets::createColors() {
     scale[RED][4] = sf::Color(203, 24, 29);
     scale[RED][5] = sf::Color(165, 15, 21);
 
-    srand(time(nullptr));
+    srand(time(0));
 }
 
 void Assets::readStrings(string language) {
