@@ -341,6 +341,10 @@ unit-13-death.png   			32		32		3			6		1
 unit-14-death.png   			32		32		5			6		1
 unit-15-death.png   			32		32		5			4		1
 unit-20-death.png   			32		32		4			4		1
+unit-20-01-death.png   			32		32		4			4		1
+unit-20-02-death.png   			32		32		4			4		1
+unit-20-03-death.png   			32		32		4			4		1
+unit-20-04-death.png   			32		32		4			4		1
 %unit-16-death.png   			32		32		2			4		1
 %unit-17-death.png   			32		32		2			4		1
 %unit-18-death.png   			32		32		2			4		1
@@ -362,6 +366,10 @@ unit-13-dead.png   			32		32		1			4		1
 unit-14-dead.png   			32		32		1			4		1
 unit-15-dead.png   			32		32		1			4		1
 unit-20-dead.png   			32		32		1			4		1
+unit-20-01-dead.png			32		32		1			4		1
+unit-20-02-dead.png			32		32		1			4		1
+unit-20-03-dead.png			32		32		1			4		1
+unit-20-04-dead.png			32		32		1			4		1
 %unit-16-dead.png   		32		32		1			4		1
 %unit-17-dead.png   		32		32		1			4		1
 %unit-18-dead.png   		32		32		1			4		1
@@ -411,6 +419,10 @@ unit-15-action-01.png		32		32		7			3		1
 unit-16-action-01.png		32		32		2			4		1
 unit-17-action-01.png		32		32		2			4		1
 unit-18-action-01.png		32		32		2			4		1
+unit-20-01-action-01.png	32		32		2			4		1
+unit-20-02-action-01.png	32		32		2			4		1
+unit-20-03-action-01.png	32		32		2			4		1
+unit-20-04-action-01.png	32		32		2			4		1
 % ACTION 02
 unit-00-action-02.png		32		32		2			4		1
 unit-01-action-02.png		32		32		2			4		1

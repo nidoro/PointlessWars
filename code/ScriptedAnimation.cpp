@@ -1203,12 +1203,13 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e) {
     EntityList summons;
     for(int i = 0; i < n; i++) {
         Entity* eUnit = eManager->createEntity();
-        int subUnit = randomInt(1, 2);
+        int subUnit = randomInt(1, 4);
         CUnit u = CUnit::Map[id];
         u.aIdle = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-idle.png";
-        u.aWalk = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-idle.png";
-        u.aDeath = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-idle.png";
-        u.aDead = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-idle.png";
+        u.aWalk = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-walk.png";
+        u.aDeath = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-death.png";
+        u.aDead = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-dead.png";
+        u.aAction01 = "unit-" + int2str(id, 2) + "-" + int2str(subUnit, 2) + "-action-01.png";
         eUnit->add(new CUnit(u));
         eUnit->add(new COwner(e));
         eUnit->add(new CAnimation(hFlip, u.aIdle));
@@ -3224,7 +3225,6 @@ void ScriptedAnimation::scriptVassalPitchfork(ActionOutcome& outcome, Entity* e)
         double shotAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y,
                                          xTarget, yTarget, shotSpeed, gravity);
         double durShotTravel = getTravelTime(eAtk->get<CPosition>()->x, 0, xTarget, 0, cos(shotAngle*M_RAD)*shotSpeed);
-        double tHit = tShot + durShotTravel;
         
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.wav"));
@@ -3237,7 +3237,7 @@ void ScriptedAnimation::scriptVassalPitchfork(ActionOutcome& outcome, Entity* e)
         eObj = eManager->createEntity();
         eObj->add(new CPosition(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y));
         eObj->add(new CDraw(CDraw::SKY));
-        eObj->add(new CTexture("arrow-03.png"));
+        eObj->add(new CTexture("pitchfork.png"));
         eObj->add(new CRotation(true));
         eObj->add(new CVelocity());
         eObj->add(new CAcceleration());

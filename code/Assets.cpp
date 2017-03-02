@@ -505,6 +505,13 @@ void Assets::createUnits() {
 
     units[19].action = -1;
     units[19].damage = CUnit::FIRE;
+    
+    // @note: Vassals
+    units[20].aIdle = "unit-20-01-idle.png";
+    units[20].aWalk = "unit-20-01-walk.png";
+    units[20].aDeath = "unit-20-01-death.png";
+    units[20].aDead = "unit-20-01-dead.png";
+    units[20].aAction01 = "unit-20-01-action-01.png";
 }
 
 void Assets::createColors() {
