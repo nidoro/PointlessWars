@@ -50,6 +50,7 @@ class ActionSystem : public System {
         void preprocessHelp(ActionOutcome& outcome, Entity* e);
         // @note: unit attack preprocessor
         void preprocessUnitAttack(ActionOutcome& outcome, Entity* e);
+        void preprocessVassalAttack(ActionOutcome& outcome, Entity* e);
         void orderTargets(EntityList& targets, map<CAction::ID, CAction>& effects, CUnit::DamageType dmg);
         // @note: battle closure preprocessors
         void preprocessArmyVsArmy(ActionOutcome& outcome, Entity* e);

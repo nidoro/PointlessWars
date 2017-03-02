@@ -91,6 +91,8 @@ void ActionSystem::preprocessAction(CPlayer::ID id) {
     case 16:
         preprocessUnitAttack(war.getNextActionOutcome(id), war.getPlayer(id));
         break;
+    case 20:
+        preprocessVassalAttack(war.getNextActionOutcome(id), war.getPlayer(id));
     ///HERO SELECTION
     case 100:
         war.getNextActionOutcome(id).hero = (CCaptain::ID)war.getNextActionOutcome(id).action - 100;
@@ -971,6 +973,20 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e) {
     }
 
     outcome.dmgType = dmg;
+}
+
+void ActionSystem::preprocessVassalAttack(ActionOutcome& outcome, Entity* e) {
+    Entity* eAttacker = e;
+    EntityList aliveAtk = getAliveUnits(eAttacker);
+
+    CUnit::ID uID = outcome.action;
+
+    for (EntityListIt i = aliveAtk.begin(); i != aliveAtk.end(); i++) {
+        Entity* eUnit = *i;
+        if (eUnit->get<CUnit>()->id == uID) {
+            outcome.idActors.push_back(eUnit->get<CUnit>()->armyID);
+        }
+    }
 }
 
 void ActionSystem::preprocessArmyVsArmy(ActionOutcome& outcome, Entity* e) {

@@ -3208,41 +3208,30 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
 }
 
 void ScriptedAnimation::scriptVassalPitchfork(ActionOutcome& outcome, Entity* e) {
-    Entity* eEnemy = e->get<CPlayer>()->enemy;
-
-    ///AUXILIAR STRUCTURES
-    map<Entity*, double> whoBlockedWhen;
-    map<Entity*, double> whoDiedWhen;
-
-    map<Entity*, bool> blocked;
-    map<Entity*, bool> died;
-    EntityList eTargets = getTargets(outcome, e);
-
-    for (Entity* eDef : eTargets) {
-        blocked.insert(make_pair(eDef, false));
-        died.insert(make_pair(eDef, false));
-    }
-
-    for (auto& out : outcome.unitActionOutcomes) {
-        Entity* eAtk = getUnitByID(e, out.idCauser);
-        Entity* eDef = getUnitByID(eEnemy, out.idTarget);
+    int speecher = getRandom(outcome.idActors);
+    for (int idUnit : outcome.idActors) {
+        Entity* eAtk = getUnitByID(e, idUnit);
         Entity* eObj = nullptr;
 
         // @note: Attacker
-        double tStart = 0.5;
+        double tStart = unitRest1 + randomDouble(0, 0.7);
         double durAttackAnimation = 0.2;
         double tShot = tStart + durAttackAnimation/2;
         double shotSpeed = 200;
         double gravity = 200;
+        double xTarget = cxWindow + randomDouble(-midSpace/2.f , midSpace/2);
+        double yTarget = cyWindow + randomDouble(-(hFormation*uyFormation)/2.f , (hFormation*uyFormation)/2);
         double shotAngle = getAngleToHit(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y,
-                                         eDef->get<CPosition>()->x, eDef->get<CPosition>()->y,
-                                         shotSpeed, gravity);
-        double durShotTravel = getTravelTime(eAtk->get<CPosition>()->x, 0, eDef->get<CPosition>()->x, 0, cos(shotAngle*M_RAD)*shotSpeed);
+                                         xTarget, yTarget, shotSpeed, gravity);
+        double durShotTravel = getTravelTime(eAtk->get<CPosition>()->x, 0, xTarget, 0, cos(shotAngle*M_RAD)*shotSpeed);
         double tHit = tShot + durShotTravel;
         
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.wav"));
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
+        if (idUnit == speecher) {
+            eAtk->get<CActor>()->addNode(new ASpeak(durShotTravel, Assets::getString("SPEECH-VASSAL-ATTACK"), 2.5f));
+        }
         
         // @note: Pitchfork
         eObj = eManager->createEntity();
@@ -3261,56 +3250,12 @@ void ScriptedAnimation::scriptVassalPitchfork(ActionOutcome& outcome, Entity* e)
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(shotAngle*M_RAD)*shotSpeed));
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*shotSpeed));
-        eObj->get<CActor>()->addNode(new ADestroy(durShotTravel));
+        eObj->get<CActor>()->addNode(new AVariable(durShotTravel, AVariable::AUTO_P, false));
+        eObj->get<CActor>()->addNode(new AFade(0.3, -255, 0));
+        eObj->get<CActor>()->addNode(new ADestroy(1.f));
 
         addActor(eObj);
-
-        // @note: Defender
-        if (out.id == UnitActionOutcome::DIED) {
-            if (!died[eDef]) {
-                whoDiedWhen.insert(make_pair(eDef, tHit));
-                died[eDef] = true;
-                if (blocked[eDef]) {
-                    whoBlockedWhen.erase(whoBlockedWhen.find(eDef));
-                    blocked[eDef] = false;
-                }
-            }
-            whoDiedWhen[eDef] = min(whoDiedWhen[eDef], tHit);
-        } else if (!died[eDef]) {
-            if (blocked[eDef]) {
-                whoBlockedWhen[eDef] = min(whoBlockedWhen[eDef], tHit);
-            } else {
-                whoBlockedWhen.insert(make_pair(eDef, tHit));
-                blocked[eDef] = true;
-            }
-        }
-
-        addActor(eAtk);
     }
-
-    for(auto& p : whoDiedWhen) {
-        Entity* eDef = p.first;
-        double when = p.second;
-
-        eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
-        eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
-        eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
-
-        scriptDeathIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
-        addActor(eDef);
-    }
-
-    for(auto& p : whoBlockedWhen) {
-        Entity* eDef = p.first;
-        double when = p.second;
-
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
-
-        scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
-        addActor(eDef);
-    }
-
 }
 
 void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e) {
