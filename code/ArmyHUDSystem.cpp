@@ -780,14 +780,21 @@ void ArmyHUDSystem::updateCoin(Entity* e) {
         double yOff = 90;
         
         if (!eEnemy->get<CArmyHUD>()->eCoin) {
+            float xOrigin = cxWindow + sign*xOff;
+            float yOrigin = -50;
             Entity* eCoin = eManager->createEntity();
-            eCoin->add(new CPosition(cxWindow + sign*xOff, yOff));
-            eCoin->add(new CAnimation(false, sign == -1 ? "tiny-blue-coin-official.png" : "tiny-red-coin-official.png"));
+            eCoin->add(new CPosition(xOrigin, yOrigin));
+            eCoin->add(new CAnimation(false, "tiny-coin-official.png"));
             eCoin->add(new CDraw(CDraw::GUI4));
             eCoin->add(new CActor());
             eCoin->add(new CVelocity());
             eCoin->add(new CAcceleration());
             e->get<CArmyHUD>()->eCoin = eCoin;
+            
+            float travelSpeed = 80;
+            float travelTime = abs(yOrigin - yOff) / travelSpeed;
+            eCoin->get<CActor>()->addNode(new AMove(0.f, cxWindow + sign*xOff, yOff, travelSpeed));
+            eCoin->get<CActor>()->addNode(new ASpriteAnimation(travelTime, sign == -1 ? "tiny-blue-coin-official.png" : "tiny-red-coin-official.png"));
         } else {
             e->get<CArmyHUD>()->eCoin = eEnemy->get<CArmyHUD>()->eCoin;
             eEnemy->get<CArmyHUD>()->eCoin = nullptr;
