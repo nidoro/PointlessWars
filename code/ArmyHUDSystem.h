@@ -43,6 +43,7 @@ class ArmyHUDSystem : public System {
         void animateButtonOutPuff(Entity* e, double after, bool sound = false);
         void animateCaptainIn(Entity* e);
         void toggleHiddenRecursively(Entity* e);
+        void animateHeroPortraitTransition(CCaptain::ID from, CCaptain::ID to, int side);
         
         double getAngleToHit(double ox, double oy, double tx, double ty, double& v, double gravity);
         double getMinimumSpeedToHit(double ox, double oy, double tx, double ty, double gravity);

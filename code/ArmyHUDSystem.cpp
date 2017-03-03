@@ -291,31 +291,13 @@ void ArmyHUDSystem::updateCaptain(Entity* e) {
             ///HUD SHOWS SOMETHING
             Entity* eIcon = e->get<CArmyHUD>()->captain;
             if (eIcon->get<CCaptain>()->id != eCap->get<CCaptain>()->id) {
-                ///HUD DOESN'T SHOW SELECTED HERO
-                ///PUFF
-                Entity* eObj = eManager->createEntity();
-
-                string puffAnimation = "poof-06.png";
-                string sfxPoofIn = "sfx-poof-04.wav";
-                string sfxPoofOut = "sfx-poof-05.wav";
-                double puffDuration = Assets::getAnimation(puffAnimation).duration;
-                eObj = eManager->createEntity();
-                eObj->add(new CPosition(eIcon->get<CPosition>()->x, eIcon->get<CPosition>()->y));
-                eObj->add(new CDraw(CDraw::GUI2));
-                eObj->add(new CDimensions(90, 90));
-                eObj->add(new CAnimation(false, puffAnimation));
-                eObj->add(new CActor());
-
-                eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
-                eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-                eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
-
+                animateHeroPortraitTransition(eIcon->get<CCaptain>()->id, eCap->get<CCaptain>()->id, sign);
                 eIcon->add(new CTooltip(CTooltip::CAPTAIN));
                 eManager->addModified(eIcon);
+                eIcon->get<CActor>()->addNode(new AAddComponent(1, new CButtonTextures(eCap->get<CCaptain>()->btDefTexture,
+                                                                                       eCap->get<CCaptain>()->btHovTexture,
+                                                                                       eCap->get<CCaptain>()->btActTexture), Component::BUTTON_TEXTURES));
             }
-            eIcon->get<CButtonTextures>()->def = eCap->get<CCaptain>()->btDefTexture;
-            eIcon->get<CButtonTextures>()->hov = eCap->get<CCaptain>()->btHovTexture;
-            eIcon->get<CButtonTextures>()->act = eCap->get<CCaptain>()->btActTexture;
             *eIcon->get<CCaptain>() = CCaptain::Map[eCap->get<CCaptain>()->id];
             if (eIcon->get<CButtonState>()->state == CButtonState::LOCKED) {
                 eIcon->get<CButtonState>()->state = CButtonState::NON_ACTIVE;
@@ -352,30 +334,14 @@ void ArmyHUDSystem::updateCaptain(Entity* e) {
             if (eIcon->get<CCaptain>()->id != -1) {
                 ///HUD SHOWS HERO
                 ///PUFF
-                Entity* eObj = eManager->createEntity();
-
-                string puffAnimation = "poof-06.png";
-                string sfxPoofIn = "sfx-poof-04.wav";
-                string sfxPoofOut = "sfx-poof-05.wav";
-                double puffDuration = Assets::getAnimation(puffAnimation).duration;
-                eObj = eManager->createEntity();
-                eObj->add(new CPosition(eIcon->get<CPosition>()->x, eIcon->get<CPosition>()->y));
-                eObj->add(new CDraw(CDraw::GUI2));
-                eObj->add(new CDimensions(90, 90));
-                eObj->add(new CAnimation(false, puffAnimation));
-                eObj->add(new CActor());
-
-                eObj->get<CActor>()->addNode(new ASound(0.0, sfxPoofOut));
-                eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-                eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
-
+                animateHeroPortraitTransition(eIcon->get<CCaptain>()->id, -1, sign);
                 eIcon->get<CCaptain>()->id = -1;
                 eIcon->remove(Component::TOOLTIP);
                 eManager->addModified(eIcon);
+                eIcon->get<CActor>()->addNode(new AAddComponent(1, new CButtonTextures("hero-portrait-empty.png",
+                                                                                   "hero-portrait-empty-highlit.png",
+                                                                                   "hero-portrait-empty-highlit.png"), Component::BUTTON_TEXTURES));
             }
-            eIcon->get<CButtonTextures>()->def = "hero-portrait-empty.png";
-            eIcon->get<CButtonTextures>()->hov = "hero-portrait-empty-highlit.png";
-            eIcon->get<CButtonTextures>()->act = "hero-portrait-empty-highlit.png";
             eIcon->get<CButtonState>()->lostFocusMessage = EMPTY_MESSAGE;
             eIcon->get<CButtonState>()->gainedFocusMessage = EMPTY_MESSAGE;
         }
@@ -816,9 +782,8 @@ void ArmyHUDSystem::updateCoin(Entity* e) {
         if (!eEnemy->get<CArmyHUD>()->eCoin) {
             Entity* eCoin = eManager->createEntity();
             eCoin->add(new CPosition(cxWindow + sign*xOff, yOff));
-            eCoin->add(new CAnimation(false, sign == -1 ? "blue-coin-official.png" : "red-coin-official.png"));
-            eCoin->add(new CDimensions(20,20));
-            eCoin->add(new CDraw(CDraw::GUI2));
+            eCoin->add(new CAnimation(false, sign == -1 ? "tiny-blue-coin-official.png" : "tiny-red-coin-official.png"));
+            eCoin->add(new CDraw(CDraw::GUI4));
             eCoin->add(new CActor());
             eCoin->add(new CVelocity());
             eCoin->add(new CAcceleration());
@@ -830,19 +795,19 @@ void ArmyHUDSystem::updateCoin(Entity* e) {
             
             // @note: transfer animation
             double gravity = 200;
-            double speed = 80; 
+            double speed = 80;
             double shotAngle = getAngleToHit(eCoin->get<CPosition>()->x, eCoin->get<CPosition>()->y,
                                              cxWindow + sign*xOff, yOff,
                                              speed, gravity);
             double durTravel = getTravelTime(eCoin->get<CPosition>()->x, 0, cxWindow + sign*xOff, 0, cos(shotAngle*M_RAD)*speed);
             
-            eCoin->get<CActor>()->addNode(new ASpriteAnimation(0.f, "coin-official.png"));
+            eCoin->get<CActor>()->addNode(new ASpriteAnimation(0.f, "tiny-coin-official.png"));
             eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::AUTO_P, true));
             eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
             eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
             eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(shotAngle*M_RAD)*speed));
             eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*speed));
-            eCoin->get<CActor>()->addNode(new ASpriteAnimation(durTravel, sign == -1 ? "blue-coin-official.png" : "red-coin-official.png"));
+            eCoin->get<CActor>()->addNode(new ASpriteAnimation(durTravel, sign == -1 ? "tiny-blue-coin-official.png" : "tiny-red-coin-official.png"));
             eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::AUTO_P, false));
             eCoin->get<CActor>()->addNode(new ATeleport(0.0, cxWindow + sign*xOff, yOff));
         }
@@ -1209,4 +1174,26 @@ double ArmyHUDSystem::getMinimumSpeedToHit(double ox, double oy, double tx, doub
     double y = -(ty - oy);
     double g = gravity;
     return sqrt(g*y + g*sqrt(x*x + y*y));
+}
+
+void ArmyHUDSystem::animateHeroPortraitTransition(CCaptain::ID from, CCaptain::ID to, int side) {
+    int sign = side;
+    double xOff = 70;
+    double yOff = 70;
+    double x = cxWindow + sign*xOff;
+    double y = yOff;
+    bool hFlip = sign == -1? false:true;
+    float fadeSpeed = 255;
+    
+    Entity* eObj = nullptr;
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CTexture("portrait-transition.png"));
+    eObj->add(new CDraw(CDraw::GUI3, 0.f));
+    eObj->add(new CActor());
+    
+    eObj->get<CActor>()->addNode(new AFade(0.f, fadeSpeed, 255.f));
+    eObj->get<CActor>()->addNode(new AFade(1.5f, -fadeSpeed, 0.f));
+    eObj->get<CActor>()->addNode(new ADestroy(255/fadeSpeed));
 }

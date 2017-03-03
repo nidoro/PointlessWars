@@ -170,6 +170,9 @@ coin-red.png				50		50		1			20		10
 coin-official.png           43      43      7           20
 blue-coin-official.png      43      43      1           20
 red-coin-official.png       43      43      1           20
+tiny-coin-official.png      20      20      7           20
+tiny-blue-coin-official.png 20      20      1           20
+tiny-red-coin-official.png  20      20      1           20
 imamu-transform-01.png		61		61		5			12		1
 imamu-transform-02.png		61		61		5			12		1
 aboriginal.png		        32	    32		2			4		1
