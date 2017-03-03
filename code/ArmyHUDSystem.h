@@ -8,7 +8,6 @@
 class ArmyHUDSystem : public System {
     public:
         ArmyHUDSystem();
-        ~ArmyHUDSystem();
 
         void update();
 
@@ -44,6 +43,9 @@ class ArmyHUDSystem : public System {
         void animateButtonOutPuff(Entity* e, double after, bool sound = false);
         void animateCaptainIn(Entity* e);
         void toggleHiddenRecursively(Entity* e);
+        
+        double getAngleToHit(double ox, double oy, double tx, double ty, double& v, double gravity);
+        double getMinimumSpeedToHit(double ox, double oy, double tx, double ty, double gravity);
 
         EntityList eResists;
         bool active;

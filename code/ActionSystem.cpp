@@ -575,7 +575,7 @@ void ActionSystem::preprocessArmyComposition(ActionOutcome& outcome, Entity* e) 
     }
 #else
     if (e->get<CPlayer>()->side == CPlayer::LEFT) {
-        outcome.armyComposition.insert(make_pair(20, 20));
+        //outcome.armyComposition.insert(make_pair(20, 20));
     }
 
     int nUnits = 0;
@@ -924,7 +924,7 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e) {
     }
 
     // Backfire due to curse
-    // @decision: should curse be probability based? If so, what should be its success chance?
+    // @question: should curse be probability based? If so, what should be its success chance?
     float curseSuccessChance = 1.0;
     for (auto eUnit : unitsAtk) {
         if (isCursed(eUnit)) {

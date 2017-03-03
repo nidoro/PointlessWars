@@ -4873,6 +4873,7 @@ void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
     addActor(eTimer);
 #else
     war.setActorID(1);
+    war.getPlayer1()->get<CArmy>()->hasCoin = true;
 #endif
 }
 

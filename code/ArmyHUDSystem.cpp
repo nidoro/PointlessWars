@@ -14,10 +14,6 @@ ArmyHUDSystem::ArmyHUDSystem() {
     active = false;
 }
 
-ArmyHUDSystem::~ArmyHUDSystem() {
-    //dtor
-}
-
 void ArmyHUDSystem::update() {
     if (active) {
         for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
@@ -811,25 +807,49 @@ void ArmyHUDSystem::updateEffects(Entity* e) {
 }
 
 void ArmyHUDSystem::updateCoin(Entity* e) {
+    Entity* eEnemy = e->get<CPlayer>()->enemy;
     if (e->get<CArmy>()->hasCoin && e->get<CArmyHUD>()->eCoin == nullptr) {
         int sign = e->get<CArmy>()->side == CPlayer::LEFT ? -1:1;
         double xOff = 50;
         double yOff = 90;
-        //double x = cxWindow + sign*xOff;
-        //double y = yOff;
-        //bool hFlip = sign == -1? false:true;
-
-        Entity* eCoin = eManager->createEntity();
-        eCoin->add(new CPosition(cxWindow + sign*xOff, yOff));
-        eCoin->add(new CTexture(sign == -1 ? "blue-coin-official.png" : "red-coin-official.png"));
-        eCoin->add(new CDimensions(20,20));
-        eCoin->add(new CDraw(CDraw::GUI2));
-
-        e->get<CArmyHUD>()->eCoin = eCoin;
+        
+        if (!eEnemy->get<CArmyHUD>()->eCoin) {
+            Entity* eCoin = eManager->createEntity();
+            eCoin->add(new CPosition(cxWindow + sign*xOff, yOff));
+            eCoin->add(new CAnimation(false, sign == -1 ? "blue-coin-official.png" : "red-coin-official.png"));
+            eCoin->add(new CDimensions(20,20));
+            eCoin->add(new CDraw(CDraw::GUI2));
+            eCoin->add(new CActor());
+            eCoin->add(new CVelocity());
+            eCoin->add(new CAcceleration());
+            e->get<CArmyHUD>()->eCoin = eCoin;
+        } else {
+            e->get<CArmyHUD>()->eCoin = eEnemy->get<CArmyHUD>()->eCoin;
+            eEnemy->get<CArmyHUD>()->eCoin = nullptr;
+            Entity* eCoin = e->get<CArmyHUD>()->eCoin;
+            
+            // @note: transfer animation
+            double gravity = 200;
+            double speed = 80; 
+            double shotAngle = getAngleToHit(eCoin->get<CPosition>()->x, eCoin->get<CPosition>()->y,
+                                             cxWindow + sign*xOff, yOff,
+                                             speed, gravity);
+            double durTravel = getTravelTime(eCoin->get<CPosition>()->x, 0, cxWindow + sign*xOff, 0, cos(shotAngle*M_RAD)*speed);
+            
+            eCoin->get<CActor>()->addNode(new ASpriteAnimation(0.f, "coin-official.png"));
+            eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::AUTO_P, true));
+            eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
+            eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
+            eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(shotAngle*M_RAD)*speed));
+            eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*speed));
+            eCoin->get<CActor>()->addNode(new ASpriteAnimation(durTravel, sign == -1 ? "blue-coin-official.png" : "red-coin-official.png"));
+            eCoin->get<CActor>()->addNode(new AVariable(0.0, AVariable::AUTO_P, false));
+            eCoin->get<CActor>()->addNode(new ATeleport(0.0, cxWindow + sign*xOff, yOff));
+        }
 
     } else if (!e->get<CArmy>()->hasCoin && e->get<CArmyHUD>()->eCoin != nullptr) {
-        eManager->removeEntity(e->get<CArmyHUD>()->eCoin);
-        e->get<CArmyHUD>()->eCoin = nullptr;
+        //eManager->removeEntity(e->get<CArmyHUD>()->eCoin);
+        //e->get<CArmyHUD>()->eCoin = nullptr;
     }
 }
 
@@ -1171,4 +1191,22 @@ void ArmyHUDSystem::toggleHiddenRecursively(Entity* e) {
     for (auto& i : employees) {
         toggleHiddenRecursively(i);
     }
+}
+
+double ArmyHUDSystem::getAngleToHit(double ox, double oy, double tx, double ty, double& v, double gravity) {
+    double x = (tx - ox);
+    double y = -(ty - oy);
+    double g = gravity;
+    // you don't want the exact vMin because when calculating the angle if the velocity is not enough by an infinitesimal amount it returns nan
+    double vMin = 1.05*getMinimumSpeedToHit(ox, oy, tx, ty, g);
+    v = max(vMin, v);
+    double angle = std::atan2(double(v*v - sqrt(pow(v,4) - g*(g*x*x + 2*y*v*v))), double(g*x));
+    return angle*M_DEG;
+}
+
+double ArmyHUDSystem::getMinimumSpeedToHit(double ox, double oy, double tx, double ty, double gravity) {
+    double x = (tx - ox);
+    double y = -(ty - oy);
+    double g = gravity;
+    return sqrt(g*y + g*sqrt(x*x + y*y));
 }
