@@ -797,7 +797,7 @@ void ActionSystem::preprocessResurect(ActionOutcome& outcome, Entity* e) {
 void ActionSystem::preprocessCurse(ActionOutcome& outcome, Entity* e) {
     Entity* eEnemy = e->get<CPlayer>()->enemy;
     EntityList candidates = getAliveUnits(eEnemy);
-    int maxTargets = min(20, (int) candidates.size());
+    int maxTargets = min(10, (int) candidates.size());
     int nTargets = randomInt(1, maxTargets);
     for (int i = 0; i < nTargets; i++) {
         Entity* eUnit = pickRandom(candidates);
@@ -923,7 +923,8 @@ void ActionSystem::preprocessUnitAttack(ActionOutcome& outcome, Entity* e) {
         }
     }
 
-    //Backfire due to curse
+    // Backfire due to curse
+    // @decision: should curse be probability based? If so, what should be its success chance?
     float curseSuccessChance = 1.0;
     for (auto eUnit : unitsAtk) {
         if (isCursed(eUnit)) {

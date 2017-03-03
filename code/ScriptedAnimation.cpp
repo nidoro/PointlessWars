@@ -1149,12 +1149,32 @@ void ScriptedAnimation::scriptCurse(ActionOutcome& outcome, Entity* e) {
     Entity* eHero = e->get<CArmy>()->captain;
     std::string speech = Assets::getString("SPEECH-MOG-UR-CURSE-" + int2str(randomInt(1,1), 2));
     eHero->get<CActor>()->timeline.push_back(new ASpeak(0.0, speech, 2.5f));
-    eHero->get<CActor>()->timeline.push_back(new ASpriteAnimation(4.0, eHero->get<CCaptain>()->aIdle));
+    eHero->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.f, "mog-ur-curse.png"));
+    eHero->get<CActor>()->timeline.push_back(new ASpriteAnimation(3.5f, eHero->get<CCaptain>()->aIdle));
     addActor(eHero);
 
     Entity* eSound = eManager->createEntity();
     eSound->add(new CSound("sfx-tribal-drums.ogg", CSound::LOOP_THEN_REMOVE, 0.1, 0.1, 2));
     notify(PLAY_SOUND, eSound);
+    
+    int nTargets = outcome.idTargets.size();
+    float deltaAngle = 360.f/nTargets;
+    float angle = 0.f;
+    float cxIcon = eHero->get<CPosition>()->x;
+    float cyIcon = eHero->get<CPosition>()->y - 100;
+    for (int i = 0; i < nTargets; ++i) {
+        Entity* eObj = eManager->createEntity();
+        eObj->add(new CPosition());
+        eObj->add(new CTexture("curse-icon.png"));
+        eObj->add(new CDraw(CDraw::WORLD_3, 0.f));
+        eObj->add(new CElipsoidalMovement(cxIcon, cyIcon, 80, 40, 135, angle, true, true));
+        eObj->add(new CActor());
+        eObj->get<CActor>()->addNode(new AFade(0.f, 255, 255));
+        eObj->get<CActor>()->addNode(new AFade(3.f, -255, 0.f));
+        eObj->get<CActor>()->addNode(new ADestroy(1.f));
+        addActor(eObj);
+        angle += deltaAngle;
+    }
 }
 
 void ScriptedAnimation::scriptSomniferous(ActionOutcome& outcome, Entity* e) {
