@@ -124,25 +124,16 @@ void ArmyHUDSystem::onScoreUpdated(Entity* e) {
             eMed->get<CActor>()->timeline.push_back(new AMove(0.0, xMed + sign*w/2, yMed, 50));
         }
         //NEW MEDAL
-        eObj->get<CActor>()->timeline.push_back(new AMove(1.0, xMed - sign*w/2, yMed, 50));
+        eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, "medal-" + color + "-in.png"));
+        eObj->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation("medal-" + color + "-in.png").duration, "medal-" + color + "-idle.png"));
+        eObj->get<CActor>()->addNode(new AMove(1, xMed - sign*w/2, yMed, 50));
 
-        ///PUFF
-        string puffAnimation = "poof-06.png";
-        string sfxPoofIn = "sfx-poof-04.wav";
-        string sfxPoofOut = "sfx-poof-05.wav";
-        double puffDuration = Assets::getAnimation(puffAnimation).duration;
-        eObj = eManager->createEntity();
-        eObj->add(new CPosition(cxWindow, 150));
-        eObj->add(new CDraw(CDraw::GUI2));
-        eObj->add(new CDimensions(90, 90));
-        eObj->add(new CAnimation(false, puffAnimation));
-        eObj->add(new CActor());
-
-        eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, puffAnimation));
-        eObj->get<CActor>()->addNode(new ADestroy(puffDuration));
     } else if (e->get<CArmyHUD>()->medals.size() > (unsigned) e->get<CArmy>()->score) {
-        for(unsigned int i = 0; i < e->get<CArmyHUD>()->medals.size(); i++) {
-            eManager->removeEntity(e->get<CArmyHUD>()->medals[i]);
+        for (unsigned int i = 0; i < e->get<CArmyHUD>()->medals.size(); i++) {
+            //eManager->removeEntity(e->get<CArmyHUD>()->medals[i]);
+            Entity* eObj = e->get<CArmyHUD>()->medals[i];
+            eObj->get<CActor>()->addNode(new ASpriteAnimation(0.f, "medal-" + color + "-out.png"));
+            eObj->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("medal-" + color + "-out.png").duration));
         }
         e->get<CArmyHUD>()->medals.clear();
     }

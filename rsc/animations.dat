@@ -149,7 +149,11 @@ stalagmite-still.png		75		130		2			10		1
 stalagmite-out.png			75		130		5			10		1
 rolling-stone.png			50		50		4			8		1
 medal-blue-idle.png			34		61		1			1		1
+medal-blue-in.png			34		61		1			1		1
+medal-blue-out.png			34		61		1			1		1
 medal-red-idle.png			34		61		1			1		1
+medal-red-in.png			34		61		1			1		1
+medal-red-out.png			34		61		1			1		1
 tornado.png					130		128		4			8		1
 puff-01.png					96		88		8			12		1
 poof-02.png					61		61		5			12		1
