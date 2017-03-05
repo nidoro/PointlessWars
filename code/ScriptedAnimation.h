@@ -105,6 +105,7 @@ class ScriptedAnimation : public System {
 
         // @note: SUB SCRIPTS
         void scriptFightSmokeCloud(double duration);
+        void scriptSmallFightSmokeCloud(double start, double duration);
         void scriptVictoryAnimation(double delay);
         void scriptConfettiRain(double delay);
         void scriptPoofAt(double x, double y, double when);

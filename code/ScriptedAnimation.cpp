@@ -27,6 +27,9 @@ void ScriptedAnimation::onTriggerObjectAnimation(Entity* e) {
     double a1Duration = Assets::getAnimation(a1).duration;
     e->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, a1, e->get<CScenarioObject>()->clickSound));
     e->get<CActor>()->timeline.push_back(new ASpriteAnimation(a1Duration, a2));
+    
+    // @cleanup
+    scriptSmallFightSmokeCloud(0.5, 4.5);
 }
 
 void ScriptedAnimation::update() {
@@ -2134,6 +2137,36 @@ void ScriptedAnimation::scriptFightSmokeCloud(double duration) {
     srand(time(NULL));
 }
 
+void ScriptedAnimation::scriptSmallFightSmokeCloud(double start, double duration) {
+    double wBattle = 50/2;
+    double hBattle = 50/2;
+    double radius = sqrt(wBattle*wBattle + hBattle*hBattle);
+    int nClouds = 80;
+    srand(11);
+    for (int i = 0; i < nClouds; i++) {
+        Entity* eCloud = eManager->createEntity();
+        double r = randomDouble(0.0, radius);
+        double ang = randomDouble(0.0, 360);
+        double x = cxWindow + r*cos(ang*M_RAD);
+        double y = cyWindow + r*sin(ang*M_RAD);
+        string ani = "poof-05.png";
+
+        eCloud->add(new CPosition(x, y));
+        eCloud->add(new CAnimation(false, ani));
+        eCloud->add(new CDraw(CDraw::SKY, 0));
+        eCloud->add(new CDimensions(40, 40));
+        eCloud->add(new CActor());
+
+        eCloud->get<CActor>()->timeline.push_back(new AFade(start, 255, 255));
+        eCloud->get<CActor>()->timeline.push_back(new AFade(duration, -255, 0));
+        eCloud->get<CActor>()->timeline.push_back(new ADestroy(255.f/255.f));
+        eCloud->get<CAnimation>()->update = false;
+        eCloud->get<CAnimation>()->frame = randomInt(0, Assets::getAnimation(ani).nFrames-1);
+        addActor(eCloud);
+    }
+    srand(time(NULL));
+}
+
 void ScriptedAnimation::scriptMeleeBattle(Entity* e) {
     ///================
     /// PLAYER WINNER
@@ -2407,6 +2440,7 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor) {
     EntityList fightActors;
     fightActors.push_back(P1fighter);
     fightActors.push_back(P2fighter);
+    double fightStart = 0.f;
     for(EntityListIt i = fightActors.begin(); i != fightActors.end(); i++) {
         Entity* eUnit = *i;
         Entity* eArmy = eUnit->get<COwner>()->e;
@@ -2419,6 +2453,7 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor) {
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(2.0, eUnit->get<CUnit>()->aWalk));
         eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, cyWindow, unitSpeed));
         double t = getTravelTime(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, xTarget, cyWindow, unitSpeed);
+        fightStart = max(t + 2, fightStart);
         eUnit->get<CActor>()->timeline.push_back(new AMove(t, xTarget - sign*16, cyWindow, unitSpeed));
         t = getTravelTime(xTarget, cyWindow, xTarget - sign*16, cyWindow, unitSpeed);
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eUnit->get<CUnit>()->aIdle));
@@ -2441,19 +2476,7 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor) {
     ///===========
     /// Blindfold
     ///===========
-    Entity* eFold = eManager->createEntity();
-    sf::RectangleShape shape;
-    shape.setSize(sf::Vector2f(wWindow, hWindow));
-    shape.setFillColor(sf::Color(255,255,255));
-    eFold->add(new CDraw(CDraw::BLINDFOLD, 0));
-    eFold->add(new CRectShape(shape));
-    eFold->add(new CPosition(cxWindow, cyWindow));
-    eFold->add(new CActor());
-    eFold->get<CActor>()->timeline.push_back(new AFade(2.0, 255, 255));
-    eFold->get<CActor>()->timeline.push_back(new AFade(3, -200, 0));
-    eFold->get<CActor>()->timeline.push_back(new ADestroy(2));
-
-    addActor(eFold);
+    scriptSmallFightSmokeCloud(fightStart, 4.5f);
 }
 
 void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor) {
