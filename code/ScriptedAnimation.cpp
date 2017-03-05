@@ -3638,7 +3638,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     double hTornado = Assets::getAnimation("tornado.png").hSprite;
     double yTornado = cyWindow + hFormation*uyFormation/2 - hTornado/2 + hSection/2;
     double xTornado = cxArmy - sign*wSection/2;
-    double delayToMove = 1.f;
+    double delayToMove = 1.5f;
     eObj = eManager->createEntity();
     eObj->add(new CPosition(cxWindow, cyWindow));
     eObj->add(new CAnimation(false, "tornado.png"));
@@ -3720,7 +3720,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double firstJumpDuration = getTravelTime(eAtk->get<CPosition>()->x, 0.f, cxWindow + xOff, 0.f, cos(firstJumpAngle*M_RAD) * firstJumpSpeed);
 
         double lastLineTimeOffset = randomDouble(0.f, durationLineTravel-0.25);
-        double secondJumpStart = timeToLastLine - firstJumpDuration + lastLineTimeOffset;
+        double secondJumpStart = timeToLastLine - firstJumpDuration + lastLineTimeOffset - Assets::getAnimation("halberdier-jumping.png").duration;
         double x0SecondJump = x0LastLine + abs(x0LastLine - x1LastLine) * (lastLineTimeOffset / durationLineTravel);
         double y0SecondJump = y0LastLine + abs(y0LastLine - y1LastLine) * (lastLineTimeOffset / durationLineTravel);
         double secondJumpSpeed = 200.f;
@@ -3730,8 +3730,10 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double walkSpeed = 400.f;
         double walkDistance = abs(cxWindow - eAtk->get<CPosition>()->x);
         double walkDuration = walkDistance / walkSpeed;
-
-        eAtk->get<CActor>()->addNode(new AAddComponent(firstJumpStart, new CAutoPilot(), Component::AUTO_PILOT));
+        
+        eAtk->get<CActor>()->addNode(new ASpriteAnimation(firstJumpStart, "halberdier-jumping.png"));
+        eAtk->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation("halberdier-jumping.png").duration, "halberdier-air.png"));
+        eAtk->get<CActor>()->addNode(new AAddComponent(0.f, new CAutoPilot(), Component::AUTO_PILOT));
         eAtk->get<CActor>()->addNode(new AVariable(0.f, AVariable::DRAW_TAG, CDraw::WORLD_2));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_ACC, 0.0));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
@@ -3766,7 +3768,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
 
         double shadowSpeed = getDistance(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, cxWindow + xOff, cyWindow)/firstJumpDuration;
 
-        eObj->get<CActor>()->addNode(new AVariable(firstJumpStart, AVariable::HIDDEN, false));
+        eObj->get<CActor>()->addNode(new AVariable(firstJumpStart + Assets::getAnimation("halberdier-jumping.png").duration, AVariable::HIDDEN, false));
         eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow + xOff, cyWindow, shadowSpeed));
         eObj->get<CActor>()->addNode(new ADestroy(firstJumpDuration));
 
@@ -3781,7 +3783,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
 
         shadowSpeed = getDistance(x0SecondJump, y0SecondJump, cxWindow, eAtk->get<CPosition>()->y)/secondJumpDuration;
 
-        eObj->get<CActor>()->addNode(new AVariable(firstJumpStart + firstJumpDuration + secondJumpStart, AVariable::HIDDEN, false));
+        eObj->get<CActor>()->addNode(new AVariable(firstJumpStart + firstJumpDuration + secondJumpStart + Assets::getAnimation("halberdier-jumping.png").duration, AVariable::HIDDEN, false));
         eObj->get<CActor>()->addNode(new AMove(0.0, cxWindow, eAtk->get<CPosition>()->y, shadowSpeed));
         eObj->get<CActor>()->addNode(new ADestroy(secondJumpDuration));
 

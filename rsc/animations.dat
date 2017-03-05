@@ -457,6 +457,9 @@ unit-07-action-02.png		32		32		1			4		1
 % ACTION 03
 unit-04-action-03.png		32		32		1			4		1
 
+halberdier-jumping.png  	32		32		2			4		1
+halberdier-air.png  	    32		32		1			4		1
+
 %snow
 chicken-idle.png            26      21      2           4   
 chicken-singing.png         26      21      1           0.5 
