@@ -29,7 +29,7 @@ void ScriptedAnimation::onTriggerObjectAnimation(Entity* e) {
     e->get<CActor>()->timeline.push_back(new ASpriteAnimation(a1Duration, a2));
     
     // @cleanup
-    scriptSmallFightSmokeCloud(0.5, 4.5);
+    //scriptSmallFightSmokeCloud(0.5, 4.5);
 }
 
 void ScriptedAnimation::update() {
@@ -1268,7 +1268,7 @@ void ScriptedAnimation::scriptSlavesCall(ActionOutcome& outcome, Entity* e) {
             addActor(eUnit);
         } else {
             double xFinal = x0 + sign*p.x*ux;
-            double yFinal = y0 + sign*p.y*uy;
+            double yFinal = y0 + p.y*uy;
             if (eUnit->get<CPosition>()->x != xFinal && eUnit->get<CPosition>()->y != yFinal) {
                 eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eUnit->get<CUnit>()->aWalk));
                 eUnit->get<CActor>()->timeline.push_back(new AMove(0.0, x0 + sign*p.x*ux, y0 + p.y*uy, 200));
@@ -2476,7 +2476,7 @@ void ScriptedAnimation::scriptManVsMan(ActionOutcome& outcome, Entity* eActor) {
     ///===========
     /// Blindfold
     ///===========
-    scriptSmallFightSmokeCloud(fightStart, 4.5f);
+    scriptSmallFightSmokeCloud(fightStart, 4.f);
 }
 
 void ScriptedAnimation::scriptIntimidate(ActionOutcome& outcome, Entity* eActor) {
