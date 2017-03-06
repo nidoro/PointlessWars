@@ -147,7 +147,6 @@ void CommandListener::showCaptainOptions(Entity* e) {
         if (i.second->get<CCaptain>()->isConfined) continue;
         CCaptain::ID idCap = i.first;
         CAction::ID idAct = K+idCap;
-        printf("idAct = %d\n", idAct);
 
         Entity* eBut = eManager->createEntity();
         eBut->add(new CButtonState());

@@ -604,7 +604,7 @@ void Assets::createColors() {
 }
 
 void Assets::readStrings(string language) {
-    std::string filename = appDataDir + "/strings-" + language + ".json";
+    std::string filename = rscRoot + "/lan/strings-" + language + ".json";
     std::ifstream file(filename.c_str());
     if (!file.is_open()) {
         printf("strings-%s.dat not found!\n", language.c_str());

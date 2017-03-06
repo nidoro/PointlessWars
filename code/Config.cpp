@@ -174,10 +174,11 @@ std::string Config::getLanguage() {
 }
 
 std::list<std::string> Config::getSupportedLanguages() {
+    std::string rscRoot = "../../rsc/";
     if (supportedLanguages.empty()) {
         std::list<std::string> candidates = {"en", "pt", "fr", "de", "es"};
         for (auto& i : candidates) {
-            if (helper::fileExists(helper::getAppDataDir() + "/strings-" + i + ".json")) {
+            if (helper::fileExists(rscRoot + "/lan/strings-" + i + ".json")) {
                 supportedLanguages.push_back(i);
             }
         }

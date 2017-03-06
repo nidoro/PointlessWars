@@ -2074,9 +2074,11 @@ void ScriptedAnimation::scriptArmyVsArmy(ActionOutcome& outcome, Entity* e) {
     }
     eCap = eLos->get<CArmy>()->captain;
 
+    std::string heroName = eCap->get<CCaptain>()->uniqueName;
+    std::string speech = Assets::getString("SPEECH-BATTLE-LOST-" + heroName + "-" + int2str(randomInt(1, 1), 2));
     //double t1 = 3;
     bool hFlip = eLos->get<CPlayer>()->side == CPlayer::LEFT ? true:false;
-    eCap->get<CActor>()->timeline.push_back(new ASpeak(tResolution, "Mercy, please!", 5));
+    eCap->get<CActor>()->timeline.push_back(new ASpeak(tResolution, speech, 5));
     eCap->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, hFlip));
     eCap->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200));
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
@@ -2382,6 +2384,10 @@ void ScriptedAnimation::scriptReturnArmy(Entity* e) {
             eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, Assets::getString(speech), 4));
         }
       */
+    std::string heroName = eCap->get<CCaptain>()->uniqueName;
+    std::string speech = war.getBattleWinner() == e->get<CPlayer>()->id ? Assets::getString("SPEECH-BATTLE-WON-" + heroName + "-" + int2str(randomInt(1, 1), 2))
+                                                                        : Assets::getString("SPEECH-BATTLE-LOST-" + heroName + "-" + int2str(randomInt(1, 1), 2));
+    eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, speech, 2.5f));
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eCap->get<CCaptain>()->aWalk));
     eCap->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, sign == -1 ? true:false));
     eCap->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200));
