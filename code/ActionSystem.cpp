@@ -723,7 +723,7 @@ void ActionSystem::preprocessChangeFormation(ActionOutcome& outcome, Entity* e) 
 void ActionSystem::preprocessHex(ActionOutcome& outcome, Entity* e) {
     double chance = 0.5;
     // @cleanup: temporary way of avoiding randomness
-#if 1
+#if 0
     if (randomDouble(0, 1) <= chance) outcome.bValue = true;
     else outcome.bValue = false;
 #else

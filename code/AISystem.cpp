@@ -114,7 +114,14 @@ void AISystem::selectHero(Entity* e) {
     }
 
     //e->get<CArmy>()->nextAction = actions[randomInt(0, actions.size()-1)];
+    
+    //@cleanup
+#if 1
     war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
+#else
+    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 102;
+#endif
+    
     e->get<CAInt>()->actionSelected = true;
 }
 
@@ -141,8 +148,12 @@ void AISystem::selectHeroAction(Entity* e) {
         if (*i == 226) continue;
         actions.push_back(*i);
     }
-
+    //@cleanup
+#if 1
     war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
+#else
+    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 223;
+#endif
     e->get<CAInt>()->actionSelected = true;
 }
 

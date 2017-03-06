@@ -160,7 +160,7 @@ void Assets::createActions() {
 
     ///CAPTAIN SELECTION
     K = 100;
-    int nCaptains = 14;
+    int nCaptains = 15;
     for (int i = K; i < K + nCaptains; i++) {
         actions.insert(make_pair(i, CAction(i)));
     }
@@ -402,7 +402,7 @@ void Assets::createCaptains() {
     captains[13].actions.push_back(242);
     captains[13].aIdle = "hero-" + int2str(13, 2) + "-idle.png";
     captains[13].aWalk = "hero-" + int2str(13, 2) + "-walk.png";
-    //HERO-13	Frog
+    //HERO-14	Frog
     captains[14].uniqueName = "FROG";
     captains[14].actions.push_back(240);
 

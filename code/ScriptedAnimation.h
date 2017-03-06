@@ -110,6 +110,7 @@ class ScriptedAnimation : public System {
         void scriptConfettiRain(double delay);
         void scriptPoofAt(double x, double y, double when);
         void scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
+        void scriptBrokenDefenseIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptDeathIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type);
         void scriptCurseIcon(double x, double y, double timing, bool hFlip);
         void scriptPurificationFlask(double x, double y, double tStart);

@@ -575,7 +575,7 @@ void ScriptedAnimation::scriptDebuffEarth(ActionOutcome& outcome, Entity* e) {
 
         eUnit->get<CActor>()->timeline.push_back(new AVariable(tStart + 2, AVariable::ADD_EFFECT, (int)outcome.action));
 
-        scriptBlockIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, tStart + 2, opposite(hFlip), CUnit::EARTH);
+        scriptBrokenDefenseIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, tStart + 2, opposite(hFlip), CUnit::EARTH);
 
         addActor(eGem);
     }
@@ -646,7 +646,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
         Entity* eGem = eManager->createEntity();
         eGem->add(new CPosition(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y));
         eGem->add(new CDraw(CDraw::WORLD_2));
-        eGem->add(new CTexture("type-02-gem.png"));
+        eGem->add(new CTexture("type-01-gem.png"));
         eGem->add(new CActor());
         eGem->add(new CVelocity());
         eGem->get<CDraw>()->isHidden = true;
@@ -657,7 +657,7 @@ void ScriptedAnimation::scriptDebuffWater(ActionOutcome& outcome, Entity* e) {
 
         eUnit->get<CActor>()->timeline.push_back(new AVariable(tStart+2, AVariable::ADD_EFFECT, (int)outcome.action));
 
-        scriptBlockIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, tStart + 2, opposite(hFlip), CUnit::EARTH);
+        scriptBrokenDefenseIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, tStart + 2, opposite(hFlip), CUnit::WATER);
 
         addActor(eGem);
     }
@@ -5002,7 +5002,7 @@ void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e) {
 
         eUnit->get<CActor>()->timeline.push_back(new AVariable(tStart + 2, AVariable::ADD_EFFECT, (int)outcome.action));
 
-        scriptBlockIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, tStart + 2, opposite(hFlip), CUnit::FIRE);
+        scriptBrokenDefenseIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, tStart + 2, opposite(hFlip), CUnit::FIRE);
 
         addActor(eGem);
     }
@@ -5074,7 +5074,7 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
 
         Entity* eGem = eManager->createEntity();
         eGem->add(new CPosition());
-        eGem->add(new CTexture("type-01-gem.png"));
+        eGem->add(new CTexture("type-03-gem.png"));
         eGem->add(new CDraw(CDraw::SKY));
         eGem->add(new CActor());
         eGem->add(new CAnchor(0.0, 10));
@@ -5087,7 +5087,7 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
 
         eTarget->get<CActor>()->timeline.push_back(new AVariable(tHit, AVariable::ADD_EFFECT, (int)outcome.action));
 
-        scriptBlockIcon(eTarget->get<CPosition>()->x, eTarget->get<CPosition>()->y, tHit, opposite(hFlip), CUnit::AIR);
+        scriptBrokenDefenseIcon(eTarget->get<CPosition>()->x, eTarget->get<CPosition>()->y, tHit, opposite(hFlip), CUnit::AIR);
 
     }
 
@@ -5295,6 +5295,34 @@ void ScriptedAnimation::scriptPurificationFlask(double xOrigin, double yOrigin, 
         x += dx;
     }
 
+}
+
+void ScriptedAnimation::scriptBrokenDefenseIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type) {
+    double yOrigin = y - 32;
+    double yTarget = yOrigin - 20;
+    double speed = 60;
+    string pic = "broken-shield-" + int2str(type, 2) + ".png";
+    double tAux;
+    double angSpeed = 360;
+    double startingAngle = 180;
+    double duration = 1.8;
+    double yAmp = 4;
+
+    Entity* eIcon = eManager->createEntity();
+    eIcon->add(new CPosition(x, yOrigin));
+    eIcon->add(new CTexture(pic, hFlip));
+    eIcon->add(new CDraw(CDraw::WORLD_3));
+    eIcon->add(new CActor());
+    eIcon->add(new CVelocity());
+
+    eIcon->get<CDraw>()->isHidden = true;
+    eIcon->get<CActor>()->timeline.push_back(new AVariable(timing, AVariable::HIDDEN, false));
+    eIcon->get<CActor>()->timeline.push_back(new AMove(0.0, x, yTarget, speed));
+    tAux = getTravelTime(x, yOrigin, x, yTarget, speed);
+    eIcon->get<CActor>()->addNode(new AAddComponent(tAux, new CElipsoidalMovement(x, yTarget, 0, yAmp, angSpeed, startingAngle), Component::ELIPSOIDAL_MOVEMENT));
+    eIcon->get<CActor>()->timeline.push_back(new ADestroy(duration));
+
+    addActor(eIcon);
 }
 
 void ScriptedAnimation::scriptBlockIcon(double x, double y, double timing, bool hFlip, CUnit::DamageType type) {
