@@ -14,6 +14,7 @@ class GUIGroupSystem : public System {
         void onRemoveGUIGroup(Entity* e);
         void onMouseButtonPressed(Entity* e);
         void onDisconnectFromServer(Entity* e);
+        void onUpdatePlayerNicknameWithInputTextbox(Entity* e);
 
         Entity* createLeaveMatchConfirmationWindow(Entity* e);
         void initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc);

@@ -2263,6 +2263,10 @@ struct CInputTextBox : public Component {
         blinkRate = 0.5;
         blinkOn = false;
     }
+    void setContent(std::string _content) {
+        content = _content;
+        charCount = content.size();
+    }
 
     State state;
     Message msgOnUpdate;

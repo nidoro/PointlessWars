@@ -1,6 +1,7 @@
 #include "GUIGroupSystem.h"
 
 GUIGroupSystem::GUIGroupSystem() {
+    addSubscription(UPDATE_PLAYER_NICKNAME_WITH_INPUT_TEXTBOX);
     addSubscription(CREATE_GUI_GROUP);
     addSubscription(REMOVE_GUI_GROUP);
     addSubscription(CHANGE_WINDOW_PAGE);
@@ -671,6 +672,7 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e) {
     eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
     eObj->attachEmployer(eGUI->getObservedEntity("page-connect"));
     eObj->get<CInputTextBox>()->blinkColor = sf::Color::White;
+    eObj->get<CInputTextBox>()->setContent(config.getLastNickname());
 
     /// Quick Match
     y += spcButton;
@@ -837,6 +839,10 @@ void GUIGroupSystem::onDisconnectFromServer(Entity* e) {
     }
 }
 
+void GUIGroupSystem::onUpdatePlayerNicknameWithInputTextbox(Entity* e) {
+    config.setLastNickname(e->get<CInputTextBox>()->content);
+    config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
+}
 
 
 

@@ -10,7 +10,6 @@
 class Config {
     public:
         Config();
-        ~Config();
 
         sf::Vector2u getResolution();
         bool getFullscreen();
@@ -20,6 +19,7 @@ class Config {
         bool getSkipIntro();
         string getQuickStart();
         string getLanguage();
+        std::string getLastNickname();
         std::list<std::string> getSupportedLanguages();
         std::string isLanguageSupported(std::string lan);
 
@@ -31,6 +31,7 @@ class Config {
         void setSkipIntro(bool value);
         void setQuickStart(string value);
         void setLanguage(string lan);
+        void setLastNickname(std::string nickname);
 
         bool loadConfigFile(std::string file);
         bool saveConfigFile(std::string file);
@@ -46,6 +47,7 @@ class Config {
         double sfxMaxVolume;
         bool deadBodies;
         sf::Image windowIcon;
+        std::string lastNickname;
 
         string quickStart;
         bool skipIntro;

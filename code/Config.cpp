@@ -15,10 +15,7 @@ Config::Config() {
     quickStart.clear();
     resolution.x = vMode.width;
     resolution.y = vMode.height;
-}
-
-Config::~Config() {
-    //dtor
+    lastNickname = "";
 }
 
 sf::Vector2u Config::getResolution() {
@@ -42,6 +39,9 @@ bool Config::getSkipIntro() {
 string Config::getQuickStart() {
     return quickStart;
 }
+std::string Config::getLastNickname() {
+    return lastNickname;
+}
 
 void Config::setResolution(unsigned w, unsigned h) {
     resolution = sf::Vector2u(w, h);
@@ -64,6 +64,10 @@ void Config::setSkipIntro(bool value) {
 void Config::setQuickStart(string value) {
     quickStart = value;
 }
+void Config::setLastNickname(string nickname) {
+    lastNickname = nickname;
+}
+
 bool Config::loadConfigFile(string file) {
     Config();
     tinyxml2::XMLDocument doc;
@@ -88,6 +92,8 @@ bool Config::loadConfigFile(string file) {
                 setSfxMaxVolume(el->DoubleAttribute("sfx"));
             } else if (element == "DeadBodies") {
                 el->QueryBoolText(&deadBodies);
+            } else if (element == "LastNickname") {
+                lastNickname = el->GetText();
             } else if (element == "SkipIntro") {
                 el->QueryBoolText(&skipIntro);
                 secretOptions.push_back("SkipIntro");
@@ -118,6 +124,8 @@ bool Config::saveConfigFile(string name) {
     sprintf(str, "<Volume music=\"%.4f\" sfx=\"%.4f\"/>\n", musMaxVolume, sfxMaxVolume);
     file << str;
     sprintf(str, "<DeadBodies>%s</DeadBodies>\n", deadBodies ? "true" : "false");
+    file << str;
+    sprintf(str, "<LastNickname>%s</LastNickname>\n", lastNickname.c_str());
     file << str;
 
     if (contains(secretOptions, "SkipIntro")) {
