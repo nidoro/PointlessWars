@@ -6386,7 +6386,7 @@
 1485188225 source:c:\users\davi doro\pw local\pointlesswars\code\random_int_array.cpp
 	"System.h"
 
-1485900573 source:w:\code\actionoutcome.cpp
+1489003521 source:w:\code\actionoutcome.cpp
 	"ActionOutcome.h"
 
 1485901123 w:\code\actionoutcome.h
@@ -6542,7 +6542,7 @@
 	"Standard.h"
 	"Assets.h"
 
-1488843655 source:w:\code\assets.cpp
+1489002143 source:w:\code\assets.cpp
 	"Assets.h"
 
 1485182169 source:w:\code\autopilotsystem.cpp
@@ -6756,10 +6756,10 @@
 	"System.h"
 	"Assets.h"
 
-1486915841 source:w:\code\game.cpp
+1489007068 source:w:\code\game.cpp
 	"Game.h"
 
-1486915835 w:\code\game.h
+1489007068 w:\code\game.h
 	<list>
 	<SFML/Audio.hpp>
 	<SFML/Audio/SoundRecorder.hpp>
@@ -6815,6 +6815,7 @@
 	"imgui-SFML.h"
 	"imgui.h"
 	"OSAppDataDir.h"
+	"TurnTimerSystem.h"
 
 1485182168 w:\code\rendersystem.h
 	"System.h"
@@ -6981,7 +6982,7 @@
 1486760725 source:w:\code\screensystem.cpp
 	"ScreenSystem.h"
 
-1488842894 source:w:\code\scriptedanimation.cpp
+1489001669 source:w:\code\scriptedanimation.cpp
 	"ScriptedAnimation.h"
 
 1485182169 source:w:\code\scrolllistsystem.cpp
@@ -7023,9 +7024,12 @@
 1485182168 source:w:\code\war.cpp
 	"War.h"
 
-1486754921 source:w:\code\warsystem.cpp
+1489003966 source:w:\code\warsystem.cpp
 	"WarSystem.h"
 
-1488841417 source:w:\code\actionsystem.cpp
+1489004268 source:w:\code\actionsystem.cpp
 	"ActionSystem.h"
+
+1489007010 w:\code\turntimersystem.h
+	"System.h"
 

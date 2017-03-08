@@ -33,6 +33,7 @@ void Game::start() {
     window.setMouseCursorVisible(false);
 
     initializeSystem(new NetworkSystem());
+    initializeSystem(new TurnTimerSystem());
     initializeSystem(new CursorSystem());
     initializeSystem(new AnimationSystem());
     initializeSystem(new WarSystem());

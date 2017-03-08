@@ -5090,7 +5090,6 @@ void ScriptedAnimation::scriptDebuffAir(ActionOutcome& outcome, Entity* e) {
         eGem->addObservedEntity("Anchor", eCrow);
         eGem->attachEmployer(eCrow);
 
-
         eTarget->get<CActor>()->timeline.push_back(new AVariable(tHit, AVariable::ADD_EFFECT, (int)outcome.action));
 
         scriptBrokenDefenseIcon(eTarget->get<CPosition>()->x, eTarget->get<CPosition>()->y, tHit, opposite(hFlip), CUnit::AIR);

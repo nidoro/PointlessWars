@@ -93,6 +93,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/f1ffb32f/TiltSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/TimerSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/TooltipSystem.o \
+	${OBJECTDIR}/_ext/f1ffb32f/TurnTimerSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/UnitSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/War.o \
 	${OBJECTDIR}/_ext/f1ffb32f/WarSystem.o \
@@ -417,6 +418,11 @@ ${OBJECTDIR}/_ext/f1ffb32f/TooltipSystem.o: /C/Users/Davi\ Doro/PW\ Local/Pointl
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/TooltipSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/TooltipSystem.cpp
+
+${OBJECTDIR}/_ext/f1ffb32f/TurnTimerSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/TurnTimerSystem.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/TurnTimerSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/TurnTimerSystem.cpp
 
 ${OBJECTDIR}/_ext/f1ffb32f/UnitSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/UnitSystem.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f

@@ -281,7 +281,8 @@ void Assets::createActions() {
     for (it = actions.begin(); it != actions.end(); it++) {
         CAction::ID i = it->first;
         if (i >= 200 && i <= 299) {
-
+            actions[i].description = getString("DESCRIPTION-ACTION-" + int2str(i));
+            actions[i].name = getString("NAME-ACTION-" + int2str(i));
         }
     }
 

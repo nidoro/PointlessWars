@@ -236,19 +236,19 @@ void ActionSystem::preprocessAction(CPlayer::ID id) {
         break;
     ///FORMATION SELECTION
     case 300:
-        war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
+        war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
         break;
     case 301:
-        war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
+        war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
         break;
     case 302:
-        war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
+        war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
         break;
     case 303:
-        war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
+        war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
         break;
     case 304:
-        war.getActor()->get<CArmy>()->formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
+        war.getNextActionOutcome(id).formation = (CArmy::Formation) (war.getNextActionOutcome(id).action - 300);
         break;
     ///BATTLE CLOSURES
     case 400:
@@ -341,6 +341,7 @@ void ActionSystem::executeAction(CPlayer::ID id) {
         notify(PLAY_ACTION, war.getPlayer(id));
     } else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 300, 399)) {
         notify(PLAY_ACTION, war.getPlayer(id));
+        war.getPlayer(id)->get<CArmy>()->formation = war.getNextActionOutcome(id).formation;
     } else if (isWithinClosedRange(war.getNextActionOutcome(id).action, 400, 499)) {
         switch(war.getNextActionOutcome(id).action) {
         case 400:

@@ -93,6 +93,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/f1ffb32f/TiltSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/TimerSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/TooltipSystem.o \
+	${OBJECTDIR}/_ext/f1ffb32f/TurnTimerSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/UnitSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/War.o \
 	${OBJECTDIR}/_ext/f1ffb32f/WarSystem.o \
@@ -417,6 +418,11 @@ ${OBJECTDIR}/_ext/f1ffb32f/TooltipSystem.o: /C/Users/Davi\ Doro/PW\ Local/Pointl
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS -D_USE_MATH_DEFINES -I/C/Libs/SFML-2.4.0/include -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug -I/C/Libs/boost_1_60_0 -I/C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/external -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/TooltipSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/TooltipSystem.cpp
+
+${OBJECTDIR}/_ext/f1ffb32f/TurnTimerSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/TurnTimerSystem.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS -D_USE_MATH_DEFINES -I/C/Libs/SFML-2.4.0/include -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug -I/C/Libs/boost_1_60_0 -I/C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/external -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/TurnTimerSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/TurnTimerSystem.cpp
 
 ${OBJECTDIR}/_ext/f1ffb32f/UnitSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/UnitSystem.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f

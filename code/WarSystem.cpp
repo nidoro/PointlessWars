@@ -360,6 +360,7 @@ void WarSystem::initializeState() {
         } else {
             war.setActionCompleted(war.getActorID(), false);
         }
+    } else if (war.getSystemAction() == war.SET_FORMATION_EFFECT) {
 
     } else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
         CPlayer::ID idPlayer;

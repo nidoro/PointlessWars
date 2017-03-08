@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/TurnTimerSystem.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,6 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/TurnTimerSystem.cpp</itemPath>
       <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/random_int_array.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -777,6 +779,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/TurnTimerSystem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/TurnTimerSystem.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/UnitSystem.cpp"
             ex="false"
             tool="1"
@@ -1489,6 +1501,16 @@
             flavor2="0">
       </item>
       <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/TooltipSystem.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/TurnTimerSystem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/TurnTimerSystem.h"
             ex="false"
             tool="3"
             flavor2="0">

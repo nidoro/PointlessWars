@@ -115,6 +115,12 @@ sf::Packet& operator >>(sf::Packet& packet, ActionOutcome& outcome) {
         outcome.idActors.push_back(int32);
     }
 
+    packet >> iValue;
+    for (int i = 0; i < iValue; i++) {
+        packet >> int32;
+        outcome.idBackfire.push_back(int32);
+    }
+    
     packet >> int32;
     outcome.nTargets = int32;
     packet >> int32;
