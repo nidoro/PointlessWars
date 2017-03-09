@@ -150,6 +150,7 @@ struct Component {
             STRING_MESSAGE,
             STATE_DEPENDENT_BUTTON,
             COMPOUND_BUTTON,
+            TURN_TIMER,
             NUM_COMPONENTS
         };
 
@@ -2752,6 +2753,19 @@ struct CCompoundButton : public Component {
     static Type getType() {
         return COMPOUND_BUTTON;
     }
+};
+
+struct CTurnTimer : public Component {
+    static Type getType() {
+        return TURN_TIMER;
+    }
+    
+    CTurnTimer(float _remaining) {
+        remaining = _remaining;
+    }
+    
+    float remaining = 0.f;
+    bool isOn = true;
 };
 
 #endif // COMPONENT_H

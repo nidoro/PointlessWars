@@ -210,6 +210,7 @@ class System {
         virtual void onEndMatch(Entity* e) {}
         virtual void onSetMatchConfig(Entity* e) {}
         virtual void onChooseLanguage(Entity* e) {}
+        virtual void onPlayerTurnTimeExpired(Entity* e) {}
 
         void subscribe(Message m) {
             addObserver(this, m);

@@ -10,6 +10,7 @@ CommandListener::CommandListener() {
     addSubscription(SHOW_HERO_POOL);
     addSubscription(END_HERO_POOL);
     addSubscription(SYSTEM_ACTION);
+    addSubscription(PLAYER_TURN_TIME_EXPIRED);
 
     addRequirement(Component::COMMAND_OPTION);
     eListener = nullptr;
@@ -803,7 +804,46 @@ int CommandListener::getArmyCompositionSize(Entity* e) {
     return sum;
 }
 
+void CommandListener::onPlayerTurnTimeExpired(Entity* e) {
+    if (war.getSystemAction() == war.ASK_HERO_PICK) {
+        EntityList options = eListener->getObservedEntity("HeroOptions")->getObservedEntities();
+        Entity* eChosen = pickRandom(options);
+        notify(SELECT_ACTION, eChosen);
+    } else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE) {
+        /*
+        eArmy->get<CArmy>()->unitCount.clear();
+        EntityList eOptions = eListener->getObservedEntity("UnitOptions")->getObservedEntities();
 
+        bool first = true;
+        Entity* btEnd = eListener->getObservedEntity("AssemblyDone");
+        for (Entity* eOpt : eOptions) {
+            CUnit::ID id = eOpt->get<CUnit>()->id;
+            if (eOpt->get<CSpinButton>()->value > 0) {
+                eArmy->get<CArmy>()->unitCount.insert(make_pair(id, eOpt->get<CSpinButton>()->value));
+            }
+            animateUnitOptionOut(eOpt, first);
+            first = false;
+        }
+        animateButtonOutPuff(btEnd, 0.0, true);
+        eListener = nullptr;
+
+    } else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION
+               ||    war.getSystemAction() == war.ASK_FORMATION
+               ||    war.getSystemAction() == war.ASK_ARMY_ACTION
+               ||    war.getSystemAction() == war.ASK_CAPTAIN_ACTION
+               ||    war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
+
+        EntityList eOptions = eListener->getObservedEntity("Options")->getObservedEntities();
+        bool first = true;
+        for(Entity* i : eOptions) {
+            if (first) animateButtonOutPuff(i, 0.0, true);
+            else animateButtonOutPuff(i, 0.0, false);
+            first = false;
+        }
+        eListener = nullptr;
+         */
+    }
+}
 
 
 

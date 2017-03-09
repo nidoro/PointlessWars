@@ -32,6 +32,7 @@ void WarSystem::update() {
         if (war.getRemotelyControled(i) && war.hasPendingAction(i) && !war.getActionCompleted(i) && !war.getActionReceived(i)) {
             war.getNextActionOutcome(i) = war.pullPendingAction(i);
             war.setActionReceived(i, true);
+            if (i > 0) notify(ACTION_SELECTED, war.getPlayer(i));
 
             Entity* eSend = eManager->createEntity();
             eSend->add(new CPacket());

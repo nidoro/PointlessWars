@@ -9,15 +9,16 @@ class CommandListener : public System {
     public:
         CommandListener();
 
-        void update();
+        void update() override;
 
     private:
-        void onAcceptArmy(Entity*);
-        void onRandomizeArmy(Entity*);
-        void onSystemAction(Entity* e);
-        void onSelectAction(Entity* e);
-        void onShowHeroPool(Entity* e);
-        void onEndHeroPool(Entity* e);
+        void onPlayerTurnTimeExpired(Entity* e) override;
+        void onAcceptArmy(Entity*) override;
+        void onRandomizeArmy(Entity*) override;
+        void onSystemAction(Entity* e) override;
+        void onSelectAction(Entity* e) override;
+        void onShowHeroPool(Entity* e) override;
+        void onEndHeroPool(Entity* e) override;
         void endHeroPool();
         
         // @note: display option buttons

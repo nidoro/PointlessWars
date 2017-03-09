@@ -504,6 +504,9 @@ void System::onNotify(Message m, Entity* e) {
     case CHOOSE_LANGUAGE:
         onChooseLanguage(e);
         break;
+    case PLAYER_TURN_TIME_EXPIRED:
+        onPlayerTurnTimeExpired(e);
+        break;
     default:
         break;
     }

@@ -10,7 +10,7 @@ AISystem::~AISystem() {
 }
 
 void AISystem::update() {
-    for(EntityListIt i = entities.begin(); i != entities.end(); i++) {
+    for (EntityListIt i = entities.begin(); i != entities.end(); i++) {
         Entity* e = *i;
         if (e->get<CAInt>()->waitingOnBrain) {
             if (e->get<CAInt>()->brainClock.getElapsedTime().asSeconds() >= e->get<CAInt>()->brainDelay) {
@@ -97,7 +97,7 @@ void AISystem::selectBattleClosure(Entity* e) {
     //unused:
     //Entity* eCap = e->get<CArmy>()->captain;
 
-    for(int i = 400; i <= 403; i++) {
+    for (int i = 400; i <= 403; i++) {
         actions.push_back(i);
     }
 
@@ -108,7 +108,7 @@ void AISystem::selectBattleClosure(Entity* e) {
 
 void AISystem::selectHero(Entity* e) {
     vector<CAction::ID> actions;
-    for(map<CCaptain::ID, Entity*>::iterator i = e->get<CArmy>()->captains.begin(); i != e->get<CArmy>()->captains.end(); i++) {
+    for (map<CCaptain::ID, Entity*>::iterator i = e->get<CArmy>()->captains.begin(); i != e->get<CArmy>()->captains.end(); i++) {
         if (i->second->get<CCaptain>()->isConfined) continue;
         actions.push_back(i->first+100);
     }
@@ -129,7 +129,7 @@ void AISystem::selectFormation(Entity* e) {
     vector<CAction::ID> actions;
     Entity* eCap = e->get<CArmy>()->captain;
 
-    for(int i = 300; i <= 302; i++) {
+    for (int i = 300; i <= 302; i++) {
         if (e->get<CArmy>()->prohibitedFormation == i-300) continue;
         actions.push_back(i);
     }
@@ -144,7 +144,7 @@ void AISystem::selectHeroAction(Entity* e) {
     vector<CAction::ID> actions;
     Entity* eCap = e->get<CArmy>()->captain;
 
-    for(list<CAction::ID>::iterator i = eCap->get<CCaptain>()->actions.begin(); i != eCap->get<CCaptain>()->actions.end(); i++) {
+    for (list<CAction::ID>::iterator i = eCap->get<CCaptain>()->actions.begin(); i != eCap->get<CCaptain>()->actions.end(); i++) {
         if (*i == 226) continue;
         actions.push_back(*i);
     }
@@ -228,7 +228,7 @@ void AISystem::pickHeroFromPool(Entity* e) {
 
 EntityList AISystem::getAliveUnits(Entity* e) {
     EntityList l;
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
+    for (EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (!eUnit->get<CUnit>()->dead) l.push_back(eUnit);
     }
@@ -237,7 +237,7 @@ EntityList AISystem::getAliveUnits(Entity* e) {
 
 EntityList AISystem::getDeadUnits(Entity* e) {
     EntityList l;
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
+    for (EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) l.push_back(eUnit);
     }
