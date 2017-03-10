@@ -148,7 +148,7 @@ void AISystem::selectHeroAction(Entity* e) {
         if (*i == 226) continue;
         actions.push_back(*i);
     }
-    //@cleanup
+    // @cleanup
 #if 1
     war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
 #else

@@ -12,7 +12,6 @@ class TurnTimerSystem : public System {
     private:
         void onSystemAction(Entity* e) override;
         void onSelectAction(Entity* e) override;
-        void onActionSelected(Entity* e) override;
         
         void createTimer(float length);
         void removeTimer();

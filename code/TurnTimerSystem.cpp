@@ -3,7 +3,6 @@
 TurnTimerSystem::TurnTimerSystem() {
     addSubscription(SYSTEM_ACTION);
     addSubscription(SELECT_ACTION);
-    addSubscription(ACTION_SELECTED);
     
     addRequirement(Component::TURN_TIMER);
 }
@@ -21,16 +20,34 @@ void TurnTimerSystem::update() {
 }
 
 void TurnTimerSystem::createTimer(float length) {
+    float xPosition = cxWindow;
+    float yPosition = 200;
+    float timeOfAppearance = length - 5;
+    
     Entity* e = eManager->createEntity();
-    e->add(new CPosition(cxWindow, 200));
-    e->add(new CDraw(CDraw::GUI3));
+    e->add(new CPosition(xPosition, yPosition));
+    e->add(new CDraw(CDraw::GUI3, true, 255.f));
     e->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::Black));
-    e->add(new CTurnTimer(length));
+    e->add(new CTurnTimer(length+1));
+    e->add(new CActor());
+    e->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::HIDDEN, false));
+    
+    Entity* ePoof = eManager->createEntity();
+    ePoof->attachEmployer(e);
+    ePoof->add(new CPosition(xPosition, yPosition));
+    ePoof->add(new CDraw(CDraw::GUI4));
+    ePoof->add(new CAnimation(false, "alpha.png"));
+    ePoof->add(new CActor());
+    ePoof->get<CActor>()->addNode(new ASpriteAnimation(timeOfAppearance, "poof-02.png"));
+    ePoof->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
 }
 
 void TurnTimerSystem::onSystemAction(Entity* e) {
     Entity* ePlayer = war.getActor();
-
+    if (!ePlayer || ePlayer->has(Component::AI)) return;
+    if (!ePlayer || (war.getLocalPlayer() != ePlayer && war.getMultiplayer())) return;
+    CPlayer::ID playerID = ePlayer->get<CPlayer>()->id;
+    
     if (war.getSystemAction() == war.ASK_HERO_PICK) {
         createTimer(10);
     } else if (war.getSystemAction() == war.ASK_FORMATION) {
@@ -52,14 +69,20 @@ void TurnTimerSystem::onSelectAction(Entity* e) {
     removeTimer();
 }
 
-void TurnTimerSystem::onActionSelected(Entity* e) {
-    //@cleanup
-    printf("Action selected\n");
-    removeTimer();
-}
-
 void TurnTimerSystem::removeTimer() {
+    float xPosition = cxWindow;
+    float yPosition = 200;
+    
     if (!entities.empty() && !eManager->isDead(entities.front())) {
+        if (!entities.front()->get<CDraw>()->isHidden) {
+            Entity* ePoof = eManager->createEntity();
+            ePoof->add(new CPosition(xPosition, yPosition));
+            ePoof->add(new CDraw(CDraw::GUI4));
+            ePoof->add(new CAnimation(false, "alpha.png"));
+            ePoof->add(new CActor());
+            ePoof->get<CActor>()->addNode(new ASpriteAnimation(0.f, "poof-02.png"));
+            ePoof->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
+        }
         eManager->removeEntity(entities.front());
     }
 }

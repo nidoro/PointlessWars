@@ -193,8 +193,6 @@ void WarSystem::callNextSystemAction() {
         war.setSystemAction(sysActionQueue.front().first);
         if (sysActionQueue.front().second != -1) war.setActorID(sysActionQueue.front().second);
         sysActionQueue.pop_front();
-    } else {
-        //printf("empty queue???\n");
     }
 }
 
