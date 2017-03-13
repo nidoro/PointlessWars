@@ -228,7 +228,12 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node) {
                 eEmmiter->get<CParticleEmmiter>()->clock.restart();
             }
             break;
-        default:
+        case AVariable::PARTICLE_EMMITER: {
+            Entity* eEmmiter = e;
+            eEmmiter->get<CParticleEmmiter>()->on = nd->bValue;
+            eEmmiter->get<CParticleEmmiter>()->clock.restart();
+            break;
+        } default:
             break;
         }
         if (e->has(Component::UNIT) && e->get<CUnit>()->dead) {

@@ -2,6 +2,7 @@
 
 ParticleSystem::ParticleSystem() {
     addRequirement(Component::PARTICLE_EMMITER);
+    addRequirement(Component::POSITION);
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -13,7 +14,7 @@ void ParticleSystem::update() {
         Entity* e = *i;
         if (!e->get<CParticleEmmiter>()->on) continue;
         if (e->get<CParticleEmmiter>()->clock.getElapsedTime().asSeconds() >= 1.f/e->get<CParticleEmmiter>()->rate) {
-            for(int c = 0; c < e->get<CParticleEmmiter>()->nParticles; c++) {
+            for (int c = 0; c < e->get<CParticleEmmiter>()->nParticles; c++) {
                 emmitParticle(e);
             }
             e->get<CParticleEmmiter>()->clock.restart();

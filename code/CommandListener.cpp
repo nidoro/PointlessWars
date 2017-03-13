@@ -810,38 +810,16 @@ void CommandListener::onPlayerTurnTimeExpired(Entity* e) {
         Entity* eChosen = pickRandom(options);
         notify(SELECT_ACTION, eChosen);
     } else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE) {
-        /*
-        eArmy->get<CArmy>()->unitCount.clear();
-        EntityList eOptions = eListener->getObservedEntity("UnitOptions")->getObservedEntities();
-
-        bool first = true;
-        Entity* btEnd = eListener->getObservedEntity("AssemblyDone");
-        for (Entity* eOpt : eOptions) {
-            CUnit::ID id = eOpt->get<CUnit>()->id;
-            if (eOpt->get<CSpinButton>()->value > 0) {
-                eArmy->get<CArmy>()->unitCount.insert(make_pair(id, eOpt->get<CSpinButton>()->value));
-            }
-            animateUnitOptionOut(eOpt, first);
-            first = false;
-        }
-        animateButtonOutPuff(btEnd, 0.0, true);
-        eListener = nullptr;
-
+        notify(SELECT_ACTION, eListener->getObservedEntity("AssemblyDone"));
     } else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION
                ||    war.getSystemAction() == war.ASK_FORMATION
                ||    war.getSystemAction() == war.ASK_ARMY_ACTION
                ||    war.getSystemAction() == war.ASK_CAPTAIN_ACTION
                ||    war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
 
-        EntityList eOptions = eListener->getObservedEntity("Options")->getObservedEntities();
-        bool first = true;
-        for(Entity* i : eOptions) {
-            if (first) animateButtonOutPuff(i, 0.0, true);
-            else animateButtonOutPuff(i, 0.0, false);
-            first = false;
-        }
-        eListener = nullptr;
-         */
+        EntityList options = eListener->getObservedEntity("Options")->getObservedEntities();
+        Entity* eChosen = pickRandom(options);
+        notify(SELECT_ACTION, eChosen);
     }
 }
 

@@ -2018,7 +2018,7 @@ struct AFlip : public AnimationNode {
 struct AVariable : public AnimationNode {
     enum Var {DEAD, ALPHA, H_FLIP, V_FLIP, ADD_EFFECT, REMOVE_FROM_ARMY, REMOVE_EFFECT, WIN, PARTICLE_EFFECT,
               BUT_LOCKED, HIDDEN, AUTO_P, FREEZE, X_VEL, Y_VEL, X_ACC, Y_ACC, ANGLE, ROTATION_VEL,
-              DRAW_TAG, REPLACE_HERO, COIN, HERO_CONFINED
+              DRAW_TAG, REPLACE_HERO, COIN, HERO_CONFINED, PARTICLE_EMMITER
              };
 
     AVariable(double trigger, Var var, bool value) {

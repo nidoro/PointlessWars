@@ -17,6 +17,7 @@
 					<Add option="-g" />
 					<Add option="-DPW_PACK_RESOURCES" />
 					<Add option="-DPW_DEBUG" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
@@ -34,6 +35,7 @@
 				<Option compiler="mingw-620" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics" />
@@ -52,6 +54,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics" />
@@ -190,6 +193,8 @@
 		<Unit filename="../code/TimerSystem.h" />
 		<Unit filename="../code/TooltipSystem.cpp" />
 		<Unit filename="../code/TooltipSystem.h" />
+		<Unit filename="../code/TurnTimerSystem.cpp" />
+		<Unit filename="../code/TurnTimerSystem.h" />
 		<Unit filename="../code/UnitSystem.cpp" />
 		<Unit filename="../code/UnitSystem.h" />
 		<Unit filename="../code/War.cpp" />

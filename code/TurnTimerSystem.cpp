@@ -40,6 +40,19 @@ void TurnTimerSystem::createTimer(float length) {
     ePoof->add(new CActor());
     ePoof->get<CActor>()->addNode(new ASpriteAnimation(timeOfAppearance, "poof-02.png"));
     ePoof->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
+    
+    Entity* eObj = nullptr;
+    sf::RectangleShape rect;
+
+    // @note: red particle emitter
+    rect.setSize(sf::Vector2f(4, 4));
+    rect.setFillColor(sf::Color(255, 0, 0));
+    eObj = eManager->createEntity();
+    eObj->attachEmployer(e);
+    eObj->add(new CPosition(xPosition + 40, yPosition));
+    eObj->add(new CParticleEmmiter(30, rect, 0.125, 70, 90, 0, 360, 5));
+    eObj->add(new CActor());
+    eObj->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::PARTICLE_EMMITER, true));
 }
 
 void TurnTimerSystem::onSystemAction(Entity* e) {
