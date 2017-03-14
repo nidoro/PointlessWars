@@ -24,7 +24,6 @@ class War {
         enum BattleClosure {NO_CLOSURE_YET, ALL_KILLED, DRAW, ARMY_VS_ARMY, MAN_VS_MAN, CONFINE, MERCY};
 
         War();
-        ~War();
 
         void shutdown();
         void setMatchConfig(string config);
@@ -86,6 +85,9 @@ class War {
         bool hasPendingAction(CPlayer::ID id);
 
         Entity* getLocalPlayer();
+        
+        std::string nicknameP1;
+        std::string nicknameP2;
 
     private:
         MatchConfig matchConfig;

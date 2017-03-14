@@ -28,11 +28,11 @@ War::War() {
 
     pendingActions.resize(3);
     sysAction = NONE;
+    
+    nicknameP1 = "";
+    nicknameP2 = "";
 }
 
-War::~War() {
-    //dtor
-}
 void War::setMatchConfig(string config) {
     matchConfig.loadFromFile(config);
 }

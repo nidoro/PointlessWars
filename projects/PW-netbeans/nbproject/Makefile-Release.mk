@@ -69,7 +69,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/f1ffb32f/InGameMenu.o \
 	${OBJECTDIR}/_ext/f1ffb32f/InputTextBoxSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/MainMenuSystem.o \
-	${OBJECTDIR}/_ext/f1ffb32f/MasterSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/MatchConfig.o \
 	${OBJECTDIR}/_ext/f1ffb32f/NetworkSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/OSAppDataDir.o \
@@ -298,11 +297,6 @@ ${OBJECTDIR}/_ext/f1ffb32f/MainMenuSystem.o: /C/Users/Davi\ Doro/PW\ Local/Point
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/MainMenuSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MainMenuSystem.cpp
-
-${OBJECTDIR}/_ext/f1ffb32f/MasterSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MasterSystem.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/MasterSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MasterSystem.cpp
 
 ${OBJECTDIR}/_ext/f1ffb32f/MatchConfig.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MatchConfig.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f

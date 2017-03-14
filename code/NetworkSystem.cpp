@@ -98,7 +98,7 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         //startMatch();
     } else if (id == "LEAVE-MATCH") {
         //isPlayersTurn = false;
-        printf("Opponent left...");
+        printf("Opponent left...\n");
     } else if (id == "STATE-RECEIVED") {
         war.setPeerReceivedState(true);
     } else if (id == "SET-P1-CONTROLER") {
@@ -111,6 +111,7 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         war.setRemotelyControled(0, false);
     } else if (id == "INITIALIZE-WAR") {
         war.getMatchConfig().loadFromFile("Prototype");
+        
         Entity* eScreen = eManager->createEntity();
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
         eScreen->add(new CTimer(3, START_SCREEN_TRANSITION));
@@ -118,7 +119,16 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         eQMDisplayer->add(new CTypingEffect(Assets::getString("MESSAGE-QUICK-MATCH-STARTING"), 50));
         notify(LOCK_ALL_BUTTONS);
         notify(BRING_UI_LAYER_FORWARD);
-        //notify(INITIALIZE_WAR);
+        
+        sf::Packet snd;
+        snd << sf::String("PLAYER-NAME");
+        snd << sf::String(config.getLastNickname());
+        serverSocket.send(snd);
+    } else if (id == "PLAYER-NAME") {
+        sf::String name;
+        packet >> name;
+        war.nicknameP1 = war.getRemotelyControled(1) ? name.operator std::string() : config.getLastNickname();
+        war.nicknameP2 = war.getRemotelyControled(2) ? name.operator std::string() : config.getLastNickname();
     } else {
         Entity* ePacket = eManager->createEntity();
         ePacket->add(new CPacket(packetOriginal));

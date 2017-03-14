@@ -69,7 +69,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/f1ffb32f/InGameMenu.o \
 	${OBJECTDIR}/_ext/f1ffb32f/InputTextBoxSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/MainMenuSystem.o \
-	${OBJECTDIR}/_ext/f1ffb32f/MasterSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/MatchConfig.o \
 	${OBJECTDIR}/_ext/f1ffb32f/NetworkSystem.o \
 	${OBJECTDIR}/_ext/f1ffb32f/OSAppDataDir.o \
@@ -298,11 +297,6 @@ ${OBJECTDIR}/_ext/f1ffb32f/MainMenuSystem.o: /C/Users/Davi\ Doro/PW\ Local/Point
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS -D_USE_MATH_DEFINES -I/C/Libs/SFML-2.4.0/include -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug -I/C/Libs/boost_1_60_0 -I/C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/external -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/MainMenuSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MainMenuSystem.cpp
-
-${OBJECTDIR}/_ext/f1ffb32f/MasterSystem.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MasterSystem.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS -D_USE_MATH_DEFINES -I/C/Libs/SFML-2.4.0/include -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/filesystem/build/gcc-mingw-6.2.0/debug -I/C/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/debug -I/C/Libs/boost_1_60_0 -I/C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/external -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f1ffb32f/MasterSystem.o /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MasterSystem.cpp
 
 ${OBJECTDIR}/_ext/f1ffb32f/MatchConfig.o: /C/Users/Davi\ Doro/PW\ Local/PointlessWars/code/MatchConfig.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f1ffb32f

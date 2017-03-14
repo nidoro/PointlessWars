@@ -57,9 +57,10 @@ void TurnTimerSystem::createTimer(float length) {
 
 void TurnTimerSystem::onSystemAction(Entity* e) {
     Entity* ePlayer = war.getActor();
-    if (!ePlayer || ePlayer->has(Component::AI)) return;
-    if (!ePlayer || (war.getLocalPlayer() != ePlayer && war.getMultiplayer())) return;
+    if (!ePlayer || (ePlayer->has(Component::AI) && !war.getMultiplayer())) return;
+    if (!ePlayer || (war.getLocalPlayer() == ePlayer && war.getMultiplayer())) return;
     CPlayer::ID playerID = ePlayer->get<CPlayer>()->id;
+    // @todo: how long should the turn duration be? and make it customizable.
     
     if (war.getSystemAction() == war.ASK_HERO_PICK) {
         createTimer(10);

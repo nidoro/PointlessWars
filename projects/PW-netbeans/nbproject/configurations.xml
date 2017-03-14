@@ -95,8 +95,6 @@
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/InputTextBoxSystem.h</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/MainMenuSystem.cpp</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/MainMenuSystem.h</itemPath>
-    <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/MasterSystem.cpp</itemPath>
-    <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/MasterSystem.h</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/MatchConfig.cpp</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/MatchConfig.h</itemPath>
     <itemPath>C:/Users/Davi Doro/PW Local/PointlessWars/code/Messages.h</itemPath>
@@ -530,16 +528,6 @@
             flavor2="0">
       </item>
       <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/MainMenuSystem.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/MasterSystem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/MasterSystem.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -1256,16 +1244,6 @@
             flavor2="0">
       </item>
       <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/MainMenuSystem.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/MasterSystem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="C:/Users/Davi Doro/PW Local/PointlessWars/code/MasterSystem.h"
             ex="false"
             tool="3"
             flavor2="0">

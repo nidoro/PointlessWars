@@ -117,8 +117,8 @@ void WarSystem::onInitializeWar(Entity* e) {
         P1->add(new CRemoteControler());
     }
 
-    P1->get<CPlayer>()->name = "Jeff";
-    P2->get<CPlayer>()->name = "Bobby bot";
+    P1->get<CPlayer>()->name = war.nicknameP1;
+    P2->get<CPlayer>()->name = war.nicknameP2;
 
     P1->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
     P2->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
