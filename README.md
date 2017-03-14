@@ -1,5 +1,5 @@
 #    Pointless Wars
-O que aqui é descrito é o ideal do uso deste repositório, mas atualmente as coisas não estão bem assim.
+Este documento requer revisão.
   
 ###  Geral:
 
