@@ -1,0 +1,6 @@
+<!-- Config File -->
+<Resolution width="1280" height="720"/>
+<Fullscreen>false</Fullscreen>
+<Volume music="12.2460" sfx="70.0000"/>
+<DeadBodies>false</DeadBodies>
+<SkipIntro>true</SkipIntro>
