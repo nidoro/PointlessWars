@@ -74,19 +74,19 @@ void TurnTimerSystem::onSystemAction(Entity* e) {
     // @todo: how long should the turn duration be? and make it customizable.
     
     if (war.getSystemAction() == war.ASK_HERO_PICK) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationHeroPick);
     } else if (war.getSystemAction() == war.ASK_FORMATION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_CAPTAIN_ACTION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_ARMY_ACTION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationRecruitment);
     } else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     }
 }
 
