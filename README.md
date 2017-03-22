@@ -1,4 +1,5 @@
 #    Pointless Wars
+Este documento requer revisão.
   
 ###  Geral:
 
