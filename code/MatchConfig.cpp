@@ -15,7 +15,9 @@ MatchConfig::MatchConfig() {
     maxBattles = 100;
     randomArmy = false;
     maxRepicks = 3;
-    turnDuration = 30;
+    durationHeroPick = 20;
+    durationBattleActions = 20;
+    durationRecruitment = 40;
     heroPool.clear();
     unitPool.clear();
 }
@@ -100,6 +102,10 @@ void MatchConfig::loadFromFile(string name) {
     element->FirstChildElement("RecruitGroup")->QueryIntText(&recruitGroup);
     element->FirstChildElement("GoalScore")->QueryIntText(&streakToWin);
     element->FirstChildElement("RandomArmy")->QueryBoolText(&randomArmy);
+    
+    element->FirstChildElement("TurnDuration")->FirstChildElement("HeroPick")->QueryDoubleText(&durationHeroPick);
+    element->FirstChildElement("TurnDuration")->FirstChildElement("BattleActions")->QueryDoubleText(&durationBattleActions);
+    element->FirstChildElement("TurnDuration")->FirstChildElement("Recruitment")->QueryDoubleText(&durationRecruitment);
 
     string sValue;
 

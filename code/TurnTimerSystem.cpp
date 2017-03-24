@@ -10,7 +10,7 @@ TurnTimerSystem::TurnTimerSystem() {
 void TurnTimerSystem::update() {
     for (Entity* e : entities) {
         e->get<CTurnTimer>()->remaining -= delay;
-        if (e->get<CTurnTimer>()->remaining <= 0) {
+        if (e->get<CTurnTimer>()->remaining <= 1) {
             notify(PLAYER_TURN_TIME_EXPIRED);
             eManager->removeEntity(e);
         } else {
@@ -50,7 +50,18 @@ void TurnTimerSystem::createTimer(float length) {
     eObj = eManager->createEntity();
     eObj->attachEmployer(e);
     eObj->add(new CPosition(xPosition + 40, yPosition));
-    eObj->add(new CParticleEmmiter(30, rect, 0.125, 70, 90, 0, 360, 5));
+    eObj->add(new CParticleEmmiter(30, rect, 0.125, 70, 120, 0, 360, 10));
+    eObj->add(new CActor());
+    eObj->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::PARTICLE_EMMITER, true));
+    
+    
+    // @note: orange particle emitter
+    rect.setFillColor(sf::Color(255, 144, 0));
+    rect.setSize(sf::Vector2f(4, 4));
+    eObj = eManager->createEntity();
+    eObj->attachEmployer(e);
+    eObj->add(new CPosition(xPosition + 40, yPosition));
+    eObj->add(new CParticleEmmiter(30, rect, 0.1, 70, 90, 0, 360, 10));
     eObj->add(new CActor());
     eObj->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::PARTICLE_EMMITER, true));
 }
@@ -63,19 +74,19 @@ void TurnTimerSystem::onSystemAction(Entity* e) {
     // @todo: how long should the turn duration be? and make it customizable.
     
     if (war.getSystemAction() == war.ASK_HERO_PICK) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationHeroPick);
     } else if (war.getSystemAction() == war.ASK_FORMATION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_CAPTAIN_ACTION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_ARMY_ACTION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     } else if (war.getSystemAction() == war.ASK_ARMY_ASSEMBLE) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationRecruitment);
     } else if (war.getSystemAction() == war.ASK_CAPTAIN_SELECTION) {
-        createTimer(10);
+        createTimer(war.getMatchConfig().durationBattleActions);
     }
 }
 

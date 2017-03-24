@@ -28,7 +28,9 @@ class MatchConfig {
         int maxBattles;
         bool randomArmy;
         int maxRepicks;
-        double turnDuration;
+        double durationHeroPick;
+        double durationBattleActions;
+        double durationRecruitment;
         list<CCaptain::ID> heroPool;
         list<CUnit::ID> unitPool;
 };

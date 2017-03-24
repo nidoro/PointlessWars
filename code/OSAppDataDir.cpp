@@ -93,6 +93,11 @@ R"(
 <!--    <UnitPool>00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15</UnitPool> -->
     <UnitPool>00 01 02 03 04 05 06 07</UnitPool>
     <HeroPool>02 03 04 05 08 10</HeroPool>
+    <TurnDuration>
+        <HeroPick>20</HeroPick>
+        <BattleActions>20</BattleActions>
+        <Recruitment>40</Recruitment>
+    </TurnDuration>
 </MatchConfig>
 )";
          }else if (filename == "formations.xml"){
