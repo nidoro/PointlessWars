@@ -117,8 +117,13 @@ void WarSystem::onInitializeWar(Entity* e) {
         P1->add(new CRemoteControler());
     }
 
-    P1->get<CPlayer>()->name = war.nicknameP1.empty() ? "Player 1" : war.nicknameP1;
-    P2->get<CPlayer>()->name = war.nicknameP2.empty() ? "Player 2" : war.nicknameP2;
+    if (war.getMultiplayer()) {
+        P1->get<CPlayer>()->name = war.nicknameP1.empty() ? Assets::getString("DEFAULT-PLAYER-1-NAME") : war.nicknameP1;
+        P2->get<CPlayer>()->name = war.nicknameP2.empty() ? Assets::getString("DEFAULT-PLAYER-2-NAME") : war.nicknameP2;
+    } else {
+        P1->get<CPlayer>()->name = config.getLastNickname().empty() ? Assets::getString("DEFAULT-PLAYER-1-NAME") : config.getLastNickname();
+        P2->get<CPlayer>()->name = war.nicknameP2.empty() ? Assets::getString("DEFAULT-AI-NAME") : war.nicknameP2;
+    }
 
     P1->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;
     P2->get<CPlayer>()->maxRepicks = war.getMatchConfig().maxRepicks;

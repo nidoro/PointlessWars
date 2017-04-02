@@ -6582,7 +6582,7 @@
 1484929571 source:w:\code\component.cpp
 	"Component.h"
 
-1488910868 source:w:\code\config.cpp
+1491093822 source:w:\code\config.cpp
 	"Config.h"
 
 1485182169 source:w:\code\cursorsystem.cpp
@@ -7024,7 +7024,7 @@
 1489453566 source:w:\code\war.cpp
 	"War.h"
 
-1489455287 source:w:\code\warsystem.cpp
+1491095130 source:w:\code\warsystem.cpp
 	"WarSystem.h"
 
 1489004268 source:w:\code\actionsystem.cpp

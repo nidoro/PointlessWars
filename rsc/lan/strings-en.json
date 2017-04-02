@@ -507,5 +507,8 @@
     "BANNER-PLAYER-RECRUITING"               : " is recruiting...",
     "BANNER-PLAYER-SELECTING-HERO"           : " is choosing a hero...",
     "BANNER-WHEN-PRESENTING-ARMIES"          : "Prepare for battle!",
-    "BANNER-ANNOUNCE-VICTORY"                : " is the best!"
+    "BANNER-ANNOUNCE-VICTORY"                : " is the best!",
+    "DEFAULT-PLAYER-1-NAME"                  : "Player 1",
+    "DEFAULT-PLAYER-2-NAME"                  : "Player 2",
+    "DEFAULT-AI-NAME"                        : "Robert Bot"
 }
