@@ -20,6 +20,8 @@ void TurnTimerSystem::update() {
 }
 
 void TurnTimerSystem::createTimer(float length) {
+    if (length <= 0.f) return;
+    
     float xPosition = cxWindow;
     float yPosition = 200;
     float timeOfAppearance = length - 5;
@@ -53,7 +55,6 @@ void TurnTimerSystem::createTimer(float length) {
     eObj->add(new CParticleEmmiter(30, rect, 0.125, 70, 120, 0, 360, 10));
     eObj->add(new CActor());
     eObj->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::PARTICLE_EMMITER, true));
-    
     
     // @note: orange particle emitter
     rect.setFillColor(sf::Color(255, 144, 0));

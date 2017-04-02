@@ -93,7 +93,9 @@ bool Config::loadConfigFile(string file) {
             } else if (element == "DeadBodies") {
                 el->QueryBoolText(&deadBodies);
             } else if (element == "LastNickname") {
-                lastNickname = el->GetText();
+                if (el->GetText()) {
+                    lastNickname = el->GetText();
+                }
             } else if (element == "SkipIntro") {
                 el->QueryBoolText(&skipIntro);
                 secretOptions.push_back("SkipIntro");
