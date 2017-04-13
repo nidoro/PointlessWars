@@ -7,8 +7,8 @@ Config::Config() {
     vMode.height = 720;
     if (!vMode.isValid()) vMode = sf::VideoMode::getDesktopMode();
 
-    musMaxVolume = 20;
-    sfxMaxVolume = 70;
+    musMaxVolume = 50;
+    sfxMaxVolume = 75;
     deadBodies = false;
     fullscreen = true;
     skipIntro = false;
