@@ -207,7 +207,7 @@ void FormationEditor::createSaveInputTextBox() {
     eOk->add(new CHoverTexture("ok-button.png"));
     eOk->add(new CActiveTexture("ok-button.png"));
     eOk->add(new CDraw(CDraw::GUI1));
-    eOk->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eOk->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 
 
     ///CANCEL BUTTON
@@ -222,7 +222,7 @@ void FormationEditor::createSaveInputTextBox() {
     eCancel->add(new CHoverTexture("cancel-button.png"));
     eCancel->add(new CActiveTexture("cancel-button.png"));
     eCancel->add(new CDraw(CDraw::GUI1));
-    eCancel->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eCancel->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     eCancel->add(new CParentPanel(eSavePanel));
 
     notify(ACTIVATE_INPUT_TEXT_BOX, eSave);
@@ -513,7 +513,7 @@ Entity* FormationEditor::createButton(string label, double w, double h, double x
     e->add(new CActiveTexture("tooltip-02.png"));
     e->add(new CDraw(CDraw::GUI1));
     e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), 18, sf::Color::White));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CSound());
     return e;
 }

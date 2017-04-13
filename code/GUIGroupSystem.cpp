@@ -363,7 +363,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc) {
     eObj->add(new CButtonState());
     eObj->add(new CButtonTrigger(START_SLIDING, CButtonTrigger::ON_PRESS));
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
-    eObj->add(new CButtonSounds("NONE", "NONE", "sfx-poof-03.wav"));
+    eObj->add(new CButtonSounds("NONE", "NONE", "sfx-poof-03.ogg"));
     eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
 
     /// SFX SLIDER BAR
@@ -826,7 +826,7 @@ Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h
     e->add(new CButtonTrigger(m));
     e->add(new CRectButton(sf::RectangleShape(), rect, rect));
     e->add(new CDraw(CDraw::GUI_01));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CUILayer(UILayer));
     return e;
 }

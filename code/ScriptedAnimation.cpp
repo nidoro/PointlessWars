@@ -303,7 +303,7 @@ void ScriptedAnimation::scriptBackfire(ActionOutcome& outcome, Entity* e) {
         Entity* eUnit = getUnitByID(e, i);
         float when = unitRest1;
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eUnit->get<CUnit>()->aDeath));
-        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eUnit->get<CUnit>()->aDeath).duration, eUnit->get<CUnit>()->aDead));
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -889,8 +889,8 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
 
     ///PUFF
     string puffAnimation = "poof-02.png";
-    string sfxPoofIn = "sfx-poof-04.wav";
-    string sfxPoofOut = "sfx-poof-03.wav";
+    string sfxPoofIn = "sfx-poof-04.ogg";
+    string sfxPoofOut = "sfx-poof-03.ogg";
     double puffDuration = Assets::getAnimation(puffAnimation).duration;
     eObj = eManager->createEntity();
     eObj->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
@@ -971,7 +971,7 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
         Entity* eUnit = getUnitByID(eArmy, i);
 
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eUnit->get<CUnit>()->aDeath));
-        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eUnit->get<CUnit>()->aDeath).duration, eUnit->get<CUnit>()->aDead));
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
         scriptDeathIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, when, eUnit->get<CAnimation>()->hFlip, CUnit::N_DAMAGE_TYPES);
@@ -982,7 +982,7 @@ void ScriptedAnimation::scriptTarot(ActionOutcome& outcome, Entity* e) {
         Entity* eUnit = getUnitByID(eEnemy, i);
 
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eUnit->get<CUnit>()->aDeath));
-        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eUnit->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eUnit->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eUnit->get<CUnit>()->aDeath).duration, eUnit->get<CUnit>()->aDead));
         eUnit->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
         scriptDeathIcon(eUnit->get<CPosition>()->x, eUnit->get<CPosition>()->y, when, eUnit->get<CAnimation>()->hFlip, CUnit::N_DAMAGE_TYPES);
@@ -1323,7 +1323,7 @@ void ScriptedAnimation::scriptConversion(ActionOutcome& outcome, Entity* e) {
 
     Entity* eCap = e->get<CActionOutcome>()->actorArmy->get<CArmy>()->captain;
     eCap->get<CActor>()->timeline.push_back(new ASpeak(0.0, "Wololoo", 2));
-    eCap->get<CActor>()->timeline.push_back(new ASound(0.0, "wololo.wav"));
+    eCap->get<CActor>()->timeline.push_back(new ASound(0.0, "wololo.ogg"));
     addActor(eCap);
 
 }
@@ -1534,8 +1534,8 @@ void ScriptedAnimation::scriptCroak(ActionOutcome& outcome, Entity* e) {
 
         ///PUFF
         string puffAnimation = "poof-02.png";
-        string sfxPoofIn = "sfx-poof-04.wav";
-        string sfxPoofOut = "sfx-poof-03.wav";
+        string sfxPoofIn = "sfx-poof-04.ogg";
+        string sfxPoofOut = "sfx-poof-03.ogg";
         double puffDuration = Assets::getAnimation(puffAnimation).duration;
         eObj = eManager->createEntity();
         eObj->add(new CPosition(eCapOld->get<CPosition>()->x, eCapOld->get<CPosition>()->y));
@@ -1681,7 +1681,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
         ///Explosion
         Entity* eExp = eManager->createEntity();
         string animation = "explosion-01.png";
-        string explosionSound = "sfx-explosion-07-01.wav";
+        string explosionSound = "sfx-explosion-07-01.ogg";
         eExp->add(new CAnimation(false, animation));
         eExp->add(new CPosition(x1, y1));
         eExp->add(new CActor());
@@ -2553,7 +2553,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e) {
     ///SOUND ANNOUNCEMENT
     Entity* eSound = eManager->createEntity();
     eSound->add(new CActor());
-    eSound->get<CActor>()->timeline.push_back(new ASound(unitRest1-1, "sfx-rain-announcement.wav"));
+    eSound->get<CActor>()->timeline.push_back(new ASound(unitRest1-1, "sfx-rain-announcement.ogg"));
     eSound->get<CActor>()->timeline.push_back(new ADestroy(0.0));
 
     ///AUXILIAR STRUCTURES
@@ -2575,7 +2575,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         ///ATTACKER
-        //eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.wav"));
+        //eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.ogg"));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(unitRest1, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -2616,7 +2616,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e) {
         ///EXPLOSION
         Entity* eExp = eManager->createEntity();
         string animation = "explosion-01.png";
-        string explosionSound = "sfx-explosion-07-01.wav";
+        string explosionSound = "sfx-explosion-07-01.ogg";
         eExp->add(new CAnimation(false, animation));
         eExp->add(new CPosition(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y));
         eExp->add(new CActor());
@@ -2659,7 +2659,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -2671,7 +2671,7 @@ void ScriptedAnimation::scriptMetheore(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -2747,7 +2747,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         ///ATTACKER
-        //eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.wav"));
+        //eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.ogg"));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(unitRest1, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -2778,7 +2778,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e) {
         ///EXPLOSION
         Entity* eExp = eManager->createEntity();
         string animation = "explosion-01.png";
-        string explosionSound = "sfx-explosion-07-01.wav";
+        string explosionSound = "sfx-explosion-07-01.ogg";
         eExp->add(new CAnimation(false, animation));
         eExp->add(new CPosition(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y));
         eExp->add(new CActor());
@@ -2822,7 +2822,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -2834,7 +2834,7 @@ void ScriptedAnimation::scriptIceDragons(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -2880,7 +2880,7 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e) {
         eObj->add(new CActor());
         eObj->get<CDraw>()->isHidden = true;
         eObj->get<CActor>()->addNode(new AVariable(tStart + Assets::getAnimation(eAtk->get<CUnit>()->aAction02).duration, AVariable::HIDDEN, false));
-        eObj->get<CActor>()->addNode(new ASound(0.0, "sfx-drill-02-02.wav"));
+        eObj->get<CActor>()->addNode(new ASound(0.0, "sfx-drill-02-02.ogg"));
         eObj->get<CActor>()->addNode(new ASpriteAnimation(0.0, "stalagmite-in.png"));
         eObj->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation("stalagmite-in.png").duration, "stalagmite-still.png"));
         eObj->get<CActor>()->addNode(new ASpriteAnimation(0.2, "stalagmite-out.png"));
@@ -2924,7 +2924,7 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -2936,7 +2936,7 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -2945,8 +2945,8 @@ void ScriptedAnimation::scriptStalactite(ActionOutcome& outcome, Entity* e) {
         ///SOUNDS
         Entity* eSound = eManager->createEntity();
         eSound->add(new CActor());
-        eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-mega-jump.wav"));
-        eSound->get<CActor>()->addNode(new ASound(ttShake - unitRest1, "sfx-rain-announcement.wav"));
+        eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-mega-jump.ogg"));
+        eSound->get<CActor>()->addNode(new ASound(ttShake - unitRest1, "sfx-rain-announcement.ogg"));
 
         ///SHAKE
         Entity* eTimer = eManager->createEntity();
@@ -3035,7 +3035,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3047,7 +3047,7 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3056,8 +3056,8 @@ void ScriptedAnimation::scriptEarthquake(ActionOutcome& outcome, Entity* e) {
     ///SOUNDS
     Entity* eSound = eManager->createEntity();
     eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-mega-jump.wav"));
-    eSound->get<CActor>()->addNode(new ASound(ttShake - unitRest1, "sfx-rain-announcement.wav"));
+    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-mega-jump.ogg"));
+    eSound->get<CActor>()->addNode(new ASound(ttShake - unitRest1, "sfx-rain-announcement.ogg"));
 
     ///SHAKE
     Entity* eTimer = eManager->createEntity();
@@ -3186,14 +3186,14 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_ACC, gravity));
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::X_VEL, cos(shotAngle*M_RAD)*dartSpeed));
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::Y_VEL, -sin(shotAngle*M_RAD)*dartSpeed));
-        eObj->get<CActor>()->addNode(new ASound(dartTravelDuration, "sfx-pop-bubble-01.wav"));
+        eObj->get<CActor>()->addNode(new ASound(dartTravelDuration, "sfx-pop-bubble-01.ogg"));
         eObj->get<CActor>()->addNode(new ADestroy(0.f));
 
         //Attacker animation
         double durAttackAnimation = Assets::getAnimation("unit-08-action-01.png").duration;
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(shotDate - durAttackAnimation, "unit-08-action-01.png"));
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(durAttackAnimation, "unit-08-idle.png"));
-        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.wav"));
+        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.ogg"));
 
         addActor(eObj);
     }
@@ -3230,7 +3230,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3242,7 +3242,7 @@ void ScriptedAnimation::scriptBubbles(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3268,7 +3268,7 @@ void ScriptedAnimation::scriptVassalPitchfork(ActionOutcome& outcome, Entity* e)
         double durShotTravel = getTravelTime(eAtk->get<CPosition>()->x, 0, xTarget, 0, cos(shotAngle*M_RAD)*shotSpeed);
         
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
-        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.wav"));
+        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-arrow-04.ogg"));
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
         if (idUnit == speecher) {
             eAtk->get<CActor>()->addNode(new ASpeak(durShotTravel, Assets::getString("SPEECH-VASSAL-ATTACK"), 2.5f));
@@ -3396,7 +3396,7 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3408,7 +3408,7 @@ void ScriptedAnimation::scriptTelekinesis(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3440,7 +3440,7 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e) {
         double t0 = Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->timeline.push_back(new AShoot(t0, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y));
-        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-04.wav"));
+        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-04.ogg"));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction02));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction02).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -3476,7 +3476,7 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3488,7 +3488,7 @@ void ScriptedAnimation::scriptFlamingArrows(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3520,18 +3520,18 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e) {
     eCloud->get<CActor>()->timeline.push_back(new AFade(0.0, 120, 255));
     eCloud->get<CActor>()->timeline.push_back(new AMove(0.0, cxArmy, yCloud, 100));
     eCloud->get<CActor>()->timeline.push_back(new AVariable(255.f/120.f, AVariable::PARTICLE_EFFECT, true));
-    eCloud->get<CActor>()->timeline.push_back(new ASound(getTravelTime(xCloud, 0, cxArmy, 0, 100) - 255.f/120.f, "thunder-01.wav"));
+    eCloud->get<CActor>()->timeline.push_back(new ASound(getTravelTime(xCloud, 0, cxArmy, 0, 100) - 255.f/120.f, "thunder-01.ogg"));
     eCloud->get<CActor>()->timeline.push_back(new AMove(0.0, xTarget, yCloud, 100));
     eCloud->get<CActor>()->timeline.push_back(new ADestroy(getTravelTime(cxArmy, 0, xTarget, 0, 100)));
     addActor(eCloud);
 
     ///SOUNDS
     eObj = eManager->createEntity();
-    eObj->add(new CSound("sfx-rain.wav", CSound::LOOP_THEN_REMOVE, 4, 2, 8.2));
+    eObj->add(new CSound("sfx-rain.ogg", CSound::LOOP_THEN_REMOVE, 4, 2, 8.2));
     notify(PLAY_SOUND, eObj);
 
     eObj = eManager->createEntity();
-    eObj->add(new CSound("sfx-rain-announcement.wav", CSound::REMOVE_ENTITY));
+    eObj->add(new CSound("sfx-rain-announcement.ogg", CSound::REMOVE_ENTITY));
     notify(PLAY_SOUND, eObj);
 
     ///LIGHTNING
@@ -3590,7 +3590,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = getUnitByID(eEnemy, out.idTarget);
 
         ///ATTACKER
-        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.wav"));
+        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "rollover5.ogg"));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -3635,7 +3635,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3647,7 +3647,7 @@ void ScriptedAnimation::scriptMakeItRain(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3679,7 +3679,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
     eObj->add(new CActor());
     eObj->add(new CDraw(CDraw::WORLD_2, 0));
     eObj->add(new CVelocity());
-    eObj->add(new CSound("sfx-tornado.wav", CSound::LOOP, 2, 2, 10.f));
+    eObj->add(new CSound("sfx-tornado.ogg", CSound::LOOP, 2, 2, 10.f));
     notify(PLAY_SOUND, eObj);
 
     double speed = 200;
@@ -3853,7 +3853,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3865,7 +3865,7 @@ void ScriptedAnimation::scriptTornado(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3897,7 +3897,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e) {
         double t0 = Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->timeline.push_back(new AShoot(t0, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, AShoot::SCIMITAR));
-        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-act-01.wav"));
+        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-act-01.ogg"));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction02));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction02).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -3934,7 +3934,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -3946,7 +3946,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -3954,7 +3954,7 @@ void ScriptedAnimation::scriptThrowScimitar(ActionOutcome& outcome, Entity* e) {
 
 
     Entity* eSound = eManager->createEntity();
-    eSound->add(new CSound("sfx-spinning-03-01.wav", CSound::LOOP_THEN_REMOVE, 0.2, 1, 4));
+    eSound->add(new CSound("sfx-spinning-03-01.ogg", CSound::LOOP_THEN_REMOVE, 0.2, 1, 4));
     eSound->add(new CTimer(unitRest1 + 0.5, PLAY_SOUND));
 }
 
@@ -3982,7 +3982,7 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e) {
         double tStart = unitRest1 + randomDouble(0, 0.4);
         double t0 = Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
-        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-04.wav"));
+        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-arrow-04.ogg"));
         //eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction02));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -4037,7 +4037,7 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -4049,7 +4049,7 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -4057,7 +4057,7 @@ void ScriptedAnimation::scriptLongbow(ActionOutcome& outcome, Entity* e) {
 
     /*
         Entity* eSound = eManager->createEntity();
-        eSound->add(new CSound("sfx-spinning-03-01.wav", CSound::LOOP_THEN_REMOVE, 0.2, 1, 4));
+        eSound->add(new CSound("sfx-spinning-03-01.ogg", CSound::LOOP_THEN_REMOVE, 0.2, 1, 4));
         eSound->add(new CTimer(unitRest1 + 0.5, PLAY_SOUND));
     */
 }
@@ -4215,7 +4215,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -4227,7 +4227,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -4235,7 +4235,7 @@ void ScriptedAnimation::scriptSonic(ActionOutcome& outcome, Entity* e) {
 
     Entity* eSound = eManager->createEntity();
     eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(soundDate, "sfx-sonic-jumps-01.wav"));
+    eSound->get<CActor>()->addNode(new ASound(soundDate, "sfx-sonic-jumps-01.ogg"));
     eSound->get<CActor>()->addNode(new ADestroy(0.0));
 }
 
@@ -4258,7 +4258,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e) {
 
     Entity* eSound = eManager->createEntity();
     eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-jump-01-01.wav"));
+    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-jump-01-01.ogg"));
     eSound->get<CActor>()->addNode(new ADestroy(0.0));
 
     for(auto& out : outcome.unitActionOutcomes) {
@@ -4323,7 +4323,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e) {
         eObj->get<CDraw>()->isHidden = true;
         eObj->get<CActor>()->addNode(new ASpriteAnimation(tStart+tTravel, "poof-02.png"));
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::HIDDEN, false));
-        eObj->get<CActor>()->addNode(new ASound(0.0, "sfx-punch-01-01.wav"));
+        eObj->get<CActor>()->addNode(new ASound(0.0, "sfx-punch-01-01.ogg"));
         eObj->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
 
         double t0 = tStart + tTravel;
@@ -4357,7 +4357,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -4369,7 +4369,7 @@ void ScriptedAnimation::scriptStrongWoman(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -4395,7 +4395,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e) {
 
     Entity* eSound = eManager->createEntity();
     eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-ice-02.wav"));
+    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-ice-02.ogg"));
     eSound->get<CActor>()->addNode(new ADestroy(0.0));
 
     for(auto& out : outcome.unitActionOutcomes) {
@@ -4439,7 +4439,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e) {
         tTravel += tAir;
 
         eAtk->get<CActor>()->addNode(new AVariable(tAir, AVariable::AUTO_P, false));
-        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-sword-impact.wav"));
+        eAtk->get<CActor>()->addNode(new ASound(0.0, "sfx-sword-impact.ogg"));
         eAtk->get<CActor>()->addNode(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aWalk));
         eAtk->get<CActor>()->addNode(new AVariable(0.0, AVariable::H_FLIP, opposite(eAtk->get<CAnimation>()->hFlip)));
         eAtk->get<CActor>()->addNode(new AMove(0.0, eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y, speed1));
@@ -4485,7 +4485,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e) {
         eObj->get<CDraw>()->isHidden = true;
         eObj->get<CActor>()->addNode(new ASpriteAnimation(tStart+tTravel, "poof-02.png"));
         eObj->get<CActor>()->addNode(new AVariable(0.0, AVariable::HIDDEN, false));
-        eObj->get<CActor>()->addNode(new ASound(0.0, "sfx-ice-01.wav"));
+        eObj->get<CActor>()->addNode(new ASound(0.0, "sfx-ice-01.ogg"));
         eObj->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
         */
         double t0 = tStart + tTravel - unitRest1;
@@ -4522,7 +4522,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e) {
         eDef->get<CActor>()->addNode(new AVariable(unitRest1, AVariable::FREEZE, true));
         eDef->get<CActor>()->addNode(new AVariable(when, AVariable::FREEZE, false));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -4536,7 +4536,7 @@ void ScriptedAnimation::scriptSamurai(ActionOutcome& outcome, Entity* e) {
 
         eDef->get<CActor>()->addNode(new AVariable(unitRest1, AVariable::FREEZE, true));
         eDef->get<CActor>()->addNode(new AVariable(when, AVariable::FREEZE, false));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when + unitRest1, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -4565,7 +4565,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e) {
     /*
     Entity* eSound = eManager->createEntity();
     eSound->add(new CActor());
-    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-ice-02.wav"));
+    eSound->get<CActor>()->addNode(new ASound(unitRest1, "sfx-ice-02.ogg"));
     eSound->get<CActor>()->addNode(new ADestroy(0.0));
     */
     double darknessDuration = 0;
@@ -4577,8 +4577,8 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e) {
         Entity* eObj;
         ///PUFF
         string puffAnimation = "poof-02.png";
-        string sfxPoofIn = "sfx-poof-04.wav";
-        string sfxPoofOut = "sfx-poof-03.wav";
+        string sfxPoofIn = "sfx-poof-04.ogg";
+        string sfxPoofOut = "sfx-poof-03.ogg";
         double puffDuration = Assets::getAnimation(puffAnimation).duration;
         eObj = eManager->createEntity();
         eObj->add(new CPosition(eAtk->get<CPosition>()->x, eAtk->get<CPosition>()->y));
@@ -4687,7 +4687,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -4699,7 +4699,7 @@ void ScriptedAnimation::scriptNinja(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -4743,7 +4743,7 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e) {
         double t0 = Assets::getAnimation(eAtk->get<CUnit>()->aAction01).duration;
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(tStart, eAtk->get<CUnit>()->aAction01));
         eAtk->get<CActor>()->timeline.push_back(new AShoot(t0, eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, AShoot::BOMB));
-        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-act-01.wav"));
+        eAtk->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-act-01.ogg"));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eAtk->get<CUnit>()->aAction02));
         eAtk->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eAtk->get<CUnit>()->aAction02).duration, eAtk->get<CUnit>()->aIdle));
 
@@ -4779,7 +4779,7 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e) {
         double when = p.second;
 
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(when, eDef->get<CUnit>()->aDeath));
-        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-hurt-02.ogg"));
         eDef->get<CActor>()->timeline.push_back(new ASpriteAnimation(Assets::getAnimation(eDef->get<CUnit>()->aDeath).duration, eDef->get<CUnit>()->aDead));
         eDef->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::DEAD, true));
 
@@ -4791,7 +4791,7 @@ void ScriptedAnimation::scriptThrowBomb(ActionOutcome& outcome, Entity* e) {
         Entity* eDef = p.first;
         double when = p.second;
 
-        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.wav"));
+        eDef->get<CActor>()->timeline.push_back(new ASound(when, "sfx-impact-05-01.ogg"));
 
         scriptBlockIcon(eDef->get<CPosition>()->x, eDef->get<CPosition>()->y, when, eDef->get<CAnimation>()->hFlip, outcome.dmgType);
         addActor(eDef);
@@ -5586,7 +5586,7 @@ void ScriptedAnimation::scriptPoofAt(double x, double y, double when) {
     eSmoke->get<CDraw>()->isHidden = true;
     eSmoke->get<CActor>()->timeline.push_back(new AVariable(when, AVariable::HIDDEN, false));
     eSmoke->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, animation));
-    eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-01.wav"));
+    eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-01.ogg"));
     eSmoke->get<CActor>()->timeline.push_back(new ADestroy(Assets::getAnimation(animation).duration));
 }
 

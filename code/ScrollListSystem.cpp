@@ -34,7 +34,7 @@ void ScrollListSystem::createScrollButtons(Entity* e) {
     eButton1->add(new CButtonState());
     eButton1->add(new CButtonTrigger(SCROLL));
     eButton1->add(new CDraw(CDraw::GUI1));
-    eButton1->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eButton1->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     eButton1->add(new CScrollButton(e, CScrollButton::BACKWARD));
 
     if (e->get<CScrollList>()->orientation == CScrollList::HORIZONTAL) {
@@ -60,7 +60,7 @@ void ScrollListSystem::createScrollButtons(Entity* e) {
     eButton2->add(new CButtonState());
     eButton2->add(new CButtonTrigger(SCROLL));
     eButton2->add(new CDraw(CDraw::GUI1));
-    eButton2->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eButton2->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     eButton2->add(new CScrollButton(e, CScrollButton::FORWARD));
 
 

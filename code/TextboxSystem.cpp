@@ -32,7 +32,7 @@ void TextboxSystem::update() {
                 }
 
                 Entity* eSound = eManager->createEntity();
-                eSound->add(new CSound("typing-sound.wav", CSound::REMOVE_ENTITY));
+                eSound->add(new CSound("typing-sound.ogg", CSound::REMOVE_ENTITY));
                 notify(PLAY_SOUND, eSound);
             }
         }

@@ -447,7 +447,7 @@ Entity* MainMenuSystem::createButton(string label, double w, double h, double x,
     e->add(new CActiveTexture("tooltip-02.png"));
     e->add(new CDraw(CDraw::GUI1));
     e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), 18, sf::Color::White));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CSound());
     return e;
 }

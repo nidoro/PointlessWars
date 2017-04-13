@@ -1069,7 +1069,7 @@ void ArmyHUDSystem::animateButtonInPuff(Entity* e, double after, bool sound) {
     eSmoke->get<CDraw>()->isHidden = true;
     eSmoke->get<CActor>()->timeline.push_back(new AVariable(after, AVariable::HIDDEN, false));
     eSmoke->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, animation));
-    if (sound) eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-01.wav"));
+    if (sound) eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-01.ogg"));
     eSmoke->get<CActor>()->timeline.push_back(new ADestroy(Assets::getAnimation(animation).duration));
 
     e->get<CActor>()->timeline.push_back(new AVariable(after+Assets::getAnimation(animation).rate, AVariable::HIDDEN, false));
@@ -1099,7 +1099,7 @@ void ArmyHUDSystem::animateButtonOutPuff(Entity* e, double after, bool sound) {
     eSmoke->get<CDraw>()->isHidden = true;
     eSmoke->get<CActor>()->timeline.push_back(new AVariable(after, AVariable::HIDDEN, false));
     eSmoke->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, animation));
-    if (sound) eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-03.wav"));
+    if (sound) eSmoke->get<CActor>()->timeline.push_back(new ASound(0.0, "sfx-poof-03.ogg"));
     eSmoke->get<CActor>()->timeline.push_back(new ADestroy(Assets::getAnimation(animation).duration));
 
     e->get<CActor>()->timeline.push_back(new ADestroy(after+Assets::getAnimation(animation).duration));
