@@ -31,6 +31,10 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e) {
         Entity* eWin = createWindowMultiplayer(eGUI);
         showPage(eWin->getObservedEntity("page-connect"));
         notify(BRING_UI_LAYER_FORWARD, eWin);
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "credits") {
+        Entity* eWin = createCredits(eGUI);
+        showPage(eWin->getObservedEntity("page-1"));
+        notify(BRING_UI_LAYER_FORWARD, eWin);
     } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "in-game-menu") {
         Entity* eWin = createWindowInGameMenu(eGUI);
         showPage(eWin->getObservedEntity("page-first"));
@@ -363,7 +367,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc) {
     eObj->add(new CButtonState());
     eObj->add(new CButtonTrigger(START_SLIDING, CButtonTrigger::ON_PRESS));
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
-    eObj->add(new CButtonSounds("NONE", "NONE", "sfx-poof-03.wav"));
+    eObj->add(new CButtonSounds("NONE", "NONE", "sfx-poof-03.ogg"));
     eObj->attachEmployer(eGUI->getObservedEntity("page-game-options"));
 
     /// SFX SLIDER BAR
@@ -565,6 +569,7 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e) {
 
     return eInfoWin;
 }
+
 Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e) {
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
@@ -742,6 +747,237 @@ Entity* GUIGroupSystem::createWindowMultiplayer(Entity* e) {
     return eGUI;
 }
 
+Entity* GUIGroupSystem::createCredits(Entity* e) {
+    /// e has CGUIGroup, CDraw and CUILayer
+    /// make a copy of e
+    Entity* eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup(*e->get<CGUIGroup>()));
+    eGUI->add(new CDraw(*e->get<CDraw>()));
+    eGUI->add(new CUILayer(*e->get<CUILayer>()));
+
+    eGUI->addObservedEntity("page-1", eManager->createEntity());
+    eGUI->addObservedEntity("page-2", eManager->createEntity());
+
+    eGUI->attachEmployee(eGUI->getObservedEntity("page-1"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("page-2"));
+
+    eGUI->getObservedEntity("page-1")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("page-2")->addObservedEntity("window", eGUI);
+
+    Entity* eObj;
+
+    ///================
+    /// First page:
+    ///================
+    //double wButton = 180;
+    //double hButton = 40;
+    double spcButton = 50;
+    double wPanel = 290;
+    double hPanel = 350;
+    double xPanel = cxWindow;
+    double yPanel = cyWindow + 100;
+    double hText;
+
+    double x0 = xPanel;
+    double y0 = yPanel - hPanel/2 + 30;
+    double x = x0;
+    double y = y0;
+    double wTitle;
+
+    sf::Color darkBlue(15, 30, 60);
+
+    /// Panel
+    eGUI->add(new CTexture("9p-scroll.png"));
+    eGUI->add(new CDimensions(wPanel, hPanel));
+    eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CButtonState());
+    eGUI->add(new CButtonTrigger(EMPTY_MESSAGE));
+    eGUI->add(new CPosition(xPanel, yPanel));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    eGUI->add(new CElipsoidalMovement(xPanel, yPanel, 0, 4, 180));
+
+    // ==============
+    // @note: Page 1
+    // ==============
+    x = x0;
+    y = y0;
+    
+    /// Title
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-CREDITS"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::Black));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CPosition(x, y));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    wTitle = eObj->get<CTextbox2>()->content.getLocalBounds().width;
+
+    /// Underline
+    y += 24;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CRectShape(wTitle, 1, sf::Color::Black));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 1)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+
+    /// Gem
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 2, y));
+    eObj->add(new CTexture("small-orange-gem.png"));
+    eObj->add(new CDraw((CDraw::Tag)((int)eGUI->get<CDraw>()->tag + 2)));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+
+    /// Credit 1
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-DESIGN-AND-PROGRAMMING") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    
+    y += hText;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("Davi Doro", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+
+    /// Credit 2
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-ART") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    
+    y += hText;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("Gabriel Nogueira", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+
+    /// Credit 3
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-MUSIC") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    
+    y += hText;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("Jeff Penny", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    
+    /// Credit 4
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-LOGO") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    
+    y += hText;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("Jonathas Dewojno", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    
+    /// Button page down
+    y += spcButton;
+    std::string buttonDefaultTexture = "down-arrow-01-default.png";
+    float wPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().x;
+    float hPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CTexture(buttonDefaultTexture));
+    eObj->add(new CButtonTextures("down-arrow-01-default.png", "down-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wPageButton, hPageButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-2"));
+    
+    // ==============
+    // @note: Page 2
+    // ==============
+    x = x0;
+    y = y0;
+    
+    // @note: up arrow
+    y += 15;
+    buttonDefaultTexture = "up-arrow-01-default.png";
+    wPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().x;
+    hPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CTexture(buttonDefaultTexture));
+    eObj->add(new CButtonTextures("up-arrow-01-default.png", "up-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wPageButton, hPageButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-1"));
+    
+    // @note: credit 2.1
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-DESIGN-AND-PROGRAMMING") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    
+    y += hText;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("Davi Doro", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    
+    anchorize(eGUI, eGUI->getObservedEntity("page-1")->getEmployees());
+    anchorize(eGUI, eGUI->getObservedEntity("page-2")->getEmployees());
+    return eGUI;
+}
+
 void GUIGroupSystem::onMouseButtonPressed(Entity* e) {
     for (Entity* eGUI : entities) {
         //if (eGUI->has(Component::BUTTON_HITBOX) && eGUI->has(Component::BUTTON_STATE) && eGUI->get<CUILayer>()->layer == topUILayer){
@@ -826,7 +1062,7 @@ Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h
     e->add(new CButtonTrigger(m));
     e->add(new CRectButton(sf::RectangleShape(), rect, rect));
     e->add(new CDraw(CDraw::GUI_01));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CUILayer(UILayer));
     return e;
 }
@@ -844,6 +1080,16 @@ void GUIGroupSystem::onUpdatePlayerNicknameWithInputTextbox(Entity* e) {
     config.saveConfigFile(helper::getAppDataDir() + "/config.xml");
 }
 
+void GUIGroupSystem::anchorize(Entity* eAnchor, EntityList eList) {
+    float xAnchor = eAnchor->get<CPosition>()->x;
+    float yAnchor = eAnchor->get<CPosition>()->y;
+    for (Entity* e : eList) {
+        float xOff = e->get<CPosition>()->x - xAnchor;
+        float yOff = e->get<CPosition>()->y - yAnchor;
+        e->add(new CAnchor(xOff, yOff));
+        e->addObservedEntity("Anchor", eAnchor);
+    }
+}
 
 
 

@@ -393,7 +393,7 @@ Entity* NetworkSystem::createRectButton(string label, double fontSize, double h,
     e->add(new CButtonTrigger(m));
     e->add(new CRectButton(sf::RectangleShape(), rect, rect));
     e->add(new CDraw(CDraw::GUI_01));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CUILayer(UILayer));
     return e;
 }

@@ -358,6 +358,7 @@ void MainMenuSystem::createMenu(bool animated) {
     double xRel, yRel;
     string buttonTexture;
     Entity* eGUI;
+    
     /// SINGLE PLAYER BUTTON
     xRel = 0.4933;
     yRel = 0.5737;
@@ -432,6 +433,28 @@ void MainMenuSystem::createMenu(bool animated) {
 
     eObj->addObservedEntity("create-gui-group", eGUI);
 
+    /// CREDITS BUTTON
+    xRel = 0.9417;
+    yRel = 0.8326;
+    buttonTexture = "sculpture-contour-2.png";
+    wButton = Assets::getTexture(buttonTexture)->getSize().x;
+    hButton = Assets::getTexture(buttonTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xRel*1280, yRel*720));
+    eObj->add(new CDraw(CDraw::WORLD));
+    eObj->add(new CTexture(buttonTexture));
+    eObj->add(new CDimensions(wButton, hButton));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
+    eObj->add(new CButtonTrigger(CREATE_GUI_GROUP));
+
+    eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup("window", "credits"));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+
+    eObj->addObservedEntity("create-gui-group", eGUI);
 }
 
 Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m) {
@@ -447,7 +470,7 @@ Entity* MainMenuSystem::createButton(string label, double w, double h, double x,
     e->add(new CActiveTexture("tooltip-02.png"));
     e->add(new CDraw(CDraw::GUI1));
     e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), 18, sf::Color::White));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CSound());
     return e;
 }

@@ -11,11 +11,14 @@
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/CommandListener.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/War.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/GUIGroupSystem.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/TextboxSystem.cpp</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/AnchorSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/EntitiesManager.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ActionSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/GUIGroupSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ParticleSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Component.cpp</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/DisplayerSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/War.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ArmySystem.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Assets.h</file>
@@ -25,6 +28,7 @@
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/DebugServices.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/AnimationSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Entity.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/MatchConfig.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Standard.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Messages.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/main.cpp</file>
@@ -38,12 +42,14 @@
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/TimerSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/TooltipSystem.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/TurnTimerSystem.cpp</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/MatchConfig.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/random_int_array.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ActionSystem.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/TooltipSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/SideUISystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/OSAppDataDir.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/WarSystem.h</file>
+            <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/MainMenuSystem.cpp</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/TurnTimerSystem.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/Game.h</file>
             <file>file:/C:/Users/Davi%20Doro/PW%20Local/PointlessWars/code/ArmyHUDSystem.h</file>

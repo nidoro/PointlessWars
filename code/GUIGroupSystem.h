@@ -21,11 +21,15 @@ class GUIGroupSystem : public System {
         void createWindowSinglePlayer(Entity* e);
         Entity* createWindowInGameMenu(Entity* e);
         Entity* createWindowMultiplayer(Entity* e);
+        Entity* createCredits(Entity* e);
         void createWindowGameOptions(Entity* e);
         Entity* createRectButton(string label, double fontSize, double h, double x, double y,
                                  sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer);
 
         void hidePage(Entity* e);
         void showPage(Entity* e);
+        
+        // @note: helper
+        void anchorize(Entity* eAnchor, EntityList eList);
 
 };

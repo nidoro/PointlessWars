@@ -82,7 +82,7 @@ R"(
     <Scenery>Random</Scenery>
     <HeroesPerPlayer>3</HeroesPerPlayer>
     <MaxBattles>NONE</MaxBattles>
-    <Turns>3</Turns>
+    <Turns>1</Turns>
     <ArmySize>50</ArmySize>
     <BaseBlockChance>0.10</BaseBlockChance>
     <UnitaryBlockChance>0.25</UnitaryBlockChance>
@@ -91,13 +91,20 @@ R"(
     <GoalScore>2</GoalScore>
     <RandomArmy>false</RandomArmy>
 <!--    <UnitPool>00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15</UnitPool> -->
-    <UnitPool>00 01 02 03 04 05 06 07</UnitPool>
+    <UnitPool>00 01 04 05 08 09 12 13</UnitPool>
     <HeroPool>02 03 04 05 08 10</HeroPool>
     <TurnDuration>
-        <HeroPick>20</HeroPick>
-        <BattleActions>20</BattleActions>
+        <HeroPick>0</HeroPick>
+        <BattleActions>0</BattleActions>
+        <Recruitment>0</Recruitment>
+    </TurnDuration>
+<!--
+    <TurnDuration>
+        <HeroPick>15</HeroPick>
+        <BattleActions>15</BattleActions>
         <Recruitment>40</Recruitment>
     </TurnDuration>
+-->
 </MatchConfig>
 )";
          }else if (filename == "formations.xml"){

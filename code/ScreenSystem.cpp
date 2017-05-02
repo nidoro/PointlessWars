@@ -259,7 +259,7 @@ Entity* ScreenSystem::createFlagButton(std::string flag, std::string lan, double
     e->add(new CButtonState());
     e->add(new CButtonTrigger(CHOOSE_LANGUAGE));
     e->add(new CDraw(CDraw::GUI_01));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CStringMessage(lan));
     e->add(new CScreen(CScreen::SPLASH_1, CScreen::FADE_BLACK));
     e->get<CButtonTrigger>()->msgs.push_back(START_SCREEN_TRANSITION);

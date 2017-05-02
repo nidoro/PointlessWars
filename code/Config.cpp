@@ -7,8 +7,8 @@ Config::Config() {
     vMode.height = 720;
     if (!vMode.isValid()) vMode = sf::VideoMode::getDesktopMode();
 
-    musMaxVolume = 20;
-    sfxMaxVolume = 70;
+    musMaxVolume = 50;
+    sfxMaxVolume = 75;
     deadBodies = false;
     fullscreen = true;
     skipIntro = false;
@@ -93,7 +93,9 @@ bool Config::loadConfigFile(string file) {
             } else if (element == "DeadBodies") {
                 el->QueryBoolText(&deadBodies);
             } else if (element == "LastNickname") {
-                lastNickname = el->GetText();
+                if (el->GetText()) {
+                    lastNickname = el->GetText();
+                }
             } else if (element == "SkipIntro") {
                 el->QueryBoolText(&skipIntro);
                 secretOptions.push_back("SkipIntro");

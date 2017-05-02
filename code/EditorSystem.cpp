@@ -135,7 +135,7 @@ void EditorSystem::createMenuOptions() {
     eBtLoad->add(new CActiveTexture("bt-04-hovered.png"));
     eBtLoad->add(new CDraw(CDraw::GUI1));
     eBtLoad->add(new CTextbox2(label, 0, 0, CTextbox2::CENTRALIZED));
-    eBtLoad->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eBtLoad->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 
     ///SAVE
     label.setString(Assets::getString("BUTTON-EDITOR-SAVE"));
@@ -150,7 +150,7 @@ void EditorSystem::createMenuOptions() {
     eBtSave->add(new CActiveTexture("bt-04-hovered.png"));
     eBtSave->add(new CDraw(CDraw::GUI1));
     eBtSave->add(new CTextbox2(label, 0, 0, CTextbox2::CENTRALIZED));
-    eBtSave->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eBtSave->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 
     ///CLEAR
     label.setString(Assets::getString("BUTTON-EDITOR-CLEAR"));
@@ -165,7 +165,7 @@ void EditorSystem::createMenuOptions() {
     eBtClear->add(new CActiveTexture("bt-04-hovered.png"));
     eBtClear->add(new CDraw(CDraw::GUI1));
     eBtClear->add(new CTextbox2(label, 0, 0, CTextbox2::CENTRALIZED));
-    eBtClear->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eBtClear->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 
     ///TEST
     label.setString(Assets::getString("BUTTON-EDITOR-TEST"));
@@ -180,7 +180,7 @@ void EditorSystem::createMenuOptions() {
     eBtTest->add(new CActiveTexture("bt-04-hovered.png"));
     eBtTest->add(new CDraw(CDraw::GUI1));
     eBtTest->add(new CTextbox2(label, 0, 0, CTextbox2::CENTRALIZED));
-    eBtTest->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eBtTest->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 }
 
 void EditorSystem::onAddObjectToPreview(Entity* e) {
@@ -295,7 +295,7 @@ void EditorSystem::createLoadInputBox() {
     eOk->add(new CHoverTexture("ok-button.png"));
     eOk->add(new CActiveTexture("ok-button.png"));
     eOk->add(new CDraw(CDraw::GUI1));
-    eOk->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eOk->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 
 
     ///CANCEL BUTTON
@@ -310,7 +310,7 @@ void EditorSystem::createLoadInputBox() {
     eCancel->add(new CHoverTexture("cancel-button.png"));
     eCancel->add(new CActiveTexture("cancel-button.png"));
     eCancel->add(new CDraw(CDraw::GUI1));
-    eCancel->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eCancel->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     eCancel->add(new CParentPanel(eLoadPanel));
 
     notify(ACTIVATE_INPUT_TEXT_BOX, eLoadInput);
@@ -508,7 +508,7 @@ void EditorSystem::createSaveInputBox() {
     eOk->add(new CHoverTexture("ok-button.png"));
     eOk->add(new CActiveTexture("ok-button.png"));
     eOk->add(new CDraw(CDraw::GUI1));
-    eOk->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eOk->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
 
 
     ///CANCEL BUTTON
@@ -523,7 +523,7 @@ void EditorSystem::createSaveInputBox() {
     eCancel->add(new CHoverTexture("cancel-button.png"));
     eCancel->add(new CActiveTexture("cancel-button.png"));
     eCancel->add(new CDraw(CDraw::GUI1));
-    eCancel->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    eCancel->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     eCancel->add(new CParentPanel(eSavePanel));
 
     notify(ACTIVATE_INPUT_TEXT_BOX, eSaveInput);

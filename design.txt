@@ -195,7 +195,8 @@ Aumentar eficácia da intimidação sempre que o herói vencer uma batalha.
 Alterar alvos da intimidação. Cada herói seria capaz de intimidar apenas
 unidades de determinado tipo.
 
-
+Parâmetro precisão das unidades (pra aumentar diferenciação entre unidades
+de mesmo tipo).
 
 
 

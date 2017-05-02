@@ -265,7 +265,7 @@ Entity* InGameMenu::createButton(string label, double w, double h, double x, dou
     e->add(new CActiveTexture("tooltip-02.png"));
     e->add(new CDraw(CDraw::GUI_01));
     e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), 18, sf::Color::White));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CUILayer(UILayer));
     return e;
 }
@@ -290,7 +290,7 @@ Entity* InGameMenu::createRectButton(string label, double fontSize, double h, do
     e->add(new CButtonTrigger(m));
     e->add(new CRectButton(sf::RectangleShape(), rect, rect));
     e->add(new CDraw(CDraw::GUI_01));
-    e->add(new CButtonSounds("click2.wav", "rollover2.wav"));
+    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
     e->add(new CUILayer(UILayer));
     return e;
 }
