@@ -955,7 +955,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     // @note: credit 2.1
     y += spcButton/1.5;
     eObj = eManager->createEntity();
-    eObj->add(new CTextbox2(Assets::getString("LABEL-DESIGN-AND-PROGRAMMING") + ":", Assets::getFont(Assets::getPrimaryFont()),
+    eObj->add(new CTextbox2(Assets::getString("LABEL-WEBSITE-AND-PR") + ":", Assets::getFont(Assets::getPrimaryFont()),
                             14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
     hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
     hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
@@ -965,13 +965,68 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     
     y += hText;
     eObj = eManager->createEntity();
-    eObj->add(new CTextbox2("Davi Doro", Assets::getFont(Assets::getPrimaryFont()),
+    eObj->add(new CTextbox2("Thiago Doro", Assets::getFont(Assets::getPrimaryFont()),
                             14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
     hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
     hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+
+    // @note: credit 2.2: Additional art
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-ADDITIONAL-ART") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    
+    float xColumn1 = xPanel - wPanel/4.f;
+    float xColumn2 = xPanel + wPanel/4.f;
+    float yColumns = y;
+    
+    // @note: left column
+    std::vector<std::string> creditNames1 = {
+        "Elias Daller",
+        "Camile Saint",
+        "Pablo Picasso"
+    };
+    
+    y = yColumns;
+    for (auto nm : creditNames1) {
+        y += hText;
+        eObj = eManager->createEntity();
+        eObj->add(new CTextbox2(nm, Assets::getFont(Assets::getPrimaryFont()),
+                                14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+        hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+        hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+        eObj->add(new CPosition(xColumn1, y));
+        eObj->add(new CDraw(CDraw::GUI_01));
+        eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    }
+    
+    // @note: left column
+    std::vector<std::string> creditNames2 = {
+        "Vincent van Gogh",
+        "Peter Crouch",
+        "Lemonade"
+    };
+    
+    y = yColumns;
+    for (auto nm : creditNames2) {
+        y += hText;
+        eObj = eManager->createEntity();
+        eObj->add(new CTextbox2(nm, Assets::getFont(Assets::getPrimaryFont()),
+                                14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+        hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+        hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+        eObj->add(new CPosition(xColumn2, y));
+        eObj->add(new CDraw(CDraw::GUI_01));
+        eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    }
     
     anchorize(eGUI, eGUI->getObservedEntity("page-1")->getEmployees());
     anchorize(eGUI, eGUI->getObservedEntity("page-2")->getEmployees());
