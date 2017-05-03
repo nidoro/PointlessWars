@@ -757,12 +757,15 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
 
     eGUI->addObservedEntity("page-1", eManager->createEntity());
     eGUI->addObservedEntity("page-2", eManager->createEntity());
+    eGUI->addObservedEntity("page-3", eManager->createEntity());
 
     eGUI->attachEmployee(eGUI->getObservedEntity("page-1"));
     eGUI->attachEmployee(eGUI->getObservedEntity("page-2"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("page-3"));
 
     eGUI->getObservedEntity("page-1")->addObservedEntity("window", eGUI);
     eGUI->getObservedEntity("page-2")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("page-3")->addObservedEntity("window", eGUI);
 
     Entity* eObj;
 
@@ -976,7 +979,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     // @note: credit 2.2: Additional art
     y += spcButton/1.5;
     eObj = eManager->createEntity();
-    eObj->add(new CTextbox2(Assets::getString("LABEL-ADDITIONAL-ART") + ":", Assets::getFont(Assets::getPrimaryFont()),
+    eObj->add(new CTextbox2(Assets::getString("LABEL-SPECIAL-THANKS") + ":", Assets::getFont(Assets::getPrimaryFont()),
                             14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
     hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
     hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
@@ -984,52 +987,138 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
     
-    float xColumn1 = xPanel - wPanel/4.f;
-    float xColumn2 = xPanel + wPanel/4.f;
-    float yColumns = y;
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("SFML developers", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
     
-    // @note: left column
+    y += hText;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2("SFML community", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-OPENGAMEART-USERS") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    
     std::vector<std::string> creditNames1 = {
-        "Elias Daller",
-        "Camile Saint",
-        "Pablo Picasso"
+        "daneeklu",
+        "JPhilipp",
+        "Leonard pabin"
     };
     
-    y = yColumns;
     for (auto nm : creditNames1) {
-        y += hText;
+        //y += hText;
+        y += 16.75;
         eObj = eManager->createEntity();
         eObj->add(new CTextbox2(nm, Assets::getFont(Assets::getPrimaryFont()),
                                 14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
         hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
         hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
-        eObj->add(new CPosition(xColumn1, y));
+        eObj->add(new CPosition(x, y));
         eObj->add(new CDraw(CDraw::GUI_01));
         eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
     }
     
-    // @note: left column
+    /// Button page down
+    y += spcButton;
+    buttonDefaultTexture = "down-arrow-01-default.png";
+    wPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().x;
+    hPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CTexture(buttonDefaultTexture));
+    eObj->add(new CButtonTextures("down-arrow-01-default.png", "down-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wPageButton, hPageButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-3"));
+    
+    // ==============
+    // @note: Page 3
+    // ==============
+    x = x0;
+    y = y0;
+    
+    // @note: up arrow
+    y += 15;
+    buttonDefaultTexture = "up-arrow-01-default.png";
+    wPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().x;
+    hPageButton = Assets::getTexture(buttonDefaultTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->add(new CTexture(buttonDefaultTexture));
+    eObj->add(new CButtonTextures("up-arrow-01-default.png", "up-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wPageButton, hPageButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-3"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-2"));
+    
     std::vector<std::string> creditNames2 = {
-        "Vincent van Gogh",
-        "Peter Crouch",
-        "Lemonade"
+        "7Soul1",
+        "Akachuki",
+        "BananazGorilla",
+        "geogab7",
+        "gameflasher",
+        "HauntingEchoes",
+        "kevrhodes",
+        "manicsfan",
+        "SonchuWx33",
+        "tenpoundpixel",
+        "thelunacy-fringe",
+        "shadee"
     };
     
-    y = yColumns;
+    y += spcButton/1.5;
+    eObj = eManager->createEntity();
+    eObj->add(new CTextbox2(Assets::getString("LABEL-DEVIANTART-USERS") + ":", Assets::getFont(Assets::getPrimaryFont()),
+                            14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
+    hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
+    hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->attachEmployer(eGUI->getObservedEntity("page-3"));
+    
     for (auto nm : creditNames2) {
-        y += hText;
+        //y += hText;
+        y += 16.75;
         eObj = eManager->createEntity();
         eObj->add(new CTextbox2(nm, Assets::getFont(Assets::getPrimaryFont()),
                                 14, sf::Color::Black, 0, 0, CTextbox2::CENTRALIZED));
         hText = eObj->get<CTextbox2>()->content.getLocalBounds().height;
         hText += eObj->get<CTextbox2>()->content.getFont()->getLineSpacing(eObj->get<CTextbox2>()->content.getCharacterSize())/4;
-        eObj->add(new CPosition(xColumn2, y));
+        eObj->add(new CPosition(x, y));
         eObj->add(new CDraw(CDraw::GUI_01));
-        eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
+        eObj->attachEmployer(eGUI->getObservedEntity("page-3"));
     }
     
     anchorize(eGUI, eGUI->getObservedEntity("page-1")->getEmployees());
     anchorize(eGUI, eGUI->getObservedEntity("page-2")->getEmployees());
+    anchorize(eGUI, eGUI->getObservedEntity("page-3")->getEmployees());
     return eGUI;
 }
 

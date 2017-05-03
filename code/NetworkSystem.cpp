@@ -202,6 +202,11 @@ void NetworkSystem::onDisconnectFromServer(Entity* e) {
         state = OFFLINE;
         createConnectionLostWindow();
     }
+    
+    if (state == CONNECTING) {
+        serverSocket.disconnect();
+        state = OFFLINE;
+    }
 }
 
 void NetworkSystem::onFindMatch(Entity* e) {
@@ -280,7 +285,10 @@ void NetworkSystem::createInfoWindow() {
 }
 
 void NetworkSystem::createConnectionFailedWindow() {
-    eManager->removeEntity(eInfoWin);
+    if (eInfoWin) {
+        eManager->removeEntity(eInfoWin);
+        notify(BRING_UI_LAYER_FORWARD);
+    }
 
     string panelTexture = "9p-grey-frame-rounded.png";
     double xPanel = cxWindow;
