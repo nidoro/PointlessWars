@@ -367,6 +367,8 @@ void WarSystem::initializeState() {
     } else if (war.getSystemAction() == war.SET_FORMATION_EFFECT) {
 
     } else if (war.getSystemAction() == war.ASK_BATTLE_CLOSURE) {
+        // @note: cleanup
+#if 0
         CPlayer::ID idPlayer;
         if (war.getPlayer(1)->get<CArmy>()->nAlive > war.getPlayer(2)->get<CArmy>()->nAlive) {
             idPlayer = 1;
@@ -382,7 +384,10 @@ void WarSystem::initializeState() {
             war.setNextAction(idPlayer, -1);
         }
         war.setActionCompleted(idPlayer, false);
-
+#else
+        war.setActorID(1);
+        war.setActionCompleted(1, false);
+#endif
     } else if (war.getSystemAction() == war.PRESENT_HEROES) {
 
     } else if (war.getSystemAction() == war.COIN) {

@@ -847,7 +847,8 @@ void ScriptedAnimation::scriptHex(ActionOutcome& outcome, Entity* e) {
     eObj->get<CActor>()->addNode(new ADestroy(durShotTravel));
 
     addActor(eObj);
-
+    
+    // @note: frog-turned hero ids range from 50 to 60
     if (eCapOld->get<CCaptain>()->id != 14 && outcome.bValue) {
         eEnemy->get<CPlayer>()->heroDeck.remove((int)eCapOld->get<CCaptain>()->id);
         //eManager->removeEntity(eCapOld);
@@ -4869,9 +4870,23 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor) {
     eCap->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200));
     t = getTravelTime(eCap->get<CPosition>()->x, eCap->get<CPosition>()->y, cxWindow + sign*wWindow/2 + sign*100, cyWindow, 200);
     eCap->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eCap->get<CCaptain>()->aIdle));
-
+    
     addActor(eCap);
-    ///--------------------------------------------------------
+    
+    // @note: currently confined hero
+    CCaptain::ID confinedHero = eArmy->get<CArmy>()->confinedHero;
+    if (confinedHero != -1) {
+        Entity* eConf = eArmy->get<CArmy>()->captains[confinedHero];
+        printf("OKOKOKO\n");
+        
+        eConf->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::HERO_CONFINED, false));
+        eConf->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, sign == -1 ? false : true));
+        eConf->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, eConf->get<CCaptain>()->aWalk));
+        eConf->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow - sign*wWindow/2 - sign*100, cyWindow, 280));
+        t = getTravelTime(eConf->get<CPosition>()->x, eConf->get<CPosition>()->y, cxWindow - sign*wWindow/2 - sign*100, cyWindow, 280);
+        eConf->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eConf->get<CCaptain>()->aIdle));
+    }
+    eArmy->get<CArmy>()->confinedHero = eCap->get<CCaptain>()->id;
 }
 
 void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {

@@ -92,6 +92,13 @@ void SideUISystem::updateUI(Entity* e) {
                 eJailBars->addObservedEntity("Anchor", eDisplayer);
                 eDisplayer->addObservedEntity("JailBars", eJailBars);
             }
+        } else {
+            Entity* eDisplayer = getHeroInUI(e, eHero->get<CCaptain>()->id);
+            Entity* eJailBars = eDisplayer->getObservedEntity("JailBars");
+            if (eJailBars && !eManager->isDead(eJailBars)) {
+                eDisplayer->removeObservedEntity("JailBars");
+                eManager->removeEntity(eJailBars);
+            }
         }
     }
 }

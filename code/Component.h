@@ -936,6 +936,7 @@ struct CArmy : public Component {
         hasCoin = false;
         prohibitedDamageType = CUnit::N_DAMAGE_TYPES;
         prohibitedFormation = CArmy::Formation::N_FORMATIONS;
+        confinedHero = -1;
         idCaptain = 0;
     }
 
@@ -958,6 +959,7 @@ struct CArmy : public Component {
 
     CUnit::DamageType prohibitedDamageType;
     CArmy::Formation prohibitedFormation;
+    CCaptain::ID confinedHero;
 
     CCaptain::ID idCaptain;
 
