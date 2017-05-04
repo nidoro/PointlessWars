@@ -4885,6 +4885,7 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor) {
         eConf->get<CActor>()->timeline.push_back(new AMove(0.0, cxWindow - sign*wWindow/2 - sign*100, cyWindow, 280));
         t = getTravelTime(eConf->get<CPosition>()->x, eConf->get<CPosition>()->y, cxWindow - sign*wWindow/2 - sign*100, cyWindow, 280);
         eConf->get<CActor>()->timeline.push_back(new ASpriteAnimation(t, eConf->get<CCaptain>()->aIdle));
+        eConf->get<CActor>()->timeline.push_back(new AVariable(0.0, AVariable::H_FLIP, sign == -1 ? true : false));
     }
     eArmy->get<CArmy>()->confinedHero = eCap->get<CCaptain>()->id;
 }

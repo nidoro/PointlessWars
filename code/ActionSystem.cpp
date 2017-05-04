@@ -555,7 +555,7 @@ void ActionSystem::preprocessArmyComposition(ActionOutcome& outcome, Entity* e) 
     outcome.armyComposition.clear();
 
     // @cleanup: temporary way of avoiding random composition
-#if 0
+#if 1
     outcome.armyComposition = e->get<CArmy>()->unitCount;
     int nUnits = 0;
     for (auto& i : outcome.armyComposition) {

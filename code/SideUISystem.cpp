@@ -88,7 +88,7 @@ void SideUISystem::updateUI(Entity* e) {
                 eJailBars->add(new CAnchor());
                 eJailBars->add(new CDimensions(wHeroButton, hHeroButton));
 
-                eJailBars->attachEmployee(eDisplayer);
+                eJailBars->attachEmployer(eDisplayer);
                 eJailBars->addObservedEntity("Anchor", eDisplayer);
                 eDisplayer->addObservedEntity("JailBars", eJailBars);
             }
