@@ -36,7 +36,11 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e) {
         showPage(eWin->getObservedEntity("page-1"));
         notify(BRING_UI_LAYER_FORWARD, eWin);
     } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "help") {
-        Entity* eWin = createHelp(eGUI);
+        Entity* eWin = createHelp(eGUI, true);
+        showPage(eWin->getObservedEntity("lesson-1"));
+        notify(BRING_UI_LAYER_FORWARD, eWin);
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "help-main-menu") {
+        Entity* eWin = createHelp(eGUI, false);
         showPage(eWin->getObservedEntity("lesson-1"));
         notify(BRING_UI_LAYER_FORWARD, eWin);
     } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "in-game-menu") {
@@ -1145,7 +1149,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     return eGUI;
 }
 
-Entity* GUIGroupSystem::createHelp(Entity* e) {
+Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     /// e has CGUIGroup, CDraw and CUILayer
     /// make a copy of e
     Entity* eGUI = eManager->createEntity();
@@ -1186,6 +1190,10 @@ Entity* GUIGroupSystem::createHelp(Entity* e) {
     double hPanel = 291;
     double xPanel = cxWindow;
     double yPanel = cyWindow;
+    if (!centralized) {
+        xPanel = cxWindow;
+        yPanel += 100;
+    }
     double hText;
 
     double x0 = xPanel;

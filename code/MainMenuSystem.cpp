@@ -455,6 +455,30 @@ void MainMenuSystem::createMenu(bool animated) {
     eGUI->add(new CDraw(CDraw::GUI_00));
 
     eObj->addObservedEntity("create-gui-group", eGUI);
+    
+    
+    /// @note: HELP BUTTON
+    xRel = 0.9389;
+    yRel = 0.6252;
+    buttonTexture = "training-contour.png";
+    wButton = Assets::getTexture(buttonTexture)->getSize().x;
+    hButton = Assets::getTexture(buttonTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xRel*1280, yRel*720));
+    eObj->add(new CDraw(CDraw::WORLD));
+    eObj->add(new CTexture(buttonTexture));
+    eObj->add(new CDimensions(wButton, hButton));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
+    eObj->add(new CButtonTrigger(CREATE_GUI_GROUP));
+
+    eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup("window", "help-main-menu"));
+    eGUI->add(new CUILayer(CUILayer::L1));
+    eGUI->add(new CDraw(CDraw::GUI_00));
+
+    eObj->addObservedEntity("create-gui-group", eGUI);
 }
 
 Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m) {
