@@ -1155,12 +1155,24 @@ Entity* GUIGroupSystem::createHelp(Entity* e) {
 
     eGUI->addObservedEntity("lesson-1", eManager->createEntity());
     eGUI->addObservedEntity("lesson-2", eManager->createEntity());
+    eGUI->addObservedEntity("lesson-3", eManager->createEntity());
+    eGUI->addObservedEntity("lesson-4", eManager->createEntity());
+    eGUI->addObservedEntity("lesson-5", eManager->createEntity());
+    eGUI->addObservedEntity("lesson-6", eManager->createEntity());
 
     eGUI->attachEmployee(eGUI->getObservedEntity("lesson-1"));
     eGUI->attachEmployee(eGUI->getObservedEntity("lesson-2"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("lesson-3"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("lesson-4"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("lesson-5"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("lesson-6"));
 
     eGUI->getObservedEntity("lesson-1")->addObservedEntity("window", eGUI);
     eGUI->getObservedEntity("lesson-2")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("lesson-3")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("lesson-4")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("lesson-5")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("lesson-6")->addObservedEntity("window", eGUI);
 
     Entity* eObj;
 
@@ -1192,20 +1204,210 @@ Entity* GUIGroupSystem::createHelp(Entity* e) {
     eGUI->add(new CPosition(xPanel, yPanel));
     eGUI->add(new CUILayer(*e->get<CUILayer>()));
 
+    float xOffArrow = wPanel/2.f - 40;
+    float yArrow = yPanel - hPanel/2.f + 27;
+    float wArrow = Assets::getTexture("right-arrow-01-default.png")->getSize().x;
+    float hArrow = Assets::getTexture("right-arrow-01-default.png")->getSize().y;
     // ================
     // @note: Lesson 1
     // ================
-    x = x0;
-    y = y0;
     
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-1.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-1"));
-
-    anchorize(eGUI, eGUI->getObservedEntity("lesson-1")->getEmployees());
-    anchorize(eGUI, eGUI->getObservedEntity("lesson-2")->getEmployees());
+    
+    // @note: right arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
+    eObj->add(new CTexture("right-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("right-arrow-01-default.png", "right-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-1"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-2"));
+    
+    // ================
+    // @note: Lesson 2
+    // ================
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel, yPanel));
+    eObj->add(new CTexture("lesson-2.png"));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-2"));
+    
+    // @note: right arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
+    eObj->add(new CTexture("right-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("right-arrow-01-default.png", "right-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-2"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-3"));
+    
+    // @note: left arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
+    eObj->add(new CTexture("left-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("left-arrow-01-default.png", "left-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-2"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-1"));
+    
+    // ================
+    // @note: Lesson 3
+    // ================
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel, yPanel));
+    eObj->add(new CTexture("lesson-3.png"));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-3"));
+    
+    // @note: right arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
+    eObj->add(new CTexture("right-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("right-arrow-01-default.png", "right-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-3"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-4"));
+    
+    // @note: left arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
+    eObj->add(new CTexture("left-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("left-arrow-01-default.png", "left-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-3"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-2"));
+    
+    // ================
+    // @note: Lesson 4
+    // ================
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel, yPanel));
+    eObj->add(new CTexture("lesson-4.png"));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-4"));
+    
+    // @note: right arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
+    eObj->add(new CTexture("right-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("right-arrow-01-default.png", "right-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-4"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-5"));
+    
+    // @note: left arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
+    eObj->add(new CTexture("left-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("left-arrow-01-default.png", "left-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-4"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-3"));
+    
+    // ================
+    // @note: Lesson 5
+    // ================
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel, yPanel));
+    eObj->add(new CTexture("lesson-5.png"));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-5"));
+    
+    // @note: right arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
+    eObj->add(new CTexture("right-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("right-arrow-01-default.png", "right-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-5"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-6"));
+    
+    // @note: left arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
+    eObj->add(new CTexture("left-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("left-arrow-01-default.png", "left-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-5"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-4"));
+    
+    // ================
+    // @note: Lesson 6
+    // ================
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel, yPanel));
+    eObj->add(new CTexture("lesson-6.png"));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-6"));
+    
+    // @note: left arrow
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
+    eObj->add(new CTexture("left-arrow-01-default.png"));
+    eObj->add(new CDraw((CDraw::Tag) ((int) eGUI->get<CDraw>()->tag + 1)));
+    eObj->add(new CButtonTextures("left-arrow-01-default.png", "left-arrow-01-highlighted.png"));
+    eObj->add(new CButtonHitbox(wArrow, hArrow));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
+    eObj->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+    eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-6"));
+    eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-5"));
+    
     return eGUI;
 }
 
