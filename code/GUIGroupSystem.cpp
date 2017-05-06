@@ -306,7 +306,8 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e) {
     // @note:
     // Help
     y += spcButton;
-    eObj = createRectButton(Assets::getString("LABEL-HELP"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CREATE_GUI_GROUP, eGUI->get<CUILayer>()->layer);
+    eObj = createRectButton(Assets::getString("LABEL-HELP"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer);
+    eObj->get<CButtonTrigger>()->msgs = {REMOVE_GUI_GROUP, CREATE_GUI_GROUP};
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
 
     eAux = eManager->createEntity();
@@ -316,6 +317,7 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e) {
     eAux->attachEmployer(eObj);
     //eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
     eObj->addObservedEntity("create-gui-group", eAux);
+    eObj->addObservedEntity("remove-gui-group", eGUI);
 
     return eGUI;
 }
