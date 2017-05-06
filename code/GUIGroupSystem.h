@@ -22,6 +22,7 @@ class GUIGroupSystem : public System {
         Entity* createWindowInGameMenu(Entity* e);
         Entity* createWindowMultiplayer(Entity* e);
         Entity* createCredits(Entity* e);
+        Entity* createHelp(Entity* e);
         void createWindowGameOptions(Entity* e);
         Entity* createRectButton(string label, double fontSize, double h, double x, double y,
                                  sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer);

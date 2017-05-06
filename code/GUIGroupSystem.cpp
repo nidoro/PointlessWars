@@ -35,6 +35,10 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e) {
         Entity* eWin = createCredits(eGUI);
         showPage(eWin->getObservedEntity("page-1"));
         notify(BRING_UI_LAYER_FORWARD, eWin);
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "help") {
+        Entity* eWin = createHelp(eGUI);
+        showPage(eWin->getObservedEntity("lesson-1"));
+        notify(BRING_UI_LAYER_FORWARD, eWin);
     } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "in-game-menu") {
         Entity* eWin = createWindowInGameMenu(eGUI);
         showPage(eWin->getObservedEntity("page-first"));
@@ -291,15 +295,31 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e) {
     eAux->add(new CGUIGroup("window", "leave-match-confirmation"));
     eAux->add(new CUILayer(CUILayer::L3));
     eAux->add(new CDraw(CDraw::GUI_04));
-    eObj->attachEmployer(eAux);
+    eAux->attachEmployer(eObj);
+    //eObj->attachEmployer(eAux);
     eObj->addObservedEntity("create-gui-group", eAux);
     ///================
     /// Options page:
     ///================
     initializeGameOptionsPage(eGUI, false);
+    
+    // @note:
+    // Help
+    y += spcButton;
+    eObj = createRectButton(Assets::getString("LABEL-HELP"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, CREATE_GUI_GROUP, eGUI->get<CUILayer>()->layer);
+    eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+
+    eAux = eManager->createEntity();
+    eAux->add(new CGUIGroup("window", "help"));
+    eAux->add(new CUILayer(CUILayer::L3));
+    eAux->add(new CDraw(CDraw::GUI_04));
+    eAux->attachEmployer(eObj);
+    //eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
+    eObj->addObservedEntity("create-gui-group", eAux);
 
     return eGUI;
 }
+
 void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc) {
     /// Assumes that e has a CGUIGroup, a page of name game-options and a CUILayer
 
@@ -509,6 +529,7 @@ void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc) {
         eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-first"));
     }
 }
+
 Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e) {
     string panelTexture = "9p-grey-frame-rounded.png";
     double xPanel = cxWindow;
@@ -1119,6 +1140,70 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     anchorize(eGUI, eGUI->getObservedEntity("page-1")->getEmployees());
     anchorize(eGUI, eGUI->getObservedEntity("page-2")->getEmployees());
     anchorize(eGUI, eGUI->getObservedEntity("page-3")->getEmployees());
+    return eGUI;
+}
+
+Entity* GUIGroupSystem::createHelp(Entity* e) {
+    /// e has CGUIGroup, CDraw and CUILayer
+    /// make a copy of e
+    Entity* eGUI = eManager->createEntity();
+    eGUI->add(new CGUIGroup(*e->get<CGUIGroup>()));
+    eGUI->add(new CDraw(*e->get<CDraw>()));
+    eGUI->add(new CUILayer(*e->get<CUILayer>()));
+
+    eGUI->addObservedEntity("lesson-1", eManager->createEntity());
+    eGUI->addObservedEntity("lesson-2", eManager->createEntity());
+
+    eGUI->attachEmployee(eGUI->getObservedEntity("lesson-1"));
+    eGUI->attachEmployee(eGUI->getObservedEntity("lesson-2"));
+
+    eGUI->getObservedEntity("lesson-1")->addObservedEntity("window", eGUI);
+    eGUI->getObservedEntity("lesson-2")->addObservedEntity("window", eGUI);
+
+    Entity* eObj;
+
+    ///================
+    /// First page:
+    ///================
+    //double wButton = 180;
+    //double hButton = 40;
+    double spcButton = 50;
+    double wPanel = 376;
+    double hPanel = 291;
+    double xPanel = cxWindow;
+    double yPanel = cyWindow;
+    double hText;
+
+    double x0 = xPanel;
+    double y0 = yPanel - hPanel/2 + 30;
+    double x = x0;
+    double y = y0;
+    double wTitle;
+
+    sf::Color darkBlue(15, 30, 60);
+
+    /// Panel
+    eGUI->add(new CDimensions(wPanel, hPanel));
+    eGUI->add(new CButtonHitbox(wPanel, hPanel));
+    eGUI->add(new CButtonState());
+    eGUI->add(new CButtonTrigger(EMPTY_MESSAGE));
+    eGUI->add(new CPosition(xPanel, yPanel));
+    eGUI->add(new CUILayer(*e->get<CUILayer>()));
+
+    // ================
+    // @note: Lesson 1
+    // ================
+    x = x0;
+    y = y0;
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xPanel, yPanel));
+    eObj->add(new CTexture("lesson-1.png"));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->attachEmployer(eGUI->getObservedEntity("lesson-1"));
+
+    anchorize(eGUI, eGUI->getObservedEntity("lesson-1")->getEmployees());
+    anchorize(eGUI, eGUI->getObservedEntity("lesson-2")->getEmployees());
     return eGUI;
 }
 

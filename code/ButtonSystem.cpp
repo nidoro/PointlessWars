@@ -62,8 +62,10 @@ void ButtonSystem::updateButtonState(Entity* e) {
     */
     if (uiLayers.top() != CUILayer::NONE) {
         if (!e->has(Component::UI_LAYER)
-                || (e->has(Component::UI_LAYER) && e->get<CUILayer>()->layer != uiLayers.top())) {
-            setState(e, CButtonState::NON_ACTIVE);
+        || (e->has(Component::UI_LAYER) && e->get<CUILayer>()->layer != uiLayers.top())) {
+            if (e->get<CButtonState>()->state != CButtonState::LOCKED) {
+                setState(e, CButtonState::NON_ACTIVE);
+            }
             notify(BUTTON_LOST_FOCUS, e);
             notify(e->get<CButtonState>()->lostFocusMessage, e);
             return;
@@ -314,6 +316,13 @@ void ButtonSystem::onBringUILayerForward(Entity* e) {
     if (e && e->has(Component::UI_LAYER)) {
         topUILayer = e->get<CUILayer>()->layer;
         uiLayers.push(e->get<CUILayer>()->layer);
+    } else if (!uiLayers.empty()) {
+        uiLayers.pop();
+        if (!uiLayers.empty()) {
+            topUILayer = uiLayers.top();
+        } else {
+            topUILayer = CUILayer::NONE;
+        }
     } else {
         topUILayer = CUILayer::NONE;
         if (uiLayers.size() > 1) {
