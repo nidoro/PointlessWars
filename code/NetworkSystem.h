@@ -16,7 +16,7 @@ class NetworkSystem : public System {
         void stop();
 
     private:
-        enum State {FINDING_MATCH, SEARCHING_QUICK_MATCH, PLAYING_MATCH, JUST_ONLINE, OFFLINE, CONNECTING};
+        enum State {FINDING_MATCH, SEARCHING_QUICK_MATCH, PLAYING_MATCH, JUST_ONLINE, OFFLINE, CONNECTING, CHECKING_VERSION};
 
         /// EVENT HANDLERS
         void onTryAndConnect(Entity* e);
@@ -29,6 +29,8 @@ class NetworkSystem : public System {
         void onConnectionLost(Entity* e);
         void onSetServerMessageDisplayerQuickMatch(Entity* e);
         void onCancelQuickMatchSearch(Entity* e);
+        void onServerVersionCheckSuccess(Entity* e);
+        void onServerVersionCheckFail(Entity* e);
         //void onSendMessage(Entity* e);
 
         /// CALLED ON UPDATE

@@ -6,7 +6,7 @@ CProfile System::profile;
 CUILayer::Layer System::topUILayer = CUILayer::NONE;
 std::stack<CUILayer::Layer> System::uiLayers;
 std::string System::appDataDir = helper::getAppDataDir();
-const std::string System::appVersion = "Alpha";
+const std::string System::appVersion = "Beta";
 bool System::use_random_array = false;
 
 System::System() {
@@ -506,6 +506,12 @@ void System::onNotify(Message m, Entity* e) {
         break;
     case PLAYER_TURN_TIME_EXPIRED:
         onPlayerTurnTimeExpired(e);
+        break;
+    case SERVER_VERSION_CHECK_SUCCESS:
+        onServerVersionCheckSuccess(e);
+        break;
+    case SERVER_VERSION_CHECK_FAIL:
+        onServerVersionCheckFail(e);
         break;
     default:
         break;

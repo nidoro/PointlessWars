@@ -12,6 +12,8 @@ NetworkSystem::NetworkSystem() {
     addSubscription(CONNECTION_LOST);
     addSubscription(SET_SERVER_MESSAGE_DISPLAYER_QUICK_MATCH);
     addSubscription(CANCEL_QUICK_MATCH_SEARCH);
+    addSubscription(SERVER_VERSION_CHECK_SUCCESS);
+    addSubscription(SERVER_VERSION_CHECK_FAIL);
     eQMDisplayer = nullptr;
 }
 
@@ -129,6 +131,16 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         packet >> name;
         war.nicknameP1 = war.getRemotelyControled(1) ? name.operator std::string() : config.getLastNickname();
         war.nicknameP2 = war.getRemotelyControled(2) ? name.operator std::string() : config.getLastNickname();
+    } else if (id == "CHECK-VERSION") {
+        sf::String result;
+        packet >> result;
+        if (result == "SUCCESS") {
+            notify(SERVER_VERSION_CHECK_SUCCESS);
+        } else if (result == "FAIL") {
+            sf::String serverVersion;
+            packet >> serverVersion;
+            eInfoWin->getObservedEntity("message")->add(new CTypingEffect(Assets::getString("MESSAGE-DOWNLOAD-MOST-RECENT"), 50));
+        }
     } else {
         Entity* ePacket = eManager->createEntity();
         ePacket->add(new CPacket(packetOriginal));
@@ -160,6 +172,15 @@ void NetworkSystem::updateConnection() {
 }
 
 void NetworkSystem::onConnectionSuccessful(Entity* e) {
+    sf::Packet packet;
+    packet << sf::String("CHECK-VERSION");
+    packet << sf::String(appVersion);
+    sendQueue.push_back(packet);
+    //state = CHECKING_VERSION;
+    
+    eInfoWin->getObservedEntity("message")->add(new CTypingEffect(Assets::getString("MESSAGE-CHECKING-VERSION"), 50));
+    
+    /*
     eManager->removeEntity(eInfoWin);
     notify(BRING_UI_LAYER_FORWARD);
 
@@ -170,11 +191,12 @@ void NetworkSystem::onConnectionSuccessful(Entity* e) {
     eObj->addObservedEntity("create-gui-group", eObj);
     notify(CREATE_GUI_GROUP, eObj);
     eManager->removeEntity(eObj);
+     */
 }
 
 void NetworkSystem::onTryAndConnect(Entity* e) {
     if (state != OFFLINE) {
-        notify(CONNECTION_SUCCESSFUL);
+        notify(SERVER_VERSION_CHECK_SUCCESS);
     } else {
         /*
         serverIP = ipBuff;
@@ -199,8 +221,10 @@ void NetworkSystem::onDisconnectFromServer(Entity* e) {
     if (state != OFFLINE && state != CONNECTING) {
         printf("disconnected from %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
         serverSocket.disconnect();
+        if (state != JUST_ONLINE) {
+            createConnectionLostWindow();
+        }
         state = OFFLINE;
-        createConnectionLostWindow();
     }
     
     if (state == CONNECTING) {
@@ -249,8 +273,8 @@ void NetworkSystem::createInfoWindow() {
     string panelTexture = "9p-grey-frame-rounded.png";
     double xPanel = cxWindow;
     double yPanel = cyWindow;
-    double wPanel = 350;
-    double hPanel = 100;
+    double wPanel = 370;
+    double hPanel = 130;
     CUILayer::Layer uiLayer = CUILayer::L1;
 
     eInfoWin = eManager->createEntity();
@@ -277,7 +301,7 @@ void NetworkSystem::createInfoWindow() {
     eInfoWin->addObservedEntity("message", eObj);
 
     /// Button
-    eObj = createRectButton(Assets::getString("LABEL-CANCEL"), 14, 30, x, y + spacing/2,
+    eObj = createRectButton(Assets::getString("LABEL-CANCEL"), 14, 30, x, y + 30,
                             sf::Color::White, sf::Color::Black, sf::Color::White, 2, STOP_CONNECTION_TRY, uiLayer);
     eObj->attachEmployer(eInfoWin);
 
@@ -371,11 +395,13 @@ void NetworkSystem::createConnectionLostWindow() {
 void NetworkSystem::onStopConnectionTry(Entity* e) {
     notify(DISCONNECT_FROM_SERVER);
     eManager->removeEntity(eInfoWin);
+    eInfoWin = nullptr;
     notify(BRING_UI_LAYER_FORWARD);
 }
 
 void NetworkSystem::onConnectionLost(Entity* e) {
     eManager->removeEntity(eInfoWin);
+    eInfoWin = nullptr;
     notify(BRING_UI_LAYER_FORWARD);
 }
 
@@ -412,6 +438,27 @@ void NetworkSystem::stop() {
 void NetworkSystem::onSetServerMessageDisplayerQuickMatch(Entity* e) {
     eQMDisplayer = e;
 }
+
+void NetworkSystem::onServerVersionCheckSuccess(Entity* e) {
+    if (!eManager->isDead(eInfoWin)) {
+        eManager->removeEntity(eInfoWin);
+        notify(BRING_UI_LAYER_FORWARD);
+        eInfoWin = nullptr;
+    }
+
+    Entity* eObj = eManager->createEntity();
+    eObj->add(new CGUIGroup("window", "multiplayer"));
+    eObj->add(new CUILayer(CUILayer::L1));
+    eObj->add(new CDraw(CDraw::GUI_00));
+    eObj->addObservedEntity("create-gui-group", eObj);
+    notify(CREATE_GUI_GROUP, eObj);
+    eManager->removeEntity(eObj);
+}
+
+void NetworkSystem::onServerVersionCheckFail(Entity* e) {
+
+}
+
 void NetworkSystem::updateGUI() {
     /*
     ImGui::Begin("Client");

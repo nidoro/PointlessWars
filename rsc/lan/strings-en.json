@@ -114,6 +114,8 @@
     "MESSAGE-CONNECTING" : "Connecting to server...",
     "MESSAGE-CONNECTION-FAILED" : "Failed to connect to server :(",
     "MESSAGE-CONNECTION-LOST" : "Connection lost :(",
+    "MESSAGE-CHECKING-VERSION" : "Checking version...",
+    "MESSAGE-DOWNLOAD-MOST-RECENT" : "      Your game is outdated!/   Download the most recent/version at pointlesswars.com",
     "MESSAGE-QUICK-MATCH-SEARCHING" : "Looking for opponent...",
     "MESSAGE-QUICK-MATCH-STARTING" : "Opponent found!",
     "MESSAGE-LEAVE-MATCH-CONFIRMATION" : "Are you sure you want to leave this match?",
