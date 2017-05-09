@@ -38,7 +38,7 @@ void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, d
     }
 
     serverPort = 8080;
-    serverIP = "52.67.40.198";
+    serverIP = "54.233.79.250";
     serverSocket.setBlocking(false);
 
     connectionTimeOut = 10;
