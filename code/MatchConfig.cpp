@@ -120,3 +120,132 @@ void MatchConfig::loadFromFile(string name) {
     }
 
 }
+
+sf::Packet& operator <<(sf::Packet& packet, const MatchConfig& match) {
+    /*
+    string name;
+    string scenario;
+    int nTurns;
+    int armySize;
+    int nUnitOpt;
+    int recruitGroup;
+    double uBlockChance;
+    double baseBlockChance;
+    int streakToWin;
+    int maxResistance;
+    int nPlayerHeroes;
+    int maxBattles;
+    bool randomArmy;
+    int maxRepicks;
+    double durationHeroPick;
+    double durationBattleActions;
+    double durationRecruitment;
+    list<CCaptain::ID> heroPool;
+    list<CUnit::ID> unitPool;
+     */
+    packet << sf::String(match.name);
+    packet << sf::String(match.scenario);
+    packet << sf::Int32(match.nTurns);
+    packet << sf::Int32(match.armySize);
+    packet << sf::Int32(match.nUnitOpt);
+    packet << sf::Int32(match.recruitGroup);
+    packet << match.uBlockChance;
+    packet << match.baseBlockChance;
+    packet << sf::Int32(match.streakToWin);
+    packet << sf::Int32(match.maxResistance);
+    packet << sf::Int32(match.nPlayerHeroes);
+    packet << sf::Int32(match.maxBattles);
+    packet << match.randomArmy;
+    packet << sf::Int32(match.maxRepicks);
+    packet << match.durationHeroPick;
+    packet << match.durationBattleActions;
+    packet << match.durationRecruitment;
+
+    packet << sf::Int32(match.heroPool.size());
+    for (auto& i : match.heroPool) {
+        packet << sf::Int32(i);
+    }
+
+    packet << sf::Int32(match.unitPool.size());
+    for (auto& i : match.unitPool) {
+        packet << sf::Int32(i);
+    }
+    
+    return packet;
+}
+
+sf::Packet& operator >>(sf::Packet& packet, MatchConfig& match) {
+    /*
+    string name;
+    string scenario;
+    int nTurns;
+    int armySize;
+    int nUnitOpt;
+    int recruitGroup;
+    double uBlockChance;
+    double baseBlockChance;
+    int streakToWin;
+    int maxResistance;
+    int nPlayerHeroes;
+    int maxBattles;
+    bool randomArmy;
+    int maxRepicks;
+    double durationHeroPick;
+    double durationBattleActions;
+    double durationRecruitment;
+    list<CCaptain::ID> heroPool;
+    list<CUnit::ID> unitPool;
+     */    
+    
+    sf::Int32 int32;
+    sf::String sValue;
+    
+    packet >> sValue; match.name = sValue;
+    packet >> sValue; match.scenario = sValue;
+    packet >> int32; match.nTurns = int32;
+    packet >> int32; match.armySize = int32;
+    packet >> int32; match.nUnitOpt = int32;
+    packet >> int32; match.recruitGroup = int32;
+    packet >> match.uBlockChance;
+    packet >> match.baseBlockChance;
+    packet >> int32; match.streakToWin = int32;
+    packet >> int32; match.maxResistance = int32;
+    packet >> int32; match.nPlayerHeroes = int32;
+    packet >> int32; match.maxBattles = int32;
+    packet >> match.randomArmy;
+    packet >> int32; match.maxRepicks = int32;
+    packet >> match.durationHeroPick;
+    packet >> match.durationBattleActions;
+    packet >> match.durationRecruitment;
+    
+    int heroPoolSize;
+    packet >> int32; heroPoolSize = int32;
+    for (int i = 0; i < heroPoolSize; ++i) {
+        packet >> int32; match.heroPool.push_back((CCaptain::ID) ((int)int32));
+    }
+
+    int unitPoolSize;
+    packet >> int32; unitPoolSize = int32;
+    for (int i = 0; i < unitPoolSize; ++i) {
+        packet >> int32; match.unitPool.push_back((CUnit::ID) ((int)int32));
+    }
+    
+    return packet;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

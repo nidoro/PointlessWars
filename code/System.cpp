@@ -6,7 +6,7 @@ CProfile System::profile;
 CUILayer::Layer System::topUILayer = CUILayer::NONE;
 std::stack<CUILayer::Layer> System::uiLayers;
 std::string System::appDataDir = helper::getAppDataDir();
-const std::string System::appVersion = "Beta";
+const std::string System::appVersion = "Alpha";
 bool System::use_random_array = false;
 
 System::System() {

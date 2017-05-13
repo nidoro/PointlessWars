@@ -15,6 +15,8 @@ NetworkSystem::NetworkSystem() {
     addSubscription(SERVER_VERSION_CHECK_SUCCESS);
     addSubscription(SERVER_VERSION_CHECK_FAIL);
     eQMDisplayer = nullptr;
+    
+    regularScenarios = {"desert.sce", "snow.sce", "woods.sce", "beach.sce"};
 }
 
 NetworkSystem::~NetworkSystem() {
@@ -93,13 +95,14 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         serverSocket.send(snd);
     } else if (id == "MATCH-FOUND") {
         war = War();
+        war.getMatchConfig().loadFromFile("Prototype");
+        if (toUpper(war.getMatchConfig().scenario) == "RANDOM") war.getMatchConfig().scenario = getRandomScenery();
         war.setMultiplayer(true);
         war.setRemotelyControled(0, true);
-        //notify(INITIALIZE_WAR);
         state = PLAYING_MATCH;
-        //startMatch();
     } else if (id == "LEAVE-MATCH") {
         //isPlayersTurn = false;
+        // @cleanup
         printf("Opponent left...\n");
     } else if (id == "STATE-RECEIVED") {
         war.setPeerReceivedState(true);
@@ -112,7 +115,7 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
     } else if (id == "SET-STATE-CONTROLER") {
         war.setRemotelyControled(0, false);
     } else if (id == "INITIALIZE-WAR") {
-        war.getMatchConfig().loadFromFile("Prototype");
+        //war.getMatchConfig().loadFromFile("Prototype");
         
         Entity* eScreen = eManager->createEntity();
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
@@ -131,6 +134,16 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         packet >> name;
         war.nicknameP1 = war.getRemotelyControled(1) ? name.operator std::string() : config.getLastNickname();
         war.nicknameP2 = war.getRemotelyControled(2) ? name.operator std::string() : config.getLastNickname();
+    } else if (id == "MATCH-CONFIG-REQUEST") {
+        sf::Packet snd;
+        snd << sf::String("MATCH-CONFIG");
+        snd << war.getMatchConfig();
+        serverSocket.send(snd);
+    } else if (id == "MATCH-CONFIG") {
+        packet >> war.getMatchConfig();
+        sf::Packet snd;
+        snd << sf::String("MATCH-CONFIG-RECEIVED");
+        serverSocket.send(snd);
     } else if (id == "CHECK-VERSION") {
         sf::String result;
         packet >> result;
@@ -157,15 +170,13 @@ void NetworkSystem::updateConnection() {
         if (connectionClock.getElapsedTime().asSeconds() >= connectionTimeOut) {
             state = OFFLINE;
             createConnectionFailedWindow();
-            //addToDebugLog("connection failed!");
         } else {
             sf::Socket::Status status = serverSocket.connect(serverIP, serverPort);
-            //printf("connecting to %s, status: %d\n", serverIP.toString().c_str(), status);
             if (status == sf::Socket::Done) {
                 state = JUST_ONLINE;
                 notify(CONNECTION_SUCCESSFUL);
+                // @cleanup
                 printf("connected to %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
-                //addToDebugLog("connected to " + serverSocket.getRemoteAddress().toString());
             }
         }
     }
@@ -210,6 +221,7 @@ void NetworkSystem::onTryAndConnect(Entity* e) {
             connectionClock.restart();
         }
         */
+        // @cleanup
         printf("connecting to %s/%d\n", serverIP.toString().c_str(), serverPort);
         state = CONNECTING;
         connectionClock.restart();
@@ -219,6 +231,7 @@ void NetworkSystem::onTryAndConnect(Entity* e) {
 
 void NetworkSystem::onDisconnectFromServer(Entity* e) {
     if (state != OFFLINE && state != CONNECTING) {
+        // @cleanup
         printf("disconnected from %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
         serverSocket.disconnect();
         if (state != JUST_ONLINE) {
@@ -484,3 +497,11 @@ void NetworkSystem::updateGUI() {
     */
 }
 
+string NetworkSystem::getRandomScenery() {
+    std::list<std::string> candidates = regularScenarios;
+    if (candidates.empty()) return "";
+    std::list<std::string>::iterator it = candidates.begin();
+    int i = randomInt(0, candidates.size()-1);
+    std::advance(it, i);
+    return *it;
+}

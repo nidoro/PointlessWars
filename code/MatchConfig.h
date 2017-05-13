@@ -35,4 +35,8 @@ class MatchConfig {
         list<CUnit::ID> unitPool;
 };
 
+sf::Packet& operator <<(sf::Packet& packet, const MatchConfig& match);
+
+sf::Packet& operator >>(sf::Packet& packet, MatchConfig& match);
+
 #endif // MATCHCONFIG_H

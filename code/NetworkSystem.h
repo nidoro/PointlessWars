@@ -17,7 +17,8 @@ class NetworkSystem : public System {
 
     private:
         enum State {FINDING_MATCH, SEARCHING_QUICK_MATCH, PLAYING_MATCH, JUST_ONLINE, OFFLINE, CONNECTING, CHECKING_VERSION};
-
+        
+        std::string getRandomScenery();
         /// EVENT HANDLERS
         void onTryAndConnect(Entity* e);
         void onDisconnectFromServer(Entity* e);
@@ -68,6 +69,8 @@ class NetworkSystem : public System {
         char* portBuff;
         int ipBuffSize;
         int portBuffSize;
+        
+        std::list<std::string> regularScenarios;
 };
 
 #endif // NETWORKSYSTEM_H
