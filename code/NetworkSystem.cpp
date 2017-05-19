@@ -15,11 +15,12 @@ NetworkSystem::NetworkSystem() {
     addSubscription(SERVER_VERSION_CHECK_SUCCESS);
     addSubscription(SERVER_VERSION_CHECK_FAIL);
     eQMDisplayer = nullptr;
-    
+
     regularScenarios = {"desert.sce", "snow.sce", "woods.sce", "beach.sce"};
 }
 
 NetworkSystem::~NetworkSystem() {
+
 }
 
 void NetworkSystem::start(EntitiesManager* eManager, sf::RenderWindow* window, double targetUPS) {
@@ -116,7 +117,7 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         war.setRemotelyControled(0, false);
     } else if (id == "INITIALIZE-WAR") {
         //war.getMatchConfig().loadFromFile("Prototype");
-        
+
         Entity* eScreen = eManager->createEntity();
         eScreen->add(new CScreen(CScreen::MATCH, CScreen::FADE_BLACK));
         eScreen->add(new CTimer(3, START_SCREEN_TRANSITION));
@@ -124,7 +125,7 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         eQMDisplayer->add(new CTypingEffect(Assets::getString("MESSAGE-QUICK-MATCH-STARTING"), 50));
         notify(LOCK_ALL_BUTTONS);
         notify(BRING_UI_LAYER_FORWARD);
-        
+
         sf::Packet snd;
         snd << sf::String("PLAYER-NAME");
         snd << sf::String(config.getLastNickname());
@@ -188,9 +189,9 @@ void NetworkSystem::onConnectionSuccessful(Entity* e) {
     packet << sf::String(appVersion);
     sendQueue.push_back(packet);
     //state = CHECKING_VERSION;
-    
+
     eInfoWin->getObservedEntity("message")->add(new CTypingEffect(Assets::getString("MESSAGE-CHECKING-VERSION"), 50));
-    
+
     /*
     eManager->removeEntity(eInfoWin);
     notify(BRING_UI_LAYER_FORWARD);
@@ -239,7 +240,7 @@ void NetworkSystem::onDisconnectFromServer(Entity* e) {
         }
         state = OFFLINE;
     }
-    
+
     if (state == CONNECTING) {
         serverSocket.disconnect();
         state = OFFLINE;

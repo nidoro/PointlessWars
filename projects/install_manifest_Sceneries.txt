@@ -1,0 +1,7 @@
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/beach.sce
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/country.sce
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/desert.sce
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/snow.sce
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/town-east.sce
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/town-west.sce
+C:/Users/Davi Doro/PW Local/PointlessWars/projects/_CPack_Packages/win32/NSIS/PW-setup-alpha-win32/Sceneries/rsc/sceneries/woods.sce
