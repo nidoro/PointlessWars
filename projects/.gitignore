@@ -1,3 +1,6 @@
 obj/
+_CPack_Packages/
+
 CMakeFiles
 *.cmake
+install_manifest_*
