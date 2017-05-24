@@ -32,6 +32,8 @@ class NetworkSystem : public System {
         void onCancelQuickMatchSearch(Entity* e);
         void onServerVersionCheckSuccess(Entity* e);
         void onServerVersionCheckFail(Entity* e);
+        void onEndMatch(Entity* e);
+        void onWindowClosed(Entity* e);
         //void onSendMessage(Entity* e);
 
         /// CALLED ON UPDATE

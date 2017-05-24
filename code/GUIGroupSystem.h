@@ -17,6 +17,7 @@ class GUIGroupSystem : public System {
         void onUpdatePlayerNicknameWithInputTextbox(Entity* e);
 
         Entity* createLeaveMatchConfirmationWindow(Entity* e);
+        Entity* createEndMultiplayerMatchWindow(Entity* e, std::string message);
         void initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc);
         void createWindowSinglePlayer(Entity* e);
         Entity* createWindowInGameMenu(Entity* e);

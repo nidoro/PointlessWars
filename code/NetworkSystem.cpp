@@ -14,6 +14,9 @@ NetworkSystem::NetworkSystem() {
     addSubscription(CANCEL_QUICK_MATCH_SEARCH);
     addSubscription(SERVER_VERSION_CHECK_SUCCESS);
     addSubscription(SERVER_VERSION_CHECK_FAIL);
+    addSubscription(END_MATCH);
+    addSubscription(WINDOW_CLOSED);
+    
     eQMDisplayer = nullptr;
 
     regularScenarios = {"desert.sce", "snow.sce", "woods.sce", "beach.sce"};
@@ -102,9 +105,16 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
         war.setRemotelyControled(0, true);
         state = PLAYING_MATCH;
     } else if (id == "LEAVE-MATCH") {
-        //isPlayersTurn = false;
-        // @cleanup
-        printf("Opponent left...\n");
+        if (war.getMultiplayer()) {
+            war.setMultiplayer(false);
+            Entity* eWindow = eManager->createEntity();
+            eWindow->add(new CUILayer(CUILayer::L4));
+            eWindow->add(new CDraw(CDraw::GUI_04));
+            eWindow->add(new CGUIGroup("window", "opponent-left"));
+            eWindow->add(new CSystem());
+            eWindow->addObservedEntity("create-gui-group", eWindow);
+            notify(CREATE_GUI_GROUP, eWindow);
+        }
     } else if (id == "STATE-RECEIVED") {
         war.setPeerReceivedState(true);
     } else if (id == "SET-P1-CONTROLER") {
@@ -155,6 +165,18 @@ void NetworkSystem::processPacket(sf::Packet& packet) {
             packet >> serverVersion;
             eInfoWin->getObservedEntity("message")->add(new CTypingEffect(Assets::getString("MESSAGE-DOWNLOAD-MOST-RECENT"), 50));
         }
+    } else if (id == "PLAYER-DISCONNECTED") {
+        if (war.getMultiplayer()) {
+            //player disconnected window
+            war.setMultiplayer(false);
+            Entity* eWindow = eManager->createEntity();
+            eWindow->add(new CUILayer(CUILayer::L4));
+            eWindow->add(new CDraw(CDraw::GUI_04));
+            eWindow->add(new CGUIGroup("window", "opponent-left"));
+            eWindow->add(new CSystem());
+            eWindow->addObservedEntity("create-gui-group", eWindow);
+            notify(CREATE_GUI_GROUP, eWindow);
+        }
     } else {
         Entity* ePacket = eManager->createEntity();
         ePacket->add(new CPacket(packetOriginal));
@@ -176,8 +198,6 @@ void NetworkSystem::updateConnection() {
             if (status == sf::Socket::Done) {
                 state = JUST_ONLINE;
                 notify(CONNECTION_SUCCESSFUL);
-                // @cleanup
-                printf("connected to %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
             }
         }
     }
@@ -222,8 +242,6 @@ void NetworkSystem::onTryAndConnect(Entity* e) {
             connectionClock.restart();
         }
         */
-        // @cleanup
-        printf("connecting to %s/%d\n", serverIP.toString().c_str(), serverPort);
         state = CONNECTING;
         connectionClock.restart();
         createInfoWindow();
@@ -232,8 +250,6 @@ void NetworkSystem::onTryAndConnect(Entity* e) {
 
 void NetworkSystem::onDisconnectFromServer(Entity* e) {
     if (state != OFFLINE && state != CONNECTING) {
-        // @cleanup
-        printf("disconnected from %s/%d\n", serverSocket.getRemoteAddress().toString().c_str(), serverPort);
         serverSocket.disconnect();
         if (state != JUST_ONLINE) {
             createConnectionLostWindow();
@@ -473,6 +489,18 @@ void NetworkSystem::onServerVersionCheckFail(Entity* e) {
 
 }
 
+void NetworkSystem::onEndMatch(Entity* e) {
+    if (!war.getMultiplayer()) return;
+    
+    sf::Packet pkt;
+    pkt << sf::String("LEAVE-MATCH");
+    sendQueue.push_back(pkt);
+}
+
+void NetworkSystem::onWindowClosed(Entity* e) {
+    notify(DISCONNECT_FROM_SERVER);
+}
+
 void NetworkSystem::updateGUI() {
     /*
     ImGui::Begin("Client");
@@ -506,3 +534,5 @@ string NetworkSystem::getRandomScenery() {
     std::advance(it, i);
     return *it;
 }
+
+

@@ -119,6 +119,7 @@
     "MESSAGE-QUICK-MATCH-SEARCHING" : "Looking for opponent...",
     "MESSAGE-QUICK-MATCH-STARTING" : "Opponent found!",
     "MESSAGE-LEAVE-MATCH-CONFIRMATION" : "Are you sure you want to leave this match?",
+    "MESSAGE-OPPONENT-LEFT" : "Opponent left!",
     "ARMY-SIZE-WARNING-LESS" : "If you do not recruit 50 units,/your army will be filled with randomly",
     "ARMY-SIZE-WARNING-MORE" : "You cannot recruit more than 50 units!",
     "NAME-UNIT-00" : "Arbalest",

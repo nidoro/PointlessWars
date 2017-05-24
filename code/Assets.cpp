@@ -372,7 +372,7 @@ void Assets::createCaptains() {
     captains[6].uniqueName = "CAESER";
     captains[6].actions.push_back(232);
     captains[6].actions.push_back(221);
-    //HERO-07	TÃ¯Â¿Â½rrega
+    //HERO-07	TÃƒÂ¯Ã‚Â¿Ã‚Â½rrega
     captains[7].uniqueName = "TARREGA";
     captains[7].actions.push_back(213);
     captains[7].actions.push_back(235);
@@ -1628,6 +1628,7 @@ void Assets::readMusicMap(ifstream& file) {
 void Assets::readFontsMap(ifstream& file) {
     int nEntries;
     file.read(reinterpret_cast<char*> (&nEntries), sizeof (&nEntries));
+    
 
     fonts.clear();
     for (int i = 0; i < nEntries; i++) {

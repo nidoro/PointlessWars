@@ -50,6 +50,9 @@ void GUIGroupSystem::onCreateGUIGroup(Entity* e) {
     } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "leave-match-confirmation") {
         createLeaveMatchConfirmationWindow(eGUI);
         notify(BRING_UI_LAYER_FORWARD, eGUI);
+    } else if (eGUI->get<CGUIGroup>()->groupType == "window" && eGUI->get<CGUIGroup>()->groupID == "opponent-left") {
+        createEndMultiplayerMatchWindow(eGUI, Assets::getString("MESSAGE-OPPONENT-LEFT"));
+        notify(BRING_UI_LAYER_FORWARD, eGUI);
     } else if (eGUI->get<CGUIGroup>()->groupType == "window-page") {
 
     }
@@ -593,6 +596,59 @@ Entity* GUIGroupSystem::createLeaveMatchConfirmationWindow(Entity* e) {
     eObj->attachEmployer(eInfoWin);
     eObj->addObservedEntity("remove-gui-group", eInfoWin);
     eObj->get<CButtonTrigger>()->msgs = {REMOVE_GUI_GROUP};
+
+    return eInfoWin;
+}
+
+Entity* GUIGroupSystem::createEndMultiplayerMatchWindow(Entity* e, std::string message) {
+    string panelTexture = "9p-grey-frame-rounded.png";
+    double xPanel = cxWindow;
+    double yPanel = cyWindow;
+    double wPanel = 450;
+    double hPanel = 100;
+    CUILayer::Layer uiLayer = e->get<CUILayer>()->layer;
+
+    Entity* eInfoWin;
+    eInfoWin = eManager->createEntity();
+    eInfoWin->add(new CPosition(xPanel, yPanel));
+    eInfoWin->add(new CTexture(panelTexture));
+    eInfoWin->add(new CDimensions(wPanel, hPanel));
+    eInfoWin->add(new CDraw(e->get<CDraw>()->tag));
+    eInfoWin->add(new CUILayer(e->get<CUILayer>()->layer));
+    eInfoWin->add(new CGUIGroup(*e->get<CGUIGroup>()));
+
+    Entity* eObj;
+    double x, y;
+    x = xPanel;
+    y = yPanel;
+    double spacing = 30;
+    double hSpacing = 100;
+
+    /// Dark background
+    eObj = eManager->createEntity();
+    eObj->add(new CRectShape(wWindow, hWindow, sf::Color(0,0,0,100)));
+    eObj->add(new CDraw((CDraw::Tag)((int)eInfoWin->get<CDraw>()->tag - 1)));
+    eObj->add(new CPosition(cxWindow, cyWindow));
+    eObj->get<CDraw>()->alpha = 150;
+    eObj->attachEmployer(eInfoWin);
+
+    /// Message
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y - spacing/2));
+    eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::White));
+    eObj->add(new CDraw((CDraw::Tag)((int)eInfoWin->get<CDraw>()->tag + 1)));
+    eObj->add(new CTypingEffect(message, 40));
+    eObj->attachEmployer(eInfoWin);
+    eInfoWin->addObservedEntity("message", eObj);
+
+    /// Button OK
+    eObj = createRectButton(Assets::getString("LABEL-OK"), 14, 30, x, y + spacing/2,
+                            sf::Color::White, sf::Color::Black, sf::Color::White, 2, EMPTY_MESSAGE, uiLayer);
+    eObj->get<CDraw>()->tag = (CDraw::Tag)((int)eInfoWin->get<CDraw>()->tag + 1);
+    eObj->attachEmployer(eInfoWin);
+    eObj->add(new CScreen(CScreen::MAIN_MENU_NO_ANIMATION, CScreen::FADE_BLACK));
+    eObj->addObservedEntity("remove-gui-group", eInfoWin);
+    eObj->get<CButtonTrigger>()->msgs = {REMOVE_GUI_GROUP, END_MATCH, START_SCREEN_TRANSITION};
 
     return eInfoWin;
 }
