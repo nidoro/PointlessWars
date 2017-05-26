@@ -15,7 +15,7 @@ void TextboxSystem::update() {
         Entity* e = *i;
         if (eManager->isDead(e)) continue;
         onTextUpdated(*i);
-        if (e->has(Component::TYPING_EFFECT)) {
+        if (e->has(Component::TYPING_EFFECT) && e->has(Component::DRAW) && !e->get<CDraw>()->isHidden) {
             if (e->get<CTypingEffect>()->fullText.empty()) {
                 e->remove(Component::TYPING_EFFECT);
                 eManager->addModified(e);

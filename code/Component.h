@@ -151,6 +151,7 @@ struct Component {
             STATE_DEPENDENT_BUTTON,
             COMPOUND_BUTTON,
             TURN_TIMER,
+            ANIMATION_TRIGGER,
             NUM_COMPONENTS
         };
 
@@ -799,6 +800,26 @@ struct CUnit : public Component {
 
     bool dead;
     int armyID;
+};
+
+struct CTypingEffect : public Component {
+    static Type getType() {
+        return TYPING_EFFECT;
+    }
+    
+    CTypingEffect() {
+    }
+    
+    CTypingEffect(string t, double r = 5) {
+        fullText = t;
+        rate = r;
+        iNextChar = 0;
+    }
+    int iNextChar;
+    string fullText;
+    string text;
+    double rate;
+    sf::Clock clock;
 };
 
 struct CCaptain : public Component {
@@ -1913,12 +1934,15 @@ struct CSound : public Component {
 struct AnimationNode {
     enum Type {A_SPRITE_ANIMATION, A_FADE, A_DESTROY, A_MOVE, A_TELEPORT,
                A_VARIABLE, A_SPEAK, A_SHOOT, A_SOUND, A_ZOOM, A_NOTHING,
-               A_ADD_COMPONENT, A_REMOVE_COMPONENT
+               A_ADD_COMPONENT, A_REMOVE_COMPONENT, A_OWCTextbox2, A_OWCTypingEffect
               };
-    AnimationNode() {}
+    AnimationNode() {
+        deleteAfterTrigger = true;
+    }
     virtual ~AnimationNode() {}
     double triggerTime;
     Type type;
+    bool deleteAfterTrigger;
 };
 
 struct ASpriteAnimation : public AnimationNode {
@@ -2091,6 +2115,26 @@ struct AZoom : public AnimationNode {
     double dx, dy;
     double wTarget;
     double hTarget;
+};
+
+struct AOWCTextbox2 : public AnimationNode {
+    AOWCTextbox2(double trigger, CTextbox2 component) {
+        type = A_OWCTextbox2;
+        triggerTime = trigger;
+        this->component = component;
+    }
+
+    CTextbox2 component;
+};
+
+struct AOWCTypingEffect : public AnimationNode {
+    AOWCTypingEffect(double trigger, CTypingEffect component) {
+        type = A_OWCTypingEffect;
+        triggerTime = trigger;
+        this->component = component;
+    }
+
+    CTypingEffect component;
 };
 
 struct CActor : public Component {
@@ -2519,22 +2563,6 @@ struct CParticleEmmiter : public Component {
     bool on;
 };
 
-struct CTypingEffect : public Component {
-    static Type getType() {
-        return TYPING_EFFECT;
-    }
-    CTypingEffect(string t, double r = 5) {
-        fullText = t;
-        rate = r;
-        iNextChar = 0;
-    }
-    int iNextChar;
-    string fullText;
-    string text;
-    double rate;
-    sf::Clock clock;
-};
-
 struct CToggleButton : public Component {
     static Type getType() {
         return TOGGLE_BUTTON;
@@ -2768,6 +2796,14 @@ struct CTurnTimer : public Component {
     
     float remaining = 0.f;
     bool isOn = true;
+};
+
+struct CAnimationTrigger : public Component {
+    static Type getType() {
+        return ANIMATION_TRIGGER;
+    }
+    
+    std::map<std::string, list<AnimationNode*> > timelines;
 };
 
 #endif // COMPONENT_H

@@ -9,6 +9,7 @@ ScriptedAnimation::ScriptedAnimation() {
     addSubscription(PLAY_ACTION);
     addSubscription(ADD_ACTOR);
     addSubscription(NEW_SCREEN);
+    addSubscription(TRIGGER_SCRIPTED_ANIMATIONS);
 
     addRequirement(Component::ACTOR);
 
@@ -243,6 +244,12 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node) {
     } else if (node->type == AnimationNode::A_SHOOT) {
         AShoot* nd = static_cast<AShoot*>(node);
         createProjectile(e, e->get<CPosition>()->x, e->get<CPosition>()->y, nd->xTarget, nd->yTarget, nd->object);
+    } else if (node->type == AnimationNode::A_OWCTextbox2) {
+        AOWCTextbox2* nd = static_cast<AOWCTextbox2*>(node);
+        e->add(new CTextbox2(nd->component));
+    } else if (node->type == AnimationNode::A_OWCTypingEffect) {
+        AOWCTypingEffect* nd = static_cast<AOWCTypingEffect*>(node);
+        e->add(new CTypingEffect(nd->component));
     } else if (node->type == AnimationNode::A_SOUND) {
         ASound* nd = static_cast<ASound*>(node);
         Entity* eSound = eManager->createEntity();
@@ -1817,7 +1824,7 @@ void ScriptedAnimation::createProjectile(Entity* e, double x0, double y0, double
 void ScriptedAnimation::popFrontAnimationNode(Entity* e) {
     if (e->get<CActor>()->timeline.empty()) return;
     AnimationNode* a = e->get<CActor>()->timeline.front();
-    if (a != nullptr) delete a;
+    if (a && a->deleteAfterTrigger) delete a;
     e->get<CActor>()->timeline.pop_front();
 }
 
@@ -5641,4 +5648,11 @@ int ScriptedAnimation::getDeathCount(ActionOutcome& outcome) {
         }
     }
     return result;
+}
+
+void ScriptedAnimation::onTriggerScriptedAnimations(Entity* e) {
+    for (auto& p : e->get<CAnimationTrigger>()->timelines) {
+        Entity* eActor = e->getObservedEntity(p.first);
+        eActor->get<CActor>()->timeline = p.second;
+    }
 }

@@ -479,6 +479,62 @@ void MainMenuSystem::createMenu(bool animated) {
     eGUI->add(new CDraw(CDraw::GUI_00));
 
     eObj->addObservedEntity("create-gui-group", eGUI);
+    
+    /// @note: priest callout in
+    xRel = 0.1401;
+    yRel = 0.7032;
+    wButton = 32;
+    hButton = 32;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xRel*1280, yRel*720));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger());
+    eObj->add(new CAnimationTrigger());
+    eObj->get<CButtonState>()->gainedFocusMessage = TRIGGER_SCRIPTED_ANIMATIONS;
+    
+    Entity* eCallout = eManager->createEntity();
+    double yOff = -35;
+    CTextbox2 boxAux("Seek, and ye shall find!", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black);
+    eCallout->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black));
+    eCallout->add(new CRectShape(boxAux.content.getLocalBounds().width + 5, 20, sf::Color::White, 1));
+    eCallout->add(new CPosition(xRel*1280, yRel*720 + yOff));
+    eCallout->add(new CActor());
+    eCallout->add(new CDraw(CDraw::WORLD_3, true, 255.f));
+    eCallout->add(new CTypingEffect("Seek, and ye shall find!", 40));
+    
+    eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AVariable(0.0, AVariable::HIDDEN, false));
+    eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AOWCTextbox2(0.0, CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black)));
+    eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AOWCTypingEffect(0.0, CTypingEffect("Seek, and ye shall find!", 40)));
+    eObj->addObservedEntity("trigger-1", eCallout);
+    for (auto& p : eObj->get<CAnimationTrigger>()->timelines) {
+        for (auto& node : p.second) {
+            node->deleteAfterTrigger = false;
+        }
+    }
+    
+    /// @note: priest callout out
+    xRel = 0.1401;
+    yRel = 0.7032;
+    wButton = 32;
+    hButton = 32;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xRel*1280, yRel*720));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTrigger());
+    eObj->add(new CAnimationTrigger());
+    eObj->get<CButtonState>()->lostFocusMessage = TRIGGER_SCRIPTED_ANIMATIONS;
+    
+    eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AVariable(0.0, AVariable::HIDDEN, true));
+    //eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new ARemoveComponent(0.0, CTextbox2::getType()));
+    //eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new ARemoveComponent(0.0, CTypingEffect::getType()));
+    eObj->addObservedEntity("trigger-1", eCallout);
+    for (auto& p : eObj->get<CAnimationTrigger>()->timelines) {
+        for (auto& node : p.second) {
+            node->deleteAfterTrigger = false;
+        }
+    }
 }
 
 Entity* MainMenuSystem::createButton(string label, double w, double h, double x, double y, Message m) {

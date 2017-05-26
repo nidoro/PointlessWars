@@ -213,6 +213,7 @@ class System {
         virtual void onPlayerTurnTimeExpired(Entity* e) {}
         virtual void onServerVersionCheckSuccess(Entity* e) {}
         virtual void onServerVersionCheckFail(Entity* e) {}
+        virtual void onTriggerScriptedAnimations(Entity* e) {}
 
         void subscribe(Message m) {
             addObserver(this, m);

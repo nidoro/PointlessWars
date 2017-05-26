@@ -513,6 +513,9 @@ void System::onNotify(Message m, Entity* e) {
     case SERVER_VERSION_CHECK_FAIL:
         onServerVersionCheckFail(e);
         break;
+    case TRIGGER_SCRIPTED_ANIMATIONS:
+        onTriggerScriptedAnimations(e);
+        break;
     default:
         break;
     }
