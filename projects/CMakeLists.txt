@@ -246,17 +246,6 @@ set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/../rsc/images/icons\\\\banner-150-57
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/../win32/icon-v3.ico")
 #set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/hw.ico")
 
-
-#
-# Set the programs displayed under the Start menu shortcut
-# We do not use CPACK_PACKAGE_EXECUTABLES because it expects the binaries to be in a
-# directory named "bin" (CMake bug tracker ID: 0007829).
-#
-#set(CPACK_NSIS_MENU_LINKS "programs\\hello" "Hello"
-#                          "programs\\world" "World"
-#                          ${CT_DATA_FILE_DIR} "CT Data"
-#                          "data\\example.pdf" "documentation")
-
 # Create the desktop link at installation
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "\
   SetOutPath '$INSTDIR\\\\bin\\\\win32'\n\
