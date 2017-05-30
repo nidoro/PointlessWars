@@ -554,7 +554,7 @@ void ActionSystem::preprocessArmyComposition(ActionOutcome& outcome, Entity* e) 
     map<CUnit::ID, CUnit>& units = CUnit::Map;
     outcome.armyComposition.clear();
 
-    // @cleanup: temporary way of avoiding random composition
+    // @hack: temporary way of avoiding random composition
 #if 1
     outcome.armyComposition = e->get<CArmy>()->unitCount;
     int nUnits = 0;
@@ -723,8 +723,8 @@ void ActionSystem::preprocessChangeFormation(ActionOutcome& outcome, Entity* e) 
 
 void ActionSystem::preprocessHex(ActionOutcome& outcome, Entity* e) {
     double chance = 0.5;
-    // @cleanup: temporary way of avoiding randomness
-#if 0
+    // @hack: temporary way of avoiding randomness
+#if 1
     if (randomDouble(0, 1) <= chance) outcome.bValue = true;
     else outcome.bValue = false;
 #else

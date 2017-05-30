@@ -143,10 +143,11 @@ void EntitiesManager::clearActorScript(Entity* e) {
     }
     if (e->has(Component::ANIMATION_TRIGGER)) {
         for (auto& p : e->get<CAnimationTrigger>()->timelines) {
-            for (auto& node : p.second) {
+            for (AnimationNode* node : p.second) {
                 delete node;
             }
         }
+        e->get<CAnimationTrigger>()->timelines.clear();
     }
 }
 

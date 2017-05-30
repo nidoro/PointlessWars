@@ -527,8 +527,6 @@ void MainMenuSystem::createMenu(bool animated) {
     eObj->get<CButtonState>()->lostFocusMessage = TRIGGER_SCRIPTED_ANIMATIONS;
     
     eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AVariable(0.0, AVariable::HIDDEN, true));
-    //eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new ARemoveComponent(0.0, CTextbox2::getType()));
-    //eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new ARemoveComponent(0.0, CTypingEffect::getType()));
     eObj->addObservedEntity("trigger-1", eCallout);
     for (auto& p : eObj->get<CAnimationTrigger>()->timelines) {
         for (auto& node : p.second) {

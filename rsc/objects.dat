@@ -1,8 +1,8 @@
 %ID				DEFAULT_ANIMATION				CLICK_ANIMATION							CLICK_SOUND
-chicken			chicken-idle.png				chicken-singing.png						cocorico.wav
+chicken			chicken-idle.png				chicken-singing.png						cocorico.ogg
 agua            agua.png                        agua.png                                empty.wav
 coisas          coisas.png                      coisas.png                              empty.wav
-vaca            vaca.png                        vaca-mugindo.png                        moo.wav
+vaca            vaca.png                        vaca-mugindo.png                        moo.ogg
 flag-blue       flag-blue.png                   flag-blue.png                           empty.wav
 flag-red        flag-red.png                    flag-red.png                            empty.wav
 casa-d          casa-default.png                casa_a.png                              empty.wav
@@ -11,33 +11,33 @@ pescador        pescador.png                    pescador.png                    
 
 %country
 crow            obj-crow.png                    obj-crow.png                            empty.wav
-pig             obj-pig-walk.png                obj-pig-grunt.png                       sfx-pig.wav
+pig             obj-pig-walk.png                obj-pig-grunt.png                       sfx-pig.ogg
 flagb           obj-flag-blue.png               obj-flag-blue.png                       empty.wav
 flagr           obj-flag-red.png                obj-flag-red.png                        empty.wav
-house           obj-door.png                    obj-door-walk.png                       sfx-door-slam.wav
+house           obj-door.png                    obj-door-walk.png                       sfx-door-slam.ogg
 
 %desert
-house-02        obj-door-02.png                    obj-hello.png                           sfx-door-bell.wav
+house-02        obj-door-02.png                    obj-hello.png                        sfx-door-bell.ogg
 merchant        obj-merchant.png                obj-merchant.png                        empty.wav
-charmer         obj-sleep.png                   obj-enchant.png                         sfx-enchant.wav
+charmer         obj-sleep.png                   obj-enchant.png                         sfx-enchant.ogg
 river1          obj-water-l.png                 obj-water-l.png                         empty.wav
 river2          obj-water-r.png                 obj-water-r.png                         empty.wav
 bridge          obj-bridge.png                  obj-bridge.png                          empty.wav
-house2          obj-door2.png                   obj-hello2.png                          sfx-door-bell.wav
+house2          obj-door2.png                   obj-hello2.png                          sfx-door-bell.ogg
 
 % NEW ONES
 % Woods
 water-01    						water-01.png            		water-01.png                	empty.wav
 woods-static-objects-01      		woods-static-objects-01.png     woods-static-objects-01.png 	empty.wav
-cow        							cow-idle.png           			cow-mooing.png            		moo.wav
+cow        							cow-idle.png           			cow-mooing.png            		moo.ogg
 flag-blue-01   						flag-blue-01.png          		flag-blue-01.png               	empty.wav
 flag-red-01    						flag-red-01.png           		flag-red-01.png                	empty.wav
 flag-waving-blue      				flag-waving-default.png       	flag-waving-blue.png            empty.wav
 flag-waving-red     				flag-waving-default.png     	flag-waving-red.png             empty.wav
-fisherman-01    						fisherman-01.png           		fisherman-01.png                	empty.wav                   
+fisherman-01    					fisherman-01.png           		fisherman-01.png                empty.wav                   
 
 sea             obj-sea.png                     obj-sea.png                             empty.wav
-house-01           obj-hut.png                     obj-party-house.png                     dub.wav
+house-01        obj-hut.png                     obj-party-house.png                     dub.ogg
 merchant        obj-merchant.png                obj-merchant.png                        empty.wav
 deck            obj-deck.png                    obj-deck.png                            empty.wav
 
@@ -48,10 +48,10 @@ unit2           unit2.png                       unit2.png                       
 unit3           unit3.png                       unit3.png                               empty.wav
 unit4           unit4.png                       unit4.png                               empty.wav
 unit5           unit5.png                       unit5.png                               empty.wav
-coisas-2          coisas-2.png                      coisas-2.png                              empty.wav
+coisas-2        coisas-2.png                    coisas-2.png     l                      empty.wav
 
 
-chicken		chicken-idle.png		chicken-singing.png			cocorico.wav
+chicken		    chicken-idle.png		        chicken-singing.png			            cocorico.ogg
 boat1           boat1.png                       boat1.png                               empty.wav
 boat2           boat2.png                       boat2.png                               empty.wav
 castle          castle.png                      castle.png                              empty.wav
@@ -75,7 +75,7 @@ civita15        civita15.png                    civita15.png                    
 civita16        civita16.png                    civita16.png                            empty.wav
 dock            dock.png                        dock.png                                empty.wav
 fence           fence.png                       fence.png                               empty.wav
-fountain        fountain.png                    fountain.png                             empty.wav
+fountain        fountain.png                    fountain.png                            empty.wav
 guardian        guardian.png                    guardian.png                            empty.wav
 king            king.png                        king.png                                empty.wav
 market          market.png                      market.png                              empty.wav
@@ -101,10 +101,10 @@ blacksmith      blacksmith.png                  blacksmith.png                  
 training-field  training-field.png              training-field.png                      empty.wav
 
 %snow
-dog             obj-dog.png                     obj-dog-woof.png                        sfx-dog.wav
+dog             obj-dog.png                     obj-dog-woof.png                        sfx-dog.ogg
 snowflag-blue   obj-snowflag-blue.png           obj-snowflag-blue.png                   empty.wav
 snowflag-red    obj-snowflag-red.png            obj-snowflag-red.png                    empty.wav
-light           obj-light-off.png               obj-light-on.png                        sfx-lighter.wav
+light           obj-light-off.png               obj-light-on.png                        sfx-lighter.ogg
 snowman         obj-snowman-idle.png            obj-snowman-nose.png                    empty.wav
-s-tree          obj-tree.png                    obj-snow-fall.png                       sfx-snow.wav
+s-tree          obj-tree.png                    obj-snow-fall.png                       sfx-snow.ogg
 

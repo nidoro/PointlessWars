@@ -33,6 +33,9 @@ class MatchConfig {
         double durationRecruitment;
         list<CCaptain::ID> heroPool;
         list<CUnit::ID> unitPool;
+        
+        static std::list<CCaptain::ID> allowedHeroes;
+        static std::list<CUnit::ID> allowedUnits;
 };
 
 sf::Packet& operator <<(sf::Packet& packet, const MatchConfig& match);

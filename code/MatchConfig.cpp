@@ -1,5 +1,8 @@
 #include "MatchConfig.h"
 
+std::list<CCaptain::ID> MatchConfig::allowedHeroes = {2, 3, 4, 5, 8, 10};
+std::list<CUnit::ID> MatchConfig::allowedUnits = {0, 1, 4, 5, 8, 9, 12, 13};
+
 MatchConfig::MatchConfig() {
     name = "Prototype";
     scenario = "scenario-00";
@@ -111,12 +114,16 @@ void MatchConfig::loadFromFile(string name) {
 
     stringstream fileUnitPool(element->FirstChildElement("UnitPool")->GetText());
     while(fileUnitPool >> sValue) {
-        unitPool.push_back(str2int(sValue));
+        if (contains(allowedUnits, str2int(sValue))) {
+            unitPool.push_back(str2int(sValue));
+        }
     }
 
     stringstream fileHeroPool(element->FirstChildElement("HeroPool")->GetText());
     while(fileHeroPool >> sValue) {
-        heroPool.push_back(str2int(sValue));
+        if (contains(allowedHeroes, str2int(sValue))) {
+            heroPool.push_back(str2int(sValue));
+        }
     }
 
 }
@@ -163,12 +170,16 @@ sf::Packet& operator <<(sf::Packet& packet, const MatchConfig& match) {
 
     packet << sf::Int32(match.heroPool.size());
     for (auto& i : match.heroPool) {
-        packet << sf::Int32(i);
+        if (contains(MatchConfig::allowedHeroes, i)) {
+            packet << sf::Int32(i);
+        }
     }
 
     packet << sf::Int32(match.unitPool.size());
     for (auto& i : match.unitPool) {
-        packet << sf::Int32(i);
+        if (contains(MatchConfig::allowedUnits, i)) {
+            packet << sf::Int32(i);
+        }
     }
     
     return packet;
@@ -221,13 +232,19 @@ sf::Packet& operator >>(sf::Packet& packet, MatchConfig& match) {
     int heroPoolSize;
     packet >> int32; heroPoolSize = int32;
     for (int i = 0; i < heroPoolSize; ++i) {
-        packet >> int32; match.heroPool.push_back((CCaptain::ID) ((int)int32));
+        packet >> int32; 
+        if (contains(MatchConfig::allowedHeroes, int32)) {
+            match.heroPool.push_back((CCaptain::ID) ((int)int32));
+        }
     }
 
     int unitPoolSize;
     packet >> int32; unitPoolSize = int32;
     for (int i = 0; i < unitPoolSize; ++i) {
-        packet >> int32; match.unitPool.push_back((CUnit::ID) ((int)int32));
+        packet >> int32; 
+        if (contains(MatchConfig::allowedUnits, int32)) {
+            match.unitPool.push_back((CUnit::ID) ((int)int32));
+        }
     }
     
     return packet;

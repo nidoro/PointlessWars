@@ -28,9 +28,6 @@ void ScriptedAnimation::onTriggerObjectAnimation(Entity* e) {
     double a1Duration = Assets::getAnimation(a1).duration;
     e->get<CActor>()->timeline.push_back(new ASpriteAnimation(0.0, a1, e->get<CScenarioObject>()->clickSound));
     e->get<CActor>()->timeline.push_back(new ASpriteAnimation(a1Duration, a2));
-    
-    // @cleanup
-    //scriptSmallFightSmokeCloud(0.5, 4.5);
 }
 
 void ScriptedAnimation::update() {
@@ -202,8 +199,6 @@ void ScriptedAnimation::triggerNode(Entity* e, AnimationNode* node) {
             if (e->has(Component::UNIT)) e->get<CUnit>()->effects.erase(e->get<CUnit>()->effects.find(nd->iValue));
             else e->get<COwner>()->e->get<CArmy>()->armyEffects.erase(e->get<COwner>()->e->get<CArmy>()->armyEffects.find(nd->iValue));
             break;
-        // @cleanup:
-        // case AVariable::WIN: e->get<COwner>()->e->get<CArmy>()->win = nd->bValue; break;
         case AVariable::REPLACE_HERO:
             e->get<COwner>()->e->get<CArmy>()->captain = e->getObservedEntity("ReplaceHero");
             break;
@@ -273,10 +268,6 @@ void ScriptedAnimation::onInitializeWar(Entity* e) {
     midSpace = 130;
     totalWalk = cxWindow - midSpace/2 - x0Formation - xOffCaptain;
     wWalkStep = totalWalk/war.getMatchConfig().nTurns;
-    // @cleanup:
-#if 0
-    scriptVictoryAnimation(1.0);
-#endif
 }
 
 void ScriptedAnimation::onSceneStarted(Entity* e) {
@@ -4898,8 +4889,6 @@ void ScriptedAnimation::scriptEnslave(ActionOutcome& outcome, Entity* eActor) {
 }
 
 void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
-    // @cleanup
-#if 0
     Entity* eWinner = war.getPlayer(outcome.idWinner);
     war.setActorID(outcome.idWinner);
     bool flip = false;
@@ -4930,10 +4919,6 @@ void ScriptedAnimation::scriptThrowCoin(ActionOutcome& outcome, Entity* e) {
     eTimer->add(new CActor());
     eTimer->get<CActor>()->timeline.push_back(new ADestroy(5));
     addActor(eTimer);
-#else
-    war.setActorID(1);
-    war.getPlayer1()->get<CArmy>()->hasCoin = true;
-#endif
 }
 
 void ScriptedAnimation::scriptDebuffFire(ActionOutcome& outcome, Entity* e) {
@@ -5651,6 +5636,8 @@ int ScriptedAnimation::getDeathCount(ActionOutcome& outcome) {
 }
 
 void ScriptedAnimation::onTriggerScriptedAnimations(Entity* e) {
+    // @hack 
+    if (e->has(Component::BUTTON_STATE) && e->get<CButtonState>()->state == CButtonState::LOCKED) return;
     for (auto& p : e->get<CAnimationTrigger>()->timelines) {
         Entity* eActor = e->getObservedEntity(p.first);
         eActor->get<CActor>()->timeline = p.second;
