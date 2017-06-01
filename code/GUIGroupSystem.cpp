@@ -175,7 +175,7 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e) {
 
     /// Tutorial
     y += spcButton/1.5;
-    eObj = createRectButton(Assets::getString("LABEL-TUTORIAL"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer);
+    eObj = createRectButton(Assets::getString("LABEL-TUTORIAL"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer, true);
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
 
     /// Quick Match
@@ -189,17 +189,17 @@ void GUIGroupSystem::createWindowSinglePlayer(Entity* e) {
 
     /// Campaign
     y += spcButton;
-    eObj = createRectButton(Assets::getString("LABEL-CAMPAIGN"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer);
+    eObj = createRectButton(Assets::getString("LABEL-CAMPAIGN"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer, true);
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
 
     /// Arena
     y += spcButton;
-    eObj = createRectButton(Assets::getString("LABEL-ARENA"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer);
+    eObj = createRectButton(Assets::getString("LABEL-ARENA"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer, true);
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
 
     /// Custom
     y += spcButton;
-    eObj = createRectButton(Assets::getString("LABEL-CUSTOM-GAME"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer);
+    eObj = createRectButton(Assets::getString("LABEL-CUSTOM-GAME"), 18, 40, x, y, sf::Color::White, darkBlue, sf::Color::White, 2, EMPTY_MESSAGE, eGUI->get<CUILayer>()->layer, true);
     eObj->attachEmployer(eGUI->getObservedEntity("page-first"));
 
     /// Button Back (hidden)
@@ -1539,29 +1539,41 @@ void GUIGroupSystem::showPage(Entity* e) {
 }
 
 
-Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h, double x, double y, sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer) {
+Entity* GUIGroupSystem::createRectButton(string label, double fontSize, double h, double x, double y, sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer, bool unavailable) {
     sf::RectangleShape rect;
     double w = 0;
     double sideSpacing = 10;
-    Entity* e = eManager->createEntity();
-    e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), fontSize, textColor));
-    w = e->get<CTextbox2>()->content.getLocalBounds().width + 2*sideSpacing;
-    rect.setOutlineColor(outColor);
-    rect.setOutlineThickness(outThickness);
-    rect.setPosition(x, y);
-    rect.setSize(sf::Vector2f(w, h));
-    rect.setFillColor(fillColor);
-    e->add(new CRectShape(sf::RectangleShape()));
-    e->add(new CPosition(x, y));
-    e->add(new CDimensions(w, h));
-    e->add(new CButtonHitbox(w, h));
-    e->add(new CButtonState());
-    e->add(new CButtonTrigger(m));
-    e->add(new CRectButton(sf::RectangleShape(), rect, rect));
-    e->add(new CDraw(CDraw::GUI_01));
-    e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
-    e->add(new CUILayer(UILayer));
-    return e;
+    // @hack: unavailable options
+    if (unavailable) {
+        sf::Color grey(155, 155, 155);
+        Entity* e = eManager->createEntity();
+        e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), fontSize, grey));
+        w = e->get<CTextbox2>()->content.getLocalBounds().width + 2*sideSpacing;
+        e->add(new CPosition(x, y));
+        e->add(new CDimensions(w, h));
+        e->add(new CDraw(CDraw::GUI_01));
+        return e;
+    } else {
+        Entity* e = eManager->createEntity();
+        e->add(new CTextbox2(label, Assets::getFont(Assets::getPrimaryFont()), fontSize, textColor));
+        w = e->get<CTextbox2>()->content.getLocalBounds().width + 2*sideSpacing;
+        rect.setOutlineColor(outColor);
+        rect.setOutlineThickness(outThickness);
+        rect.setPosition(x, y);
+        rect.setSize(sf::Vector2f(w, h));
+        rect.setFillColor(fillColor);
+        e->add(new CRectShape(sf::RectangleShape()));
+        e->add(new CPosition(x, y));
+        e->add(new CDimensions(w, h));
+        e->add(new CButtonHitbox(w, h));
+        e->add(new CButtonState());
+        e->add(new CButtonTrigger(m));
+        e->add(new CRectButton(sf::RectangleShape(), rect, rect));
+        e->add(new CDraw(CDraw::GUI_01));
+        e->add(new CButtonSounds("click2.ogg", "rollover2.ogg"));
+        e->add(new CUILayer(UILayer));
+        return e;
+    }
 }
 
 void GUIGroupSystem::onDisconnectFromServer(Entity* e) {

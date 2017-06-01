@@ -20,6 +20,7 @@ void TurnTimerSystem::update() {
 }
 
 void TurnTimerSystem::createTimer(float length) {
+    // @note: I don't want to show the timer yet, it looks stupid
     if (length <= 0.f) return;
     
     float xPosition = cxWindow;
@@ -28,12 +29,13 @@ void TurnTimerSystem::createTimer(float length) {
     
     Entity* e = eManager->createEntity();
     e->add(new CPosition(xPosition, yPosition));
-    e->add(new CDraw(CDraw::GUI3, true, 255.f));
+    //e->add(new CDraw(CDraw::GUI3, true, 255.f));
     e->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 14, sf::Color::Black));
     e->add(new CTurnTimer(length+1));
     e->add(new CActor());
-    e->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::HIDDEN, false));
+    //e->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::HIDDEN, false));
     
+    /*
     Entity* ePoof = eManager->createEntity();
     ePoof->attachEmployer(e);
     ePoof->add(new CPosition(xPosition, yPosition));
@@ -42,10 +44,11 @@ void TurnTimerSystem::createTimer(float length) {
     ePoof->add(new CActor());
     ePoof->get<CActor>()->addNode(new ASpriteAnimation(timeOfAppearance, "poof-02.png"));
     ePoof->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
+     */
     
     Entity* eObj = nullptr;
     sf::RectangleShape rect;
-
+/*
     // @note: red particle emitter
     rect.setSize(sf::Vector2f(4, 4));
     rect.setFillColor(sf::Color(255, 0, 0));
@@ -65,6 +68,7 @@ void TurnTimerSystem::createTimer(float length) {
     eObj->add(new CParticleEmmiter(30, rect, 0.1, 70, 90, 0, 360, 10));
     eObj->add(new CActor());
     eObj->get<CActor>()->addNode(new AVariable(timeOfAppearance, AVariable::PARTICLE_EMMITER, true));
+ */
 }
 
 void TurnTimerSystem::onSystemAction(Entity* e) {
@@ -96,11 +100,13 @@ void TurnTimerSystem::onSelectAction(Entity* e) {
 }
 
 void TurnTimerSystem::removeTimer() {
+    // @hack: no poof
     float xPosition = cxWindow;
     float yPosition = 200;
     
     if (!entities.empty() && !eManager->isDead(entities.front())) {
         if (!entities.front()->get<CDraw>()->isHidden) {
+            /*
             Entity* ePoof = eManager->createEntity();
             ePoof->add(new CPosition(xPosition, yPosition));
             ePoof->add(new CDraw(CDraw::GUI4));
@@ -108,6 +114,7 @@ void TurnTimerSystem::removeTimer() {
             ePoof->add(new CActor());
             ePoof->get<CActor>()->addNode(new ASpriteAnimation(0.f, "poof-02.png"));
             ePoof->get<CActor>()->addNode(new ADestroy(Assets::getAnimation("poof-02.png").duration));
+             */
         }
         eManager->removeEntity(entities.front());
     }

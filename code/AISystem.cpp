@@ -149,10 +149,10 @@ void AISystem::selectHeroAction(Entity* e) {
         actions.push_back(*i);
     }
     // @hack
-#if 1
+#if 0
     war.getNextActionOutcome(e->get<CPlayer>()->id).action = actions[randomInt(0, actions.size()-1)];
 #else
-    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 223;
+    war.getNextActionOutcome(e->get<CPlayer>()->id).action = 202;
 #endif
     e->get<CAInt>()->actionSelected = true;
 }

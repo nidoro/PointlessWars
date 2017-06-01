@@ -26,7 +26,7 @@ class GUIGroupSystem : public System {
         Entity* createHelp(Entity* e, bool centralized);
         void createWindowGameOptions(Entity* e);
         Entity* createRectButton(string label, double fontSize, double h, double x, double y,
-                                 sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer);
+                                 sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer, bool unavailable = false);
 
         void hidePage(Entity* e);
         void showPage(Entity* e);
