@@ -93,9 +93,9 @@ R"(
     <UnitPool>00 01 04 05 08 09 12 13</UnitPool>
     <HeroPool>02 03 04 05 08 10</HeroPool>
     <TurnDuration>
-        <HeroPick>0</HeroPick>
-        <BattleActions>0</BattleActions>
-        <Recruitment>0</Recruitment>
+        <HeroPick>40</HeroPick>
+        <BattleActions>40</BattleActions>
+        <Recruitment>60</Recruitment>
     </TurnDuration>
 </MatchConfig>
 )";

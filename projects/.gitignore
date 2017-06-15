@@ -8,3 +8,5 @@ install_manifest_*.txt
 
 *.depend
 *.layout
+
+PW-setup*

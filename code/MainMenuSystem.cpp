@@ -495,17 +495,17 @@ void MainMenuSystem::createMenu(bool animated) {
     
     Entity* eCallout = eManager->createEntity();
     double yOff = -35;
-    CTextbox2 boxAux("Seek, and ye shall find!", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black);
+    CTextbox2 boxAux("The fool says in his heart, 'There is no God'", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black);
     eCallout->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black));
     eCallout->add(new CRectShape(boxAux.content.getLocalBounds().width + 5, 20, sf::Color::White, 1));
     eCallout->add(new CPosition(xRel*1280, yRel*720 + yOff));
     eCallout->add(new CActor());
     eCallout->add(new CDraw(CDraw::WORLD_3, true, 255.f));
-    eCallout->add(new CTypingEffect("Seek, and ye shall find!", 40));
+    eCallout->add(new CTypingEffect("The fool says in his heart, 'There is no God'", 40));
     
     eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AVariable(0.0, AVariable::HIDDEN, false));
     eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AOWCTextbox2(0.0, CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 11, sf::Color::Black)));
-    eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AOWCTypingEffect(0.0, CTypingEffect("Seek, and ye shall find!", 40)));
+    eObj->get<CAnimationTrigger>()->timelines["trigger-1"].push_back(new AOWCTypingEffect(0.0, CTypingEffect("The fool says in his heart, 'There is no God'", 40)));
     eObj->addObservedEntity("trigger-1", eCallout);
     for (auto& p : eObj->get<CAnimationTrigger>()->timelines) {
         for (auto& node : p.second) {

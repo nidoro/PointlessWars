@@ -50,7 +50,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = W:\projects
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\Davi Doro\PW Local\PointlessWars\projects"
+CMAKE_BINARY_DIR = W:\projects
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -66,6 +66,17 @@ install/local/fast: install/local
 
 .PHONY : install/local/fast
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	C:\CMake\bin\cmake.exe -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: install/strip
+
+.PHONY : install/strip/fast
+
 # Special rule for the target package
 package: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
@@ -80,7 +91,7 @@ package/fast: package
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	C:\CMake\bin\cpack.exe --config ./CPackSourceConfig.cmake "C:/Users/Davi Doro/PW Local/PointlessWars/projects/CPackSourceConfig.cmake"
+	C:\CMake\bin\cpack.exe --config ./CPackSourceConfig.cmake W:/projects/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -134,9 +145,9 @@ list_install_components/fast: list_install_components
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Davi Doro\PW Local\PointlessWars\projects\CMakeFiles" "C:\Users\Davi Doro\PW Local\PointlessWars\projects\CMakeFiles\progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start W:\projects\CMakeFiles W:\projects\CMakeFiles\progress.marks
 	$(MAKE) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Davi Doro\PW Local\PointlessWars\projects\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start W:\projects\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -513,6 +524,24 @@ W_/code/CustomMatchSystem.s:
 	$(MAKE) -f CMakeFiles\pw-release.dir\build.make CMakeFiles/pw-release.dir/W_/code/CustomMatchSystem.s
 	$(MAKE) -f CMakeFiles\pw-debug.dir\build.make CMakeFiles/pw-debug.dir/W_/code/CustomMatchSystem.s
 .PHONY : W_/code/CustomMatchSystem.s
+
+# target to build an object file
+W_/code/DebugServices.obj:
+	$(MAKE) -f CMakeFiles\pw-release.dir\build.make CMakeFiles/pw-release.dir/W_/code/DebugServices.obj
+	$(MAKE) -f CMakeFiles\pw-debug.dir\build.make CMakeFiles/pw-debug.dir/W_/code/DebugServices.obj
+.PHONY : W_/code/DebugServices.obj
+
+# target to preprocess a source file
+W_/code/DebugServices.i:
+	$(MAKE) -f CMakeFiles\pw-release.dir\build.make CMakeFiles/pw-release.dir/W_/code/DebugServices.i
+	$(MAKE) -f CMakeFiles\pw-debug.dir\build.make CMakeFiles/pw-debug.dir/W_/code/DebugServices.i
+.PHONY : W_/code/DebugServices.i
+
+# target to generate assembly for a file
+W_/code/DebugServices.s:
+	$(MAKE) -f CMakeFiles\pw-release.dir\build.make CMakeFiles/pw-release.dir/W_/code/DebugServices.s
+	$(MAKE) -f CMakeFiles\pw-debug.dir\build.make CMakeFiles/pw-debug.dir/W_/code/DebugServices.s
+.PHONY : W_/code/DebugServices.s
 
 # target to build an object file
 W_/code/DisplayerSystem.obj:
@@ -1350,6 +1379,7 @@ help:
 	@echo ... depend
 	@echo ... pw-release
 	@echo ... install/local
+	@echo ... install/strip
 	@echo ... pw-debug
 	@echo ... package
 	@echo ... package_source
@@ -1411,6 +1441,9 @@ help:
 	@echo ... W_/code/CustomMatchSystem.obj
 	@echo ... W_/code/CustomMatchSystem.i
 	@echo ... W_/code/CustomMatchSystem.s
+	@echo ... W_/code/DebugServices.obj
+	@echo ... W_/code/DebugServices.i
+	@echo ... W_/code/DebugServices.s
 	@echo ... W_/code/DisplayerSystem.obj
 	@echo ... W_/code/DisplayerSystem.i
 	@echo ... W_/code/DisplayerSystem.s

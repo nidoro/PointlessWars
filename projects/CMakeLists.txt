@@ -4,7 +4,7 @@ project(PointlessWars)
 #=========================
 # GLOBAL COMPILER OPTIONS
 #=========================
-add_compile_options(-Wall -std=c++0x)
+add_compile_options(-Wall -std=c++0x -mwindows)
 add_definitions(-D_USE_MATH_DEFINES -DIMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS)
 link_directories(C:/Libs/SFML-2.4.0/lib)
 link_directories(C:/boost-1.60-mingw-6.2.0/boost/bin.v2/libs/system/build/gcc-mingw-6.2.0/release)
@@ -19,6 +19,7 @@ include_directories(C:/Libs/boost_1_60_0)
 # TARGET SPECIFIC OPTIONS
 #=========================
 add_executable (pw-release
+	../code/DebugServices.cpp
 	../code/random_int_array.cpp
 	../code/TiltSystem.cpp
 	../code/TurnTimerSystem.cpp
@@ -86,6 +87,7 @@ add_executable (pw-release
     ../win32/icon-win32.o
 )
 add_executable (pw-debug 
+	../code/DebugServices.cpp
 	../code/random_int_array.cpp
 	../code/TiltSystem.cpp
 	../code/TurnTimerSystem.cpp
@@ -174,8 +176,9 @@ target_link_libraries(pw-debug
     opengl32
     stdc++fs
 )
-target_compile_options(pw-release PRIVATE -O2)
+target_compile_options(pw-release PRIVATE -O2 -mwindows)
 target_compile_options(pw-debug PRIVATE -g)
+target_compile_definitions(pw-debug PRIVATE -DPW_PACK_RESOURCES -DPW_DEBUG)
 set_target_properties(pw-release
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../bin/win32

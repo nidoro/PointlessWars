@@ -309,7 +309,7 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e) {
     /// Options page:
     ///================
     initializeGameOptionsPage(eGUI, false);
-    
+
     // @note:
     // Help
     y += spcButton;
@@ -327,7 +327,9 @@ Entity* GUIGroupSystem::createWindowInGameMenu(Entity* e) {
     eObj->addObservedEntity("remove-gui-group", eGUI);
 
     return eGUI;
+
 }
+
 
 void GUIGroupSystem::initializeGameOptionsPage(Entity* eGUI, bool closeOnEsc) {
     /// Assumes that e has a CGUIGroup, a page of name game-options and a CUILayer
@@ -888,7 +890,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     // ==============
     x = x0;
     y = y0;
-    
+
     /// Title
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2(Assets::getString("LABEL-CREDITS"), Assets::getFont(Assets::getPrimaryFont()), 20, sf::Color::Black));
@@ -922,7 +924,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
-    
+
     y += hText;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("Davi Doro", Assets::getFont(Assets::getPrimaryFont()),
@@ -943,7 +945,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
-    
+
     y += hText;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("Gabriel Nogueira", Assets::getFont(Assets::getPrimaryFont()),
@@ -964,7 +966,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
-    
+
     y += hText;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("Jeff Penny", Assets::getFont(Assets::getPrimaryFont()),
@@ -974,7 +976,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
-    
+
     /// Credit 4
     y += spcButton/1.5;
     eObj = eManager->createEntity();
@@ -985,7 +987,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
-    
+
     y += hText;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("Jonathas Dewojno", Assets::getFont(Assets::getPrimaryFont()),
@@ -995,7 +997,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
-    
+
     /// Button page down
     y += spcButton;
     std::string buttonDefaultTexture = "down-arrow-01-default.png";
@@ -1013,13 +1015,13 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
     eObj->attachEmployer(eGUI->getObservedEntity("page-1"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-2"));
-    
+
     // ==============
     // @note: Page 2
     // ==============
     x = x0;
     y = y0;
-    
+
     // @note: up arrow
     y += 15;
     buttonDefaultTexture = "up-arrow-01-default.png";
@@ -1037,7 +1039,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-1"));
-    
+
     // @note: credit 2.1
     y += spcButton/1.5;
     eObj = eManager->createEntity();
@@ -1048,7 +1050,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
-    
+
     y += hText;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("Thiago Doro", Assets::getFont(Assets::getPrimaryFont()),
@@ -1069,7 +1071,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
-    
+
     y += spcButton/1.5;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("SFML developers", Assets::getFont(Assets::getPrimaryFont()),
@@ -1079,7 +1081,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
-    
+
     y += hText;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2("SFML community", Assets::getFont(Assets::getPrimaryFont()),
@@ -1089,7 +1091,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
-    
+
     y += spcButton/1.5;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2(Assets::getString("LABEL-OPENGAMEART-USERS") + ":", Assets::getFont(Assets::getPrimaryFont()),
@@ -1099,13 +1101,13 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
-    
+
     std::vector<std::string> creditNames1 = {
         "daneeklu",
         "JPhilipp",
         "Leonard pabin"
     };
-    
+
     for (auto nm : creditNames1) {
         //y += hText;
         y += 16.75;
@@ -1118,7 +1120,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
         eObj->add(new CDraw(CDraw::GUI_01));
         eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
     }
-    
+
     /// Button page down
     y += spcButton;
     buttonDefaultTexture = "down-arrow-01-default.png";
@@ -1136,13 +1138,13 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
     eObj->attachEmployer(eGUI->getObservedEntity("page-2"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-3"));
-    
+
     // ==============
     // @note: Page 3
     // ==============
     x = x0;
     y = y0;
-    
+
     // @note: up arrow
     y += 15;
     buttonDefaultTexture = "up-arrow-01-default.png";
@@ -1160,7 +1162,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CButtonTrigger(CHANGE_WINDOW_PAGE));
     eObj->attachEmployer(eGUI->getObservedEntity("page-3"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("page-2"));
-    
+
     std::vector<std::string> creditNames2 = {
         "7Soul1",
         "Akachuki",
@@ -1175,7 +1177,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
         "thelunacy-fringe",
         "shadee"
     };
-    
+
     y += spcButton/1.5;
     eObj = eManager->createEntity();
     eObj->add(new CTextbox2(Assets::getString("LABEL-DEVIANTART-USERS") + ":", Assets::getFont(Assets::getPrimaryFont()),
@@ -1185,7 +1187,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
     eObj->add(new CPosition(x, y));
     eObj->add(new CDraw(CDraw::GUI_01));
     eObj->attachEmployer(eGUI->getObservedEntity("page-3"));
-    
+
     for (auto nm : creditNames2) {
         //y += hText;
         y += 16.75;
@@ -1198,7 +1200,7 @@ Entity* GUIGroupSystem::createCredits(Entity* e) {
         eObj->add(new CDraw(CDraw::GUI_01));
         eObj->attachEmployer(eGUI->getObservedEntity("page-3"));
     }
-    
+
     anchorize(eGUI, eGUI->getObservedEntity("page-1")->getEmployees());
     anchorize(eGUI, eGUI->getObservedEntity("page-2")->getEmployees());
     anchorize(eGUI, eGUI->getObservedEntity("page-3")->getEmployees());
@@ -1275,13 +1277,13 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     // ================
     // @note: Lesson 1
     // ================
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-1.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-1"));
-    
+
     // @note: right arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
@@ -1295,17 +1297,17 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-1"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-2"));
-    
+
     // ================
     // @note: Lesson 2
     // ================
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-2.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-2"));
-    
+
     // @note: right arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
@@ -1319,7 +1321,7 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-2"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-3"));
-    
+
     // @note: left arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
@@ -1333,17 +1335,17 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-2"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-1"));
-    
+
     // ================
     // @note: Lesson 3
     // ================
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-3.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-3"));
-    
+
     // @note: right arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
@@ -1357,7 +1359,7 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-3"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-4"));
-    
+
     // @note: left arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
@@ -1371,17 +1373,17 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-3"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-2"));
-    
+
     // ================
     // @note: Lesson 4
     // ================
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-4.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-4"));
-    
+
     // @note: right arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
@@ -1395,7 +1397,7 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-4"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-5"));
-    
+
     // @note: left arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
@@ -1409,17 +1411,17 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-4"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-3"));
-    
+
     // ================
     // @note: Lesson 5
     // ================
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-5.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-5"));
-    
+
     // @note: right arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel + xOffArrow, yArrow));
@@ -1433,7 +1435,7 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-5"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-6"));
-    
+
     // @note: left arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
@@ -1447,17 +1449,17 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-5"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-4"));
-    
+
     // ================
     // @note: Lesson 6
     // ================
-    
+
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel, yPanel));
     eObj->add(new CTexture("lesson-6.png"));
     eObj->add(new CDraw(CDraw::GUI_00));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-6"));
-    
+
     // @note: left arrow
     eObj = eManager->createEntity();
     eObj->add(new CPosition(xPanel - xOffArrow, yArrow));
@@ -1471,7 +1473,7 @@ Entity* GUIGroupSystem::createHelp(Entity* e, bool centralized) {
     eObj->add(new CUILayer(eGUI->get<CUILayer>()->layer));
     eObj->attachEmployer(eGUI->getObservedEntity("lesson-6"));
     eObj->addObservedEntity("change-page", eGUI->getObservedEntity("lesson-5"));
-    
+
     return eGUI;
 }
 
