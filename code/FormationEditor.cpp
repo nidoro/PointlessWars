@@ -18,6 +18,7 @@ FormationEditor::~FormationEditor() {
 
 void FormationEditor::update() {
     if (!active) return;
+    return;
     const int col = 15;
     const int row = 23;
     for(int i = 0; i < row; i++) {
@@ -71,7 +72,7 @@ void FormationEditor::onDeleteFormation(Entity* e) {
     string nameFormation = eLoad->get<CDropList>()->value;
 
     tinyxml2::XMLDocument doc;
-    string path = "../rsc-0.1/formations.xml";
+    string path = getAppDataDir() + "/formations.xml";
     if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
@@ -94,7 +95,7 @@ void FormationEditor::onSaveFormation(Entity* e) {
     string name = eSave->get<CInputTextBox>()->content;
 
     tinyxml2::XMLDocument doc;
-    string path = "../rsc-0.1/formations.xml";
+    string path = getAppDataDir() + "/formations.xml";
     if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Error!\n");
     }
@@ -237,13 +238,13 @@ void FormationEditor::createSaveInputTextBox() {
 
 void FormationEditor::onCreateScreen(Entity* e) {
     switch(e->get<CScreen>()->id) {
-    case CScreen::FORMATION_EDITOR:
-        eManager->clearSystem();
-        create();
-        notify(NEW_SCREEN);
-        break;
-    default:
-        break;
+        case CScreen::FORMATION_EDITOR:
+            eManager->clearSystem();
+            create();
+            notify(NEW_SCREEN);
+            break;
+        default:
+            break;
     }
 }
 
@@ -447,8 +448,8 @@ void FormationEditor::createGrid() {
     x = x0;
     y = y0;
 
-    for(int i = 0; i < row; i++) {
-        for(int j = 0; j < col; j++) {
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
             eObj = eManager->createEntity();
             eObj->add(new CPosition(x, y));
             eObj->add(new CDraw(CDraw::GUI3));
@@ -457,7 +458,7 @@ void FormationEditor::createGrid() {
             eObj->add(new CDimensions(ux, uy));
             eObj->add(new CButtonState(CButtonState::LOCKED));
             eObj->add(new CButtonTrigger(ACTIVATE_INPUT_TEXT_BOX));
-            //eObj->add(new CInputTextBox(true, CInputTextBox::INACTIVE, 2, true));
+            eObj->add(new CInputTextBox(true, EMPTY_MESSAGE, CInputTextBox::INACTIVE, 2, true));
             eObj->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 9, sf::Color::Black));
             eObj->add(new CDisplayer(CDisplayer::INPUT_TEXT, eObj));
             eObj->get<CButtonTrigger>()->mouseButton = sf::Mouse::Right;
@@ -475,7 +476,7 @@ void FormationEditor::updateLoadOptions() {
     const int row = 23;
 
     tinyxml2::XMLDocument doc;
-    string path = "../rsc-0.1/formations.xml";
+    string path = getAppDataDir() + "/formations.xml";
     if (doc.LoadFile(path.c_str()) != tinyxml2::XML_NO_ERROR) {
         printf("Could not open formations.xml!\n");
     }

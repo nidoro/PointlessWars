@@ -456,7 +456,7 @@ void MainMenuSystem::createMenu(bool animated) {
 
     eObj->addObservedEntity("create-gui-group", eGUI);
     
-    
+#if 0
     /// @note: HELP BUTTON
     xRel = 0.9389;
     yRel = 0.6252;
@@ -479,6 +479,25 @@ void MainMenuSystem::createMenu(bool animated) {
     eGUI->add(new CDraw(CDraw::GUI_00));
 
     eObj->addObservedEntity("create-gui-group", eGUI);
+#else
+    // @node: FORMATION EDITOR
+    xRel = 0.9389;
+    yRel = 0.6252;
+    buttonTexture = "training-contour.png";
+    wButton = Assets::getTexture(buttonTexture)->getSize().x;
+    hButton = Assets::getTexture(buttonTexture)->getSize().y;
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(xRel*1280, yRel*720));
+    eObj->add(new CDraw(CDraw::WORLD));
+    eObj->add(new CTexture(buttonTexture));
+    eObj->add(new CDimensions(wButton, hButton));
+    eObj->add(new CButtonHitbox(wButton, hButton));
+    eObj->add(new CButtonState());
+    eObj->add(new CButtonTextures("alpha.png", buttonTexture, buttonTexture));
+    eObj->add(new CButtonTrigger(START_SCREEN_TRANSITION));
+    eObj->add(new CScreen(CScreen::FORMATION_EDITOR, CScreen::FADE_BLACK));
+
+#endif
     
     /// @note: priest callout in
     xRel = 0.1401;

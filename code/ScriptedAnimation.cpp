@@ -719,7 +719,7 @@ void ScriptedAnimation::scriptSummon(ActionOutcome& outcome, Entity* e) {
 
     ///ANIM
     list<sf::Vector2i> P = positions[e->get<CArmy>()->formation];
-    for(EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
+    for (EntityListIt i = e->get<CArmy>()->allUnits.begin(); i != e->get<CArmy>()->allUnits.end(); i++) {
         Entity* eUnit = *i;
         if (eUnit->get<CUnit>()->dead) continue;
         sf::Vector2i p = popFront(P);

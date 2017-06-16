@@ -29,28 +29,28 @@ void ScreenSystem::update() {
 
 void ScreenSystem::onCreateScreen(Entity* e) {
     switch(e->get<CScreen>()->id) {
-    case CScreen::SPLASH_1:
-        eManager->clearSystem();
-        createSplash1(e);
-        notify(NEW_SCREEN);
-        break;
-    case CScreen::SPLASH_2:
-        eManager->clearSystem();
-        createSplash2(e);
-        notify(NEW_SCREEN);
-        break;
-    case CScreen::MATCH:
-        eManager->clearSystem();
-        createMatch(e);
-        notify(NEW_SCREEN);
-        break;
-    case CScreen::LANGUAGE_MENU:
-        eManager->clearSystem();
-        createLanguageMenu(e);
-        notify(NEW_SCREEN);
-        break;
-    default:
-        break;
+        case CScreen::SPLASH_1:
+            eManager->clearSystem();
+            createSplash1(e);
+            notify(NEW_SCREEN);
+            break;
+        case CScreen::SPLASH_2:
+            eManager->clearSystem();
+            createSplash2(e);
+            notify(NEW_SCREEN);
+            break;
+        case CScreen::MATCH:
+            eManager->clearSystem();
+            createMatch(e);
+            notify(NEW_SCREEN);
+            break;
+        case CScreen::LANGUAGE_MENU:
+            eManager->clearSystem();
+            createLanguageMenu(e);
+            notify(NEW_SCREEN);
+            break;
+        default:
+            break;
     }
 }
 

@@ -127,6 +127,8 @@ class ScriptedAnimation : public System {
         bool playingScene;
         EntityList actors;
         vector< list<sf::Vector2i> > positions;
+        vector< list<sf::Vector2i> > positionsP1;
+        vector< list<sf::Vector2i> > positionsP2;
         int wFormation;
         int hFormation;
         double uxFormation;
