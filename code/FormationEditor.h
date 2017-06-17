@@ -34,6 +34,7 @@ class FormationEditor : public System {
         vector< vector<Entity*> > positions;
         vector< vector<Entity*> > order;
         vector< vector<Entity*> > units;
+        map<CArmy::Formation, Entity*> formationButtons;
 
         bool active;
 

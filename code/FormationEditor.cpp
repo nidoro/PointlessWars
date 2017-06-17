@@ -18,7 +18,6 @@ FormationEditor::~FormationEditor() {
 
 void FormationEditor::update() {
     if (!active) return;
-    return;
     const int col = 15;
     const int row = 23;
     for(int i = 0; i < row; i++) {
@@ -275,7 +274,7 @@ void FormationEditor::create() {
     createGrid();
     createUnits();
     createMenu();
-    updateLoadOptions();
+    //updateLoadOptions();
 
     active = true;
 }
@@ -295,35 +294,21 @@ void FormationEditor::createMenu() {
     double x = cxWindow + w/2 - 1*wButton;
     double y = cyWindow - h/2 - hButton/2 - uy/2;
 
-    eLoad = eManager->createEntity();
-    eLoad->add(new CPosition(x, y));
-    eLoad->add(new CDraw(CDraw::GUI1));
-    eLoad->add(new CDimensions(wButton, hButton));
-    eLoad->add(new CButtonHitbox(wButton, hButton));
-    eLoad->add(new CButtonState());
-    eLoad->add(new CButtonTrigger(EXPAND_DROP_LIST));
-    eLoad->add(new CDropList(list<string>()));
-    eLoad->add(new CTextbox2("", Assets::getFont(Assets::getPrimaryFont()), 12, sf::Color::Black));
-    eLoad->add(new CRectShape(wButton, hButton, sf::Color::White, 1, sf::Color::Black));
-    eLoad->add(new CDisplayer(CDisplayer::DROP_LIST_VALUE, eLoad));
 
+    /*
     x = cxWindow + w/2;
-    //Entity* eObj;
-    //eObj = createButton(Assets::getString("LABEL-LOAD"), wButton, hButton, x, y, LOAD_FORMATION);
     createButton(Assets::getString("LABEL-LOAD"), wButton, hButton, x, y, LOAD_FORMATION);
 
     x = cxWindow + w/2 + 1*wButton;
-    //eObj = createButton(Assets::getString("LABEL-DELETE"), wButton, hButton, x, y, DELETE_FORMATION);
     createButton(Assets::getString("LABEL-DELETE"), wButton, hButton, x, y, DELETE_FORMATION);
 
     x = cxWindow + w/2 - 0.5*wButton;
     y = cyWindow + h/2 + hButton/2 + uy/2;
-    //eObj = createButton(Assets::getString("LABEL-CLEAR"), wButton, hButton, x, y, CLEAR_FORMATION_EDITOR);
     createButton(Assets::getString("LABEL-CLEAR"), wButton, hButton, x, y, CLEAR_FORMATION_EDITOR);
 
     x = cxWindow + w/2 + 0.5*wButton;
-    //eObj = createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
     createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
+     */
 }
 
 void FormationEditor::clearGrid() {
@@ -334,7 +319,7 @@ void FormationEditor::clearGrid() {
     const int row = 23;
     positions = vector< vector<Entity*> >(row, vector<Entity*>(col));
     order = vector< vector<Entity*> >(row, vector<Entity*>(col));
-    for(int i = 0; i < row; i++) {
+    for (int i = 0; i < row; i++) {
         for(int j = 0; j < col; j++) {
             positions[i][j] = nullptr;
             order[i][j] = nullptr;
@@ -395,9 +380,10 @@ void FormationEditor::createGrid() {
 
     ///PANEL
     eObj = eManager->createEntity();
-    eObj->add(new CPosition(cxWindow + w/2, cyWindow));
-    eObj->add(new CTexture("back-formation-grid.png"));
+    eObj->add(new CPosition(cxWindow + w/2 + 200/2, cyWindow));
+    eObj->add(new CTexture("9p-frame-01.png"));
     eObj->add(new CDraw(CDraw::GUI));
+    eObj->add(new CDimensions(w + 100 + 200, h + 100));
 
     for(int i = 0; i < col; i++) {
         eObj = eManager->createEntity();
@@ -431,7 +417,7 @@ void FormationEditor::createGrid() {
             eObj->add(new CPosition(x, y));
             eObj->add(new CDraw(CDraw::GUI2));
             eObj->add(new CTexture("alpha.png"));
-            eObj->add(new CCheckBox("blank-circle.png", "alpha.png", false));
+            eObj->add(new CCheckBox("dot-01.png", "alpha.png", false));
             eObj->add(new CButtonHitbox(ux, uy));
             eObj->add(new CDimensions(ux, uy));
             eObj->add(new CButtonState());
@@ -468,6 +454,9 @@ void FormationEditor::createGrid() {
         y += uy;
         x = x0;
     }
+    
+    // formation toggle
+    
 }
 
 void FormationEditor::updateLoadOptions() {
