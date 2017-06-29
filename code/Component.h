@@ -2570,6 +2570,11 @@ struct CToggleButton : public Component {
     CToggleButton(bool on) {
         this->on = on;
     }
+    CToggleButton(bool on, std::string _onTexture, std::string _offTexture) {
+        this->on = on;
+        this->onTexture = _onTexture;
+        this->offTexture = _offTexture;
+    }
     bool on;
     string onTexture;
     string offTexture;

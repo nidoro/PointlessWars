@@ -214,6 +214,8 @@ class System {
         virtual void onServerVersionCheckSuccess(Entity* e) {}
         virtual void onServerVersionCheckFail(Entity* e) {}
         virtual void onTriggerScriptedAnimations(Entity* e) {}
+        virtual void onEditFormation(Entity* e) {}
+        virtual void onToggleOption(Entity* e) {}
 
         void subscribe(Message m) {
             addObserver(this, m);

@@ -18,6 +18,7 @@ ButtonSystem::ButtonSystem() {
     addSubscription(WINDOW_LOST_FOCUS);
     addSubscription(WINDOW_GAINED_FOCUS);
     addSubscription(DO_TOGGLE_ACTION);
+    addSubscription(TOGGLE_OPTION);
 
     uiLayers.push(CUILayer::NONE);
     topUILayer = CUILayer::NONE;
@@ -309,6 +310,19 @@ void ButtonSystem::onToggleCheckBox(Entity* e) {
         e->get<CTexture>()->file = e->get<CCheckBox>()->onTexture;
     } else {
         e->get<CTexture>()->file = e->get<CCheckBox>()->offTexture;
+    }
+}
+
+void ButtonSystem::onToggleOption(Entity* e) {
+    if (e->get<CToggleButton>()->on) return;
+    
+    e->get<CToggleButton>()->on = true;
+    e->get<CTexture>()->file = e->get<CToggleButton>()->onTexture;
+        
+    for (Entity* i : e->getObservedEntity("toggle-group")->getEmployees()) {
+        if (e == i) continue;
+        i->get<CToggleButton>()->on = false;
+        i->get<CTexture>()->file = i->get<CToggleButton>()->offTexture;
     }
 }
 

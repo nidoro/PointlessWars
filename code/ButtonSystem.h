@@ -26,6 +26,7 @@ class ButtonSystem : public System {
         void onWindowLostFocus(Entity* e);
         void onWindowGainedFocus(Entity* e);
         void onDoToggleAction(Entity* e);
+        void onToggleOption(Entity* e);
 
         void updateButtonState(Entity* e);
         void updateButtonTexture(Entity* e);

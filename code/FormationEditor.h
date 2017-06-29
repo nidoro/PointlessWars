@@ -18,6 +18,7 @@ class FormationEditor : public System {
         void onBtFormationSave(Entity* e);
         void onClearFormationEditor(Entity* e);
         void onDeleteFormation(Entity* e);
+        void onEditFormation(Entity* e);
 
         void create();
         void createGrid();
@@ -26,6 +27,9 @@ class FormationEditor : public System {
         void updateLoadOptions();
         void clearPositions();
         void createSaveInputTextBox();
+        void editFormation(CArmy::Formation formation);
+        void setDefaultFormation(CArmy::Formation formation, int p[23][15]);
+        void createDefaultFormations();
 
         Entity* createButton(string label, double w, double h, double x, double y, Message m = EMPTY_MESSAGE);
 
@@ -34,14 +38,15 @@ class FormationEditor : public System {
         vector< vector<Entity*> > positions;
         vector< vector<Entity*> > order;
         vector< vector<Entity*> > units;
-        map<CArmy::Formation, Entity*> formationButtons;
+        CArmy::Formation nowEditing;
 
         bool active;
 
         Entity* eLoad;
         Entity* eSave;
 
-        list<CFormation> formations;
+        std::map<CArmy::Formation, CFormation> formations;
+        std::map<CArmy::Formation, CFormation> defaultFormations;
 };
 
 #endif // FORMATIONEDITOR_H

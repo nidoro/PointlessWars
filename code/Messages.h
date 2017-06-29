@@ -5,6 +5,9 @@ class Entity;
 enum Message {
     EMPTY_MESSAGE,
     
+    EDIT_FORMATION,
+    TOGGLE_OPTION,
+    
     INITIALIZE_PLAYER,
     TOGGLE_CHECK_BOX,
     

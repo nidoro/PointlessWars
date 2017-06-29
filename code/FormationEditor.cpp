@@ -7,9 +7,12 @@ FormationEditor::FormationEditor() {
     addSubscription(BT_FORMATION_SAVE);
     addSubscription(DELETE_FORMATION);
     addSubscription(CLEAR_FORMATION_EDITOR);
+    addSubscription(EDIT_FORMATION);
     eLoad = nullptr;
     eSave = nullptr;
     active = false;
+    nowEditing = CArmy::F1;
+    createDefaultFormations();
 }
 
 FormationEditor::~FormationEditor() {
@@ -40,7 +43,12 @@ void FormationEditor::update() {
     }
 }
 
+void FormationEditor::onEditFormation(Entity* e) {
+    editFormation(e->get<CArmy>()->formation);
+}
+
 void FormationEditor::onLoadFormation(Entity* e) {
+    /*
     string nameFormation = eLoad->get<CDropList>()->value;
     if (nameFormation.empty()) return;
     CFormation F;
@@ -56,12 +64,41 @@ void FormationEditor::onLoadFormation(Entity* e) {
     const int col = 15;
     const int row = 23;
 
-    for(int i = 0; i < row; i++) {
+    for (int i = 0; i < row; i++) {
         for(int j = 0; j < col; j++) {
             if (F.positions[i][col-1-j] > 0) {
                 notify(TOGGLE_CHECK_BOX, positions[i][j]);
                 order[i][j]->get<CInputTextBox>()->content = int2str(F.positions[i][col-1-j]);
                 order[i][j]->get<CInputTextBox>()->charCount = int2str(F.positions[i][col-1-j]).size();
+            }
+        }
+    }
+     */
+}
+
+void FormationEditor::editFormation(CArmy::Formation formation) {
+    nowEditing = formation;
+    clearGrid();
+    
+    const int col = 15;
+    const int row = 23;
+    /*
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (defaultFormations[formation].positions[i][col-1-j] > 0) {
+                notify(TOGGLE_CHECK_BOX, positions[i][col-1-j]);
+                order[i][col-1-j]->get<CInputTextBox>()->content = int2str(defaultFormations[formation].positions[i][col-1-j]);
+                order[i][col-1-j]->get<CInputTextBox>()->charCount = int2str(defaultFormations[formation].positions[i][col-1-j]).size();
+            }
+        }
+    }
+     */
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (defaultFormations[formation].positions[i][col-1-j] > 0) {
+                notify(TOGGLE_CHECK_BOX, positions[i][j]);
+                order[i][j]->get<CInputTextBox>()->content = int2str(defaultFormations[formation].positions[i][col-1-j]);
+                order[i][j]->get<CInputTextBox>()->charCount = int2str(defaultFormations[formation].positions[i][col-1-j]).size();
             }
         }
     }
@@ -287,31 +324,75 @@ void FormationEditor::createMenu() {
     double uy = 26;
     double w = (col-1)*ux;
     double h = (row-1)*uy;
-    double wButton = 90;
-    double hButton = 30;
+    double wButton = 40;
+    double hButton = 40;
     //double x0 = cxWindow + w + wButton/2;
     //double y0 = cyWindow - h/2 + hButton/2;
-    double x = cxWindow + w/2 - 1*wButton;
-    double y = cyWindow - h/2 - hButton/2 - uy/2;
-
-
-    /*
-    x = cxWindow + w/2;
-    createButton(Assets::getString("LABEL-LOAD"), wButton, hButton, x, y, LOAD_FORMATION);
-
-    x = cxWindow + w/2 + 1*wButton;
-    createButton(Assets::getString("LABEL-DELETE"), wButton, hButton, x, y, DELETE_FORMATION);
-
-    x = cxWindow + w/2 - 0.5*wButton;
-    y = cyWindow + h/2 + hButton/2 + uy/2;
-    createButton(Assets::getString("LABEL-CLEAR"), wButton, hButton, x, y, CLEAR_FORMATION_EDITOR);
-
-    x = cxWindow + w/2 + 0.5*wButton;
-    createButton(Assets::getString("LABEL-SAVE"), wButton, hButton, x, y, BT_FORMATION_SAVE);
-     */
+    double cx = cxWindow + w + 200/2 + 100/4;
+    double cy = cyWindow - h/2 + 100/2;
+    double x = cx;
+    double y = cy;
+    
+    Entity* eGroup = eManager->createEntity();
+    Entity* eObj;
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x - wButton*1.1, y));
+    eObj->add(new CButtonHitbox(40, 40));
+    eObj->add(new CButtonTrigger());
+    eObj->add(new CToggleButton(false, "button-formation-00-highlit.png", "button-formation-00.png"));
+    eObj->add(new CButtonState());
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CTexture("button-formation-00.png"));
+    eObj->add(new CArmy(CPlayer::LEFT));
+    eObj->get<CArmy>()->formation = CArmy::F1;
+    eObj->get<CButtonTrigger>()->msgs = {TOGGLE_OPTION, EDIT_FORMATION};
+    eGroup->attachEmployee(eObj);
+    eObj->addObservedEntity("toggle-group", eGroup);
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x, y));
+    eObj->add(new CButtonHitbox(40, 40));
+    eObj->add(new CButtonTrigger());
+    eObj->add(new CToggleButton(false, "button-formation-01-highlit.png", "button-formation-01.png"));
+    eObj->add(new CButtonState());
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CTexture("button-formation-01.png"));
+    eObj->add(new CArmy(CPlayer::LEFT));
+    eObj->get<CArmy>()->formation = CArmy::F2;
+    eObj->get<CButtonTrigger>()->msgs = {TOGGLE_OPTION, EDIT_FORMATION};
+    eGroup->attachEmployee(eObj);
+    eObj->addObservedEntity("toggle-group", eGroup);    
+    
+    eObj = eManager->createEntity();
+    eObj->add(new CPosition(x + 1.1*wButton, y));
+    eObj->add(new CButtonHitbox(40, 40));
+    eObj->add(new CButtonTrigger());
+    eObj->add(new CToggleButton(false, "button-formation-02-highlit.png", "button-formation-02.png"));
+    eObj->add(new CButtonState());
+    eObj->add(new CDraw(CDraw::GUI_01));
+    eObj->add(new CTexture("button-formation-02.png"));
+    eObj->add(new CArmy(CPlayer::LEFT));
+    eObj->get<CArmy>()->formation = CArmy::F3;
+    eObj->get<CButtonTrigger>()->msgs = {TOGGLE_OPTION, EDIT_FORMATION};
+    eGroup->attachEmployee(eObj);
+    eObj->addObservedEntity("toggle-group", eGroup);
+    
 }
 
 void FormationEditor::clearGrid() {
+    const int col = 15;
+    const int row = 23;
+    
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (positions[i][j]->get<CCheckBox>()->on) {
+                notify(TOGGLE_CHECK_BOX, positions[i][j]);
+                order[i][j]->get<CInputTextBox>()->setContent("");
+            }
+        }
+    }
+    /*
     positions.clear();
     order.clear();
 
@@ -325,6 +406,7 @@ void FormationEditor::clearGrid() {
             order[i][j] = nullptr;
         }
     }
+     */
 }
 
 void FormationEditor::createUnits() {
@@ -362,10 +444,19 @@ void FormationEditor::createUnits() {
 }
 
 void FormationEditor::createGrid() {
-    clearGrid();
+    positions.clear();
+    order.clear();
 
     const int col = 15;
     const int row = 23;
+    positions = vector< vector<Entity*> >(row, vector<Entity*>(col));
+    order = vector< vector<Entity*> >(row, vector<Entity*>(col));
+    for (int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {
+            positions[i][j] = nullptr;
+            order[i][j] = nullptr;
+        }
+    }
 
     double x0 = cxWindow;
     double y0 = cyWindow;
@@ -460,6 +551,7 @@ void FormationEditor::createGrid() {
 }
 
 void FormationEditor::updateLoadOptions() {
+    /*
     formations.clear();
     const int col = 15;
     const int row = 23;
@@ -488,6 +580,7 @@ void FormationEditor::updateLoadOptions() {
     for(list<CFormation>::iterator i = formations.begin(); i != formations.end(); i++) {
         eLoad->get<CDropList>()->values.push_back(i->name);
     }
+     */
 }
 
 Entity* FormationEditor::createButton(string label, double w, double h, double x, double y, Message m) {
@@ -508,5 +601,132 @@ Entity* FormationEditor::createButton(string label, double w, double h, double x
     return e;
 }
 
+void FormationEditor::createDefaultFormations() {
+    int F1[23][15] = {
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        9,  0, 19,  0, 29,  0, 39,	0, 49,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        7,  0, 17,  0, 27,  0, 37,	0, 47,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        5,  0, 15,  0, 25,  0, 35,	0, 45,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        3,  0, 13,  0, 23,  0, 33,	0, 43,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        1,  0, 11,  0, 21,  0, 31,	0, 41,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        2,  0, 12,  0, 22,  0, 32,	0, 42,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        4,  0, 14,  0, 24,  0, 34,	0, 44,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        6,  0, 16,  0, 26,  0, 36,	0, 46,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        8,  0, 18,  0, 28,  0, 38,	0, 48,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        10,  0, 20,  0, 30,  0, 40,	0, 50,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,	0,  0,  0,  0,  0,  0,  0,  0
+    };
 
+    int F2[23][15] = {
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 35,  0, 46,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0, 24,  0, 33,  0, 44,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0, 15,  0, 22,  0, 31,  0, 42,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  8,  0, 13,  0, 20,  0, 29,  0, 40,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  3,  0,  6,  0, 11,  0, 18,  0, 27,  0, 38,  0, 49,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        1,  0,  2,  0,  5,  0, 10,  0, 17,  0, 26,  0, 37,  0, 48,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  4,  0,  7,  0, 12,  0, 19,  0, 28,  0, 39,  0, 50,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  9,  0, 14,  0, 21,  0, 31,  0, 41,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0, 16,  0, 23,  0, 32,  0, 43,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0, 25,  0, 34,  0, 45,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 36,  0, 47,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+    };
 
+    int F3[23][15] = {
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  32,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  44,  0,  0,  0,  46,  0,  0,  0,  0,  0,
+        0,  0,  0,  31,  0,  0,  0,  11, 0,  0,  0,  34,  0,  0,  0,
+        0,  0,  0,  0,  0,  24, 0,  0,  0,  25, 0,  0,  0,  0,  0,
+        0,  0,  42,  0,  0,  0,  0,  5,  0,  0,  0,  0,  48,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  28,  0,  0,  13, 0,  0,  0,  0,  0,  14, 0,  0,  36,  0,
+        0,  0,  0,  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,
+        40,  0,  17, 0,  0,  0,  0,  0,  0,  0,  0,  0,  18, 0,  38,
+        0,  0,  0,  0,  7,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,
+        27,  0,  21, 0,  0,  0,  1,  0,  2,  0,  0,  0,  22, 0,  50,
+        0,  0,  0,  0,  9,  0,  0,  0,  0,  0,  10, 0,  0,  0,  0,
+        41,  0,  19, 0,  0,  0,  0,  0,  0,  0,  0,  0,  20, 0,  39,
+        0,  0,  0,  0,  0,  0,  0,  4,  0,  0,  0,  0,  0,  0,  0,
+        0,  29,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  37,  0,
+        0,  0,  0,  0,  15, 0,  0,  0,  0,  0,  16, 0,  0,  0,  0,
+        0,  0,  43,  0,  0,  0,  0,  6,  0,  0,  0,  0,  49,  0,  0,
+        0,  0,  0,  0,  0,  23, 0,  0,  0,  26, 0,  0,  0,  0,  0,
+        0,  0,  0,  30,  0,  0,  0,  12, 0,  0,  0,  35,  0,  0,  0,
+        0,  0,  0,  0,  0,  45,  0,  0,  0,  47,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  33,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+    };
+    
+    int F4[23][15] = {
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,
+        0,  0,  0,  0,  0,  0,  1,  0,  1,  0,  0,  0,  0,  0,  0,
+        0,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,  0,
+        0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,
+        1,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1,
+        0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,
+        1,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  1,
+        0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,
+        1,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,
+        0,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,
+        0,  1,  0,  1,  0,  0,  1,  0,  1,  0,  0,  1,  0,  1,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  1,  0,  1,  0,  1,  0,  1,  0,  1,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  1,  0,  1,  0,  1,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+    };
+    
+    setDefaultFormation(CArmy::F1, F1);
+    setDefaultFormation(CArmy::F2, F2);
+    setDefaultFormation(CArmy::F3, F3);
+    setDefaultFormation(CArmy::F4, F4);
+}
+
+void FormationEditor::setDefaultFormation(CArmy::Formation formation, int p[23][15]) {
+    int l = 23;
+    int c = 15;
+    for(int i = 0; i < l; i++) {
+        for(int j = 0; j < c; j++) {
+            defaultFormations[formation].positions[i][j] = p[i][j];
+        }
+    }
+    /*
+
+    F.sort(comparePairIntVector);
+
+    defPositions[formation].clear();
+    for(list< pair<int, sf::Vector2i> >::iterator i = F.begin(); i != F.end(); i++) {
+        defPositions[formation].push_back(i->second);
+    }
+     */
+}

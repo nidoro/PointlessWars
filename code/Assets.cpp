@@ -24,7 +24,9 @@ void Assets::load() {
     loadFontsAt(rscRoot + "fonts");
 #endif
 
-#ifdef PW_PACK_RESOURCES
+//@hack
+//#ifdef PW_PACK_RESOURCES
+#if 0
     packResources(rscRoot + "resources");
 #endif
     unpackResources(rscRoot + "resources");

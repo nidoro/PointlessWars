@@ -516,6 +516,8 @@ void System::onNotify(Message m, Entity* e) {
     case TRIGGER_SCRIPTED_ANIMATIONS:
         onTriggerScriptedAnimations(e);
         break;
+    case EDIT_FORMATION: onEditFormation(e); break;
+    case TOGGLE_OPTION: onToggleOption(e); break;
     default:
         break;
     }
