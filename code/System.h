@@ -216,6 +216,9 @@ class System {
         virtual void onTriggerScriptedAnimations(Entity* e) {}
         virtual void onEditFormation(Entity* e) {}
         virtual void onToggleOption(Entity* e) {}
+        virtual void onRestoreDefaultFormation(Entity* e) {}
+        virtual void onAppEnding(Entity* e) {}
+        virtual void onEditFormationPosition(Entity* e) {}
 
         void subscribe(Message m) {
             addObserver(this, m);

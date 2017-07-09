@@ -172,6 +172,8 @@ void Game::start() {
             eManager.clearEvents();
         }
     }
+    
+    System::notify(APP_ENDING);
 
     System::shutdownAll();
     Assets::shutdown();

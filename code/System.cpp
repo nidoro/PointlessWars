@@ -518,6 +518,9 @@ void System::onNotify(Message m, Entity* e) {
         break;
     case EDIT_FORMATION: onEditFormation(e); break;
     case TOGGLE_OPTION: onToggleOption(e); break;
+    case RESTORE_DEFAULT_FORMATION: onRestoreDefaultFormation(e); break;
+    case APP_ENDING: onAppEnding(e); break;
+    case EDIT_FORMATION_POSITION: onEditFormationPosition(e); break;
     default:
         break;
     }

@@ -10,6 +10,8 @@ class FormationEditor : public System {
         ~FormationEditor();
 
         void update();
+        void start();
+        void shutdown();
 
     private:
         void onCreateScreen(Entity* e);
@@ -19,6 +21,10 @@ class FormationEditor : public System {
         void onClearFormationEditor(Entity* e);
         void onDeleteFormation(Entity* e);
         void onEditFormation(Entity* e);
+        void onRestoreDefaultFormation(Entity* e);
+        void onGameStarted(Entity* e);
+        void onAppEnding(Entity* e);
+        void onEditFormationPosition(Entity* e);
 
         void create();
         void createGrid();
@@ -32,6 +38,8 @@ class FormationEditor : public System {
         void createDefaultFormations();
 
         Entity* createButton(string label, double w, double h, double x, double y, Message m = EMPTY_MESSAGE);
+        Entity* createRectButton(string label, double fontSize, double h, double x, double y,
+                                 sf::Color textColor, sf::Color fillColor, sf::Color outColor, double outThickness, Message m, CUILayer::Layer UILayer, bool unavailable = false);
 
         void clearGrid();
 
@@ -44,6 +52,8 @@ class FormationEditor : public System {
 
         Entity* eLoad;
         Entity* eSave;
+        
+        nlohmann::json dataFile;
 
         std::map<CArmy::Formation, CFormation> formations;
         std::map<CArmy::Formation, CFormation> defaultFormations;

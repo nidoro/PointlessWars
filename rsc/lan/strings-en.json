@@ -43,6 +43,7 @@
     "DESCRIPTION-BATTLE-SOLVING-ARMY-VS-ARMY" : "The armies engage into melee battle",
     "DESCRIPTION-BATTLE-SOLVING-DRAW" : "No one wins this battle",
     "START" : "Start",
+    "LABEL-RESTORE-DEFAULT" : "Restore Default",
     "LABEL-QUIT" : "Quit",
     "LABEL-RESUME" : "Resume",
     "LABEL-LOAD" : "Load",

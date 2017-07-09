@@ -152,6 +152,7 @@ struct Component {
             COMPOUND_BUTTON,
             TURN_TIMER,
             ANIMATION_TRIGGER,
+            ANY_DATA,
             NUM_COMPONENTS
         };
 
@@ -2809,6 +2810,16 @@ struct CAnimationTrigger : public Component {
     }
     
     std::map<std::string, list<AnimationNode*> > timelines;
+};
+
+struct CAnyData : public Component {
+    static Type getType() {return ANY_DATA;}
+    
+    std::string _string;
+    sf::Vector2i _Vector2i;
+    sf::Vector2f _Vector2f;
+    float _float;
+    int _int;
 };
 
 #endif // COMPONENT_H

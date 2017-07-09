@@ -6,10 +6,13 @@ enum Message {
     EMPTY_MESSAGE,
     
     EDIT_FORMATION,
+    EDIT_FORMATION_POSITION,
     TOGGLE_OPTION,
+    RESTORE_DEFAULT_FORMATION,
     
     INITIALIZE_PLAYER,
     TOGGLE_CHECK_BOX,
+    APP_ENDING,
     
     // @cleanup: is this necessary?
     START_CUSTOM_MATCH,
